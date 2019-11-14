@@ -1,6 +1,5 @@
 #include <memory_pool.h>
 
-// DONE (NOT TESTED)
 memory_t::memory_t(const int endianness) {
     this->endianness = endianness;
 }

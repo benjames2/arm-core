@@ -15,16 +15,20 @@ global byte_swap_16
 section .data
 
 section .text
+
+align 16
 byte_swap_64:
     mov rax, rdi
     bswap rax
     ret
 
+align 16
 byte_swap_32:
     mov rax, rdi
     bswap eax
     ret
 
+align 16
 byte_swap_16:
     mov rax, rdi
     shl rax, 8

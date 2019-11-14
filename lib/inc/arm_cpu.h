@@ -14,7 +14,7 @@ private:
         float    f32;
     };
 
-    std::array<register_t, 32> i_register_file;
+    std::array<register_t, 32> register_file;
 
     uint32_t APSR; // Application Program Status Register
 

@@ -51,7 +51,7 @@ int main(void) {
 
         }
 
-        cout << "instruction test file\n";
+        cout << "instruction test file w/ memory data\n";
         cout << endl << mem << endl;
 
     }

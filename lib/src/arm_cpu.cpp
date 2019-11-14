@@ -1,21 +1,45 @@
 #include <arm_cpu.h>
 
-arm_cpu(void);
+arm_cpu::arm_cpu(void) {
+    for(int i = 0; i < 16; i++)
+        this->set_register_int(i, 0x00000000);
+
+    this->set_register_uint(arm_LR, 0xFFFFFFFF);
+    
+}
 
 int32_t arm_cpu::get_register_int( const int reg ) {
-
+    if(reg >= 0 && reg <= 15)
+        return this->register_file[reg].i32;
 }
 
 uint32_t arm_cpu::get_register_uint( const int reg ) {
-
+    if(reg >= 0 && reg <= 15)
+        return this->register_file[reg].u32;
 }
 
 float arm_cpu::get_register_fp( const int reg ) {
-
+    if(reg >= 0 && reg <= 15)
+        return this->register_file[reg].f32;
 }
 
 uint32_t arm_cpu::get_program_status_register(void) {
+    return this->APSR;
+}
 
+void arm_cpu::set_register_int(  const int reg, int32_t val) {
+    if(reg >= 0 && reg <= 15)
+        this->register_file[reg].i32 = val;
+}
+
+void arm_cpu::set_register_uint( const int reg, uint32_t val) {
+    if(reg >= 0 && reg <= 15)
+        this->register_file[reg].u32 = val;
+}
+
+void arm_cpu::set_register_fp(   const int reg, float val) {
+    if(reg >= 0 && reg <= 15)
+        this->register_file[reg].f32 = val;
 }
 
 // flag get functions
