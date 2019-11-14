@@ -10,11 +10,15 @@
 namespace inst {
 namespace thumb {
 
-    address_t move_shifted_register(arm_cpu& cpu, memory_t& mem, uint32_t inst);
+    address_t move_shifted_register( arm_cpu& cpu, memory_t& mem, uint32_t inst );
+    address_t add_subtract( arm_cpu& cpu, memory_t& mem, uint32_t inst );
+    address_t mcas_imm( arm_cpu& cpu, memory_t& mem, uint32_t inst );
 
-    address_t add_subtract(arm_cpu& cpu, memory_t& mem, uint32_t inst);
+    // many of the operations in this instruction are not defined
+    // yet. it will likely throw an exception
+    address_t alu_operations( arm_cpu& cpu, memory_t& mem, uint32_t inst );
 
-    address_t mcas_imm(arm_cpu& cpu, memory_t& mem, uint32_t inst);
+    
 
 } // thumb
 } // inst

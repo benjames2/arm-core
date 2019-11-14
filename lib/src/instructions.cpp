@@ -48,7 +48,7 @@ address_t inst::thumb::add_subtract(arm_cpu& cpu, memory_t& mem, uint32_t inst) 
     int r_dest   = inst & 0x07;
     int r_src    = (inst >> 3)  & 0x07;
     int rn_off   = (inst >> 6)  & 0x07;
-    int op       = (inst >> 9)  & 0x01; 
+    int op       = (inst >> 9)  & 0x01;
     int imm_flag = (inst >> 10) & 0x01;
 
     if(op) { // ADD
@@ -68,7 +68,7 @@ address_t inst::thumb::add_subtract(arm_cpu& cpu, memory_t& mem, uint32_t inst) 
 
         }
     }
-    else { // SUBTRACT   
+    else { // SUBTRACT
         if(imm_flag) { // use immediate
 
             int32_t src_val = cpu.get_register_int(r_src);
@@ -128,4 +128,63 @@ address_t inst::thumb::mcas_imm(arm_cpu& cpu, memory_t& mem, uint32_t inst) {
     return cpu.get_register_uint(arm_PC) + 2;
 }
 
+address_t inst::thumb::alu_operations(arm_cpu& cpu, memory_t& mem, uint32_t inst) {
 
+    int r_dest = inst & 0x07;
+    int r_src  = (inst >> 3) & 0x07;
+    int op     = (inst >> 6) & 0x0F;
+
+    union {
+        int32_t i32;
+        uint32_t u32;
+    } src;
+
+    union {
+        int32_t i32;
+        uint32_t u32;
+    } dest;
+
+    src.u32  = cpu.get_register_uint(r_src);
+    dest.u32 = cpu.get_register_uint(r_dest);
+
+    switch(op) {
+        case 0: // AND Rd, Rs
+            {
+                dest.u32 &= src.u32;
+                cpu.set_register_uint(r_dest, dest.u32);
+            }
+            break;
+        case 1: // EOR Rd, Rs
+            {
+                dest.u32 ^= src.u32;
+                cpu.set_register_uint(r_dest, dest.u32);
+            }
+            break;
+        //case 2: // LSL Rd, Rs
+        //case 3: // LSR Rd, Rs
+        //case 4: // ASR Rd, Rs
+        //case 5: // ADC Rd, Rs
+        //case 6: // SBC Rd, Rs
+        //case 7: // ROR Rd, Rs
+        //case 8: // TST Rd, Rs
+        case 9: // NEG Rd, Rs
+            {
+                dest.i32 = -src.i32;
+                cpu.set_register_int(r_dest, dest.i32);
+            }
+            break;
+        //case 10: // CMP Rd, Rs
+        //case 11: // CMN Rd, Rs
+        //case 12: // ORR Rd, Rs
+        //case 13: // MUL Rd, Rs
+        //case 14: // BIC Rd, Rs
+        //case 15: // MVN Rd, Rs
+        default:
+            throw std::runtime_error(
+                    "inst::thumb::alu_operations : unknown opcode (" +
+                    std::to_string(op) + ")");
+    }
+
+    return cpu.get_register_uint(arm_PC) + 2;
+
+}
