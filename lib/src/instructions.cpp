@@ -2,6 +2,46 @@
 #include <instructions.h>
 #include <arm_instruction_asm.h>
 
+// decode ARM thumb instruction
+address_t inst::thumb::decode(arm_cpu& cpu, memory_t& mem, uint32_t inst) {
+    int op_field = (inst >> 13) & 0x07;
+
+    switch(op_field) {
+        case 0:
+            {
+                int op = (inst >> 11) & 0x03;
+                if(op == 3) {
+                    return inst::thumb::move_shifted_register(cpu, mem, inst);
+                }
+                else {
+                    return inst::thumb::add_subtract(cpu, mem, inst);
+                }
+            }
+            break;
+        case 1:
+            return inst::thumb::mcas_imm(cpu, mem, inst);
+            break;
+        /*
+        case 2:
+            {
+                int op = (inst >> 12) & 0x01;
+                if(op == 1) {
+                    ;
+                }
+            }
+            break;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        */
+        default:
+            throw std::runtime_error("inst::thumb::decode : unknown operation");
+    }
+
+}
+
 // MOVE SHIFTED REGISTER
 address_t inst::thumb::move_shifted_register(arm_cpu& cpu, memory_t& mem, uint32_t inst) {
 
@@ -160,12 +200,35 @@ address_t inst::thumb::alu_operations(arm_cpu& cpu, memory_t& mem, uint32_t inst
                 cpu.set_register_uint(r_dest, dest.u32);
             }
             break;
-        //case 2: // LSL Rd, Rs
-        //case 3: // LSR Rd, Rs
+        case 2: // LSL Rd, Rs
+            {
+                dest.u32 <<= src.u32;
+                cpu.set_register_uint(r_dest, dest.u32);
+            }
+            break;
+        case 3: // LSR Rd, Rs
+            {
+                dest.u32 >>= src.u32;
+                cpu.set_register_uint(r_dest, dest.u32);
+            }
+            break;
         //case 4: // ASR Rd, Rs
-        //case 5: // ADC Rd, Rs
+        case 5: // ADC Rd, Rs
+            {
+                dest.i32 += src.i32;
+                if(cpu.get_flag_carry())
+                    dest.i32++;
+                cpu.set_register_int(r_dest, dest.i32);
+            }
+            break;
         //case 6: // SBC Rd, Rs
         //case 7: // ROR Rd, Rs
+            {
+                for(int i = 0; i < src.u32; i++)
+                    dest.u32 = rotate_right(dest.u32);
+                cpu.set_register_uint(r_dest, dest.u32);
+            }
+            break;
         //case 8: // TST Rd, Rs
         case 9: // NEG Rd, Rs
             {
@@ -175,10 +238,25 @@ address_t inst::thumb::alu_operations(arm_cpu& cpu, memory_t& mem, uint32_t inst
             break;
         //case 10: // CMP Rd, Rs
         //case 11: // CMN Rd, Rs
-        //case 12: // ORR Rd, Rs
+        case 12: // ORR Rd, Rs
+            {
+                dest.u32 |= src.u32;
+                cpu.set_register_uint(r_dest, dest.u32);
+            }
+            break;
         //case 13: // MUL Rd, Rs
-        //case 14: // BIC Rd, Rs
-        //case 15: // MVN Rd, Rs
+        case 14: // BIC Rd, Rs
+            {
+                dest.u32 &= ~src.u32;
+                cpu.set_register_uint(r_dest, dest.u32);
+            }
+            break;
+        case 15: // MVN Rd, Rs
+            {
+                dest.u32 = ~src.u32;
+                cpu.set_register_uint(r_dest, dest.u32);
+            }
+            break;
         default:
             throw std::runtime_error(
                     "inst::thumb::alu_operations : unknown opcode (" +
@@ -187,4 +265,8 @@ address_t inst::thumb::alu_operations(arm_cpu& cpu, memory_t& mem, uint32_t inst
 
     return cpu.get_register_uint(arm_PC) + 2;
 
+}
+
+address_t inst::thumb::hi_reg_ops_brnch_exch(arm_cpu& cpu, memory_t& mem, uint32_t inst) {
+    int op = (inst >> 8) & 0x03;
 }

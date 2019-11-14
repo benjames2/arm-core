@@ -5,10 +5,11 @@
 #include <memory_pool.h>
 #include <arm_instruction_asm.h>
 
-// MSR : move shifted register
-
 namespace inst {
 namespace thumb {
+
+    // decode a given ARM thumb instruction
+    address_t decode(arm_cpu& cpu, memory_t& mem, uint32_t inst);
 
     address_t move_shifted_register( arm_cpu& cpu, memory_t& mem, uint32_t inst );
     address_t add_subtract( arm_cpu& cpu, memory_t& mem, uint32_t inst );
@@ -18,7 +19,7 @@ namespace thumb {
     // yet. it will likely throw an exception
     address_t alu_operations( arm_cpu& cpu, memory_t& mem, uint32_t inst );
 
-    
+    address_t hi_reg_ops_brnch_exch( arm_cpu& cpu, memory_t& mem, uint32_t inst );
 
 } // thumb
 } // inst

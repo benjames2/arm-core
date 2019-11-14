@@ -29,7 +29,7 @@ int main(void) {
         cout << endl << mem << endl;
 
     }
-    
+
     // writing executable data from file
     {
         //mem.debug_clear_pages();

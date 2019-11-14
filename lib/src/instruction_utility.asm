@@ -3,6 +3,8 @@
 ;
 
 global arithmetic_shift_right
+global rotate_right
+global rotate_left
 
 section .data
 section .text
@@ -13,4 +15,14 @@ arithmetic_shift_right:
     sar rax, 1
     ret
 
+align 16
+rotate_right:
+    mov rax, rdi
+    ror rax, 1
+    ret
 
+align 16
+rotate_left:
+    mov rax, rdi
+    rol rax, 1
+    ret
