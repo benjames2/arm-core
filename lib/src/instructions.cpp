@@ -17,7 +17,7 @@ address_t inst::thumb::decode(arm_cpu& cpu, memory_t& mem, uint32_t inst) {
                     return inst::thumb::add_subtract(cpu, mem, inst);
                 }
             }
-            break;
+            break; // the breaks in this switch case shouldnt be required but imma leave them there because im paranoid
         case 1:
             return inst::thumb::mcas_imm(cpu, mem, inst);
             break;
