@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <memory_pool.h>
 #include <assert.h>
 
@@ -70,6 +71,20 @@ int main(void) {
         mem.store_i64(address_t(256*10-4), -32); // storing and loading from the same location should yield the same information
         assert(mem.load_i64(address_t(256*10-4)) == -32);
         assert(mem.debug_num_pages() == 2);
+
+    }
+
+    {
+        mem.debug_clear_pages();
+        ifstream is("./txt/memory.txt");
+
+        address_t addr;
+        uint16_t  data;
+
+        while(is >> std::hex >> addr) {
+            is >> data;
+            mem.store_u16(addr, data);
+        }
 
     }
 
