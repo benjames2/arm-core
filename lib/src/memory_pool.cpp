@@ -121,7 +121,7 @@ int64_t memory_t::load_i64(address_t address) {
 // store functions
 // ==================================================================
 
-void memory_t::store_u8(uint32_t address, uint8_t byte) {
+void memory_t::store_u8(address_t address, uint8_t byte) {
     uint32_t page = address >> 8;
     auto iter = this->mem_lut.find(page);
 

@@ -10,7 +10,7 @@ section .text
 align 16
 arithmetic_shift_right:
     mov rax, rdi
-    sar rax, rsi
+    sar rax, 1
     ret
 
 

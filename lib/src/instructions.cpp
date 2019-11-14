@@ -1,5 +1,5 @@
 #include <iostream>
-#include <inst_mov_shifted_register.h>
+#include <instructions.h>
 #include <arm_instruction_asm.h>
 
 // MOVE SHIFTED REGISTER
@@ -28,8 +28,9 @@ address_t inst::thumb::move_shifted_register(arm_cpu& cpu, memory_t& mem, uint32
         case 2: // arithmetic shift right
             {
                 int32_t src_val = cpu.get_register_int(r_src);
-                src_val = arithmetic_shift_right(src_val, offset);
-                cpu.set_register_int(src_val);
+                for(int i = 0; i < offset; i++)
+                    src_val = arithmetic_shift_right(src_val);
+                cpu.set_register_int(r_dest, src_val);
             }
             break;
         default:
@@ -62,8 +63,8 @@ address_t inst::thumb::add_subtract(arm_cpu& cpu, memory_t& mem, uint32_t inst) 
 
             int32_t src_val_s = cpu.get_register_int(r_src);
             int32_t src_val_n = cpu.get_register_int(rn_off);
-            src_val += src_val_n;
-            cpu.set_register_int(r_dest);
+            src_val_s += src_val_n;
+            cpu.set_register_int(r_dest, src_val_s);
 
         }
     }
@@ -79,8 +80,8 @@ address_t inst::thumb::add_subtract(arm_cpu& cpu, memory_t& mem, uint32_t inst) 
 
             int32_t src_val_s = cpu.get_register_int(r_src);
             int32_t src_val_n = cpu.get_register_int(rn_off);
-            src_val -= src_val_n;
-            cpu.set_register_int(r_dest);
+            src_val_s -= src_val_n;
+            cpu.set_register_int(r_dest, src_val_s);
 
         }
     }
