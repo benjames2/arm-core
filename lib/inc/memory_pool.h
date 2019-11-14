@@ -16,10 +16,11 @@ typedef int16_t    signed_word_t;
 typedef int32_t    signed_double_word_t;
 typedef int64_t    signed_quad_word_t;
 
-// this routine is written in assembly
+// these routines are written in assembly
 extern "C" {
     uint64_t byte_swap_64(uint64_t b);
     uint32_t byte_swap_32(uint32_t b);
+    uint16_t byte_swap_16(uint16_t b);
 }
 
 class memory_t {
@@ -32,6 +33,8 @@ private:
 
         memory_page_t(void) {
             this->sz = 0;
+            for(int i = 0; i < 256; i++)
+                this->bytes[i] = 0x00;
         }
 
     };
@@ -47,6 +50,9 @@ public:
 
     memory_t(const int endianness);
 
+    size_t debug_num_pages(void);
+    void debug_clear_pages(void);
+
     // get a specific byte from memory. can request data from
     // anywhere in the 32-bit memory space
     uint8_t  load_u8(address_t address);
@@ -60,9 +66,9 @@ public:
     int32_t load_i32(address_t address);
     int64_t load_i64(address_t address);
 
-    // store an arbitrary byte anywhere in the address space.
-    // storing zeros does not actually increase the amount
-    // of memory used by memory_pool_t
+    // store data anywhere in the address space.
+    // storing zeros does not actually increase the 
+    // amount of memory used by memory_t
     void store_u8(address_t address,  uint8_t data);
     void store_u16(address_t address, uint16_t data);
     void store_u32(address_t address, uint32_t data);
@@ -73,6 +79,8 @@ public:
     void store_i16(address_t address, int16_t data);
     void store_i32(address_t address, int32_t data);
     void store_i64(address_t address, int64_t data);
+
+    friend std::ostream& operator<<(std::ostream& os, memory_t& mem);
 
 };
 
