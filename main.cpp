@@ -9,52 +9,14 @@ int main(void) {
 
     memory_t mem(memory_t::little_endian);
 
-    // start with empty memory area
-    assert(mem.debug_num_pages() == 0);
-
-    // writing memory data from file
-    {
-        mem.debug_clear_pages(); // start with clean slate
-        ifstream is("./txt/memory.txt");
-
-        address_t addr;
-        uint16_t  data;
-
-        while(is >> std::hex >> addr) {
-            is >> data;
-            mem.store_u16(addr, data);
-        }
-
-        cout << "memory test file\n";
-        cout << endl << mem << endl;
-
-    }
-
-    // writing executable data from file
-    {
-        //mem.debug_clear_pages();
-        ifstream is("./txt/binary.txt");
-
-        address_t addr;
-        uint32_t  data;
-
-        while(is >> hex >> addr) {
-
-            is >> data;
-
-            if(data > 0xFFFF) {
-                mem.store_u32(addr, data);
-            }
-            else {
-                mem.store_u16(addr, data & 0xFFFF);
-            }
-
-        }
-
-        cout << "instruction test file w/ memory data\n";
-        cout << endl << mem << endl;
-
-    }
+    // 0x00000224    2c 48    001 01 100 01001000   - cmp r4, #0x48
+    // 0x00000226    00 6a    000 00 00001 101 010  - lsl r2, r5, #0x01
+    // 0x00000228    70 40    011 1 0 00001 000 000 - str r0, [r0, #0x01]
+    // 0x0000022A    40 f0    010 000 0011 110 000  - lsr r0, r6
+    // 0x0000022C    2a 49    001 01 010 01001001   - cmp r2, #0x49
+    // 0x0000022E    08 62    000 01 00001 100 010  - lsr r2, r4, #0x01
+    // 0x00000230    08 46    000 01 00001 000 110  - lsr r6, r0, #0x01
+    // 0x00000232    40 6b    010 000 0001 101 011  - eor r3, r5
 
     return 0;
 }
