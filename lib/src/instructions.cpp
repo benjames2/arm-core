@@ -267,6 +267,109 @@ address_t inst::thumb::alu_operations(arm_cpu& cpu, memory_t& mem, uint32_t inst
 
 }
 
-address_t inst::thumb::hi_reg_ops_brnch_exch(arm_cpu& cpu, memory_t& mem, uint32_t inst) {
-    int op = (inst >> 8) & 0x03;
+address_t inst::thumb::hi_reg_ops_brnch_exch( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
+
+    int op   = (inst >> 8) & 0x03;
+    int h1   = (inst >> 7) & 0x01;
+    int h2   = (inst >> 6) & 0x01;
+    int RsHs = (inst >> 3) & 0x07;
+    int RdHd = (inst >> 0) & 0x07;
+
+    switch(op) {
+        case 0: // add
+            {
+                if(h1) RdHd += 8;
+                if(h2) RsHs += 8;
+
+                int rd = cpu.get_register_int(RdHd);
+                int rs = cpu.get_register_int(RsHs);
+                rd += rs;
+                cpu.set_register_int(RdHd, rd);
+            }
+            break;
+        //case 1: // cmp
+
+        case 2: // mov
+            {
+                if(h1) RdHd += 8;
+                if(h2) RsHs += 8;
+
+                int rs = cpu.get_register_int(RsHs);
+                cpu.set_register_int(RdHd, rs);
+            }
+            break;
+        case 3: // bx
+            {
+                if(h2) RsHs += 8;
+                address_t addr = cpu.get_register_uint(RsHs);
+
+                if(addr & 0x01) {
+                    cpu.set_mode(arm_mode_THUMB);
+                }
+                else {
+                    cpu.set_mode(arm_mode_ARM);
+                }
+
+                addr &= ~0x00000001;
+                return addr;
+            }
+            break;
+        default:
+            throw std::runtime_error(
+                "inst::thumb::hi_reg_ops_brnch_exch : unknown opcode (" +
+                std::to_string(op) + ")");
+    }
+
+    return cpu.get_register_uint(arm_PC) + 2;
+}
+
+address_t inst::thumb::pc_relative_load( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
+
+    int Rd = (inst >> 8) & 0x07;
+    uint32_t word8 = inst & 0xFF;
+    word8 <<= 2;
+    word8 += cpu.get_register_uint(arm_PC);
+    uint32_t val = mem.load_u32(word8);
+
+    cpu.set_register_uint(Rd, val);
+
+    return cpu.get_register_uint(arm_PC) + 2;
+}
+
+address_t inst::thumb::load_store_w_register_offset( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
+
+    int L  = (inst >> 11) & 0x01; // 0: store, 1: load
+    int B  = (inst >> 10) & 0x01; // 0: word,  1: byte
+    int Ro = (inst >> 6)  & 0x07;
+    int Rb = (inst >> 3)  & 0x07;
+    int Rd = (inst >> 0)  & 0x07;
+
+    address_t baseaddr = cpu.get_register_uint(Rb);
+    address_t offset   = cpu.get_register_uint(Ro);
+    baseaddr += offset;
+
+    if(L) { // Load
+        if(B) { // Byte
+            uint32_t b = mem.load_u8(baseaddr);
+            cpu.set_register_uint(Rd, b);
+        }
+        else { // Word
+            uint32_t w = mem.load_u32(baseaddr);
+            cpu.set_register_uint(Rd, w);
+        }
+    }
+    else { // Store
+        if(B) { // Byte
+            uint32_t b = cpu.get_register_uint(Rd);
+            b &= 0xFF;
+            mem.store_u8(baseaddr, b);
+        }
+        else { // Word
+            uint32_t b = cpu.get_register_uint(Rd);
+            mem.store_u32(baseaddr, b);
+        }
+    }
+
+    
+
 }

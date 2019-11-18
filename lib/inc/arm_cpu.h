@@ -14,13 +14,15 @@ private:
         float    f32;
     };
 
-    std::array<register_t, 32> register_file;
+    std::array<register_t, 16> register_file;
 
     uint32_t APSR; // Application Program Status Register
+    int mode; // 0 : ARM THUMB
 
 public:
 
     arm_cpu(void);
+    void set_mode(const int mode);
 
     int32_t  get_register_int(  const int reg);
     uint32_t get_register_uint( const int reg);

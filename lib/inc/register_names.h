@@ -23,4 +23,7 @@ const int arm_SP = 13; // stack pointer
 const int arm_LR = 14; // link register
 const int arm_PC = 15; // program counter
 
+const int arm_mode_THUMB = 0;
+const int arm_mode_ARM   = 1;
+
 #endif // register_names_h

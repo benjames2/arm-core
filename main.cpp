@@ -2,10 +2,14 @@
 #include <fstream>
 #include <memory_pool.h>
 #include <assert.h>
+#include <arm_cpu.h>
 
 using namespace std;
 
 int main(void) {
+
+    arm_cpu cpu;
+    cpu.set_mode(arm_mode_THUMB);
 
     memory_t mem(memory_t::little_endian);
 
@@ -17,6 +21,6 @@ int main(void) {
     // 0x0000022E    08 62    000 01 00001 100 010  - lsr r2, r4, #0x01
     // 0x00000230    08 46    000 01 00001 000 110  - lsr r6, r0, #0x01
     // 0x00000232    40 6b    010 000 0001 101 011  - eor r3, r5
-
+    // 0x00000234    70 40 20 F0   01110000 01000000 00100000 11110000 
     return 0;
 }

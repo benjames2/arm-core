@@ -5,7 +5,11 @@ arm_cpu::arm_cpu(void) {
         this->set_register_int(i, 0x00000000);
 
     this->set_register_uint(arm_LR, 0xFFFFFFFF);
-    
+    this->mode = 0;
+}
+
+void arm_cpu::set_mode(const int mode) {
+    this->mode = mode;
 }
 
 int32_t arm_cpu::get_register_int( const int reg ) {
