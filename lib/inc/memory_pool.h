@@ -6,6 +6,7 @@
 #include <iostream>
 
 typedef uint32_t   address_t;
+typedef uint64_t   address64_t;
 
 typedef uint8_t    half_word_t;
 typedef uint16_t   word_t;
@@ -67,7 +68,7 @@ public:
     int64_t load_i64(address_t address);
 
     // store data anywhere in the address space.
-    // storing zeros does not actually increase the 
+    // storing zeros does not actually increase the
     // amount of memory used by memory_t
     void store_u8(address_t address,  uint8_t data);
     void store_u16(address_t address, uint16_t data);

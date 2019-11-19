@@ -2,9 +2,27 @@
 #include <instructions.h>
 #include <arm_instruction_asm.h>
 
+address_t inst::execute_instruction( arm_cpu& cpu, memory_t& mem ) {
+    const int cpumode = cpu.get_mode();
+
+    switch(cpumode) {
+        case arm_mode_THUMB:
+            {
+                uint16_t instruction = mem.load_u16(cpu.get_register_uint(arm_PC));
+                return inst::thumb::decode(cpu, mem, instruction);
+            }
+            break;
+        case arm_mode_ARM:
+        default:
+            throw std::runtime_error(
+                    "inst::execute_instruction : unknown CPU mode: " +
+                    std::to_string(cpumode));
+    }
+}
+
 // decode ARM thumb instruction
-address_t inst::thumb::decode(arm_cpu& cpu, memory_t& mem, uint32_t inst) {
-    int op_field = (inst >> 13) & 0x07;
+address_t inst::thumb::decode( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
+    const int op_field = (inst >> 13) & 0x07;
 
     switch(op_field) {
         case 0:
@@ -21,21 +39,66 @@ address_t inst::thumb::decode(arm_cpu& cpu, memory_t& mem, uint32_t inst) {
         case 1:
             return inst::thumb::mcas_imm(cpu, mem, inst);
             break;
-        /*
         case 2:
             {
-                int op = (inst >> 12) & 0x01;
-                if(op == 1) {
-                    ;
-                }
+                // take the next three bits
+                int sop = (inst >> 10) & 0x07;
+                if(sop == 0)
+                    return inst::thumb::alu_operations(cpu, mem, inst);
+                else if(sop == 1)
+                    return inst::thumb::hi_reg_ops_brnch_exch(cpu, mem, inst);
+
+                sop = (inst >> 11) & 0x03;
+                if(sop == 1)
+                    return inst::thumb::pc_relative_load(cpu, mem, inst);
+
+                sop = (inst >> 9) & 0x09;
+                if(sop == 8)
+                    return inst::thumb::load_store_w_register_offset(cpu, mem, inst);
+                else if(sop == 9)
+                    return inst::thumb::load_store_s_ext_byte_halfword(cpu, mem, inst);
+
+                // nothing has happened by now, this is an invalid instruction
+                throw std::runtime_error(
+                        "inst::thumb::decode : invalid instruction detected at PC value: " +
+                        std::to_string(cpu.get_register_uint(arm_PC)));
             }
             break;
         case 3:
+            {
+                return inst::thumb::load_store_w_imm_offset(cpu, mem, inst);
+            }
+            break;
         case 4:
+            {
+                int f = (inst >> 12) & 0x01;
+                if(f == 0)
+                    return inst::thumb::load_store_halfword(cpu, mem, inst);
+                else
+                    return inst::thumb::sp_relative_load_store(cpu, mem, inst);
+            }
+            break;
         case 5:
+            {
+                int f = (inst >> 12) & 0x01;
+                if(f == 0)
+                    return inst::thumb::load_address(cpu, mem, inst);
+
+                f = (inst >> 8) & 0x1F;
+                if(f == 0x10)
+                    return inst::thumb::add_offset_sp(cpu, mem, inst);
+
+                f = (inst >> 9) & 0x0F;
+                if((f & 0xB) == 0xA)
+                    return inst::thumb::push_pop_regs(cpu, mem, inst);
+
+                throw std::runtime_error(
+                        "inst::thumb::decode : invalid instruction detected at PC value: " +
+                        std::to_string(cpu.get_register_uint(arm_PC)));
+            }
+            break;
         case 6:
         case 7:
-        */
         default:
             throw std::runtime_error("inst::thumb::decode : unknown operation");
     }
@@ -43,12 +106,12 @@ address_t inst::thumb::decode(arm_cpu& cpu, memory_t& mem, uint32_t inst) {
 }
 
 // MOVE SHIFTED REGISTER
-address_t inst::thumb::move_shifted_register(arm_cpu& cpu, memory_t& mem, uint32_t inst) {
+address_t inst::thumb::move_shifted_register( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
 
-    int r_dest = inst & 0x07;         // b111
-    int r_src  = (inst >> 3) & 0x07;  // b111
-    int offset = (inst >> 6) & 0x1F;  // b11111
-    int op     = (inst >> 11) & 0x03; // b11
+    const int r_dest = inst & 0x07;         // b111
+    const int r_src  = (inst >> 3) & 0x07;  // b111
+    const int offset = (inst >> 6) & 0x1F;  // b11111
+    const int op     = (inst >> 11) & 0x03; // b11
 
     switch(op) {
         case 0: // logical shift left
@@ -83,13 +146,13 @@ address_t inst::thumb::move_shifted_register(arm_cpu& cpu, memory_t& mem, uint32
 }
 
 // ADD/SUBTRACT (IMMEDIATE)
-address_t inst::thumb::add_subtract(arm_cpu& cpu, memory_t& mem, uint32_t inst) {
+address_t inst::thumb::add_subtract( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
 
-    int r_dest   = inst & 0x07;
-    int r_src    = (inst >> 3)  & 0x07;
-    int rn_off   = (inst >> 6)  & 0x07;
-    int op       = (inst >> 9)  & 0x01;
-    int imm_flag = (inst >> 10) & 0x01;
+    const int r_dest   = inst & 0x07;
+    const int r_src    = (inst >> 3)  & 0x07;
+    const int rn_off   = (inst >> 6)  & 0x07;
+    const int op       = (inst >> 9)  & 0x01;
+    const int imm_flag = (inst >> 10) & 0x01;
 
     if(op) { // ADD
         if(imm_flag) { // use immediate
@@ -130,11 +193,11 @@ address_t inst::thumb::add_subtract(arm_cpu& cpu, memory_t& mem, uint32_t inst) 
 }
 
 // MOVE/COMPARE/ADD/SUBTRACT IMMEDIATE
-address_t inst::thumb::mcas_imm(arm_cpu& cpu, memory_t& mem, uint32_t inst) {
+address_t inst::thumb::mcas_imm( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
 
-    int offset = inst & 0xFF;
-    int r_dest = (inst >> 8)  & 0x07;
-    int op     = (inst >> 11) & 0x03;
+    const int offset = inst & 0xFF;
+    const int r_dest = (inst >> 8)  & 0x07;
+    const int op     = (inst >> 11) & 0x03;
 
     switch(op) {
         case 0: // mov
@@ -168,11 +231,11 @@ address_t inst::thumb::mcas_imm(arm_cpu& cpu, memory_t& mem, uint32_t inst) {
     return cpu.get_register_uint(arm_PC) + 2;
 }
 
-address_t inst::thumb::alu_operations(arm_cpu& cpu, memory_t& mem, uint32_t inst) {
+address_t inst::thumb::alu_operations( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
 
-    int r_dest = inst & 0x07;
-    int r_src  = (inst >> 3) & 0x07;
-    int op     = (inst >> 6) & 0x0F;
+    const int r_dest = inst & 0x07;
+    const int r_src  = (inst >> 3) & 0x07;
+    const int op     = (inst >> 6) & 0x0F;
 
     union {
         int32_t i32;
@@ -269,9 +332,9 @@ address_t inst::thumb::alu_operations(arm_cpu& cpu, memory_t& mem, uint32_t inst
 
 address_t inst::thumb::hi_reg_ops_brnch_exch( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
 
-    int op   = (inst >> 8) & 0x03;
-    int h1   = (inst >> 7) & 0x01;
-    int h2   = (inst >> 6) & 0x01;
+    const int op   = (inst >> 8) & 0x03;
+    const int h1   = (inst >> 7) & 0x01;
+    const int h2   = (inst >> 6) & 0x01;
     int RsHs = (inst >> 3) & 0x07;
     int RdHd = (inst >> 0) & 0x07;
 
@@ -325,24 +388,27 @@ address_t inst::thumb::hi_reg_ops_brnch_exch( arm_cpu& cpu, memory_t& mem, uint3
 
 address_t inst::thumb::pc_relative_load( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
 
-    int Rd = (inst >> 8) & 0x07;
-    uint32_t word8 = inst & 0xFF;
-    word8 <<= 2;
-    word8 += cpu.get_register_uint(arm_PC);
-    uint32_t val = mem.load_u32(word8);
+    const int Rd         = (inst >> 8) & 0x07;
+    const uint32_t word8 = (inst >> 0) & 0xFF;
+
+    address_t baseaddr = cpu.get_register_uint(arm_PC);
+    baseaddr += (word8 << 2);
+    uint32_t val = mem.load_u32(baseaddr);
 
     cpu.set_register_uint(Rd, val);
-
-    return cpu.get_register_uint(arm_PC) + 2;
+    if(Rd == arm_PC)
+        return cpu.get_register_uint(arm_PC);
+    else
+        return cpu.get_register_uint(arm_PC) + 2;
 }
 
 address_t inst::thumb::load_store_w_register_offset( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
 
-    int L  = (inst >> 11) & 0x01; // 0: store, 1: load
-    int B  = (inst >> 10) & 0x01; // 0: word,  1: byte
-    int Ro = (inst >> 6)  & 0x07;
-    int Rb = (inst >> 3)  & 0x07;
-    int Rd = (inst >> 0)  & 0x07;
+    const int L  = (inst >> 11) & 0x01; // 0: store, 1: load
+    const int B  = (inst >> 10) & 0x01; // 0: word,  1: byte
+    const int Ro = (inst >> 6)  & 0x07;
+    const int Rb = (inst >> 3)  & 0x07;
+    const int Rd = (inst >> 0)  & 0x07;
 
     address_t baseaddr = cpu.get_register_uint(Rb);
     address_t offset   = cpu.get_register_uint(Ro);
@@ -382,11 +448,11 @@ address_t inst::thumb::load_store_w_register_offset( arm_cpu& cpu, memory_t& mem
 
 address_t inst::thumb::load_store_s_ext_byte_halfword( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
 
-    int H  = (inst >> 11) & 0x01;
-    int S  = (inst >> 10) & 0x01;
-    int Ro = (inst >> 6) & 0x07;
-    int Rb = (inst >> 3) & 0x07;
-    int Rd = (inst >> 0) & 0x07;
+    const int H  = (inst >> 11) & 0x01;
+    const int S  = (inst >> 10) & 0x01;
+    const int Ro = (inst >> 6) & 0x07;
+    const int Rb = (inst >> 3) & 0x07;
+    const int Rd = (inst >> 0) & 0x07;
 
     address_t baseaddr = cpu.get_register_uint(Rb);
     address_t offset   = cpu.get_register_uint(Ro);
@@ -441,11 +507,11 @@ address_t inst::thumb::load_store_s_ext_byte_halfword( arm_cpu& cpu, memory_t& m
 
 address_t inst::thumb::load_store_w_imm_offset( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
 
-    int B            = (inst >> 12) & 0x01;
-    int L            = (inst >> 11) & 0x01;
-    uint32_t offset5 = (inst >> 6) & 0x1F;
-    int Rb           = (inst >> 3) & 0x07;
-    int Rd           = (inst >> 0) & 0x07;
+    const int B            = (inst >> 12) & 0x01;
+    const int L            = (inst >> 11) & 0x01;
+    const uint32_t offset5 = (inst >> 6) & 0x1F;
+    const int Rb           = (inst >> 3) & 0x07;
+    const int Rd           = (inst >> 0) & 0x07;
 
     address_t baseaddr = cpu.get_register_uint(Rb);
     baseaddr += offset5;
@@ -487,4 +553,281 @@ address_t inst::thumb::load_store_w_imm_offset( arm_cpu& cpu, memory_t& mem, uin
     }
 
     return cpu.get_register_uint(arm_PC) + 2;
+}
+
+address_t inst::thumb::load_store_halfword( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
+
+    const int L       = (inst >> 11) & 0x01;
+    const int offset5 = (inst >> 6) & 0x1F;
+    const int Rb      = (inst >> 3) & 0x07;
+    const int Rd      = (inst >> 0) & 0x07;
+
+    address_t baseaddr = cpu.get_register_uint(Rb);
+    baseaddr += (offset5 << 1);
+
+    if(L == 0) { // store halfword
+
+        uint32_t val = cpu.get_register_uint(Rd);
+        mem.store_u16(baseaddr, val & 0x0000FFFF);
+
+    }
+    else { // load halfword
+
+        uint32_t val = 0;
+        val += mem.load_u16(baseaddr);
+
+        cpu.set_register_uint(Rd, val);
+        if(Rd == arm_PC)
+            return cpu.get_register_uint(arm_PC);
+
+    }
+
+    return cpu.get_register_uint(arm_PC) + 2;
+}
+
+address_t inst::thumb::sp_relative_load_store( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
+
+    const int L          = (inst >> 11) & 0x01;
+    const int Rd         = (inst >> 8) & 0x07;
+    const uint32_t word8 = (inst >> 0) & 0xFF;
+
+    address_t baseaddr = cpu.get_register_uint(arm_SP);
+    baseaddr += (word8 << 2);
+
+    if(L == 0) { // store
+
+        uint32_t val = cpu.get_register_uint(Rd);
+        mem.store_u32(baseaddr, val);
+
+    }
+    else { // load
+
+        uint32_t val = mem.load_u32(baseaddr);
+        cpu.set_register_uint(Rd, val);
+
+        if(Rd == arm_PC)
+            return cpu.get_register_uint(arm_PC);
+
+    }
+
+    return cpu.get_register_uint(arm_PC) + 2;
+
+}
+
+address_t inst::thumb::load_address( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
+
+    const int sp    = (inst >> 11) & 0x01;
+    const int Rd    = (inst >> 8) & 0x07;
+    const int word8 = (inst >> 0) & 0xFF;
+
+    if(sp == 0) { // load addr PC
+
+        address_t addr = cpu.get_register_uint(arm_PC);
+        addr += (word8 << 2);
+        uint32_t val = mem.load_u32(addr);
+        cpu.set_register_uint(Rd, val);
+
+    }
+    else { // load addr SP
+
+        address_t addr = cpu.get_register_uint(arm_SP);
+        addr += (word8 << 2);
+        uint32_t val = mem.load_u32(addr);
+        cpu.set_register_uint(Rd, val);
+
+    }
+
+    if(Rd == arm_PC)
+        return cpu.get_register_uint(arm_PC);
+    else
+        return cpu.get_register_uint(arm_PC) + 2;
+}
+
+address_t inst::thumb::add_offset_sp( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
+
+    const int S          = (inst >> 7) & 0x01;
+    const uint32_t word7 = (inst >> 0) & 0x7F;
+
+    int stack_value = cpu.get_register_int(arm_SP);
+
+    if(S) // word7 is negative
+        stack_value -= (word7 << 2);
+    else // word7 is positive
+        stack_value += (word7 << 2);
+
+    cpu.set_register_int(arm_SP, stack_value);
+
+    return cpu.get_register_uint(arm_PC) + 2;
+}
+
+address_t inst::thumb::push_pop_regs( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
+
+    const int L     = (inst >> 11) & 0x01;
+    const int R     = (inst >> 8) & 0x01;
+    const int rList = (inst >> 0) & 0xFF;
+
+    if(L == 0) { // store
+
+        address_t sp = cpu.get_register_uint(arm_SP);
+
+        if(R == 1) {
+            sp -= 4;
+            uint32_t reg_val = cpu.get_register_uint(arm_LR);
+            mem.store_u32(sp, reg_val);
+        }
+
+        for(int i : { 0, 1, 2, 3, 4, 5, 6, 7 }) {
+            if(rList & (1 << i)) {
+                sp -= 4;
+                uint32_t reg_val = cpu.get_register_uint(i);
+                mem.store_u32(i, reg_val);
+            }
+        }
+
+        cpu.set_register_uint(arm_SP, sp);
+
+    }
+    else { // load
+
+        address_t sp = cpu.get_register_uint(arm_SP);
+
+        for(int i : { 7, 6, 5, 4, 3, 2, 1, 0 }) {
+            if(rList & (1 << i)) {
+                uint32_t mem_val = mem.load_u32(sp);
+                cpu.set_register_uint(i, mem_val);
+                sp += 4;
+            }
+        }
+
+        if(R == 1) {
+            uint32_t mem_val = mem.load_u32(sp);
+            cpu.set_register_uint(arm_PC, mem_val);
+            sp += 4;
+        }
+
+        cpu.set_register_uint(arm_SP, sp);
+
+        if(R == 1)
+            return cpu.get_register_uint(arm_PC);
+    }
+
+    return cpu.get_register_uint(arm_PC) + 2;
+}
+
+address_t inst::thumb::multiple_load_store( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
+
+    const int L     = (inst >> 11) & 0x01;
+    const int Rb    = (inst >> 8) & 0x07;
+    const int rList = (inst >> 0) & 0xFF;
+
+    address_t baseaddr = cpu.get_register_uint(Rb);
+
+    if(L == 0) { // store
+
+        for(int i : { 0, 1, 2, 3, 4, 5, 6, 7 }) {
+            if(rList & (1 << i)) {
+                baseaddr -= 4;
+                uint32_t regval = cpu.get_register_uint(i);
+                mem.store_u32(i, regval);
+            }
+        }
+
+    }
+    else { // load
+
+        for(int i : { 7, 6, 5, 4, 3, 2, 1, 0 }) {
+            if(rList & (1 << i)) {
+                uint32_t memval = mem.load_u32(baseaddr);
+                cpu.set_register_uint(i, memval);
+                baseaddr += 4;
+            }
+        }
+
+    }
+
+    cpu.set_register_uint(Rb, baseaddr);
+
+    return cpu.get_register_uint(arm_PC) + 2;
+}
+
+address_t inst::thumb::conditional_branch( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
+
+    const int cond     = (inst >> 8) & 0x0F;
+    const char offset8 = (inst >> 0) & 0xFF;
+
+    bool branch_taken = false;
+
+    switch(cond) {
+        case 0:  // beq
+            if(cpu.get_flag_zero())
+                branch_taken = true;
+            break;
+        case 1:  // bne
+            if(!cpu.get_flag_zero())
+                branch_taken = true;
+            break;
+        case 2:  // bcs
+            if(cpu.get_flag_carry())
+                branch_taken = true;
+            break;
+        case 3:  // bcc
+            if(!cpu.get_flag_carry())
+                branch_taken = true;
+            break;
+        case 4:  // bmi
+            if(cpu.get_flag_negative())
+                branch_taken = true;
+            break;
+        case 5:  // bpl
+            if(!cpu.get_flag_negative())
+                branch_taken = true;
+            break;
+        case 6:  // bvs
+            if(cpu.get_flag_overflow())
+                branch_taken = true;
+            break;
+        case 7:  // bvc
+            if(!cpu.get_flag_overflow())
+                branch_taken = true;
+            break;
+        case 8:  // bhi
+            if(cpu.get_flag_carry() && !cpu.get_flag_zero())
+                branch_taken = true;
+            break;
+        case 9:  // bls
+            if(!cpu.get_flag_carry() || cpu.get_flag_zero())
+                branch_taken = true;
+            break;
+        case 10: // bge
+            if(cpu.get_flag_negative() == cpu.get_flag_overflow())
+                branch_taken = true;
+            break;
+        case 11: // blt
+            if(cpu.get_flag_negative() != cpu.get_flag_overflow())
+                branch_taken = true;
+            break;
+        case 12: // bgt
+            if(!cpu.get_flag_zero() && (cpu.get_flag_negative() == cpu.get_flag_overflow()))
+                branch_taken = true;
+            break;
+        case 13: // ble
+            if(cpu.get_flag_zero() && (cpu.get_flag_negative() != cpu.get_flag_overflow()))
+                branch_taken = true;
+            break;
+        default:
+            throw std::runtime_error(
+                "inst::thumb::conditional_branch : unknown condition (" +
+                std::to_string(cond) + ")");
+    }
+
+    if(branch_taken)
+        return cpu.get_register_uint(arm_PC) + (int(offset8) << 1);
+    else
+        return cpu.get_register_uint(arm_PC) + 2;
+}
+
+address_t software_interrupt( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
+
+
+
 }

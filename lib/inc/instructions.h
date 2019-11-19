@@ -32,7 +32,26 @@ namespace thumb {
 
     address_t load_store_w_imm_offset( arm_cpu& cpu, memory_t& mem, uint32_t inst );
 
+    address_t load_store_halfword( arm_cpu& cpu, memory_t& mem, uint32_t inst );
+
+    address_t sp_relative_load_store( arm_cpu& cpu, memory_t& mem, uint32_t inst );
+
+    address_t load_address( arm_cpu& cpu, memory_t& mem, uint32_t inst );
+
+    address_t add_offset_sp( arm_cpu& cpu, memory_t& mem, uint32_t inst );
+
+    address_t push_pop_regs( arm_cpu& cpu, memory_t& mem, uint32_t inst );
+
+    address_t multiple_load_store( arm_cpu& cpu, memory_t& mem, uint32_t inst );
+
+    address_t conditional_branch( arm_cpu& cpu, memory_t& mem, uint32_t inst );
+
+    address_t software_interrupt( arm_cpu& cpu, memory_t& mem, uint32_t inst );
+
 } // thumb
+
+address_t execute_instruction( arm_cpu& cpu, memory_t& mem );
+
 } // inst
 
 #endif // inst_mov_shifted_register_h

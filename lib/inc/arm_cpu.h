@@ -23,6 +23,7 @@ public:
 
     arm_cpu(void);
     void set_mode(const int mode);
+    const int get_mode(void);
 
     int32_t  get_register_int(  const int reg);
     uint32_t get_register_uint( const int reg);
@@ -34,11 +35,11 @@ public:
 
     uint32_t get_program_status_register(void);
 
-    bool get_flag_negative(void);
-    bool get_flag_zero(void);
-    bool get_flag_carry(void);
-    bool get_flag_overflow(void);
-    bool get_flag_saturate(void);
+    bool get_flag_negative(void); // N
+    bool get_flag_zero(void);     // Z
+    bool get_flag_carry(void);    // C
+    bool get_flag_overflow(void); // V
+    bool get_flag_saturate(void); // Q
 
     void set_flag_negative( bool val );
     void set_flag_zero(     bool val );

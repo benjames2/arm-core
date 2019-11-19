@@ -46,6 +46,10 @@ void arm_cpu::set_register_fp(   const int reg, float val) {
         this->register_file[reg].f32 = val;
 }
 
+const int arm_cpu::get_mode(void) {
+    return this->mode;
+}
+
 // flag get functions
 bool arm_cpu::get_flag_negative(void) { return (this->APSR >> 30) & 0x01; }
 bool arm_cpu::get_flag_zero(void)     { return (this->APSR >> 29) & 0x01; }
