@@ -28,6 +28,10 @@ namespace thumb {
 
     address_t load_store_w_register_offset( arm_cpu& cpu, memory_t& mem, uint32_t inst );
 
+    address_t load_store_s_ext_byte_halfword( arm_cpu& cpu, memory_t& mem, uint32_t inst );
+
+    address_t load_store_w_imm_offset( arm_cpu& cpu, memory_t& mem, uint32_t inst );
+
 } // thumb
 } // inst
 

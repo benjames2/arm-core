@@ -357,6 +357,12 @@ address_t inst::thumb::load_store_w_register_offset( arm_cpu& cpu, memory_t& mem
             uint32_t w = mem.load_u32(baseaddr);
             cpu.set_register_uint(Rd, w);
         }
+
+        // its possible that a load could override
+        // the existing instruction pointer value
+        if(Rd == arm_PC)
+            return cpu.get_register_uint(arm_PC);
+
     }
     else { // Store
         if(B) { // Byte
@@ -370,6 +376,115 @@ address_t inst::thumb::load_store_w_register_offset( arm_cpu& cpu, memory_t& mem
         }
     }
 
-    
+    return cpu.get_register_uint(arm_PC) + 2;
 
+}
+
+address_t inst::thumb::load_store_s_ext_byte_halfword( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
+
+    int H  = (inst >> 11) & 0x01;
+    int S  = (inst >> 10) & 0x01;
+    int Ro = (inst >> 6) & 0x07;
+    int Rb = (inst >> 3) & 0x07;
+    int Rd = (inst >> 0) & 0x07;
+
+    address_t baseaddr = cpu.get_register_uint(Rb);
+    address_t offset   = cpu.get_register_uint(Ro);
+    baseaddr += offset;
+
+    if(S == 0) {
+        if(H == 0) { // store halfword
+
+            uint32_t val = cpu.get_register_uint(Rd);
+            mem.store_u16(baseaddr, val & 0x0000FFFF);
+
+        }
+        else { // load halfword
+
+            uint32_t val = 0;
+            val += mem.load_u16(baseaddr);
+            cpu.set_register_uint(Rd, val);
+
+            if(Rd == arm_PC)
+                return cpu.get_register_uint(arm_PC);
+
+        }
+    }
+    else {
+        if(H == 0) { // load sign-ext byte
+
+            uint32_t b = mem.load_u8(baseaddr);
+            if(b & 0x80)
+                b |= 0xFFFFFF00;
+
+            cpu.set_register_uint(Rd, b);
+            if(Rd == arm_PC)
+                return cpu.get_register_uint(arm_PC);
+
+        }
+        else { // load sign-ext halfword
+
+            uint32_t hw = mem.load_u16(baseaddr);
+            if(hw & 0x8000)
+                hw |= 0xFFFF0000;
+
+            cpu.set_register_uint(Rd, hw);
+            if(Rd == arm_PC)
+                return cpu.get_register_uint(arm_PC);
+
+        }
+    }
+
+    return cpu.get_register_uint(arm_PC) + 2;
+
+}
+
+address_t inst::thumb::load_store_w_imm_offset( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
+
+    int B            = (inst >> 12) & 0x01;
+    int L            = (inst >> 11) & 0x01;
+    uint32_t offset5 = (inst >> 6) & 0x1F;
+    int Rb           = (inst >> 3) & 0x07;
+    int Rd           = (inst >> 0) & 0x07;
+
+    address_t baseaddr = cpu.get_register_uint(Rb);
+    baseaddr += offset5;
+
+    if(B == 0) {
+        if(L == 0) { // store word
+
+            uint32_t val = cpu.get_register_uint(Rd);
+            mem.store_u32(baseaddr, val);
+
+        }
+        else { // load word
+
+            uint32_t val = mem.load_u32(baseaddr);
+            cpu.set_register_uint(Rd, val);
+
+            if(Rd == arm_PC)
+                return cpu.get_register_uint(arm_PC);
+
+        }
+    }
+    else {
+        if(L == 0) { // store byte
+
+            uint32_t val = cpu.get_register_uint(Rd);
+            mem.store_u8(baseaddr, val & 0x000000FF);
+
+        }
+        else { // load byte
+
+            uint32_t val = 0;
+            val += mem.load_u8(baseaddr);
+            cpu.set_register_uint(Rd, val);
+
+            if(Rd == arm_PC)
+                return cpu.get_register_uint(arm_PC);
+
+        }
+    }
+
+    return cpu.get_register_uint(arm_PC) + 2;
 }

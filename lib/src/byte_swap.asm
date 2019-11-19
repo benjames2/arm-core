@@ -1,10 +1,10 @@
 ;
-; This asm file contains small routines that perform small 
+; This asm file contains small routines that perform small
 ; tasks like byte-swapping in a few instructions
 ;
 ; for the byte-swapping routines, the integer to be swapped is passed in RDI
 ;
-; this file will cause a compiler warning because it wont 
+; this file will cause a compiler warning because it wont
 ; link with anything but the final executable. THIS IS OK!!
 ;
 
@@ -18,6 +18,9 @@ section .text
 
 align 16
 byte_swap_64:
+    ; dont need to generate a stack frame because
+    ; this is a leaf routine. the same goes for
+    ; the other byte swap routines
     mov rax, rdi
     bswap rax
     ret
