@@ -46,7 +46,12 @@ namespace thumb {
 
     address_t conditional_branch( arm_cpu& cpu, memory_t& mem, uint32_t inst );
 
+    // trying to use this instruction will cause an exception to be thrown
     address_t software_interrupt( arm_cpu& cpu, memory_t& mem, uint32_t inst );
+
+    address_t unconditional_branch( arm_cpu& cpu, memory_t& mem, uint32_t inst );
+
+    address_t long_branch_with_link( arm_cpu& cpu, memory_t& mem, uint32_t inst );
 
 } // thumb
 

@@ -826,8 +826,42 @@ address_t inst::thumb::conditional_branch( arm_cpu& cpu, memory_t& mem, uint32_t
         return cpu.get_register_uint(arm_PC) + 2;
 }
 
-address_t software_interrupt( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
+address_t inst::thumb::software_interrupt( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
+
+    // dont need to extract value8, the interrupt handler knows where to find it
+
+    // this instruction requires further study before being implemented
+    throw std::runtime_error("inst::thumb::software_interrupt : not implemented");
+
+}
+
+address_t inst::thumb::unconditional_branch( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
+
+    // i would rather make this constant...
+    address_t offset11 = (inst >> 0) & 0x07FF;
+
+    // sign extend this guy
+    if(offset11 & 0x0400)
+        offset11 |= 0xFFFFF800;
+
+    // a lil bit of trickery here because the assembler always
+    // assumes the prefetch has already happened which is not
+    // the case for this emulator
+
+    int32_t pc = cpu.get_register_int(arm_PC);
+    pc += (offset11 << 1);
+    pc += 4;
+
+    cpu.set_register_int(arm_PC, pc);
+
+    // we just set this so return the generated value
+    return cpu.get_register_uint(arm_PC);
+}
+
+address_t inst::thumb::long_branch_with_link( arm_cpu& cpu, memory_t& mem, uint32_t inst ) {
 
 
 
 }
+
+// 0xE7FE     1110 0         11111111110 (-2 => -4)

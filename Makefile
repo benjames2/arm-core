@@ -25,7 +25,7 @@ main.o: main.cpp
 	${gxx} -c -o main.o main.cpp ${stdopts}
 
 ${obj}/memory_pool.o: ${src}/memory_pool.cpp ${inc}/memory_pool.h ${obj}/byte_swap.o
-	${gxx} -c -o ${obj}/memory_pool.o ${src}/memory_pool.cpp ${obj}/byte_swap.o ${stdopts}
+	${gxx} -c -o ${obj}/memory_pool.o ${src}/memory_pool.cpp ${stdopts}
 
 ${obj}/byte_swap.o: ${src}/byte_swap.asm
 	yasm -f elf64 ${src}/byte_swap.asm -o ${obj}/byte_swap.o
@@ -37,4 +37,4 @@ ${obj}/instruction_utility.o: ${src}/instruction_utility.asm
 	yasm -f elf64 ${src}/instruction_utility.asm -o ${obj}/instruction_utility.o
 
 ${obj}/instructions.o: ${src}/instructions.cpp ${inc}/instructions.h ${obj}/instruction_utility.o
-	${gxx} -c -o ${obj}/instructions.o ${src}/instructions.cpp ${obj}/memory_pool.o ${obj}/instruction_utility.o ${stdopts}
+	${gxx} -c -o ${obj}/instructions.o ${src}/instructions.cpp ${stdopts}
