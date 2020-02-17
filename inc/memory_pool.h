@@ -4,6 +4,7 @@
 #include <map>
 #include <array>
 #include <iostream>
+#include <cstddef>
 
 typedef uint32_t   address_t;
 typedef uint64_t   address64_t;
@@ -28,19 +29,28 @@ class memory_t {
 private:
 
     struct memory_page_t {
+        
         std::array<uint8_t, 256> bytes;
+
         int sz; // number of non-zero entries. used to
                 // determine when pages should be removed
 
         memory_page_t(void) {
+
+            // as this is for emulation purposes, we need to guarantee certain alignments
+            static_assert(sizeof(memory_page_t) == 260,       "alignment of memory_page_t is incorrect");
+            static_assert(sizeof(uint8_t) == 1,               "sizeof uint8_t is not 1");
+            static_assert(offsetof(memory_page_t, sz) == 256, "alignment of memory_page_t::sz is incorrect");
+
             this->sz = 0;
             for(int i = 0; i < 256; i++)
-                this->bytes[i] = 0x00;
+                this->bytes[i] = 0x00; // may want to just count the number of non-zero entries
         }
-
     };
 
+    // every entry : { 24-bit page number, 256 byte chunk }
     std::map<int, memory_page_t> mem_lut;
+
     int endianness;
 
 public:

@@ -3,9 +3,7 @@
 ; tasks like byte-swapping in a few instructions
 ;
 ; for the byte-swapping routines, the integer to be swapped is passed in RDI
-;
-; this file will cause a compiler warning because it wont
-; link with anything but the final executable. THIS IS OK!!
+; swapped integer is returned in RAX
 ;
 
 global byte_swap_64
