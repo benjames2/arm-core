@@ -40,7 +40,7 @@ instruction_t decode_format_1(  unsigned int PC, unsigned int instruction_word )
 instruction_t decode_format_2(  unsigned int PC, unsigned int instruction_word ); // add/subtract
 instruction_t decode_format_3(  unsigned int PC, unsigned int instruction_word ); // move/compare/add/subtract immediate
 instruction_t decode_format_4(  unsigned int PC, unsigned int instruction_word ); // ALU operations
-instruction_t decode_format_5(  unsigned int PC, unsigned int instruction_word ); // HI register operations/branch exchange
+instruction_t decode_format_5(  unsigned int PC, unsigned int instruction_word ); // HI register operations/branch exchange (technically 11 instructions)
 instruction_t decode_format_6(  unsigned int PC, unsigned int instruction_word ); // PC-relative load
 instruction_t decode_format_7(  unsigned int PC, unsigned int instruction_word ); // load/store with register offset
 instruction_t decode_format_8(  unsigned int PC, unsigned int instruction_word ); // load/store sign-extended byte/halfword

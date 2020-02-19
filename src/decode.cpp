@@ -240,11 +240,29 @@ instruction_t decode_format_4(  unsigned int PC, unsigned int instruction_word )
 
     inst.Rs          = (instruction_word >> 3) & 0x07;
     inst.Rd          = (instruction_word >> 0) & 0x07;
+    inst.meta_opcode = meta_RR;
 
     int Op = (instruction_word >> 6) & 0x0F;
 
     switch(Op) {
-        
+        case 0:  inst.opcode = i_AND; break;
+        case 1:  inst.opcode = i_EOR; break;
+        case 2:  inst.opcode = i_LSL; break;
+        case 3:  inst.opcode = i_LSR; break;
+        case 4:  inst.opcode = i_ASR; break;
+        case 5:  inst.opcode = i_ADC; break;
+        case 6:  inst.opcode = i_SBC; break;
+        case 7:  inst.opcode = i_ROR; break;
+        case 8:  inst.opcode = i_TST; break;
+        case 9:  inst.opcode = i_NEG; break;
+        case 10: inst.opcode = i_CMP; break;
+        case 11: inst.opcode = i_CMN; break;
+        case 12: inst.opcode = i_ORR; break;
+        case 13: inst.opcode = i_MUL; break;
+        case 14: inst.opcode = i_BIC; break;
+        case 15: inst.opcode = i_MVN; break;
+        default:
+            throw std::runtime_error("decode_format_4 : Op field is invalid");
     }
 
     return inst;
@@ -252,14 +270,67 @@ instruction_t decode_format_4(  unsigned int PC, unsigned int instruction_word )
 
 instruction_t decode_format_5(  unsigned int PC, unsigned int instruction_word ) {
 
+    instruction_t inst;
+
+    inst.Rs          = (instruction_word >> 3) & 0x07;
+    inst.Rd          = (instruction_word >> 0) & 0x07;
+    inst.meta_opcode = meta_RR;
+
+    int Op = (instruction_word >> 8) & 0x03;
+
+    switch(Op) {
+        case 0: inst.opcode = i_ADD; break;
+        case 1: inst.opcode = i_CMP; break;
+        case 2: inst.opcode = i_MOV; break;
+        case 3: 
+            inst.opcode = i_BX;
+            inst.meta_opcode = meta_R;
+            break;
+        default:
+            throw std::runtime_error("decode_format_5 : Op field is invalid");
+    }
+
+    int H1 = (instruction_word >> 7) & 0x01;
+    int H2 = (instruction_word >> 6) & 0x01;
+
+    if(H1) inst.Rd += 8;
+    if(H2) inst.Rs += 8;
+
+    return inst;
 }
 
 instruction_t decode_format_6(  unsigned int PC, unsigned int instruction_word ) {
 
+    instruction_t inst;
+
+    inst.Rd          = (instruction_word >> 8) & 0x07;
+    inst.u_immediate = (instruction_word >> 0) & 0xFF;
+    inst.opcode      = i_LDR;
+
+    return inst;
 }
 
 instruction_t decode_format_7(  unsigned int PC, unsigned int instruction_word ) {
 
+    instruction_t inst;
+
+    inst.Rd = (instruction_word >> 0) & 0x07;
+    inst.Rb = (instruction_word >> 3) & 0x07;
+    inst.Ro = (instruction_word >> 6) & 0x07;
+
+    int LB = (instruction_word >> 10) & 0x03;
+
+    switch(LB) {
+        case 0:
+            inst.opcode = 
+        case 1:
+        case 2:
+        case 3:
+        default:
+            throw std::runtime_error("decode_format_7 : LB field invalid");
+    }
+
+    return inst;
 }
 
 instruction_t decode_format_8(  unsigned int PC, unsigned int instruction_word ) {

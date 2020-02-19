@@ -47,14 +47,43 @@ const int meta_RRR = 0;
 const int meta_RR  = 1;
 const int meta_RC  = 2;
 const int meta_RRC = 3;
+const int meta_R   = 4;
 
-//const int meta_ADD_RRR = 0; // add Reg, Reg, Reg
-//const int meta_ADD_RRC = 1; // add Reg, Reg, #const
-//const int meta_SUB_RRR = 2; // sub Reg, Reg, Reg
-//const int meta_SUB_RRC = 3; // sub Reg, Reg, #const
-//const int meta_MOV_RC  = 4; // mov Reg, #const
-//const int meta_CMP_RC  = 5; // cmp Reg, #const
-//const int meta_ADD_RC  = 6; // add Reg, #const
-//const int meta_SUB_RC  = 7; // sub Reg, #const
-
-
+/*
+ADC   = 4 
+ADD   = 2*, 3, 5*, 12*, 13*
+AND   = 4
+ASR   = 1, 4 
+B     = 18
+Bxx   = 16* 
+BIC   = 4 
+BL    = 19
+BX    = 5* 
+CMN   = 4 
+CMP   = 3, 4, 5* 
+EOR   = 4 
+LDMIA = 15
+LDR   = 6, 7, 9, 11 
+LDRB  = 7, 9 
+LDRH  = 8, 10 
+LSL   = 1, 4 
+LDSB  = 8 
+LDSH  = 8
+LSR   = 1, 4 
+MOV   = 3, 5* 
+MUL   = 4 
+MVN   = 4
+NEG   = 4 
+ORR   = 4
+POP   = 14*
+PUSH  = 14* 
+ROR   = 4
+SBC   = 4 
+STMIA = 15 
+STR   = 7, 9, 11 
+STRB  = 7, 9
+STRH  = 8, 10 
+SWI   = 17
+SUB   = 2*, 3 
+TST   = 4
+*/
