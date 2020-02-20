@@ -30,7 +30,7 @@ instruction_t decode_instruction(unsigned int PC, unsigned int instruction_word)
     switch(superfamily) {
         case 0:
             {
-                int op = (instruction_word >> 10) & 0x03;
+                int op = (instruction_word >> 11) & 0x03;
                 if(op == 0x03)
                     return decode_format_2(PC, instruction_word);
                 else
@@ -171,7 +171,7 @@ instruction_t decode_format_2(  unsigned int PC, unsigned int instruction_word )
     int I  = (instruction_word >> 10) & 0x01;
 
     // these two bits are important
-    int OpI = (I & (Op << 1));
+    int OpI = (I | (Op << 1));
 
     switch(OpI) {
         case 0:
@@ -322,10 +322,21 @@ instruction_t decode_format_7(  unsigned int PC, unsigned int instruction_word )
 
     switch(LB) {
         case 0:
-            inst.opcode = 
+            inst.opcode = i_STR;
+            inst.meta_opcode = meta_RRR;
+            break;
         case 1:
+            inst.opcode = i_STRB;
+            inst.meta_opcode = meta_RRR;
+            break;
         case 2:
+            inst.opcode = i_LDR;
+            inst.meta_opcode = meta_RRR;
+            break;
         case 3:
+            inst.opcode = i_LDRB;
+            inst.meta_opcode = meta_RRR;
+            break;
         default:
             throw std::runtime_error("decode_format_7 : LB field invalid");
     }
@@ -334,6 +345,41 @@ instruction_t decode_format_7(  unsigned int PC, unsigned int instruction_word )
 }
 
 instruction_t decode_format_8(  unsigned int PC, unsigned int instruction_word ) {
+
+    instruction_t inst;
+
+    inst.Rd = (instruction_word >> 0) & 0x07;
+    inst.Rb = (instruction_word >> 3) & 0x07;
+    inst.Ro = (instruction_word >> 6) & 0x07;
+
+    int H = (instruction_word >> 11) & 0x01;
+    int S = (instruction_word >> 12) & 0x01;
+
+    int SH = (H | (S << 1));
+
+    switch (SH){
+        case 0:
+            inst.opcode = i_STRH;
+            inst.meta_opcode = meta_RRR;
+            break;
+        case 1:
+            inst.opcode = i_LDRH;
+            inst.meta_opcode = meta_RRR;
+            break;
+        case 2:
+            inst.opcode = i_LDSB;
+            inst.meta_opcode = meta_RRR;
+            break;
+        case 3:
+            inst.opcode = i_LDSH;
+            inst.meta_opcode = meta_RRR;
+            break;
+        default:
+            throw std::runtime_error("Decode format_8 : SH field invalid");
+            break;
+    }
+
+    return inst;
 
 }
 
