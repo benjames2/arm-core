@@ -30,7 +30,7 @@ instruction_t decode_instruction(unsigned int PC, unsigned int instruction_word)
     switch(superfamily) {
         case 0:
             {
-                int op = (instruction_word >> 10) & 0x03;
+                int op = (instruction_word >> 11) & 0x03;
                 if(op == 0x03)
                     return decode_format_2(PC, instruction_word);
                 else
@@ -171,7 +171,7 @@ instruction_t decode_format_2(  unsigned int PC, unsigned int instruction_word )
     int I  = (instruction_word >> 10) & 0x01;
 
     // these two bits are important
-    int OpI = (I & (Op << 1));
+    int OpI = (I | (Op << 1));
 
     switch(OpI) {
         case 0:
@@ -322,7 +322,6 @@ instruction_t decode_format_7(  unsigned int PC, unsigned int instruction_word )
 
     switch(LB) {
         case 0:
-            inst.opcode = 
         case 1:
         case 2:
         case 3:
@@ -378,7 +377,7 @@ instruction_t decode_format_18( unsigned int PC, unsigned int instruction_word )
 }
 
 instruction_t decode_format_19( unsigned int PC, unsigned int instruction_word ) {
-
+    
 }
 
 

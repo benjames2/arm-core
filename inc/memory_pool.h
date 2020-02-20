@@ -37,11 +37,6 @@ private:
 
         memory_page_t(void) {
 
-            // as this is for emulation purposes, we need to guarantee certain alignments
-            static_assert(sizeof(memory_page_t) == 260,       "alignment of memory_page_t is incorrect");
-            static_assert(sizeof(uint8_t) == 1,               "sizeof uint8_t is not 1");
-            static_assert(offsetof(memory_page_t, sz) == 256, "alignment of memory_page_t::sz is incorrect");
-
             this->sz = 0;
             for(int i = 0; i < 256; i++)
                 this->bytes[i] = 0x00; // may want to just count the number of non-zero entries
