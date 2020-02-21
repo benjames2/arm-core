@@ -43,11 +43,13 @@ const opcode_t i_SWI   = 33; // software interrupt
 const opcode_t i_SUB   = 34; // subtract
 const opcode_t i_TST   = 35; // test bits
 
-const int meta_RRR = 0;   //<op> Reg, Reg, Reg
-const int meta_RR  = 1;   //<op> Reg, Reg
-const int meta_RC  = 2;   //<op> Reg, Const
-const int meta_RRC = 3;   //<op> Reg, Reg, Const 
-const int meta_R   = 4;   //<op> Reg
+const int meta_RRR = 0;   // <op> Reg, Reg, Reg
+const int meta_RR  = 1;   // <op> Reg, Reg
+const int meta_RC  = 2;   // <op> Reg, #Constant
+const int meta_RRC = 3;   // <op> Reg, Reg, #Constant
+const int meta_R   = 4;   // <op> Reg
+const int meta_RC_pc = 5; // <op> Reg, [PC + #Constant]
+const int meta_RC_sp = 6; // <op> Reg, [SP + #Constant]
 
 /*
 ADC   = 4 
@@ -63,7 +65,7 @@ CMN   = 4
 CMP   = 3, 4, 5* 
 EOR   = 4 
 LDMIA = 15
-LDR   = 6, 7, 9, 11 
+LDR   = 6(RC_pc), 7(RRR), 9(RRC), 11(RC_sp) 
 LDRB  = 7, 9 
 LDRH  = 8, 10 
 LSL   = 1, 4 

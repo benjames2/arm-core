@@ -306,6 +306,7 @@ instruction_t decode_format_6(  unsigned int PC, unsigned int instruction_word )
     inst.Rd          = (instruction_word >> 8) & 0x07;
     inst.u_immediate = (instruction_word >> 0) & 0xFF;
     inst.opcode      = i_LDR;
+    inst.meta_opcode = meta_RC_pc;
 
     return inst;
 }
@@ -512,6 +513,7 @@ instruction_t decode_format_16( unsigned int PC, unsigned int instruction_word )
     inst.i_immediate = (instruction_word >> 0) & 0xFF;
     int Cond = (instruction_word >> 8) & 0x0F;
 
+  
     return inst;
 
 
@@ -531,9 +533,17 @@ instruction_t decode_format_18( unsigned int PC, unsigned int instruction_word )
 
     instruction_t inst;
 
+    // immediate is an 11 bit field
     inst.u_immediate = (instruction_word >> 0) & 0x7FF;
     inst.opcode = i_B;
 
+    // shift left to get a 12 bit number
+    inst.u_immediate <<= 1;
+  
+    // sign extend the 12-bit number
+    if((inst.u_immediate >> 11) & 0x01)
+        inst.u_immediate |= 0xFFFFF000
+      
     return inst;
 }
 
@@ -542,8 +552,15 @@ instruction_t decode_format_19( unsigned int PC, unsigned int instruction_word )
     instruction_t inst;
 
     inst.u_immediate = (instruction_word >> 0) & 0x7FF;
-    inst.opcode = i_BL;
+    inst.opcode      = i_BL;
 
+    int H = (instruction_word >> 11) & 0x01;
+  
+    if(H == 0)
+        inst.u_immediate <<= 12; // shift left 12 bits
+    else
+        inst.u_immediate <<= 1;  // shift left 1 bit
+  
     return inst;
 }
 
