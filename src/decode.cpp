@@ -496,12 +496,12 @@ instruction_t decode_format_15( unsigned int PC, unsigned int instruction_word )
     instruction_t inst;
 
     inst.Rlist = (instruction_word >> 0) & 0xFF;
-    inst.Rb = (instruction_word >> 8) &0x07;
-    inst.meta_opcode = meta_RC;
+    inst.Rb = (instruction_word >> 8) & 0x07;
+    //inst.meta_opcode = meta_RC; //We do not really need this since it only appears in format 15
 
     int L = (instruction_word >> 11) & 0x01;
 
-    inst.meta_opcode = L ? i_LDMIA : i_STMIA;
+    inst.opcode = L ? i_LDMIA : i_STMIA;
 
     return inst;
 }

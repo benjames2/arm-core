@@ -51,9 +51,6 @@ const int meta_R   = 4;   // <op> Reg
 const int meta_RC_pc = 5; // <op> Reg, [PC + #Constant]
 const int meta_RC_sp = 6; // <op> Reg, [SP + #Constant]
 
-
-const int Bxx_BEQ = 0;
-
 /*
 ADC   = 4 
 ADD   = 2*, 3, 5*, 12*, 13*
