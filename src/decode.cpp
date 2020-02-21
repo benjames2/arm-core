@@ -511,8 +511,8 @@ instruction_t decode_format_16( unsigned int PC, unsigned int instruction_word )
     instruction_t inst;
 
     inst.i_immediate = (instruction_word >> 0) & 0xFF;
-    int Cond = (instruction_word >> 8) & 0x0F;
-
+    inst.opcode = i_Bxx;
+    inst.condition_code = (instruction_word >> 8) & 0x0F;
   
     return inst;
 
@@ -542,7 +542,7 @@ instruction_t decode_format_18( unsigned int PC, unsigned int instruction_word )
   
     // sign extend the 12-bit number
     if((inst.u_immediate >> 11) & 0x01)
-        inst.u_immediate |= 0xFFFFF000
+        inst.u_immediate |= 0xFFFFF000; 
       
     return inst;
 }
