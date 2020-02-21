@@ -321,11 +321,13 @@ instruction_t decode_format_7(  unsigned int PC, unsigned int instruction_word )
 
     int LB = (instruction_word >> 10) & 0x03;
 
+    inst.meta_opcode = meta_RRR;
+
     switch(LB) {
-        case 0:
-        case 1:
-        case 2:
-        case 3:
+        case 0: inst.opcode = i_STR;  break;
+        case 1: inst.opcode = i_STRB; break;
+        case 2: inst.opcode = i_LDR;  break;
+        case 3: inst.opcode = i_LDRB; break;
         default:
             throw std::runtime_error("decode_format_7 : LB field invalid");
     }
@@ -335,50 +337,231 @@ instruction_t decode_format_7(  unsigned int PC, unsigned int instruction_word )
 
 instruction_t decode_format_8(  unsigned int PC, unsigned int instruction_word ) {
 
+    instruction_t inst;
+
+    inst.Rd = (instruction_word >> 0) & 0x07;
+    inst.Rb = (instruction_word >> 3) & 0x07;
+    inst.Ro = (instruction_word >> 6) & 0x07;
+
+    inst.meta_opcode = meta_RRR;
+
+    int H = (instruction_word >> 11) & 0x01;
+    int S = (instruction_word >> 12) & 0x01;
+
+    int SH = (H | (S << 1));
+
+    switch (SH){
+        case 0: inst.opcode = i_STRH; break;
+        case 1: inst.opcode = i_LDRH; break;
+        case 2: inst.opcode = i_LDSB; break;
+        case 3: inst.opcode = i_LDSH; break;
+        default:
+            throw std::runtime_error("Decode format_8 : SH field invalid");
+    }
+
+    return inst;
+
 }
 
 instruction_t decode_format_9(  unsigned int PC, unsigned int instruction_word ) {
 
+    instruction_t inst;
+
+    inst.Rd = (instruction_word >> 0) & 0x07;
+    inst.Rb = (instruction_word >> 3) & 0x07;
+    inst.u_immediate = (instruction_word >> 6) & 0x1F;
+
+    inst.meta_opcode = meta_RC;
+
+    int L = (instruction_word >> 11) & 0x01;
+    int B = (instruction_word >> 12) & 0x01;
+
+    int LB = (B | (L << 1));
+
+    switch (LB)
+    {
+        case 0:
+            inst.opcode = i_STR;  break;
+        case 1:
+            inst.opcode = i_STRB; break;
+        case 2: 
+            inst.opcode = i_LDR;  break;
+        case 3:
+            inst.opcode = i_LDRB; break;
+        default:
+            throw std::runtime_error("Decode format_9 : LB field invalid");
+    } 
+
+    return inst;
 }
 
 instruction_t decode_format_10( unsigned int PC, unsigned int instruction_word ) {
 
+    instruction_t inst;
+
+    inst.Rd = (instruction_word >> 0) & 0x07;
+    inst.Rb = (instruction_word >> 3) & 0x07;
+    inst.u_immediate = (instruction_word >> 6) & 0x1F;
+
+    inst.meta_opcode = meta_RC;
+    
+    int L = (instruction_word >> 11) & 0x01;
+
+    inst.opcode = L ? i_LDRH : i_STRH; 
+
+    return inst;
 }
 
 instruction_t decode_format_11( unsigned int PC, unsigned int instruction_word ) {
 
+    instruction_t inst;
+
+    inst.u_immediate = (instruction_word >> 0) & 0x0FF;
+    inst.Rd = (instruction_word >> 8) & 0x07;
+    inst.meta_opcode = meta_RC;
+
+    int L = (instruction_word >> 11) & 0x01;
+
+    inst.opcode = L ? i_LDR : i_STR; 
+
+    return inst;
 }
 
 instruction_t decode_format_12( unsigned int PC, unsigned int instruction_word ) {
 
+    instruction_t inst;
+
+    inst.u_immediate = (instruction_word >> 0) & 0xFF;
+    inst.Rd = (instruction_word >> 9) & 0x07;
+
+    int SP = (instruction_word >> 11) & 0x01;
+
+    inst.opcode = i_ADD; // Double check with this
+
+    return inst;
 }
 
 instruction_t decode_format_13( unsigned int PC, unsigned int instruction_word ) {
 
+    instruction_t inst;
+
+    inst.u_immediate = (instruction_word >>  0) & 0x7F;
+    inst.meta_opcode = meta_RC; //is this necessary?
+    
+    int S = (instruction_word >> 8) & 0x01;
+
+    inst.opcode = S ? i_SUB : i_ADD; //Double check on this 
+
+    return inst;
 }
 
 instruction_t decode_format_14( unsigned int PC, unsigned int instruction_word ) {
+    
+    instruction_t inst;
 
+    inst.Rlist = (instruction_word ) & 0xFF;
+
+    int R = (instruction_word >> 8) & 0x01;
+    int L = (instruction_word >> 11) & 0x01;
+
+    int LR = (R | (L << 1));
+
+    switch (LR)
+    {//Double check all cases
+    case 0:
+        inst.opcode = i_PUSH;
+        inst.meta_opcode = meta_R;
+        break;
+    case 1:
+        inst.opcode = i_PUSH;
+        inst.meta_opcode = meta_RC;
+        break;
+    case 2: 
+        inst.opcode = i_POP;
+        inst.meta_opcode = meta_R; //probably wrong
+        break;
+    case 3:
+        inst.opcode = i_POP;
+        inst.meta_opcode = meta_RC; //probably wrong
+        break;
+    default:
+        throw std::runtime_error("Decode format_14 : LR field invalid");
+    }
+
+    return inst;
 }
 
 instruction_t decode_format_15( unsigned int PC, unsigned int instruction_word ) {
+    
+    instruction_t inst;
 
+    inst.Rlist = (instruction_word >> 0) & 0xFF;
+    inst.Rb = (instruction_word >> 8) &0x07;
+    inst.meta_opcode = meta_RC;
+
+    int L = (instruction_word >> 11) & 0x01;
+
+    inst.meta_opcode = L ? i_LDMIA : i_STMIA;
+
+    return inst;
 }
 
 instruction_t decode_format_16( unsigned int PC, unsigned int instruction_word ) {
+
+    instruction_t inst;
+
+    inst.i_immediate = (instruction_word >> 0) & 0xFF;
+    int Cond = (instruction_word >> 8) & 0x0F;
+
+  
+    return inst;
+
 
 }
 
 instruction_t decode_format_17( unsigned int PC, unsigned int instruction_word ) {
 
+    instruction_t inst;
+
+    inst.u_immediate = (instruction_word >> 0) & 0xFF;
+    inst.opcode = i_SWI;
+
+    return inst;
 }
 
 instruction_t decode_format_18( unsigned int PC, unsigned int instruction_word ) {
 
+    instruction_t inst;
+
+    // immediate is an 11 bit field
+    inst.u_immediate = (instruction_word >> 0) & 0x7FF;
+    inst.opcode = i_B;
+
+    // shift left to get a 12 bit number
+    inst.u_immediate <<= 1;
+  
+    // sign extend the 12-bit number
+    if((inst.u_immediate >> 11) & 0x01)
+        inst.u_immediate |= 0xFFFFF000
+      
+    return inst;
 }
 
 instruction_t decode_format_19( unsigned int PC, unsigned int instruction_word ) {
-    
+
+    instruction_t inst;
+
+    inst.u_immediate = (instruction_word >> 0) & 0x7FF;
+    inst.opcode      = i_BL;
+
+    int H = (instruction_word >> 11) & 0x01;
+  
+    if(H == 0)
+        inst.u_immediate <<= 12; // shift left 12 bits
+    else
+        inst.u_immediate <<= 1;  // shift left 1 bit
+  
+    return inst;
 }
 
 
