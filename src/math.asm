@@ -126,11 +126,37 @@ perform_adc:
     adc esi, edx ; perform addition with carry flag set properly
     pushfq  ; save flags
     pop rcx ; ... into different register
-    mov [rdi], ecx   ; save flags in memory
-    mov [rdi+4], esi ; save result in memory
+    mov [rdi], ecx     ; save flags in memory
+    mov [rdi + 4], esi ; save result in memory
 
     mov rax, msg_adc ; '(asm) adc'
     pop rbp          ; destroy stack frame
+    ret
+
+align 16
+perform_sbb:
+    ;
+    ; rdi : pointer to results_t structure
+    ; rsi : a
+    ; rdx : b
+    ; rcx : borrow
+    ;
+
+    clc        ; clear carry flag
+    cmp ecx, 0 ; test if borrow is zero
+    jz do_sbb  ; skip next instruction if borrow is zero
+    stc        ; set carry flag
+
+  do_sub:
+    sbb esi, edx
+    pushfq  ; save flags
+    pop rcx ; pop flags into different register for sakekeeping
+    mov [rdi], ecx     ; store flags in memory
+    mov [rdi + 4], esi ; store result in memory
+
+    ; return correct message and clean up stack frame
+    mov rax, msg_sbb
+    pop rbp
     ret
 
 align 16

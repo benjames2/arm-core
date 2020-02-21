@@ -306,6 +306,7 @@ instruction_t decode_format_6(  unsigned int PC, unsigned int instruction_word )
     inst.Rd          = (instruction_word >> 8) & 0x07;
     inst.u_immediate = (instruction_word >> 0) & 0xFF;
     inst.opcode      = i_LDR;
+    inst.meta_opcode = meta_RC_pc;
 
     return inst;
 }
