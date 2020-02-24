@@ -50,10 +50,12 @@ const int meta_RRC = 3;   // <op> Reg, Reg, #Constant
 const int meta_R   = 4;   // <op> Reg
 const int meta_RC_pc = 5; // <op> Reg, [PC + #Constant]
 const int meta_RC_sp = 6; // <op> Reg, [SP + #Constant]
+const int meta_C_sp  = 7; // <op> [SP + #Constant]
 
 /*
-ADC   = 4 
-ADD   = 2*, 3, 5*, 12*, 13*
+
+ADC   = 4
+ADD   = 2*(RRR, RRC), 3(RC), 5*(RR), 12*(RC_pc, RC_sp), 13*(C_sp)
 AND   = 4
 ASR   = 1, 4 
 B     = 18
@@ -86,6 +88,7 @@ STR   = 7, 9, 11
 STRB  = 7, 9
 STRH  = 8, 10 
 SWI   = 17
-SUB   = 2*, 3 
+SUB   = 2*(RRR, RRC), 3(RC)
 TST   = 4
+
 */
