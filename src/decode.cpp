@@ -464,11 +464,16 @@ instruction_t decode_format_13( unsigned int PC, unsigned int instruction_word )
     instruction_t inst;
 
     inst.u_immediate = (instruction_word >>  0) & 0x7F;
-    inst.meta_opcode = meta_RC; //is this necessary?
+    inst.u_immediate <<= 2;
+
+    inst.meta_opcode = meta_C_sp; 
+    inst.opcode = i_ADD;
     
     int S = (instruction_word >> 8) & 0x01;
 
-    inst.opcode = S ? i_SUB : i_ADD; //Double check on this 
+    if (S == 1){
+        inst.i_immediate *= -1;
+    }
 
     return inst;
 }
