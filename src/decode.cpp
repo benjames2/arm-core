@@ -446,7 +446,15 @@ instruction_t decode_format_12( unsigned int PC, unsigned int instruction_word )
 
     int SP = (instruction_word >> 11) & 0x01;
 
-    inst.opcode = i_ADD; // Double check with this
+    inst.opcode = i_ADD; 
+
+    if (SP == 0 ){
+        inst.meta_opcode = meta_RC_pc;
+    }
+    else{
+        inst.meta_opcode = meta_RC_sp;
+    }
+    
 
     return inst;
 }
