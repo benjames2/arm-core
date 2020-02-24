@@ -467,24 +467,24 @@ instruction_t decode_format_14( unsigned int PC, unsigned int instruction_word )
     int LR = (R | (L << 1));
 
     switch (LR)
-    {//Double check all cases
-    case 0:
-        inst.opcode = i_PUSH;
-        inst.meta_opcode = meta_R;
-        break;
-    case 1:
-        inst.opcode = i_PUSH;
-        inst.meta_opcode = meta_RC;
-        break;
-    case 2: 
-        inst.opcode = i_POP;
-        inst.meta_opcode = meta_R; //probably wrong
-        break;
-    case 3:
-        inst.opcode = i_POP;
-        inst.meta_opcode = meta_RC; //probably wrong
-        break;
-    default:
+    {//Double check all cases if the correct metacode is applied
+        case 0:
+            inst.opcode = i_PUSH;
+            inst.meta_opcode = meta_R;
+            break;
+        case 1:
+            inst.opcode = i_PUSH;
+            inst.meta_opcode = meta_RC;
+            break;
+        case 2: 
+            inst.opcode = i_POP;
+            inst.meta_opcode = meta_R; //probably wrong
+            break;
+        case 3:
+            inst.opcode = i_POP;
+            inst.meta_opcode = meta_RC; //probably wrong
+            break;
+        default:
         throw std::runtime_error("Decode format_14 : LR field invalid");
     }
 
