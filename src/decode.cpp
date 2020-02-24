@@ -407,7 +407,12 @@ instruction_t decode_format_10( unsigned int PC, unsigned int instruction_word )
     
     int L = (instruction_word >> 11) & 0x01;
 
-    inst.opcode = L ? i_LDRH : i_STRH; 
+    if ( L == 0 ){
+        inst.opcode = i_STRH;
+    }
+    else{
+        inst.opcode = i_LDRH;
+    }
 
     return inst;
 }
@@ -417,12 +422,17 @@ instruction_t decode_format_11( unsigned int PC, unsigned int instruction_word )
     instruction_t inst;
 
     inst.u_immediate = (instruction_word >> 0) & 0x0FF;
-    inst.Rd = (instruction_word >> 8) & 0x07;
+    inst.Rd          = (instruction_word >> 8) & 0x07;
     inst.meta_opcode = meta_RC;
 
     int L = (instruction_word >> 11) & 0x01;
 
-    inst.opcode = L ? i_LDR : i_STR; 
+    if ( L == 0 ){
+        inst.opcode = i_STR;
+    }
+    else{
+        inst.opcode = i_LDR;
+    }
 
     return inst;
 }
@@ -432,11 +442,19 @@ instruction_t decode_format_12( unsigned int PC, unsigned int instruction_word )
     instruction_t inst;
 
     inst.u_immediate = (instruction_word >> 0) & 0xFF;
-    inst.Rd = (instruction_word >> 9) & 0x07;
+    inst.Rd          = (instruction_word >> 9) & 0x07;
 
     int SP = (instruction_word >> 11) & 0x01;
 
-    inst.opcode = i_ADD; // Double check with this
+    inst.opcode = i_ADD; 
+
+    if (SP == 0 ){
+        inst.meta_opcode = meta_RC_pc;
+    }
+    else{
+        inst.meta_opcode = meta_RC_sp;
+    }
+    
 
     return inst;
 }
