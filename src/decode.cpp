@@ -496,12 +496,15 @@ instruction_t decode_format_15( unsigned int PC, unsigned int instruction_word )
     instruction_t inst;
 
     inst.Rlist = (instruction_word >> 0) & 0xFF;
-    inst.Rb = (instruction_word >> 8) & 0x07;
-    //inst.meta_opcode = meta_RC; //We do not really need this since it only appears in format 15
-
+    inst.Rb    = (instruction_word >> 8) & 0x07;
     int L = (instruction_word >> 11) & 0x01;
 
-    inst.opcode = L ? i_LDMIA : i_STMIA;
+    if(L == 0) {
+        inst.opcode = i_STMIA;
+    }
+    else {
+        inst.opcode = i_LDMIA;
+    }
 
     return inst;
 }
@@ -510,13 +513,11 @@ instruction_t decode_format_16( unsigned int PC, unsigned int instruction_word )
 
     instruction_t inst;
 
-    inst.i_immediate = (instruction_word >> 0) & 0xFF;
-    inst.opcode = i_Bxx;
+    inst.i_immediate    = (instruction_word >> 0) & 0xFF;
+    inst.opcode         = i_Bxx;
     inst.condition_code = (instruction_word >> 8) & 0x0F;
-  
+
     return inst;
-
-
 }
 
 instruction_t decode_format_17( unsigned int PC, unsigned int instruction_word ) {
@@ -524,7 +525,7 @@ instruction_t decode_format_17( unsigned int PC, unsigned int instruction_word )
     instruction_t inst;
 
     inst.u_immediate = (instruction_word >> 0) & 0xFF;
-    inst.opcode = i_SWI;
+    inst.opcode      = i_SWI;
 
     return inst;
 }
@@ -539,11 +540,11 @@ instruction_t decode_format_18( unsigned int PC, unsigned int instruction_word )
 
     // shift left to get a 12 bit number
     inst.u_immediate <<= 1;
-  
-    // sign extend the 12-bit number
+
+    // sign extend the 12-bit number to 32-bits
     if((inst.u_immediate >> 11) & 0x01)
         inst.u_immediate |= 0xFFFFF000; 
-      
+
     return inst;
 }
 
