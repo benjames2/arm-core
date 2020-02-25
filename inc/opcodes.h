@@ -51,6 +51,9 @@ const int meta_R   = 4;   // <op> Reg
 const int meta_RC_pc = 5; // <op> Reg, [PC + #Constant]
 const int meta_RC_sp = 6; // <op> Reg, [SP + #Constant]
 const int meta_C_sp  = 7; // <op> [SP + #Constant]
+const int meta_C     = 8;
+const int meta_C_lr  = 9;
+const int meta_C_pc  = 10;
 
 /*
 

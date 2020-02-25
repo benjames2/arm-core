@@ -25,7 +25,7 @@ struct instruction_t {
 
     // register references
     int Rs, Rd, Rn, Rb, Ro;
-    int Hs, Hd; // HI register references
+    //int Hs, Hd; // HI register references
 
     int Rlist;
 

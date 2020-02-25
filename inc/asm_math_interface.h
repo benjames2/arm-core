@@ -7,6 +7,9 @@ struct results_t {
         unsigned int u32;
         signed int i32;
     };
+
+
+
 };
 
 const int x86_asm_ADD = 0;
@@ -14,7 +17,7 @@ const int x86_asm_SUB = 1;
 const int x86_asm_ADC = 2;
 const int x86_asm_SBB = 3;
 
-// at some point these will go in an execute.h file
+// assembly routines with declared C interfaces
 extern "C" {
 
     // unreliable way to get the flags register. dont use but its still there

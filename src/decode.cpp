@@ -164,8 +164,8 @@ instruction_t decode_format_2(  unsigned int PC, unsigned int instruction_word )
 
     instruction_t inst;
 
-    inst.Rs          = (instruction_word >> 3) & 0x07;
     inst.Rd          = (instruction_word >> 0) & 0x07;
+    inst.Rs          = (instruction_word >> 3) & 0x07;
 
     int Op = (instruction_word >> 9)  & 0x01;
     int I  = (instruction_word >> 10) & 0x01;
@@ -205,27 +205,24 @@ instruction_t decode_format_3(  unsigned int PC, unsigned int instruction_word )
 
     instruction_t inst;
 
-    inst.Rd = (instruction_word >> 8) & 0x07;
-    inst.u_immediate = instruction_word & 0xFF;
+    inst.Rd          = (instruction_word >> 8) & 0x07;
+    inst.u_immediate = (instruction_word >> 0) & 0xFF;
+    inst.meta_opcode = meta_RC;
 
     int Op = (instruction_word >> 11) & 0x03;
 
     switch(Op) {
         case 0:
             inst.opcode = i_MOV;
-            inst.meta_opcode = meta_RC;
             break;
         case 1:
             inst.opcode = i_CMP;
-            inst.meta_opcode = meta_RC;
             break;
         case 2:
             inst.opcode = i_ADD;
-            inst.meta_opcode = meta_RC;
             break;
         case 3:
             inst.opcode = i_SUB;
-            inst.meta_opcode = meta_RC;
             break;
         default:
             throw std::runtime_error("decode_format_3 : Op field is invalid");
@@ -238,8 +235,8 @@ instruction_t decode_format_4(  unsigned int PC, unsigned int instruction_word )
 
     instruction_t inst;
 
-    inst.Rs          = (instruction_word >> 3) & 0x07;
     inst.Rd          = (instruction_word >> 0) & 0x07;
+    inst.Rs          = (instruction_word >> 3) & 0x07;
     inst.meta_opcode = meta_RR;
 
     int Op = (instruction_word >> 6) & 0x0F;
@@ -272,8 +269,8 @@ instruction_t decode_format_5(  unsigned int PC, unsigned int instruction_word )
 
     instruction_t inst;
 
-    inst.Rs          = (instruction_word >> 3) & 0x07;
     inst.Rd          = (instruction_word >> 0) & 0x07;
+    inst.Rs          = (instruction_word >> 3) & 0x07;
     inst.meta_opcode = meta_RR;
 
     int Op = (instruction_word >> 8) & 0x03;
@@ -305,6 +302,8 @@ instruction_t decode_format_6(  unsigned int PC, unsigned int instruction_word )
 
     inst.Rd          = (instruction_word >> 8) & 0x07;
     inst.u_immediate = (instruction_word >> 0) & 0xFF;
+    inst.u_immediate <<= 2;
+
     inst.opcode      = i_LDR;
     inst.meta_opcode = meta_RC_pc;
 
@@ -346,7 +345,7 @@ instruction_t decode_format_8(  unsigned int PC, unsigned int instruction_word )
     inst.meta_opcode = meta_RRR;
 
     int H = (instruction_word >> 11) & 0x01;
-    int S = (instruction_word >> 12) & 0x01;
+    int S = (instruction_word >> 10) & 0x01;
 
     int SH = (H | (S << 1));
 
@@ -403,14 +402,14 @@ instruction_t decode_format_10( unsigned int PC, unsigned int instruction_word )
     inst.Rb = (instruction_word >> 3) & 0x07;
     inst.u_immediate = (instruction_word >> 6) & 0x1F;
 
-    inst.meta_opcode = meta_RC;
+    inst.meta_opcode = meta_RRC;
     
     int L = (instruction_word >> 11) & 0x01;
 
-    if ( L == 0 ){
+    if(L == 0) {
         inst.opcode = i_STRH;
     }
-    else{
+    else {
         inst.opcode = i_LDRH;
     }
 
@@ -423,11 +422,11 @@ instruction_t decode_format_11( unsigned int PC, unsigned int instruction_word )
 
     inst.u_immediate = (instruction_word >> 0) & 0x0FF;
     inst.Rd          = (instruction_word >> 8) & 0x07;
-    inst.meta_opcode = meta_RC;
+    inst.meta_opcode = meta_RC_sp;
 
     int L = (instruction_word >> 11) & 0x01;
 
-    if ( L == 0 ){
+    if ( L == 0 ) {
         inst.opcode = i_STR;
     }
     else{
@@ -442,7 +441,7 @@ instruction_t decode_format_12( unsigned int PC, unsigned int instruction_word )
     instruction_t inst;
 
     inst.u_immediate = (instruction_word >> 0) & 0xFF;
-    inst.Rd          = (instruction_word >> 9) & 0x07;
+    inst.Rd          = (instruction_word >> 8) & 0x07;
 
     int SP = (instruction_word >> 11) & 0x01;
 
@@ -455,7 +454,6 @@ instruction_t decode_format_12( unsigned int PC, unsigned int instruction_word )
         inst.meta_opcode = meta_RC_sp;
     }
     
-
     return inst;
 }
 
@@ -467,13 +465,12 @@ instruction_t decode_format_13( unsigned int PC, unsigned int instruction_word )
     inst.u_immediate <<= 2;
 
     inst.meta_opcode = meta_C_sp; 
-    inst.opcode = i_ADD;
+    inst.opcode      = i_ADD;
     
-    int S = (instruction_word >> 8) & 0x01;
+    int S = (instruction_word >> 7) & 0x01;
 
-    if (S == 1){
+    if (S == 1)
         inst.i_immediate *= -1;
-    }
 
     return inst;
 }
@@ -482,30 +479,29 @@ instruction_t decode_format_14( unsigned int PC, unsigned int instruction_word )
     
     instruction_t inst;
 
-    inst.Rlist = (instruction_word ) & 0xFF;
+    inst.Rlist = (instruction_word >> 0) & 0xFF;
 
     int R = (instruction_word >> 8) & 0x01;
     int L = (instruction_word >> 11) & 0x01;
 
     int LR = (R | (L << 1));
 
-    switch (LR)
-    {//Double check all cases if the correct metacode is applied
+    switch (LR) {
         case 0:
             inst.opcode = i_PUSH;
-            inst.meta_opcode = meta_R;
+            inst.meta_opcode = meta_C;
             break;
         case 1:
             inst.opcode = i_PUSH;
-            inst.meta_opcode = meta_RC;
+            inst.meta_opcode = meta_C_lr;
             break;
         case 2: 
             inst.opcode = i_POP;
-            inst.meta_opcode = meta_R; //probably wrong
+            inst.meta_opcode = meta_C;
             break;
         case 3:
             inst.opcode = i_POP;
-            inst.meta_opcode = meta_RC; //probably wrong
+            inst.meta_opcode = meta_C_pc;
             break;
         default:
         throw std::runtime_error("Decode format_14 : LR field invalid");
@@ -536,7 +532,12 @@ instruction_t decode_format_16( unsigned int PC, unsigned int instruction_word )
 
     instruction_t inst;
 
-    inst.i_immediate    = (instruction_word >> 0) & 0xFF;
+    inst.u_immediate    = (instruction_word >> 0) & 0xFF;
+    
+    // sign extend 8-bit immediate
+    if((inst.u_immediate >> 7) & 0x01)
+        inst.u_immediate |= 0xFFFFFF00;
+
     inst.opcode         = i_Bxx;
     inst.condition_code = (instruction_word >> 8) & 0x0F;
 
