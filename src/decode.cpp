@@ -32,22 +32,21 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
         case i_ADD   : // add
             std::cout << "ADD ";
             //ADD   = 2*(RRR, RRC), 3(RC), 5*(RR), 12*(RC_pc, RC_sp), 13*(C_sp)
-        
             {
                 switch(in.meta_opcode) {
-                    case meta_RRR:
-                        std::cout << in.Rd << ", " << in.Rs << ", " << in.Rn << '\n';
-                        break;
-                    case meta_RRC:
-                        
-                    case meta_RC:
-                    case meta_RR:
-                    case meta_RC_pc:
-                    case meta_RC_sp:
-                    case meta_C_sp:
+                    case meta_RRR:   std::cout << in.Rd << ", " << in.Rs << ", " << in.Rn;           break;
+                    case meta_RRC:   std::cout << in.Rd << ", " << in.Rs << ", #" << in.u_immediate; break;
+                    case meta_RC:    std::cout << in.Rd << ", #" << in.u_immediate;                  break;
+                    case meta_RR:    std::cout << in.Rd << ", " << in.Rs;                            break;
+                    case meta_RC_pc: std::cout << in.Rd << ", PC, #" << in.u_immediate;              break;
+                    case meta_RC_sp: std::cout << in.Rd << ", SP, #" << in.u_immediate;              break;
+                    case meta_C_sp:  std::cout << "SP, #" << in.i_immediate;                         break;
+                    default:
+                        throw std::runtime_error("opcode(ADD) : invalid meta opcode");
                 }
             }
-        
+            break;
+
         case i_AND   : // bitwise AND
         case i_ASR   : // arithmetic shift right
         case i_B     : // unconditional branch
