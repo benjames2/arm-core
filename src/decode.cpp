@@ -1,5 +1,6 @@
 #include <inc/decode.h>
 #include <stdexcept>
+#include <iostream>
 
 instruction_t::instruction_t(void) {
     this->opcode = -1;
@@ -16,9 +17,76 @@ instruction_t::instruction_t(void) {
     this->Rb = -1;
     this->Ro = -1;
 
-    this->Hs = -1;
-    this->Hd = -1;
+    //this->Hs = -1;
+    //this->Hd = -1;
     this->Rlist = -1;
+}
+
+std::ostream& operator<<(std::ostream& os, instruction_t& in) {
+
+    switch(in.opcode) {
+
+        case i_ADC   : // add with carry
+            std::cout << "ADC " << in.Rd << ", " << in.Rs << '\n'; // 
+            break;
+        case i_ADD   : // add
+            std::cout << "ADD ";
+            //ADD   = 2*(RRR, RRC), 3(RC), 5*(RR), 12*(RC_pc, RC_sp), 13*(C_sp)
+        
+            {
+                switch(in.meta_opcode) {
+                    case meta_RRR:
+                        std::cout << in.Rd << ", " << in.Rs << ", " << in.Rn << '\n';
+                        break;
+                    case meta_RRC:
+                        
+                    case meta_RC:
+                    case meta_RR:
+                    case meta_RC_pc:
+                    case meta_RC_sp:
+                    case meta_C_sp:
+                }
+            }
+        
+        case i_AND   : // bitwise AND
+        case i_ASR   : // arithmetic shift right
+        case i_B     : // unconditional branch
+        case i_Bxx   : // conditional branch
+        case i_BIC   : // bit clear
+        case i_BL    : // branch and link
+        case i_BX    : // branch and exchange
+        case i_CMN   : // compare negative
+        case i_CMP   : // compare
+        case i_EOR   : // bitwise XOR
+        case i_LDMIA : // load multiple
+        case i_LDR   : // load word
+        case i_LDRB  : // load byte
+        case i_LDRH  : // load halfword
+        case i_LSL   : // logical shift left
+        case i_LDSB  : // load sign-extended byte
+        case i_LDSH  : // load sign-extended halfword
+        case i_LSR   : // logical shift right
+        case i_MOV   : // move register
+        case i_MUL   : // multiply
+        case i_MVN   : // move negative register
+        case i_NEG   : // negate
+        case i_ORR   : // bitwise OR
+        case i_POP   : // pop registers
+        case i_PUSH  : // push registers
+        case i_ROR   : // rotate right
+        case i_SBC   : // subtract with carry
+        case i_STMIA : // store multiple
+        case i_STR   : // store word
+        case i_STRB  : // store byte
+        case i_STRH  : // store halfword
+        case i_SWI   : // software interrupt
+        case i_SUB   : // subtract
+        case i_TST   : // test bits
+        default:
+            throw std::runtime_error("instruction_t : invalid opcode");
+
+
+    }
 
 }
 

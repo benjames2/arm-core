@@ -33,6 +33,9 @@ struct instruction_t {
 
 };
 
+// operator overload to print instruction_t data (sort of like disassembling)
+std::ostream& operator<<(std::ostream& os, instruction_t& in);
+
 // highest level decode function
 instruction_t decode_instruction(unsigned int PC, unsigned int instruction_word);
 
