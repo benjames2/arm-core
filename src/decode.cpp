@@ -29,18 +29,19 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
         case i_ADC   : // add with carry
             std::cout << "ADC " << in.Rd << ", " << in.Rs << '\n'; // 
             break;
+
         case i_ADD   : // add
-            std::cout << "ADD ";
             //ADD   = 2*(RRR, RRC), 3(RC), 5*(RR), 12*(RC_pc, RC_sp), 13*(C_sp)
+            std::cout << "ADD ";
             {
                 switch(in.meta_opcode) {
-                    case meta_RRR:   std::cout << in.Rd << ", " << in.Rs << ", " << in.Rn;           break;
-                    case meta_RRC:   std::cout << in.Rd << ", " << in.Rs << ", #" << in.u_immediate; break;
-                    case meta_RC:    std::cout << in.Rd << ", #" << in.u_immediate;                  break;
-                    case meta_RR:    std::cout << in.Rd << ", " << in.Rs;                            break;
-                    case meta_RC_pc: std::cout << in.Rd << ", PC, #" << in.u_immediate;              break;
-                    case meta_RC_sp: std::cout << in.Rd << ", SP, #" << in.u_immediate;              break;
-                    case meta_C_sp:  std::cout << "SP, #" << in.i_immediate;                         break;
+                    case meta_RRR:   std::cout << 'r' << in.Rd << ", r" << in.Rs << ", r" << in.Rn;          break;
+                    case meta_RRC:   std::cout << 'r' << in.Rd << ", r" << in.Rs << ", #" << in.u_immediate; break;
+                    case meta_RC:    std::cout << 'r' << in.Rd << ", #" << in.u_immediate;                   break;
+                    case meta_RR:    std::cout << 'r' << in.Rd << ", r" << in.Rs;                            break;
+                    case meta_RC_pc: std::cout << 'r' << in.Rd << ", PC, #" << in.u_immediate;               break;
+                    case meta_RC_sp: std::cout << 'r' << in.Rd << ", SP, #" << in.u_immediate;               break;
+                    case meta_C_sp:  std::cout << "SP, #" << in.i_immediate;                                 break;
                     default:
                         throw std::runtime_error("opcode(ADD) : invalid meta opcode");
                 }
@@ -48,10 +49,56 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             break;
 
         case i_AND   : // bitwise AND
+            // AND   = 4
+            std::cout << "AND r" << in.Rd << ", r" << in.Rs;
+            break;
+
         case i_ASR   : // arithmetic shift right
+            // ASR   = 1(RRC), 4(RR) 
+            std::cout << "ASR ";
+            {
+                switch(in.meta_opcode) {
+                    case meta_RRC: std::cout << 'r' << in.Rd << ", r" << in.Rs << ", #" << in.u_immediate; break;
+                    case meta_RR:  std::cout << 'r' << in.Rd << ", r" << in.Rs; break;
+                    default:
+                        throw std::runtime_error("opcode(ASR) : invalid meta opcode");
+                }
+            }
+            break;
+
         case i_B     : // unconditional branch
+            // B     = 18
+            std::cout << "B " << in.i_immediate;
+            break;
+
         case i_Bxx   : // conditional branch
+            // Bxx   = 16* 
+            switch(in.condition_code) {
+                case 0:  std::cout << "Beq "; break;
+                case 1:  std::cout << "Bne "; break;
+                case 2:  std::cout << "Bcs "; break;
+                case 3:  std::cout << "Bcc "; break;
+                case 4:  std::cout << "Bmi "; break;
+                case 5:  std::cout << "Bpl "; break;
+                case 6:  std::cout << "Bvs "; break;
+                case 7:  std::cout << "Bvc "; break;
+                case 8:  std::cout << "Bhi "; break;
+                case 9:  std::cout << "Bls "; break;
+                case 10: std::cout << "Bge "; break;
+                case 11: std::cout << "Blt "; break;
+                case 12: std::cout << "Bgt "; break;
+                case 13: std::cout << "Ble "; break;
+                default:
+                    throw std::runtime_error("opcode(Bxx) : invalid condition code");
+            }
+            std::cout << "#" << in.i_immediate;
+            break;
+
         case i_BIC   : // bit clear
+            // BIC   = 4 
+            std::cout << "BIC r" << in.Rd << ", r" << in.Rs;
+            break;
+
         case i_BL    : // branch and link
         case i_BX    : // branch and exchange
         case i_CMN   : // compare negative

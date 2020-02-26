@@ -4,6 +4,8 @@
 #include <inc/decode.h>
 #include <inc/asm_math_interface.h>
 
+#include "main.h"
+
 using namespace std;
 
 int main(int argc, char* argv[]) {
@@ -18,50 +20,7 @@ int main(int argc, char* argv[]) {
     //armv7_m3 armcpu;
     //armcpu.set_current_mode(armv7_m3::mode_16);
 
-    results_t results;
-
-    cout << "\n\n";
-    cout << "0x7fffffff + 0x01\n";
-    cout << gp_operation(&results, 0x7fffffff, 0x01, 0, x86_asm_ADD) << endl;
-    print_flag_results(results.flags);
-
-    cout << "\n\n";
-    cout << "0x7fffffff - 0x01\n";
-    cout << gp_operation(&results, 0x7fffffff, 0x01, 0, x86_asm_SUB) << endl;
-    print_flag_results(results.flags);
     
-    cout << "\n\n";
-    cout << "ADC 0x7ffffffe + 0x01 + C=0\n";
-    cout << gp_operation(&results, 0x7ffffffe, 0x01, 0, x86_asm_ADC) << endl;
-    print_flag_results(results.flags);
-    cout << "R = " << results.i32 << endl;
-
-    cout << "\n\n";
-    cout << "ADC 0x7ffffffe + 0x01 + C=1\n";
-    cout << gp_operation(&results, 0x7ffffffe, 0x01, 1, x86_asm_ADC) << endl;
-    print_flag_results(results.flags);
-    cout << "R = " << results.i32 << endl;
-
-    cout << "\n\n";
-    cout << "ADC 0xffffffff + 0x01 + C=0\n";
-    cout << gp_operation(&results, 0xffffffff, 0x01, 0, x86_asm_ADC) << endl;
-    print_flag_results(results.flags);
-    cout << "R = " << results.i32 << endl;
-
-    cout << "\n\n";
-    cout << "ADC 0xfffffffe + 0x01 + C=1\n";
-    cout << gp_operation(&results, 0xfffffffe, 0x01, 1, x86_asm_ADC) << endl;
-    print_flag_results(results.flags);
-    cout << "R = " << results.i32 << endl;
-
-    cout << "\n\n";
-    cout << "ADC 0xffffffff + 0x00 + C=1\n";
-    cout << gp_operation(&results, 0xffffffff, 0x00, 1, x86_asm_ADC) << endl;
-    print_flag_results(results.flags);
-    cout << "R = " << results.i32 << endl;
-
-    //cout << gp_operation(&results, 0, 0, 0, x86_asm_ADC) << endl;
-    //cout << gp_operation(&results, 0, 0, 0, x86_asm_SBB) << endl;
 
     return 0;
 }
