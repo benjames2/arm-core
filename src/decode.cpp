@@ -73,18 +73,103 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
         case i_ORR   : // bitwise OR
         case i_POP   : // pop registers
         case i_PUSH  : // push registers
+            break;
         case i_ROR   : // rotate right
+            //ROR   = 4
+            std::cout << "ROR Rd:" << in.Rd << ", Rs:" << in.Rs;
+            break;
         case i_SBC   : // subtract with carry
+            //SBC   = 4
+            std::cout << "SBC Rd:" << in.Rd << ", Rs:" << in.Rs;
+            break;
         case i_STMIA : // store multiple
+            //STMIA = 15
+            std::cout << "STMIA Rb:" << in.Rb << ", Rlist:" << in.Rlist;
+            break;
         case i_STR   : // store word
+            //STR   = 7, 9, 11 
+            std::cout << "STR";
+
+            {
+                switch(in.meta_opcode){
+                    case meta_RRR:
+                        std::cout << "Rd: " << in.Rd << ", Rb: " << in.Rb << ", Ro: " << in.Ro;
+                        break;
+                    case meta_RRC:
+                        std::cout << "Rd: " << in.Rb << ", Rb: " << in.Rb << ", #" << in.u_immediate;
+                        break;
+                    case meta_RC_pc:
+                        std::cout << "Rd: " << in.Rd << ", SP, #" << in.u_immediate;
+                        break;
+                    default: 
+                        std::runtime_error(" STR: Invalid metaopcode");
+
+                }
+            }
+
         case i_STRB  : // store byte
+            //STRB  = 7, 9
+            std::cout << "STRB ";
+
+            {
+                switch(in.meta_opcode){
+                    case meta_RRR:
+                        std::cout << "Rd: " << in.Rd << ", Rb: " << in.Rb << ", Ro: " << in.Ro;
+                        break;
+                    case meta_RRC:
+                        std::cout << "Rd: " << in.Rb << ", Rb: " << in.Rb << ", #" << in.u_immediate;
+                        break;
+                    default:
+                        std::runtime_error(" STRB: Invalid meta opcode");
+                    
+                }
+            }
+
         case i_STRH  : // store halfword
+            //STRH  = 8, 10
+            std::cout << " STRH ";
+
+            {
+                switch (in.meta_opcode)
+                {
+                    case meta_RRR:
+                        std::cout << "Rd: " << in.Rd <<", Rb: " << in.Rb << ", Ro: " << in.Ro;
+                        break;
+                    case meta_RRC:
+                        std::cout << "Rd: " << in.Rd << ", Rb: " << in.Rb << ", #" << in.u_immediate;
+                        break;
+                    default:
+                        std::runtime_error(" STRH: invalid meta_opcode");
+                }
+            }
         case i_SWI   : // software interrupt
+            //SWI   = 17
+            std::cout << "SWI: #" << in.u_immediate ;
+            
+
         case i_SUB   : // subtract
+            std::cout << "SUB" ;
+            //SUB   = 2*(RRR, RRC), 3(RC)
+
+            {
+
+                switch (in.meta_opcode){
+                    case meta_RRR:
+                        std::cout << in.Rd << ", " << in.Rs << ", " << in.Rn; break;
+                    case meta_RRC:
+                        std::cout << in.Rd << ", " << in.Rs << ",  #"<< in.u_immediate; break;   
+                    case meta_RC:
+                        std::cout << in.Rd << ", #"<< in.u_immediate; break;     
+                    default:
+                        std::runtime_error("SUB: invalid meta_opcode");
+                }
+            }
+
         case i_TST   : // test bits
+            std::cout << "TST " << in.Rs << ", " << in.Rd;
+            break;
         default:
             throw std::runtime_error("instruction_t : invalid opcode");
-
 
     }
 
