@@ -22,3 +22,11 @@
 #define BASE_FORMAT_18 (SHL(15) | SHL(14) | SHL(13) | 0)
 #define BASE_FORMAT_19 (SHL(15) | SHL(14) | SHL(13) | SHL(12) | 0)
 
+#undef SHL
+
+void test_decode_fns(void) {
+
+    
+
+}
+
