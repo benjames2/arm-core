@@ -147,7 +147,7 @@ perform_sbb:
     jz do_sbb  ; skip next instruction if borrow is zero
     stc        ; set carry flag
 
-  do_sub:
+  do_sbb:
     sbb esi, edx
     pushfq  ; save flags
     pop rcx ; pop flags into different register for sakekeeping
