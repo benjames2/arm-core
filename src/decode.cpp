@@ -105,35 +105,115 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
         case i_CMP   : // compare
         case i_EOR   : // bitwise XOR
         case i_LDMIA : // load multiple
+            //LDMIA = 15
+            std::cout << "LDMIA "
         case i_LDR   : // load word
+            //LDR   = 6(RC_pc), 7(RRR), 9(RRC), 11(RC_sp)
+            std::cout << "LDR ";
+            switch(in.meta_opcode){
+                case meta_RC: std::cout << "r" << in.Rd << "[PC, #" << in.u_immediate << "]"; break;
+                case meta_RRR: std::cout << "r" << in.Rd << "[ r" << in.Rb << ", r" << in.Ro << "]";break;
+                case meta_RRC: std::cout << "r" << in.Rd << "[ r" << in.Rb << ", #" << in.u_immediate << "]"; break;
+                case meta_RC_sp: std::cout << 'r' << in.Rd << ", [SP, #" << in.u_immediate << ']';  break;
+            }
+            break;
         case i_LDRB  : // load byte
+            //LDRB  = 7, 9 
+            std::cout << "LDRB ";
+            switch(in.meta_opcode){
+                case meta_RRR: std::cout << "r" << in.Rd << "[ r" << in.Rb << ", r" << in.Ro << "]"; break;
+                case meta_RRC: std::cout << "r" << in.Rd << "[ r" << in.Rb << ", #" << in.u_immediate << "]"; break;
+            }
+            break;
         case i_LDRH  : // load halfword
+            //LDRH  = 8, 10
+            std::cout << "LDRH ";
+            switch(in.meta_opcode){
+                case meta_RRR: std::cout << "r" << in.Rd << "[ r" << in.Rb << ", r" << in.Ro << "]"; break;
+                case meta_RRC: std::cout << "r" << in.Rd << "[ r" << in.Rb << ", #" << in.u_immediate << "]"; break;
+            }
+            break;
         case i_LSL   : // logical shift left
+            //LSL   = 1, 4 
+            std::cout << "LSL ";
+            switch(in.meta_opcode){
+                case meta_RRC: std::cout << "r" << in.Rd << ", r" << in.Rs << " #" << in.u_immediate; break;
+                case meta_RR: std::cout << "r" << in.Rd << ", r" << in.Rs; break;
+            }
+            break;
         case i_LDSB  : // load sign-extended byte
+            //LDSB  = 8
+            std::cout << "LDSB r" << in.Rd << "[ r" << in.Rb << ", r" << in.Ro << "]";
+            break;
         case i_LDSH  : // load sign-extended halfword
+            //LDSH  = 8
+            std::cout << "LDSH r" << in.Rd << "[ r" << in.Rb << ", r" << in.Ro << "]";
+            break;
         case i_LSR   : // logical shift right
+            //LSR   = 1, 4
+            std::cout << "LSR ";
+            switch(in.meta_opcode){
+                case meta_RRC: std::cout << "r" << in.Rd << ", r" << in.Rs << " #" << in.u_immediate; break;
+                case meta_RR: std::cout << "r" << in.Rd << ", r" << in.Rs; break;
+            }
+            break; 
         case i_MOV   : // move register
+            //MOV   = 3, 5*
+            std::cout << "MOV ";
+            switch(in.meta_opcode){
+                case meta_RC: std::cout << "r" << in.Rd << ", #" << in.u_immediate; break;
+                case meta_RR: std::cout << "r" << in.Rd << ", r" << in.Rs; break;
+            }
+            break;
         case i_MUL   : // multiply
+            //MUL   = 4*
+            std::cout << "MUL r" << in.Rd << ", r" << in.Rs;
+            break;
         case i_MVN   : // move negative register
+            //MVN   = 4*
+            std::cout << "MVN r" << in.Rd << ", r" << in.Rs;
+            break;
         case i_NEG   : // negate
+            //NEG   = 4*
+            std::cout << "NEG r" << in.Rd << ", r" << in.Rs;
+            break;
         case i_ORR   : // bitwise OR
+            //ORR   = 4
+            std::cout << "ORR r" << in.Rd << ", r" << in.Rs;
+            break;
         case i_POP   : // pop registers
+            //POP   = 14*
+            std::cout << "POP ";
+            switch(in.i_immediate){
+                case meta_C: std::cout << "{ " << in.Rlist << "}"; break;
+                case meta_C_pc: std::cout << "{ " << in.Rlist << ", PC"; break;
+            }
+            break;
         case i_PUSH  : // push registers
+            //PUSH  = 14*
+            std::cout << "PUSH ";
+            switch(in.i_immediate){
+                case meta_C: std::cout << "{ " << in.Rlist << "}"; break;
+                case meta_C_lr: std::cout << "{ " << in.Rlist << ", LR"; break;
+            }
             break;
         
         case i_ROR   : // rotate right
             //ROR   = 4
-            std::cout << "ROR Rd:" << in.Rd << ", Rs:" << in.Rs;
+            std::cout << "ROR ";
+            std::cout << "r" << in.Rd << ", r:" << in.Rs;
             break;
         
         case i_SBC   : // subtract with carry
             //SBC   = 4
-            std::cout << "SBC Rd:" << in.Rd << ", Rs:" << in.Rs;
+            std:: cout << "SBC ";
+            std::cout << "r" << in.Rd << ", r:" << in.Rs;
             break;
         
         case i_STMIA : // store multiple
             //STMIA = 15
-            std::cout << "STMIA Rb:" << in.Rb << ", Rlist:" << in.Rlist;
+            std:: cout << "STMIA ";
+            std::cout << "r!" << in.Rb << "{ Rlist:" << in.Rlist << "}";
             break;
 
         case i_STR   : // store word
