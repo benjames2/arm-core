@@ -6,6 +6,7 @@
 // to carry out an instruction
 
 #include <iostream>
+#include <string>
 #include "opcodes.h"
 
 struct instruction_t {
@@ -31,6 +32,8 @@ struct instruction_t {
         int Rlist;
         int H;
     };
+
+    std::string str(void);
 
     instruction_t(void);
 
