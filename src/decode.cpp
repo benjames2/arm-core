@@ -100,15 +100,34 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             break;
 
         case i_BL    : // branch and link
-        case i_BX    : // branch and exchange
-        case i_CMN   : // compare negative
-        case i_CMP   : // compare
-        case i_EOR   : // bitwise XOR
-        case i_LDMIA : // load multiple
-            //LDMIA = 15
-            std::cout << "LDMIA ";
+            //BL    = 19
             break;
 
+        case i_BX    : // branch and exchange
+            //BX    = 5*
+            std::cout << "BX " << in.Rs;
+            break;
+            
+        case i_CMN   : // compare negative
+            //CMN   = 4
+            std::cout << "CMN r" << in.Rd << ", r" << in.Rs; 
+            break;
+            
+        case i_CMP   : // compare 
+            //CMP   = 3, 4, 5* // 4 and 5 have the same meta opcode
+            std::cout << "CMP ";
+            switch(in.meta_opcode){
+                case meta_RC: std::cout << "r" << in.Rd << ", #" << in.u_immediate; break;
+                case meta_RR: std::cout << "r" << in.Rd << ", r" << in.Rs; break //format 4 and 5 are both taking care of by meta__RR 
+            }
+            break;
+
+        case i_EOR   : // bitwise XOR
+            //EOR   = 4
+            std::cout << "EOR r" << in.Rd << ", r" << in.Rs; break;
+        case i_LDMIA : // load multiple
+            //LDMIA = 15
+            std::cout << "LDMIA r" << in.Rb << ",! { " << in.Rlist << "}";  
         case i_LDR   : // load word
             //LDR   = 6(RC_pc), 7(RRR), 9(RRC), 11(RC_sp)
             std::cout << "LDR ";
