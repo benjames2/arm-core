@@ -2,6 +2,8 @@
 #include <stdexcept>
 #include <iostream>
 
+#define THROW_INVALID_METACODE(opcode) throw std::runtime_error("opcode(" #opcode ") : invalid meta opcode")
+
 instruction_t::instruction_t(void) {
     this->opcode = -1;
 
@@ -23,6 +25,9 @@ instruction_t::instruction_t(void) {
 }
 
 std::ostream& operator<<(std::ostream& os, instruction_t& in) {
+
+    // maintain a single instruction for BL
+    static instruction_t sInstruction;
 
     switch(in.opcode) {
 
@@ -101,6 +106,17 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
 
         case i_BL    : // branch and link
             //BL    = 19
+            //std::cout << "BL ";
+            if(in.H == 0)
+                sInstruction = in;
+
+            else if(in.H == 1) {
+
+                int offset = sInstruction.i_immediate + in.i_immediate;
+                std::cout << "BL " << offset;
+
+                sInstruction.u_immediate = 0x00;            
+            }
             break;
 
         case i_BX    : // branch and exchange
@@ -118,16 +134,22 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             std::cout << "CMP ";
             switch(in.meta_opcode){
                 case meta_RC: std::cout << "r" << in.Rd << ", #" << in.u_immediate; break;
-                case meta_RR: std::cout << "r" << in.Rd << ", r" << in.Rs; break //format 4 and 5 are both taking care of by meta__RR 
+                case meta_RR: std::cout << "r" << in.Rd << ", r" << in.Rs;          break; //format 4 and 5 are both taking care of by meta__RR 
+                default:
+                    THROW_INVALID_METACODE(CMP);
             }
             break;
 
         case i_EOR   : // bitwise XOR
             //EOR   = 4
-            std::cout << "EOR r" << in.Rd << ", r" << in.Rs; break;
+            std::cout << "EOR r" << in.Rd << ", r" << in.Rs; 
+            break;
+        
         case i_LDMIA : // load multiple
             //LDMIA = 15
             std::cout << "LDMIA r" << in.Rb << ",! { " << in.Rlist << "}";  
+            break;
+
         case i_LDR   : // load word
             //LDR   = 6(RC_pc), 7(RRR), 9(RRC), 11(RC_sp)
             std::cout << "LDR ";
@@ -136,6 +158,8 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
                 case meta_RRR: std::cout << "r" << in.Rd << "[r" << in.Rb << ", r" << in.Ro << "]";          break;
                 case meta_RRC: std::cout << "r" << in.Rd << "[r" << in.Rb << ", #" << in.u_immediate << "]"; break;
                 case meta_RC_sp: std::cout << 'r' << in.Rd << ", [SP, #" << in.u_immediate << ']';           break;
+                default:
+                    THROW_INVALID_METACODE(LDR);
             }
             break;
 
@@ -145,6 +169,8 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             switch(in.meta_opcode){
                 case meta_RRR: std::cout << "r" << in.Rd << "[r" << in.Rb << ", r" << in.Ro << "]";          break;
                 case meta_RRC: std::cout << "r" << in.Rd << "[r" << in.Rb << ", #" << in.u_immediate << "]"; break;
+                default:
+                    throw std::runtime_error("opcode(LDRB) : invalid meta opcode");
             }
             break;
 
@@ -154,6 +180,8 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             switch(in.meta_opcode){
                 case meta_RRR: std::cout << "r" << in.Rd << "[ r" << in.Rb << ", r" << in.Ro << "]"; break;
                 case meta_RRC: std::cout << "r" << in.Rd << "[ r" << in.Rb << ", #" << in.u_immediate << "]"; break;
+                default:
+                    THROW_INVALID_METACODE(LDRH);
             }
             break;
 
@@ -163,6 +191,8 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             switch(in.meta_opcode){
                 case meta_RRC: std::cout << "r" << in.Rd << ", r" << in.Rs << " #" << in.u_immediate; break;
                 case meta_RR: std::cout << "r" << in.Rd << ", r" << in.Rs; break;
+                default:
+                    THROW_INVALID_METACODE(LSL);
             }
             break;
 
@@ -182,6 +212,8 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             switch(in.meta_opcode){
                 case meta_RRC: std::cout << "r" << in.Rd << ", r" << in.Rs << " #" << in.u_immediate; break;
                 case meta_RR: std::cout << "r" << in.Rd << ", r" << in.Rs; break;
+                default:
+                    THROW_INVALID_METACODE(LSR);
             }
             break; 
 
@@ -191,6 +223,8 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             switch(in.meta_opcode){
                 case meta_RC: std::cout << "r" << in.Rd << ", #" << in.u_immediate; break;
                 case meta_RR: std::cout << "r" << in.Rd << ", r" << in.Rs; break;
+                default:
+                    THROW_INVALID_METACODE(MOV);
             }
             break;
 
@@ -892,10 +926,13 @@ instruction_t decode_format_19( unsigned int PC, unsigned int instruction_word )
     inst.opcode      = i_BL;
 
     int H = (instruction_word >> 11) & 0x01;
-  
-    if(H == 0)
+    inst.H = H;
+
+    if(H == 0) {
+        if((inst.u_immediate >> 10) & 0x01) // extract sign bit
+            inst.u_immediate |= 0xFFFFF800;
         inst.u_immediate <<= 12; // shift left 12 bits
-    else
+    } else
         inst.u_immediate <<= 1;  // shift left 1 bit
   
     return inst;

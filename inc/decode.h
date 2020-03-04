@@ -27,7 +27,10 @@ struct instruction_t {
     int Rs, Rd, Rn, Rb, Ro;
     //int Hs, Hd; // HI register references
 
-    int Rlist;
+    union {
+        int Rlist;
+        int H;
+    };
 
     instruction_t(void);
 
