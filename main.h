@@ -22,11 +22,22 @@
 #define BASE_FORMAT_18 (SHL(15) | SHL(14) | SHL(13) | 0)
 #define BASE_FORMAT_19 (SHL(15) | SHL(14) | SHL(13) | SHL(12) | 0)
 
-#undef SHL
+#include <iostream>
+#include <inc/decode.h>
 
 void test_decode_fns(void) {
 
-    
+    {
+        const uint32_t in = BASE_FORMAT_4 | (0x05 << 6) | (0x03 << 3) | (0x01 << 0);
+        std::cout << "E: ADC r1, r3\n"; // expected
+        auto dec_str = decode_instruction(0x00, in).str();
+        std::cout << "G: " << dec_str << std::endl; // given
+    }
+
+    {
+        
+    }
 
 }
 
+#undef SHL
