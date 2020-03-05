@@ -4,11 +4,19 @@ ADC r1, r3
 ADD r5, r2, r0
 2 1 10 4 6 2 3 5 0 ; add (RRC)
 ADD r5, r2, #4
-3 2 11 7 8 255 0 ; add (RC)
+3 2 11 7 8 255 0  ; add (RC)
 ADD r7, #255
-5 ; add (RR)
+5 1 7 5 3 0 0     ; add (RR : Hd Rs)
 ADD r8, r5
-5 ; add (RR)
+5 1 6 5 3 3 0     ; add (RR : Rd Hs)
 ADD r3, r13
-5 ; add (RR)
+5 1 7 1 6 4 3 1 0 ; add (RR : Hd Hs)
 ADD r9, r12
+12 5 8 45 0       ; add (RC_pc)
+ADD r5, PC, #45
+12 1 11 7 8 128 0 ; add (RC_sp)
+ADD r7, SP, #128
+13 127 0     ; add (C_sp +imm)
+ADD SP, #508
+13 1 7 127 0 ; add (C_sp -imm)
+ADD SP, #-508

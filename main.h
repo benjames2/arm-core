@@ -85,10 +85,10 @@ void test_decode_fns(std::string filename) {
         auto dec     = decode_instruction(0x00, base_format);
         auto dec_str = dec.str();
         
-        std::cout << "E: " << strval << std::endl;
-        std::cout << "G: " << dec_str << std::endl << std::flush;
+        std::cout << "Expected : " << strval << std::endl;
+        std::cout << "Decoded  : " << dec_str << std::endl << std::flush;
         assert(strval == dec_str);
-        std::cout << "\n";
+        std::cout << "SUCCESS\n\n";
     }
 
 }
