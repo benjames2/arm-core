@@ -1,22 +1,56 @@
-4 5 6 3 3 1 0 ;
+4 5 6 3 3 1 0       ; adc
 ADC r1, r3
-2 0 6 2 3 5 0 ; add (RRR)
+2 0 6 2 3 5 0       ; add (RRR)
 ADD r5, r2, r0
-2 1 10 4 6 2 3 5 0 ; add (RRC)
+2 1 10 4 6 2 3 5 0  ; add (RRC)
 ADD r5, r2, #4
-3 2 11 7 8 255 0  ; add (RC)
+3 2 11 7 8 255 0    ; add (RC)
 ADD r7, #255
-5 1 7 5 3 0 0     ; add (RR : Hd Rs)
+5 1 7 5 3 0 0       ; add (RR : Hd Rs)
 ADD r8, r5
-5 1 6 5 3 3 0     ; add (RR : Rd Hs)
+5 1 6 5 3 3 0       ; add (RR : Rd Hs)
 ADD r3, r13
-5 1 7 1 6 4 3 1 0 ; add (RR : Hd Hs)
+5 1 7 1 6 4 3 1 0   ; add (RR : Hd Hs)
 ADD r9, r12
-12 5 8 45 0       ; add (RC_pc)
+12 5 8 45 0         ; add (RC_pc)
 ADD r5, PC, #45
-12 1 11 7 8 128 0 ; add (RC_sp)
+12 1 11 7 8 128 0   ; add (RC_sp)
 ADD r7, SP, #128
-13 127 0     ; add (C_sp +imm)
+13 127 0            ; add (C_sp +imm)
 ADD SP, #508
-13 1 7 127 0 ; add (C_sp -imm)
+13 1 7 127 0        ; add (C_sp -imm)
 ADD SP, #-508
+4 3 3 0 0           ; AND
+AND r0, r3
+1 2 11 4 3 4 0 28 6 ; ASR (RRC)
+ASR r4, r4, #28
+4 4 6 2 3 1 0       ; ASR (RR)
+ASR r1, r2
+18 1023 0           ; B
+B #2046
+18 1024 0           ; B
+B #-2048
+4 14 6 5 3 4 0 ; BIC
+BIC r4, r5
+19             ; BL H=0
+
+19 1 11        ; BL H=1
+BL #0
+19 2047 0      ; BL H=0
+
+19 1 11 2047 0 ; BL H=1
+BL #-2
+19 1023 0      ; BL H=0
+
+19 1 11 2047 0 ; BL H=1
+BL #4194302
+19 1024 0      ; BL H=0
+
+19 1 11        ; BL H=1
+BL #-4194304
+5 3 8 4 3          ; BX H2=0
+BX r4
+5 3 8 1 6 3 3      ; BX H2=1
+BX r11
+4 11 6 2 3 5 0 ; CMN
+CMN r5, r2

@@ -81,7 +81,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
 
         case i_B     : // unconditional branch
             // B     = 18
-            os << "B " << in.i_immediate;
+            os << "B #" << in.i_immediate;
             break;
 
         case i_Bxx   : // conditional branch
@@ -121,7 +121,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             else if(in.H == 1) {
 
                 int offset = sInstruction.i_immediate + in.i_immediate;
-                os << "BL " << offset;
+                os << "BL #" << offset;
 
                 sInstruction.u_immediate = 0x00;            
             }
@@ -129,7 +129,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
 
         case i_BX    : // branch and exchange
             //BX    = 5*
-            os << "BX " << in.Rs;
+            os << "BX r" << in.Rs;
             break;
             
         case i_CMN   : // compare negative
@@ -138,7 +138,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             break;
             
         case i_CMP   : // compare 
-            //CMP   = 3, 4, 5* // 4 and 5 have the same meta opcode
+            //CMP   = 3(RC), 4(RR), 5*(RR) // 4 and 5 have the same meta opcode
             os << "CMP ";
             switch(in.meta_opcode){
                 case meta_RC: os << "r" << in.Rd << ", #" << in.u_immediate; break;
@@ -893,6 +893,9 @@ instruction_t decode_format_16( unsigned int PC, unsigned int instruction_word )
     if((inst.u_immediate >> 7) & 0x01)
         inst.u_immediate |= 0xFFFFFF00;
 
+    // left shift to create 9 bit signed number
+    inst.u_immediate <<= 1;
+
     inst.opcode         = i_Bxx;
     inst.condition_code = (instruction_word >> 8) & 0x0F;
 
@@ -917,12 +920,11 @@ instruction_t decode_format_18( unsigned int PC, unsigned int instruction_word )
     inst.u_immediate = (instruction_word >> 0) & 0x7FF;
     inst.opcode = i_B;
 
+    if((inst.u_immediate >> 10) & 0x01)
+        inst.u_immediate |= 0xFFFFF800;
+
     // shift left to get a 12 bit number
     inst.u_immediate <<= 1;
-
-    // sign extend the 12-bit number to 32-bits
-    if((inst.u_immediate >> 11) & 0x01)
-        inst.u_immediate |= 0xFFFFF000; 
 
     return inst;
 }
