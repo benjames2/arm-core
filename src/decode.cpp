@@ -40,7 +40,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
 
         case i_ADC   : // add with carry
             //ADC   = 4
-            os << "ADC r" << in.Rd << ", r" << in.Rs << '\n'; // 
+            os << "ADC r" << in.Rd << ", r" << in.Rs; // 
             break;
 
         case i_ADD   : // add
@@ -374,6 +374,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
 
     }
 
+    return os;
 }
 
 // top-level decode function
