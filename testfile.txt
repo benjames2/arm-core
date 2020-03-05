@@ -52,5 +52,15 @@ BL #-4194304
 BX r4
 5 3 8 1 6 3 3      ; BX H2=1
 BX r11
-4 11 6 2 3 5 0 ; CMN
+4 11 6 2 3 5 0     ; CMN
 CMN r5, r2
+3 1 11 0 8 251 0        ; CMP (RC)
+CMP r0, #251
+4 10 6 4 3 2 0          ; CMP (RR : 4)
+CMP r2, r4
+5 1 8 1 7 5 3 0 0       ; CMP (RR : Hd Rs)
+CMP r8, r5
+5 1 8 1 6 5 3 3 0       ; CMP (RR : Rd Hs)
+CMP r3, r13
+5 1 8 1 7 1 6 4 3 1 0   ; CMP (RR : Hd Hs)
+CMP r9, r12
