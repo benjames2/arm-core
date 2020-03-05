@@ -22,6 +22,7 @@ int main(int argc, char* argv[]) {
 
     test_decode_fns("testfile.branch.txt");
     test_decode_fns("testfile.txt");
+    test_decode_fns("testfile.bottom.txt");
 
     return 0;
 }

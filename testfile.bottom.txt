@@ -1,0 +1,18 @@
+4 8 6 4 3 7 0          ; TST 
+TST r4, r7
+2 1 9 6 6 7 3 3 0      ; SUB (RRR)
+SUB r3, r7, r6
+2 3 9 5 6 3 3 1 0      ; SUB (RRC)
+SUB r1, r3, #5
+3 3 11 7 8 255 0       ; SUB (RC)
+SUB r7, #255
+17 200                 ; SWI
+SWI #200
+8 5 6 6 3 7 0          ; STRH (RRR)
+STRH r7, [r6, r5]
+10 30 6 0 3 4 0        ; STRH (RRC)
+STRH r4, [r0, #30]
+7 1 10 1 6 7 3 2 0     ; STRB (RRR)
+STRB r2, [r7, r1]
+9 1 12 28 6 6 3 7 0    ; STRB (RRC)
+STRB r7, [r6, #28]
