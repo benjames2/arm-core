@@ -155,16 +155,23 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
         
         case i_LDMIA : // load multiple
             //LDMIA = 15
-            os << "LDMIA r" << in.Rb << ",! { " << in.Rlist << "}";  
+            os << "LDMIA r" << in.Rb << "!, { "; 
+            
+            for(int i = 0; i < 8; i++) {
+                if((in.Rlist >> i) & 0x01)
+                    os << "r" << i << ' ';
+            }
+
+            os << "}";  
             break;
 
         case i_LDR   : // load word
             //LDR   = 6(RC_pc), 7(RRR), 9(RRC), 11(RC_sp)
             os << "LDR ";
             switch(in.meta_opcode){
-                case meta_RC: os << "r" << in.Rd << "[PC, #" << in.u_immediate << "]";                break;
-                case meta_RRR: os << "r" << in.Rd << "[r" << in.Rb << ", r" << in.Ro << "]";          break;
-                case meta_RRC: os << "r" << in.Rd << "[r" << in.Rb << ", #" << in.u_immediate << "]"; break;
+                case meta_RC: os << "r" << in.Rd << ", [PC, #" << in.u_immediate << "]";                break;
+                case meta_RRR: os << "r" << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << "]";          break;
+                case meta_RRC: os << "r" << in.Rd << ", [r" << in.Rb << ", #" << in.u_immediate << "]"; break;
                 case meta_RC_sp: os << 'r' << in.Rd << ", [SP, #" << in.u_immediate << ']';           break;
                 default:
                     THROW_INVALID_METACODE(LDR);
@@ -321,7 +328,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
                 case meta_RRC:   os << 'r' << in.Rb << ", [r" << in.Rb << ", #" << in.u_immediate << ']'; break;
                 case meta_RC_sp: os << 'r' << in.Rd << ", [SP, #" << in.u_immediate << ']';               break;
                 default: 
-                    std::runtime_error("opcode(STR) : invalid metaopcode");
+                    std::runtime_error("opcode(STR) : invalid meta opcode");
             }
             break;
 
@@ -332,7 +339,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
                 case meta_RRR: os << 'r' << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << ']';          break;
                 case meta_RRC: os << 'r' << in.Rd << ", [r" << in.Rb << ", #" << in.u_immediate << ']'; break;
                 default:
-                    std::runtime_error(" STRB: Invalid meta opcode");                
+                    std::runtime_error("opcode(STRB): Invalid meta opcode");                
             }
             break;
 

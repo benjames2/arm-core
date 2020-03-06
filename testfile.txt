@@ -64,3 +64,13 @@ CMP r8, r5
 CMP r3, r13
 5 1 8 1 7 1 6 4 3 1 0   ; CMP (RR : Hd Hs)
 CMP r9, r12
+4 1 6 5 3 3 0 ; EOR bitwise Exclusive OR
+EOR r3, r5
+15 1 11 5 8         ; LDMIA (none)
+LDMIA r5!, { }
+15 1 11 3 8 255 0   ; LDMIA (all)
+LDMIA r3!, { r0 r1 r2 r3 r4 r5 r6 r7 }
+15 1 11 7 8 129 0   ; LDMIA (r0 & r7)
+LDMIA r7!, { r0 r7 }
+6 3 8 255 0 ; LDR (RC)
+LDR r3, [PC, #1020]
