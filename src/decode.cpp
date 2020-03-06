@@ -27,7 +27,7 @@ instruction_t::instruction_t(void) {
 
 std::string instruction_t::str(void) {
     std::stringstream ss;
-    ss << *this;
+    ss << *this << std::flush;
     return ss.str();
 }
 
@@ -725,7 +725,7 @@ instruction_t decode_format_9(  unsigned int PC, unsigned int instruction_word )
     inst.Rb = (instruction_word >> 3) & 0x07;
     inst.u_immediate = (instruction_word >> 6) & 0x1F;
 
-    inst.meta_opcode = meta_RC;
+    
 
     int L = (instruction_word >> 11) & 0x01;
     int B = (instruction_word >> 12) & 0x01;
@@ -745,6 +745,8 @@ instruction_t decode_format_9(  unsigned int PC, unsigned int instruction_word )
         default:
             throw std::runtime_error("Decode format_9 : LB field invalid");
     } 
+
+    inst.meta_opcode = meta_RC;
 
     return inst;
 }
