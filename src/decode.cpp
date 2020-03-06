@@ -339,7 +339,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
                 case meta_RRR: os << 'r' << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << ']';          break;
                 case meta_RRC: os << 'r' << in.Rd << ", [r" << in.Rb << ", #" << in.u_immediate << ']'; break;
                 default:
-                    std::runtime_error("opcode(STRB): Invalid meta opcode");                
+                    THROW_INVALID_METACODE(STRB);               
             }
             break;
 
@@ -350,7 +350,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
                 case meta_RRR: os << 'r' << in.Rd <<", [r" << in.Rb << ", r" << in.Ro << ']';           break;
                 case meta_RRC: os << 'r' << in.Rd << ", [r" << in.Rb << ", #" << in.u_immediate << ']'; break;
                 default:
-                    std::runtime_error(" STRH: invalid meta_opcode");
+                    THROW_INVALID_METACODE(STRH);
             }
             break;
 
@@ -367,7 +367,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
                 case meta_RRC: os << 'r' << in.Rd << ", r" << in.Rs << ", #"<< in.u_immediate; break;   
                 case meta_RC:  os << 'r' << in.Rd << ", #"<< in.u_immediate;                    break;     
                 default:
-                    std::runtime_error("SUB: invalid meta_opcode");
+                    THROW_INVALID_METACODE(SUB);
             }
             break;
 
