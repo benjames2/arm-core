@@ -56,7 +56,8 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
                     case meta_RC_sp: os << 'r' << in.Rd << ", SP, #" << in.u_immediate;               break;
                     case meta_C_sp:  os << "SP, #" << in.i_immediate;                                 break;
                     default:
-                        throw std::runtime_error("opcode(ADD) : invalid meta opcode");
+                        THROW_INVALID_METACODE(ADD);
+                        //throw std::runtime_error("opcode(ADD) : invalid meta opcode");
                 }
             }
             break;
@@ -74,7 +75,8 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
                     case meta_RRC: os << 'r' << in.Rd << ", r" << in.Rs << ", #" << in.u_immediate; break;
                     case meta_RR:  os << 'r' << in.Rd << ", r" << in.Rs; break;
                     default:
-                        throw std::runtime_error("opcode(ASR) : invalid meta opcode");
+                        THROW_INVALID_METACODE(ASR);
+                        //throw std::runtime_error("opcode(ASR) : invalid meta opcode");
                 }
             }
             break;
@@ -185,7 +187,8 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
                 case meta_RRR: os << "r" << in.Rd << "[r" << in.Rb << ", r" << in.Ro << "]";          break;
                 case meta_RRC: os << "r" << in.Rd << "[r" << in.Rb << ", #" << in.u_immediate << "]"; break;
                 default:
-                    throw std::runtime_error("opcode(LDRB) : invalid meta opcode");
+                    THROW_INVALID_METACODE(LDRB);
+                    //throw std::runtime_error("opcode(LDRB) : invalid meta opcode");
             }
             break;
 
@@ -276,7 +279,8 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
                 case meta_C:                        break; // do nothing for this case
                 case meta_C_pc: os << "PC "; break;
                 default:
-                    throw std::runtime_error("opcode(POP) : invalid meta opcode");
+                    THROW_INVALID_METACODE(POP);
+                    //throw std::runtime_error("opcode(POP) : invalid meta opcode");
             }
 
             os << "}";
@@ -295,7 +299,8 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
                 case meta_C:                        break; // do nothing for this case
                 case meta_C_pc: os << "LR "; break;
                 default:
-                    throw std::runtime_error("opcode(PUSH) : invalid meta opcode");
+                    THROW_INVALID_METACODE(PUSH);
+                    //throw std::runtime_error("opcode(PUSH) : invalid meta opcode");
             }
 
             os << "}";
@@ -328,18 +333,31 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
                 case meta_RRC:   os << 'r' << in.Rb << ", [r" << in.Rb << ", #" << in.u_immediate << ']'; break;
                 case meta_RC_sp: os << 'r' << in.Rd << ", [SP, #" << in.u_immediate << ']';               break;
                 default: 
-                    std::runtime_error("opcode(STR) : invalid meta opcode");
+                    THROW_INVALID_METACODE(STR);
+                    //throw std::runtime_error("opcode(STR) : invalid meta opcode");
             }
             break;
 
         case i_STRB  : // store byte
             //STRB  = 7, 9
+            std::cout << "case i_STRB(31)\n" << std::flush;
             os << "STRB ";
             switch(in.meta_opcode) {
-                case meta_RRR: os << 'r' << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << ']';          break;
-                case meta_RRC: os << 'r' << in.Rd << ", [r" << in.Rb << ", #" << in.u_immediate << ']'; break;
+                case meta_RRR: 
+                    std::cout << "\tmeta_RRR\n" << std::flush;
+                    os << 'r' << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << ']';          
+                    break;
+                case meta_RRC: 
+                    std::cout << "\tmeta_RRC\n" << std::flush;
+                    os << 'r' << in.Rd << ", [r" << in.Rb << ", #" << in.u_immediate << ']'; 
+                    break;
                 default:
+<<<<<<< HEAD
                     THROW_INVALID_METACODE(STRB);               
+=======
+                    std::cout << "\tERROR\n" << std::flush;
+                    throw std::runtime_error("opcode(STRB): Invalid meta opcode");                
+>>>>>>> testfile-read-tool
             }
             break;
 
