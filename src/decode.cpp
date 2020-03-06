@@ -27,7 +27,7 @@ instruction_t::instruction_t(void) {
 
 std::string instruction_t::str(void) {
     std::stringstream ss;
-    ss << *this;
+    ss << *this << std::flush;
     return ss.str();
 }
 
@@ -337,7 +337,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             os << "STRB ";
             switch(in.meta_opcode) {
                 case meta_RRR: os << 'r' << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << ']';          break;
-                case meta_RRC: os << 'r' << in.Rb << ", [r" << in.Rb << ", #" << in.u_immediate << ']'; break;
+                case meta_RRC: os << 'r' << in.Rd << ", [r" << in.Rb << ", #" << in.u_immediate << ']'; break;
                 default:
                     std::runtime_error("opcode(STRB): Invalid meta opcode");                
             }
@@ -364,7 +364,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             os << "SUB " ;
             switch (in.meta_opcode) {
                 case meta_RRR: os << 'r' << in.Rd << ", r" << in.Rs << ", r" << in.Rn;          break;
-                case meta_RRC: os << 'r' << in.Rd << ", r" << in.Rs << ",  #"<< in.u_immediate; break;   
+                case meta_RRC: os << 'r' << in.Rd << ", r" << in.Rs << ", #"<< in.u_immediate; break;   
                 case meta_RC:  os << 'r' << in.Rd << ", #"<< in.u_immediate;                    break;     
                 default:
                     std::runtime_error("SUB: invalid meta_opcode");
@@ -732,7 +732,7 @@ instruction_t decode_format_9(  unsigned int PC, unsigned int instruction_word )
     inst.Rb = (instruction_word >> 3) & 0x07;
     inst.u_immediate = (instruction_word >> 6) & 0x1F;
 
-    inst.meta_opcode = meta_RC;
+    
 
     int L = (instruction_word >> 11) & 0x01;
     int B = (instruction_word >> 12) & 0x01;
@@ -752,6 +752,8 @@ instruction_t decode_format_9(  unsigned int PC, unsigned int instruction_word )
         default:
             throw std::runtime_error("Decode format_9 : LB field invalid");
     } 
+
+    inst.meta_opcode = meta_RC;
 
     return inst;
 }
