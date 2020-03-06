@@ -16,3 +16,25 @@ STRH r4, [r0, #30]
 STRB r2, [r7, r1]
 9 1 12 28 6 6 3 7 0    ; STRB (RRC)
 STRB r7, [r6, #28]
+7 1 6 2 3 3 0          ; STR (RRR) 
+STR r3, [r2, r1]
+9 28 6 6 3 7 0         ; STR (RRC)
+STR r7, [r6, #28]
+11 250 0               ; STR (R_SP)
+STR r0, [SP, #250]
+15 63 0                ; STMIA
+STMIA r0!, { r0 r1 r2 r3 r4 r5 }
+4 6 6 4 3 3 0          ; SBC (RR)
+SBC r3, r4
+4 7 6 4 3 3 0          ; ROR (RR)
+ROR r3, r4
+4 12 6 4 3 7 0         ; ORR (RR)
+ORR r7, r4
+4 9 6 4 3 3 0          ; NEG (RR)
+NEG r3, r4
+4 15 6 4 3 3 0         ; MVN (RR)
+MVN r3, r4
+4 13 6 4 3 3 0         ; MUL (RR)
+MUL r3, r4
+3 6 8 19 0             ; MOV (RC)
+MOV r6, #19
