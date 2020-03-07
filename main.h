@@ -87,7 +87,7 @@ void test_decode_fns(std::string filename) {
         
         std::cout << "Expected : " << strval << std::endl;
         std::cout << "Decoded  : " << dec_str << std::endl << std::flush;
-        //assert(strval == dec_str);
+        assert(strval == dec_str);
         std::cout << "SUCCESS\n\n";
     }
 

@@ -64,7 +64,7 @@ CMP r8, r5
 CMP r3, r13
 5 1 8 1 7 1 6 4 3 1 0   ; CMP (RR : Hd Hs)
 CMP r9, r12
-4 1 6 5 3 3 0 ; EOR bitwise Exclusive OR
+4 1 6 5 3 3 0         ; EOR bitwise Exclusive OR
 EOR r3, r5
 15 1 11 5 8         ; LDMIA (none)
 LDMIA r5!, { }
@@ -72,3 +72,25 @@ LDMIA r5!, { }
 LDMIA r3!, { r0 r1 r2 r3 r4 r5 r6 r7 }
 15 1 11 7 8 129 0   ; LDMIA (r0 & r7)
 LDMIA r7!, { r0 r7 }
+6 3 8               ; LDR (RC_pc)
+LDR r3, [PC, #0]
+6 5 8 3 0           ; ...
+LDR r5, [PC, #12]
+6 2 8 255 0         ; ...
+LDR r2, [PC, #1020]
+7 1 11 5 6 6 3 7 0   ; LDR (RRR)
+LDR r7, [r6, r5]
+9 1 11 3 0 15 6      ; LDR (RRC)
+LDR r3, [r0, #60]
+9 1 11 1 3 7 0 31 6  ; LDR (RRC)
+LDR r7, [r1, #124]
+7 1 11 1 10 1 6 7 3 3 0  ; LDRB (RRR)
+LDRB r3, [r7, r1]
+9 1 12 1 11 5 3 1 0      ; LDRB (RRC) 
+LDRB r1, [r5, #0]
+9 1 12 1 11 5 3 1 0 31 6 ; LDRB (RRC) 
+LDRB r1, [r5, #31]
+8 1 11 7 6 3 3 2 0 ; LDRH (RRR)
+LDRH r2, [r3, r7]
+10 1 11 ; LDRH (RRC)
+LDRH r3, [r4, #]

@@ -171,10 +171,10 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             //LDR   = 6(RC_pc), 7(RRR), 9(RRC), 11(RC_sp)
             os << "LDR ";
             switch(in.meta_opcode){
-                case meta_RC: os << "r" << in.Rd << ", [PC, #" << in.u_immediate << "]";                break;
+                case meta_RC_pc: os << "r" << in.Rd << ", [PC, #" << in.u_immediate << "]";             break;
                 case meta_RRR: os << "r" << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << "]";          break;
                 case meta_RRC: os << "r" << in.Rd << ", [r" << in.Rb << ", #" << in.u_immediate << "]"; break;
-                case meta_RC_sp: os << 'r' << in.Rd << ", [SP, #" << in.u_immediate << ']';           break;
+                case meta_RC_sp: os << 'r' << in.Rd << ", [SP, #" << in.u_immediate << ']';             break;
                 default:
                     THROW_INVALID_METACODE(LDR);
             }
@@ -184,8 +184,8 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             //LDRB  = 7, 9 
             os << "LDRB ";
             switch(in.meta_opcode){
-                case meta_RRR: os << "r" << in.Rd << "[r" << in.Rb << ", r" << in.Ro << "]";          break;
-                case meta_RRC: os << "r" << in.Rd << "[r" << in.Rb << ", #" << in.u_immediate << "]"; break;
+                case meta_RRR: os << "r" << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << "]";          break;
+                case meta_RRC: os << "r" << in.Rd << ", [r" << in.Rb << ", #" << in.u_immediate << "]"; break;
                 default:
                     THROW_INVALID_METACODE(LDRB);
                     //throw std::runtime_error("opcode(LDRB) : invalid meta opcode");
@@ -196,8 +196,8 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             //LDRH  = 8, 10
             os << "LDRH ";
             switch(in.meta_opcode){
-                case meta_RRR: os << "r" << in.Rd << "[ r" << in.Rb << ", r" << in.Ro << "]"; break;
-                case meta_RRC: os << "r" << in.Rd << "[ r" << in.Rb << ", #" << in.u_immediate << "]"; break;
+                case meta_RRR: os << "r" << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << "]"; break;
+                case meta_RRC: os << "r" << in.Rd << ", [r" << in.Rb << ", #" << in.u_immediate << "]"; break;
                 default:
                     THROW_INVALID_METACODE(LDRH);
             }
@@ -296,7 +296,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             }
 
             switch(in.i_immediate){
-                case meta_C:                        break; // do nothing for this case
+                case meta_C:                 break; // do nothing for this case
                 case meta_C_pc: os << "LR "; break;
                 default:
                     THROW_INVALID_METACODE(PUSH);
@@ -340,24 +340,16 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
 
         case i_STRB  : // store byte
             //STRB  = 7, 9
-            std::cout << "case i_STRB(31)\n" << std::flush;
             os << "STRB ";
             switch(in.meta_opcode) {
                 case meta_RRR: 
-                    std::cout << "\tmeta_RRR\n" << std::flush;
                     os << 'r' << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << ']';          
                     break;
                 case meta_RRC: 
-                    std::cout << "\tmeta_RRC\n" << std::flush;
                     os << 'r' << in.Rd << ", [r" << in.Rb << ", #" << in.u_immediate << ']'; 
                     break;
                 default:
-<<<<<<< HEAD
                     THROW_INVALID_METACODE(STRB);               
-=======
-                    std::cout << "\tERROR\n" << std::flush;
-                    throw std::runtime_error("opcode(STRB): Invalid meta opcode");                
->>>>>>> testfile-read-tool
             }
             break;
 
@@ -771,7 +763,10 @@ instruction_t decode_format_9(  unsigned int PC, unsigned int instruction_word )
             throw std::runtime_error("Decode format_9 : LB field invalid");
     } 
 
-    inst.meta_opcode = meta_RC;
+    if(B == 0x00)
+        inst.u_immediate <<= 2;
+
+    inst.meta_opcode = meta_RRC;
 
     return inst;
 }
