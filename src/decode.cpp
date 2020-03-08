@@ -184,8 +184,8 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             //LDRB  = 7, 9 
             os << "LDRB ";
             switch(in.meta_opcode){
-                case meta_RRR: os << "r" << in.Rd << "[r" << in.Rb << ", r" << in.Ro << "]";          break;
-                case meta_RRC: os << "r" << in.Rd << "[r" << in.Rb << ", #" << in.u_immediate << "]"; break;
+                case meta_RRR: os << "r" << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << "]";          break;
+                case meta_RRC: os << "r" << in.Rd << ", [r" << in.Rb << ", #" << in.u_immediate << "]"; break;
                 default:
                     THROW_INVALID_METACODE(LDRB);
                     //throw std::runtime_error("opcode(LDRB) : invalid meta opcode");
@@ -196,8 +196,8 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             //LDRH  = 8, 10
             os << "LDRH ";
             switch(in.meta_opcode){
-                case meta_RRR: os << "r" << in.Rd << "[ r" << in.Rb << ", r" << in.Ro << "]"; break;
-                case meta_RRC: os << "r" << in.Rd << "[ r" << in.Rb << ", #" << in.u_immediate << "]"; break;
+                case meta_RRR: os << "r" << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << "]"; break;
+                case meta_RRC: os << "r" << in.Rd << ", [r" << in.Rb << ", #" << in.u_immediate << "]"; break;
                 default:
                     THROW_INVALID_METACODE(LDRH);
             }
@@ -207,7 +207,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             //LSL   = 1, 4 
             os << "LSL ";
             switch(in.meta_opcode){
-                case meta_RRC: os << "r" << in.Rd << ", r" << in.Rs << " #" << in.u_immediate; break;
+                case meta_RRC: os << "r" << in.Rd << ", r" << in.Rs << ", #" << in.u_immediate; break;
                 case meta_RR: os << "r" << in.Rd << ", r" << in.Rs; break;
                 default:
                     THROW_INVALID_METACODE(LSL);
@@ -216,19 +216,19 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
 
         case i_LDSB  : // load sign-extended byte
             //LDSB  = 8
-            os << "LDSB r" << in.Rd << "[ r" << in.Rb << ", r" << in.Ro << "]";
+            os << "LDSB r" << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << "]";
             break;
         
         case i_LDSH  : // load sign-extended halfword
             //LDSH  = 8
-            os << "LDSH r" << in.Rd << "[ r" << in.Rb << ", r" << in.Ro << "]";
+            os << "LDSH r" << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << "]";
             break;
         
         case i_LSR   : // logical shift right
             //LSR   = 1, 4
             os << "LSR ";
             switch(in.meta_opcode){
-                case meta_RRC: os << "r" << in.Rd << ", r" << in.Rs << " #" << in.u_immediate; break;
+                case meta_RRC: os << "r" << in.Rd << ", r" << in.Rs << ", #" << in.u_immediate; break;
                 case meta_RR: os << "r" << in.Rd << ", r" << in.Rs; break;
                 default:
                     THROW_INVALID_METACODE(LSR);
