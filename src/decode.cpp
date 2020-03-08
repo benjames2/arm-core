@@ -207,8 +207,8 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             //LSL   = 1, 4 
             os << "LSL ";
             switch(in.meta_opcode){
-                case meta_RRC: os << "r" << in.Rd << ", r" << in.Rs << " #" << in.u_immediate; break;
-                case meta_RR: os << "r" << in.Rd << ", r" << in.Rs; break;
+                case meta_RRC: os << "r" << in.Rd << ", r" << in.Rs << ", #" << in.u_immediate; break;
+                case meta_RR:  os << "r" << in.Rd << ", r" << in.Rs; break;
                 default:
                     THROW_INVALID_METACODE(LSL);
             }
@@ -216,7 +216,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
 
         case i_LDSB  : // load sign-extended byte
             //LDSB  = 8
-            os << "LDSB r" << in.Rd << "[ r" << in.Rb << ", r" << in.Ro << "]";
+            os << "LDSB r" << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << "]";
             break;
         
         case i_LDSH  : // load sign-extended halfword
@@ -778,6 +778,9 @@ instruction_t decode_format_10( unsigned int PC, unsigned int instruction_word )
     inst.Rd = (instruction_word >> 0) & 0x07;
     inst.Rb = (instruction_word >> 3) & 0x07;
     inst.u_immediate = (instruction_word >> 6) & 0x1F;
+
+    // shift left to create 6-bit constant
+    inst.u_immediate <<= 1;
 
     inst.meta_opcode = meta_RRC;
     
