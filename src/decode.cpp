@@ -171,10 +171,10 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             //LDR   = 6(RC_pc), 7(RRR), 9(RRC), 11(RC_sp)
             os << "LDR ";
             switch(in.meta_opcode){
-                case meta_RC: os << "r" << in.Rd << ", [PC, #" << in.u_immediate << "]";                break;
+                case meta_RC_pc: os << "r" << in.Rd << ", [PC, #" << in.u_immediate << "]";             break;
                 case meta_RRR: os << "r" << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << "]";          break;
                 case meta_RRC: os << "r" << in.Rd << ", [r" << in.Rb << ", #" << in.u_immediate << "]"; break;
-                case meta_RC_sp: os << 'r' << in.Rd << ", [SP, #" << in.u_immediate << ']';           break;
+                case meta_RC_sp: os << 'r' << in.Rd << ", [SP, #" << in.u_immediate << ']';             break;
                 default:
                     THROW_INVALID_METACODE(LDR);
             }
@@ -767,6 +767,11 @@ instruction_t decode_format_9(  unsigned int PC, unsigned int instruction_word )
             throw std::runtime_error("Decode format_9 : LB field invalid");
     } 
 
+    if(B == 0x00)
+        inst.u_immediate <<= 2;
+
+    inst.meta_opcode = meta_RRC;
+
     return inst;
 }
 
@@ -777,6 +782,9 @@ instruction_t decode_format_10( unsigned int PC, unsigned int instruction_word )
     inst.Rd = (instruction_word >> 0) & 0x07;
     inst.Rb = (instruction_word >> 3) & 0x07;
     inst.u_immediate = (instruction_word >> 6) & 0x1F;
+
+    // shift left to create 6-bit constant
+    inst.u_immediate <<= 1;
 
     inst.meta_opcode = meta_RRC;
     

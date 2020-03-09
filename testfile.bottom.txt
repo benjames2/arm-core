@@ -11,7 +11,7 @@ SWI #200
 8 5 6 6 3 7 0          ; STRH (RRR)
 STRH r7, [r6, r5]
 10 30 6 0 3 4 0        ; STRH (RRC)
-STRH r4, [r0, #30]
+STRH r4, [r0, #60]
 7 1 10 1 6 7 3 2 0     ; STRB (RRR)
 STRB r2, [r7, r1]
 9 1 12 28 6 6 3 7 0    ; STRB (RRC)

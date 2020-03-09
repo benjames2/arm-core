@@ -21,8 +21,8 @@ int main(int argc, char* argv[]) {
     //armcpu.set_current_mode(armv7_m3::mode_16);
 
     test_decode_fns("testfile.branch.txt");
-    test_decode_fns("testfile.txt");
     test_decode_fns("testfile.bottom.txt");
+    test_decode_fns("testfile.txt");
 
     return 0;
 }
