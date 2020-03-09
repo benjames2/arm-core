@@ -6,41 +6,14 @@
 // to carry out an instruction
 
 #include <iostream>
+#include <string>
 #include "opcodes.h"
+#include "decode_structure.h"
 
-struct instruction_t {
 
-    // which specific opcode is this
-    opcode_t opcode;
-    int meta_opcode; // many opcodes have multiple uses
-    int condition_code; // the branch instruction have many conditions 
-
-    uint32_t PC; // always contains PC value of next instruction
-
-    // some instructions contain an immediate
-    union {
-        int i_immediate;
-        unsigned int u_immediate;
-    };
-
-    // register references
-    int Rs, Rd, Rn, Rb, Ro;
-    //int Hs, Hd; // HI register references
-
-    union {
-        int Rlist;
-        int H;
-    };
-
-    instruction_t(void);
-
-};
-
-// operator overload to print instruction_t data (sort of like disassembling)
-std::ostream& operator<<(std::ostream& os, instruction_t& in);
 
 // highest level decode function
-instruction_t decode_instruction(unsigned int PC, unsigned int instruction_word);
+instruction_t decode_16bit_instruction(unsigned int PC, unsigned int instruction_word);
 
 
 instruction_t decode_format_1(  unsigned int PC, unsigned int instruction_word ); // move shifted register

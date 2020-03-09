@@ -1,7 +1,9 @@
 #include <iostream>
 #include <inc/core.h>
 #include <inc/memory_pool.h>
-#include <inc/decode.h>
+#include <inc/decode_structure.h>
+#include <inc/decode_16.h>
+#include <inc/decode_32.h>
 #include <inc/asm_math_interface.h>
 
 #include "main.h"
@@ -14,16 +16,48 @@ int main(int argc, char* argv[]) {
     // system, certain alignment requirements must be met:
     static_assert(sizeof(results_t) == 8,          "sizeof results_t incorrect (should be 8)");
     static_assert(offsetof(results_t, flags) == 0, "alignment of .flags in results_t incorrect (should be 0)");
-    static_assert(offsetof(results_t, u32) == 4, "alignment of .u32 in results_t incorrect (should be 4)");
-    static_assert(offsetof(results_t, i32) == 4, "alignment of .i32 in results_t incorrect (should be 4)");
-
-    
-
+    static_assert(offsetof(results_t, u32) == 4,   "alignment of .u32 in results_t incorrect (should be 4)");
+    static_assert(offsetof(results_t, i32) == 4,   "alignment of .i32 in results_t incorrect (should be 4)");
 
     //armv7_m3 armcpu;
     //armcpu.set_current_mode(armv7_m3::mode_16);
 
-    test_decode_fns();
+    test_decode_fns("test/testfile.branch.txt");
+    test_decode_fns("test/testfile.bottom.txt");
+    test_decode_fns("test/testfile.txt");
+
+    std::cout << "INSTRUCTION TESTS PASSED\n\n" << std::flush;
+
+    memory_t mem(memory_t::big_endian);
+
+    for(auto cptr : { "test/input/assembly-code.txt", "test/input/memory.txt" }) {
+        load_memory_file(cptr, mem);
+        std::cout << mem << std::endl;
+    }
+
+    // starting address for machine code
+
+    for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
+        uint32_t instruction_word = mem.load_u16(addr);
+
+        int prefix = (instruction_word >> 11) & 0x1F;
+
+        //for(int i : { 12, 8, 4, 0 }) {
+        //    cout << ((instruction_word >> i) & 0x0F)["0123456789ABCDEF"];
+        //}
+        //cout << ' ';
+
+        if(prefix == 0x1D || prefix == 0x1E || prefix == 0x1F) {
+            // 32-bit instruction
+            cout << "<32-BIT THUMB INSTRUCTION>\n";
+            addr += 4;
+        }
+        else {
+            auto decoded_inst = decode_16bit_instruction(addr, instruction_word);
+            cout << decoded_inst << endl;
+            addr += 2;
+        }
+    }
 
     return 0;
 }

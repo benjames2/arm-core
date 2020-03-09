@@ -2,7 +2,7 @@
 
 # pretty standard build flags. could prolly do without the -O3 flag for this 
 # project, it may do some wonky things with our data
-flags="-std=c++11 -march=native -O3 -I./"
+flags="-std=c++11 -no-pie -march=native -O3 -I./"
 
 # list of object code files that need to be included in the final executable
 #   obj/math.o is compiled from assembly to avoid any undefined behavior in C/C++
@@ -12,7 +12,9 @@ objs="\
     obj/memory_pool.o \
     obj/core.o \
     obj/byte_swap.o \
-    obj/decode.o \
+    obj/decode_structure.o \
+    obj/decode_16.o \
+    obj/decode_32.o \
     obj/math.o" 
 
 # this is a list of base names for various files needed to 
@@ -21,7 +23,9 @@ objs="\
 srcs=( \
     "core" \
     "memory_pool" \
-    "decode" )
+    "decode_structure" \
+    "decode_16" \
+    "decode_32" )
 
 # if the obj/ directory doesnt exist, create it
 mkdir -p obj/
