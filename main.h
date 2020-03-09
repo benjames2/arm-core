@@ -27,7 +27,46 @@
 #include <fstream>
 #include <string>
 #include <assert.h>
-#include <inc/decode.h>
+#include <inc/decode_structure.h>
+#include <inc/decode_16.h>
+#include <inc/decode_32.h>
+#include <inc/memory_pool.h>
+
+void load_memory_file(std::string filename, memory_t& mempool) {
+
+    std::cout << "Loading '" << filename << "'..." << std::flush;
+
+    std::ifstream is(filename);
+    std::string str;
+
+    uint32_t addr;
+    while(is >> std::hex >> addr) {
+        is >> std::dec >> str;
+
+        if(str.size() == 4) {
+            std::stringstream ss(str);
+            uint16_t u16;
+            ss >> std::hex >> u16;
+            mempool.store_u16(addr, u16);
+        }
+        else if(str.size() == 8) {
+            std::stringstream ss(str);
+            uint32_t u32;
+            ss >> std::hex >> u32;
+
+            mempool.store_u16(addr, (u32 >> 16) & 0xFFFF);
+            mempool.store_u16(addr+2, u32 & 0xFFFF);
+        }
+        else {
+            throw std::runtime_error(
+                "while reading file '" + filename + "' invalid data "
+                "entry size: " + std::to_string(str.size()));
+        }
+
+    }
+
+    std::cout << "DONE\n" << std::flush;
+}
 
 static uint32_t getFormat(int format) {
     switch(format) {
@@ -87,7 +126,7 @@ void test_decode_fns(std::string filename) {
 
         std::getline(is, strval);
         //is.ignore();
-        auto dec     = decode_instruction(0x00, base_format);
+        auto dec     = decode_16bit_instruction(0x00, base_format);
         auto dec_str = dec.str();
         
         std::cout << "Expected : " << strval << std::endl;
