@@ -18,7 +18,7 @@ STRB r2, [r7, r1]
 STRB r7, [r6, #28]
 7 1 6 2 3 3 0          ; STR (RRR) 
 STR r3, [r2, r1]
-9 28 6 6 3 7 0         ; STR (RRC)
+9 7 6 6 3 7 0        ; STR (RRC)
 STR r7, [r6, #28]
 11 250 0               ; STR (R_SP)
 STR r0, [SP, #250]
@@ -59,7 +59,7 @@ LSL r2, r5
 8 1 11 1 6 2 3 3 0     ; LDRH (RRR)
 LDRH r3, [r2, r1]
 10 1 11 17 6 4 3 2 0   ; LDRH (RRC)
-LDRH r2, [r4, #17]
+LDRH r2, [r4, #34]
 7 3 10 1 6 7 3 2 0     ; LDRB (RRR)
 LDRB r2, [r7, r1]
 9 3 11 28 6 6 3 7 0    ; LDRB (RRC)
