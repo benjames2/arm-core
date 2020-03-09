@@ -16,3 +16,51 @@ STRH r4, [r0, #60]
 STRB r2, [r7, r1]
 9 1 12 28 6 6 3 7 0    ; STRB (RRC)
 STRB r7, [r6, #28]
+7 1 6 2 3 3 0          ; STR (RRR) 
+STR r3, [r2, r1]
+9 28 6 6 3 7 0         ; STR (RRC)
+STR r7, [r6, #28]
+11 250 0               ; STR (R_SP)
+STR r0, [SP, #250]
+15 63 0                ; STMIA
+STMIA r0!, { r0 r1 r2 r3 r4 r5 }
+4 6 6 4 3 3 0          ; SBC (RR)
+SBC r3, r4
+4 7 6 4 3 3 0          ; ROR (RR)
+ROR r3, r4
+4 12 6 4 3 7 0         ; ORR (RR)
+ORR r7, r4
+4 9 6 4 3 3 0          ; NEG (RR)
+NEG r3, r4
+4 15 6 4 3 3 0         ; MVN (RR)
+MVN r3, r4
+4 13 6 4 3 3 0         ; MUL (RR)
+MUL r3, r4
+3 6 8 19 0             ; MOV (RC)
+MOV r6, #19
+5 2 8 1 6 3 3 4 0      ; MOV (Rd, Hs)
+MOV r4, r11
+5 2 8 1 7 3 3 4 0      ; MOV (Hd, Rs)
+MOV r12, r3
+5 2 8 3 6 3 3 4 0      ; MOV (Hd, Hs)
+MOV r12, r11
+1 1 11 28 6 7 3 1 0    ; LSR (RRC)
+LSR r1, r7, #28
+4 3 6 5 3 2 0          ; LSR (RR)
+LSR r2, r5
+8 3 10 6 6 5 3 4 0     ; LDSH
+LDSH r4, [r5, r6]
+8 1 10 1 6 2 3 3 0     ; LDSB
+LDSB r3, [r2, r1]
+1 28 6 7 3 1 0         ; LSL (RRC)
+LSL r1, r7, #28
+4 2 6 5 3 2 0          ; LSL (RR)
+LSL r2, r5
+8 1 11 1 6 2 3 3 0     ; LDRH (RRR)
+LDRH r3, [r2, r1]
+10 1 11 17 6 4 3 2 0   ; LDRH (RRC)
+LDRH r2, [r4, #17]
+7 3 10 1 6 7 3 2 0     ; LDRB (RRR)
+LDRB r2, [r7, r1]
+9 3 11 28 6 6 3 7 0    ; LDRB (RRC)
+LDRB r7, [r6, #28]

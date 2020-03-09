@@ -208,7 +208,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             os << "LSL ";
             switch(in.meta_opcode){
                 case meta_RRC: os << "r" << in.Rd << ", r" << in.Rs << ", #" << in.u_immediate; break;
-                case meta_RR:  os << "r" << in.Rd << ", r" << in.Rs; break;
+                case meta_RR: os << "r" << in.Rd << ", r" << in.Rs; break;
                 default:
                     THROW_INVALID_METACODE(LSL);
             }
@@ -221,14 +221,14 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
         
         case i_LDSH  : // load sign-extended halfword
             //LDSH  = 8
-            os << "LDSH r" << in.Rd << "[ r" << in.Rb << ", r" << in.Ro << "]";
+            os << "LDSH r" << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << "]";
             break;
         
         case i_LSR   : // logical shift right
             //LSR   = 1, 4
             os << "LSR ";
             switch(in.meta_opcode){
-                case meta_RRC: os << "r" << in.Rd << ", r" << in.Rs << " #" << in.u_immediate; break;
+                case meta_RRC: os << "r" << in.Rd << ", r" << in.Rs << ", #" << in.u_immediate; break;
                 case meta_RR: os << "r" << in.Rd << ", r" << in.Rs; break;
                 default:
                     THROW_INVALID_METACODE(LSR);
@@ -300,7 +300,6 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
                 case meta_C_pc: os << "LR "; break;
                 default:
                     THROW_INVALID_METACODE(PUSH);
-                    //throw std::runtime_error("opcode(PUSH) : invalid meta opcode");
             }
 
             os << "}";
@@ -310,19 +309,25 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
         case i_ROR   : // rotate right
             //ROR   = 4
             os << "ROR ";
-            os << "r" << in.Rd << ", r:" << in.Rs;
+            os << "r" << in.Rd << ", r" << in.Rs;
             break;
         
         case i_SBC   : // subtract with carry
             //SBC   = 4
-            std:: cout << "SBC ";
-            os << "r" << in.Rd << ", r:" << in.Rs;
+            os <<  "SBC ";
+            os << "r" << in.Rd << ", r" << in.Rs;
             break;
         
         case i_STMIA : // store multiple
             //STMIA = 15
-            std:: cout << "STMIA ";
-            os << "r!" << in.Rb << "{ Rlist:" << in.Rlist << "}";
+            os << "STMIA r" << in.Rb << "!, { "; 
+            
+            for(int i = 0; i < 8; i++) {
+                if((in.Rlist >> i) & 0x01)
+                    os << "r" << i << ' ';
+            }
+
+            os << "}";
             break;
 
         case i_STR   : // store word
@@ -330,11 +335,10 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             os << "STR ";
             switch(in.meta_opcode) {
                 case meta_RRR:   os << 'r' << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << ']';          break;
-                case meta_RRC:   os << 'r' << in.Rb << ", [r" << in.Rb << ", #" << in.u_immediate << ']'; break;
+                case meta_RRC:   os << 'r' << in.Rd << ", [r" << in.Rb << ", #" << in.u_immediate << ']'; break;
                 case meta_RC_sp: os << 'r' << in.Rd << ", [SP, #" << in.u_immediate << ']';               break;
                 default: 
                     THROW_INVALID_METACODE(STR);
-                    //throw std::runtime_error("opcode(STR) : invalid meta opcode");
             }
             break;
 
@@ -342,7 +346,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             //STRB  = 7, 9
             os << "STRB ";
             switch(in.meta_opcode) {
-                case meta_RRR: 
+                case meta_RRR:
                     os << 'r' << in.Rd << ", [r" << in.Rb << ", r" << in.Ro << ']';          
                     break;
                 case meta_RRC: 
@@ -742,7 +746,7 @@ instruction_t decode_format_9(  unsigned int PC, unsigned int instruction_word )
     inst.Rb = (instruction_word >> 3) & 0x07;
     inst.u_immediate = (instruction_word >> 6) & 0x1F;
 
-    
+     inst.meta_opcode = meta_RRC;
 
     int L = (instruction_word >> 11) & 0x01;
     int B = (instruction_word >> 12) & 0x01;
