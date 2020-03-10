@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <string>
-#include "opcodes.h"
+#include "opcodes16.h"
 #include "decode_structure.h"
 
 

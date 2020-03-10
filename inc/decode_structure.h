@@ -2,7 +2,8 @@
 
 #include <iostream>
 #include <string>
-#include "opcodes.h"
+#include "opcodes16.h"
+#include "opcodes32.h"
 
 struct instruction_t {
 
