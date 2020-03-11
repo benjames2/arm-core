@@ -90,21 +90,20 @@ instruction_t decode_32bit_instruction(unsigned int PC, unsigned int instruction
         throw std::runtime_error("decode_32bit_instruction : 16-bit instruction passed as 32-bit instruction");
     }
 
-}
+    throw std::runtime_error("decode_32bit_instruction : invalid instruction encoding");
 
-instruction_t decode_32b_A5_20(unsigned int PC, unsigned int instruction_word) {
-
-}
-
-instruction_t decode_32b_A5_21(unsigned int PC, unsigned int instruction_word) {
-
-}
-
-instruction_t decode_32b_A5_26(unsigned int PC, unsigned int instruction_word) {
-    
 }
 
 instruction_t decode_32b_A5_14(unsigned int PC, unsigned int instruction_word) {
+
+    auto& iw = instruction_word;
+    instruction_t in;
+
+    int op = (iw >> (4 + 16)) & 0x1F;
+    int Rn = (iw >> (0 + 16)) & 0x0F;
+    int Rd = (iw >> (8 + 0)) & 0x0F;
+
+    
 
 }
 
@@ -116,11 +115,15 @@ instruction_t decode_32b_A5_18(unsigned int PC, unsigned int instruction_word) {
 
 }
 
-instruction_t decode_32b_A5_25(unsigned int PC, unsigned int instruction_word) {
+instruction_t decode_32b_A5_20(unsigned int PC, unsigned int instruction_word) {
 
 }
 
-instruction_t decode_32b_A5_24(unsigned int PC, unsigned int instruction_word) {
+instruction_t decode_32b_A5_21(unsigned int PC, unsigned int instruction_word) {
+
+}
+
+instruction_t decode_32b_A5_22(unsigned int PC, unsigned int instruction_word) {
 
 }
 
@@ -128,8 +131,16 @@ instruction_t decode_32b_A5_23(unsigned int PC, unsigned int instruction_word) {
 
 }
 
-instruction_t decode_32b_A5_22(unsigned int PC, unsigned int instruction_word) {
+instruction_t decode_32b_A5_24(unsigned int PC, unsigned int instruction_word) {
 
+}
+
+instruction_t decode_32b_A5_25(unsigned int PC, unsigned int instruction_word) {
+
+}
+
+instruction_t decode_32b_A5_26(unsigned int PC, unsigned int instruction_word) {
+    
 }
 
 instruction_t decode_32b_A5_27(unsigned int PC, unsigned int instruction_word) {

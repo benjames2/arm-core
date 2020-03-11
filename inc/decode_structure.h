@@ -37,3 +37,20 @@ struct instruction_t {
 
 // operator overload to print instruction_t data (sort of like disassembling)
 std::ostream& operator<<(std::ostream& os, instruction_t& in);
+
+struct instruction_32b_t {
+
+    opcode_t opcode;
+    int meta_opcode;
+
+    int Rn;
+    int Rd;
+
+    union {
+        uint32_t u32;
+        int32_t  i32;
+    }
+
+};
+
+std::ostream& operator<<(std::ostream& os, instruction_32b_t& in);

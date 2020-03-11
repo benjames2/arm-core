@@ -10,8 +10,8 @@
     from the ones used for Thumb16
 */
 
-const opcode_t t32_ADC    = 0;   // A6.18(imm), 
-const opcode_t t32_ADD    = 1;
+const opcode_t t32_ADC    = 0;   // A6.18(imm), A6.20(reg)
+const opcode_t t32_ADD    = 1;   // 
 const opcode_t t32_ADR    = 2;
 const opcode_t t32_AND    = 3;
 const opcode_t t32_ASR    = 4;
