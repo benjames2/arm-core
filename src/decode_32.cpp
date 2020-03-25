@@ -13,7 +13,7 @@ static int asBin(const char* bstr) {
     return r;
 }
 
-instruction_t decode_32bit_instruction(unsigned int PC, unsigned int instruction_word) {
+instruction_32b_t decode_32bit_instruction(unsigned int PC, unsigned int instruction_word) {
 
     int op1 = (instruction_word >> (11 + 16)) & 0x03;
     int op2 = (instruction_word >> ( 4 + 16)) & 0x7F;
@@ -94,10 +94,10 @@ instruction_t decode_32bit_instruction(unsigned int PC, unsigned int instruction
 
 }
 
-instruction_t decode_32b_A5_14(unsigned int PC, unsigned int instruction_word) {
+instruction_32b_t decode_32b_A5_14(unsigned int PC, unsigned int instruction_word) {
 
     auto& iw = instruction_word;
-    instruction_t in;
+    instruction_32b_t in;
 
     int op = (iw >> (4 + 16)) & 0x1F;
     int Rn = (iw >> (0 + 16)) & 0x0F;
@@ -107,54 +107,112 @@ instruction_t decode_32b_A5_14(unsigned int PC, unsigned int instruction_word) {
 
 }
 
-instruction_t decode_32b_A5_17(unsigned int PC, unsigned int instruction_word) {
+instruction_32b_t decode_32b_A5_17(unsigned int PC, unsigned int instruction_word) {
 
 }
 
-instruction_t decode_32b_A5_18(unsigned int PC, unsigned int instruction_word) {
+instruction_32b_t decode_32b_A5_18(unsigned int PC, unsigned int instruction_word) {
 
 }
 
-instruction_t decode_32b_A5_20(unsigned int PC, unsigned int instruction_word) {
+instruction_32b_t decode_32b_A5_20(unsigned int PC, unsigned int instruction_word) {
+
+    int op = (instruction_word >> (15 + 8)) & 0x03;
+    int L  = (instruction_word >> (15 + 5)) & 0x01;
+    int Rn = (instruction_word >> (15 + 1)) & 0x0F;
+
+    if ((op == 0x01) && (L == 0x00)){
+        return decode_32b_A6_216(PC, instruction_word);
+    }
+
+    if ((op == 0x01) ){
+        if (L == 0x01){
+            if (Rn == 0x1101)
+                return decode_32b_A6_184(PC, instruction_word);
+            else
+                return decode_32b_A6_84(PC, instruction_word);
+        }
+        else
+            throw std::runtime_error("In Decode_32b_A5_20: L field is invalid for op = 1");
+    }
+
+    else if (op == 0x10){
+        if (L == 0x00){
+            if (Rn == 0x1101)
+                return decode_32b_A6_186(PC, instruction_word);
+            else
+                return decode_32b_A6_218(PC, instruction_word);
+        }
+        else
+            throw std::runtime_error("In Decode_32b_A5_20: L field is invalid for op = 2");
+    }
+
+    else{
+        throw std::runtime_error("In decode_32b_A5_20: Invalid op value");
+    }
+
+    throw std::runtime_error("In decode_32b_A5_20: invalid instruction encoding");
+}
+
+instruction_32b_t decode_32b_A5_21(unsigned int PC, unsigned int instruction_word) {
 
 }
 
-instruction_t decode_32b_A5_21(unsigned int PC, unsigned int instruction_word) {
+instruction_32b_t decode_32b_A5_22(unsigned int PC, unsigned int instruction_word) {
 
 }
 
-instruction_t decode_32b_A5_22(unsigned int PC, unsigned int instruction_word) {
+instruction_32b_t decode_32b_A5_23(unsigned int PC, unsigned int instruction_word) {
 
 }
 
-instruction_t decode_32b_A5_23(unsigned int PC, unsigned int instruction_word) {
+instruction_32b_t decode_32b_A5_24(unsigned int PC, unsigned int instruction_word) {
 
 }
 
-instruction_t decode_32b_A5_24(unsigned int PC, unsigned int instruction_word) {
+instruction_32b_t decode_32b_A5_25(unsigned int PC, unsigned int instruction_word) {
 
 }
 
-instruction_t decode_32b_A5_25(unsigned int PC, unsigned int instruction_word) {
-
-}
-
-instruction_t decode_32b_A5_26(unsigned int PC, unsigned int instruction_word) {
+instruction_32b_t decode_32b_A5_26(unsigned int PC, unsigned int instruction_word) {
     
 }
 
-instruction_t decode_32b_A5_27(unsigned int PC, unsigned int instruction_word) {
+instruction_32b_t decode_32b_A5_27(unsigned int PC, unsigned int instruction_word) {
 
 }
 
-instruction_t decode_32b_A5_29(unsigned int PC, unsigned int instruction_word) {
+instruction_32b_t decode_32b_A5_29(unsigned int PC, unsigned int instruction_word) {
 
 }
 
-instruction_t decode_32b_A5_30(unsigned int PC, unsigned int instruction_word) {
+instruction_32b_t decode_32b_A5_30(unsigned int PC, unsigned int instruction_word) {
 
 }
 
-instruction_t decode_32b_A5_31(unsigned int PC, unsigned int instruction_word) {
+instruction_32b_t decode_32b_A5_31(unsigned int PC, unsigned int instruction_word) {
+
+}
+
+
+
+
+instruction_32b_t decode_32b_A6_84(unsigned PC, unsigned int instruction_word){
+
+}
+
+instruction_32b_t decode_32b_A6_184(unsigned PC, unsigned int instruction_word){
+
+}
+
+instruction_32b_t decode_32b_A6_186(unsigned PC, unsigned int instruction_word){
+
+}
+
+instruction_32b_t decode_32b_A6_216(unsigned PC, unsigned int instruction_word){
+
+}
+
+instruction_32b_t decode_32b_A6_218(unsigned PC, unsigned int instruction_word){
 
 }
