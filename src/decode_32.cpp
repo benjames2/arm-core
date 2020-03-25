@@ -141,7 +141,7 @@ instruction_32b_t decode_32b_A5_20(unsigned int PC, unsigned int instruction_wor
             if (Rn == 0x1101)
                 return decode_32b_A6_186_PUSH(PC, instruction_word);
             else
-                return decode_32b_A6_218(PC, instruction_word);
+                return decode_32b_A6_218_STMDB(PC, instruction_word);
         }
         else
             throw std::runtime_error("In Decode_32b_A5_20: L field is invalid for op = 2");
@@ -228,7 +228,7 @@ instruction_32b_t decode_32b_A6_186_PUSH(unsigned PC, unsigned int instruction_w
 
     in.M = (instruction_word >> 14) & 0x01;
     in.Rlist = (instruction_word >> 0) & 0x1FFF;
-    
+
     return in;
 }
 
@@ -244,7 +244,14 @@ instruction_32b_t decode_32b_A6_216_STM(unsigned PC, unsigned int instruction_wo
     return in;
 }
 
-instruction_32b_t decode_32b_A6_218(unsigned PC, unsigned int instruction_word){
+instruction_32b_t decode_32b_A6_218_STMDB(unsigned PC, unsigned int instruction_word){
 
     instruction_32b_t in;
+
+    in.W = (instruction_word >> (15 + 6)) & 0x01;
+    in.M = (instruction_word >> 14) & 0x01;
+    in.Rn = (instruction_word >> (15 + 1)) & 0x0F;
+    in.Rlist = (instruction_word >> 0) & 0x1FFF;
+
+    return in;
 }
