@@ -211,6 +211,14 @@ instruction_32b_t decode_32b_A6_186(unsigned PC, unsigned int instruction_word){
 
 instruction_32b_t decode_32b_A6_216(unsigned PC, unsigned int instruction_word){
 
+    instruction_32b_t in;
+
+    in.W = (instruction_word >> (15 + 6)) & 0x01;
+    in.M = (instruction_word >> 14) & 0x01;
+    in.Rn = (instruction_word >> (15 + 1)) & 0x0F;
+    in.Rlist = (instruction_word >> 0) & 0x1FFF;
+
+    return in;
 }
 
 instruction_32b_t decode_32b_A6_218(unsigned PC, unsigned int instruction_word){

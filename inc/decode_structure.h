@@ -43,8 +43,8 @@ struct instruction_32b_t {
     opcode_t opcode;
     int meta_opcode;
 
-    int Rn;
-    int Rd;
+    int W, M;
+    int Rn, Rd, Rlist;
 
     union {
         uint32_t u32;
