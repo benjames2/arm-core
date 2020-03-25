@@ -139,7 +139,7 @@ instruction_32b_t decode_32b_A5_20(unsigned int PC, unsigned int instruction_wor
     else if (op == 0x10){
         if (L == 0x00){
             if (Rn == 0x1101)
-                return decode_32b_A6_186(PC, instruction_word);
+                return decode_32b_A6_186_PUSH(PC, instruction_word);
             else
                 return decode_32b_A6_218(PC, instruction_word);
         }
@@ -213,6 +213,7 @@ instruction_32b_t decode_32b_A6_84_LDM(unsigned PC, unsigned int instruction_wor
 instruction_32b_t decode_32b_A6_184_POP(unsigned PC, unsigned int instruction_word){
 
     instruction_32b_t in;
+
     in.P = (instruction_word >> 15) & 0x01;
     in.M = (instruction_word >> 14) & 0x01;
     in.Rlist = (instruction_word >> 0) & 0x1FFF;
@@ -221,9 +222,14 @@ instruction_32b_t decode_32b_A6_184_POP(unsigned PC, unsigned int instruction_wo
 
 }
 
-instruction_32b_t decode_32b_A6_186(unsigned PC, unsigned int instruction_word){
+instruction_32b_t decode_32b_A6_186_PUSH(unsigned PC, unsigned int instruction_word){
 
     instruction_32b_t in;
+
+    in.M = (instruction_word >> 14) & 0x01;
+    in.Rlist = (instruction_word >> 0) & 0x1FFF;
+    
+    return in;
 }
 
 instruction_32b_t decode_32b_A6_216_STM(unsigned PC, unsigned int instruction_word){
