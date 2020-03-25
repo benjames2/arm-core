@@ -108,7 +108,6 @@ instruction_32b_t decode_32b_A5_14(unsigned int PC, unsigned int instruction_wor
     int Rn = (iw >> (0 + 16)) & 0x0F;
     int Rd = (iw >> (8 + 0)) & 0x0F;
 
-    
 
 }
 
@@ -191,9 +190,9 @@ instruction_32b_t decode_32b_A5_21(unsigned int PC, unsigned int instruction_wor
 
         else if(op2 == 0x01){
             if(op3 == 0x00)
-                return decode_32b_A6_256_TBB(PC, instruction_word);
+                return decode_32b_A6_256_TBB_TBH(PC, instruction_word);
             else if(op3 == 0x01)
-                return decode_32b_A6_256_TBH(PC, instruction_word);
+                return decode_32b_A6_256_TBB_TBH(PC, instruction_word);
             else if(op3 == 0x0100)
                 return decode_32b_A6_107_LDREXB(PC, instruction_word);
             else if(op3 == 0x0101)
@@ -310,7 +309,6 @@ instruction_32b_t decode_32b_A6_106_LDREX(unsigned PC, unsigned int instruction_
     in.Rn = (instruction_word >>(15 +1)) & 0x0F;
     in.Rt = (instruction_word >> 12) & 0x0F;
     in.u32 = (instruction_word >> 0) & 0xFF;
-    in.u32 = (instruction_word >> 0) & 0xFF;
 
     return in;
 
@@ -415,29 +413,32 @@ instruction_32b_t decode_32b_A6_233_STREXB(unsigned PC, unsigned int instruction
     
     instruction_32b_t in;
 
-
+    in.Rn = (instruction_word >>(15 +1)) & 0x0F;
+    in.Rt = (instruction_word >> 12) & 0x0F;
+    in.Rd = (instruction_word >> 0) & 0x0F;
 
     return in;
 }
 
 instruction_32b_t decode_32b_A6_234_STREXH(unsigned PC, unsigned int instruction_word){
-    instruction_32b_t in;
-
-    return in;
-}
-
-instruction_32b_t decode_32b_A6_256_TBB(unsigned PC, unsigned int instruction_word){
-    instruction_32b_t in;
-
-    return in;
-
-}
-
-instruction_32b_t decode_32b_A6_256_TBH(unsigned PC, unsigned int instruction_word){
-
-    instruction_32b_t in;
-
-    return in;
-
     
+    instruction_32b_t in;
+
+    in.Rn = (instruction_word >>(15 +1)) & 0x0F;
+    in.Rt = (instruction_word >> 12) & 0x0F;
+    in.Rd = (instruction_word >> 0) & 0x0F;
+
+    return in;
+}
+
+instruction_32b_t decode_32b_A6_256_TBB_TBH(unsigned PC, unsigned int instruction_word){
+    
+    instruction_32b_t in;
+
+    in.Rn = (instruction_word >>(15 +1)) & 0x0F;
+    in.Rm = (instruction_word >> 0) & 0x0F;
+    in.H  = (instruction_word >> 4) & 0x01;
+
+    return in;
+
 }
