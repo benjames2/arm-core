@@ -343,7 +343,6 @@ instruction_32b_t decode_32b_A6_106_LDREX(unsigned PC, unsigned int instruction_
     in.Rt = (instruction_word >> 12) & 0x0F;
     in.u32 = (instruction_word >> 0) & 0xFF;
 
-
     return in;
 
 }
@@ -351,6 +350,14 @@ instruction_32b_t decode_32b_A6_106_LDREX(unsigned PC, unsigned int instruction_
 instruction_32b_t decode_32b_A6_230_STRD(unsigned PC, unsigned int instruction_word){
     
     instruction_32b_t in;
+
+    in.P = (instruction_word >> (15 + 9)) & 0x01;
+    in.U = (instruction_word >> (15 + 8)) & 0x01;
+    in.W = (instruction_word >> (15 + 6)) & 0x01;
+    in.Rn = (instruction_word >>(15 +1)) & 0x0F;
+    in.Rt = (instruction_word >> 12) & 0x0F;
+    in.Rt2 = (instruction_word >> 8) & 0x0F;
+    in.u32 = (instruction_word >> 0) & 0xFF;
 
     return in;
 }
