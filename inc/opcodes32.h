@@ -136,12 +136,12 @@ const opcode_t t32_WFE    = 122;
 const opcode_t t32_WFI    = 123;
 const opcode_t t32_YIELD  = 124;
 
-const int t32_imm          = 0;
-const int t32_reg          = 1;
-const int t32_SP_imm       = 2;
-const int t32_SP_reg       = 3;
-const int t32_literal      = 4;
-const int t32_shreg        = 5; // shifted register
-const int t32_SP_minus_imm = 6;
-const int t32_SP_minus_reg = 7;
+const int meta_t32_imm          = 0;
+const int meta_t32_reg          = 1;
+const int meta_t32_SP_imm       = 2;
+const int meta_t32_SP_reg       = 3;
+const int meta_t32_literal      = 4;
+const int meta_t32_shreg        = 5; // shifted register
+const int meta_t32_SP_minus_imm = 6;
+const int meta_t32_SP_minus_reg = 7;
 
