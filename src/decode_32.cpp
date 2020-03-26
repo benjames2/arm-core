@@ -162,25 +162,24 @@ instruction_32b_t decode_32b_A5_21(unsigned int PC, unsigned int instruction_wor
 
     int op1 = (instruction_word >> (15 + 8)) & 0x03;
     int op2 = (instruction_word >> (15 + 5)) & 0x03;
-    int op3 = (instruction_word >> 4) & 0x03;
+    int op3 = (instruction_word >> 4) & 0x0F;
 
-    if(op1 == 0x00){
-        if (op2 == 0x00)
+    if(op1 == asBin("00")){
+        if (op2 == asBin("00"))
             return decode_32b_A6_232_STREX(PC, instruction_word);
-        else if(op2 == 0x01)
+        else if(op2 == asBin("01"))
             return decode_32b_A6_106_LDREX(PC, instruction_word);
-        else if(op2 == 0x10)
+        else if(op2 == asBin("10"))
             return decode_32b_A6_230_STRD(PC, instruction_word);
         else
             return decode_32b_A6_102_LDRD_imm(PC, instruction_word);
     }
 
-    else if(op1 == 0x01){
-        if(op2 == 0x00){
-
-            if (op3 == 0x0100)
+    else if(op1 == asBin("01")){
+        if(op2 == asBin("00")){
+            if (op3 == asBin("0100"))
                 return decode_32b_A6_233_STREXB(PC, instruction_word);
-            else if(op3 == 0x0101)
+            else if(op3 == asBin("0101"))
                 return decode_32b_A6_234_STREXH(PC, instruction_word);
             else{
                 throw std::runtime_error("In decode_32b_A5_21: Invalid op3 value for op2 = 0");
@@ -188,22 +187,21 @@ instruction_32b_t decode_32b_A5_21(unsigned int PC, unsigned int instruction_wor
             
         }
 
-        else if(op2 == 0x01){
-            if(op3 == 0x00)
+        else if(op2 == asBin("01")){
+            if(op3 == asBin("0000"))
                 return decode_32b_A6_256_TBB_TBH(PC, instruction_word);
-            else if(op3 == 0x01)
+            else if(op3 == asBin("0001"))
                 return decode_32b_A6_256_TBB_TBH(PC, instruction_word);
-            else if(op3 == 0x0100)
+            else if(op3 == asBin("0100"))
                 return decode_32b_A6_107_LDREXB(PC, instruction_word);
-            else if(op3 == 0x0101)
+            else if(op3 == asBin("0101"))
                 return decode_32b_A6_108_LDREXH(PC, instruction_word);
             else{
                 throw std::runtime_error("In decode_32b_A5_21: Invalid op3 value for op2 = 1");
             }
-
         }
 
-        else if(op2 == 0x10){
+        else if(op2 == asBin("10")){
             return decode_32b_A6_230_STRD(PC, instruction_word);
         }
         else{
@@ -211,10 +209,10 @@ instruction_32b_t decode_32b_A5_21(unsigned int PC, unsigned int instruction_wor
         }
     }
 
-    else if((op1 == 0x10) || (op1 == 0x11)){
-        if ((op2 == 0x00) || (op2 == 0x10))
+    else if((op1 == asBin("10")) || (op1 == asBin("11"))){
+        if ((op2 == asBin("00")) || (op2 == asBin("10")))
             return decode_32b_A6_230_STRD(PC, instruction_word);
-        if((op2 == 0x01) || (op2 == 0x11))
+        if((op2 == asBin("01")) || (op2 == asBin("11")))
             return decode_32b_A6_104_LDRDL(PC, instruction_word); 
     }
 
