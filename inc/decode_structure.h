@@ -49,7 +49,7 @@ struct instruction_32b_t {
     union {
         uint32_t u32;
         int32_t  i32;
-    }
+    };
 
 };
 
