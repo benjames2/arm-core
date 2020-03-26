@@ -242,14 +242,16 @@ instruction_32b_t decode_32b_A5_22(unsigned int PC, unsigned int instruction_wor
             if (op2 == 0b00)
                 return decode_32b_A6_92_LDR_reg(PC, instruction_word);
         }
+        else
+            throw std::runtime_error("In decode_32b_A5_22 : Invalid value for op1 field with Rn != 0b1111");
+        
     }
     else{
         int mask = 0b10;
         if((op1 & mask) == 0b00)
             return decode_32b_A6_90_LDR(PC, instruction_word);
         else
-            throw std::runtime_error("In decode_32b_A5_22 : Invalid value for op1 field");
-        
+            throw std::runtime_error("In decode_32b_A5_22 : Invalid value for op1 field");     
     }
 
     throw std::runtime_error("In decode_32b_A5_22 : Invalid encoding instruction");
