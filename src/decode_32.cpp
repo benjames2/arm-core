@@ -189,9 +189,9 @@ instruction_32b_t decode_32b_A5_21(unsigned int PC, unsigned int instruction_wor
 
         else if(op2 == 0b01){
             if(op3 == 0b0000)
-                return decode_32b_A6_256_TBB_TBH(PC, instruction_word);
+                return decode_32b_A6_256_TBB(PC, instruction_word);
             else if(op3 == 0b0001)
-                return decode_32b_A6_256_TBB_TBH(PC, instruction_word);
+                return decode_32b_A6_256_TBH(PC, instruction_word);
             else if(op3 == 0b0100)
                 return decode_32b_A6_107_LDREXB(PC, instruction_word);
             else if(op3 == 0b0101)
@@ -298,6 +298,7 @@ instruction_32b_t decode_32b_A6_84_LDM(unsigned PC, unsigned int instruction_wor
 
     instruction_32b_t in;
 
+    in.opcode = t32_LDM;
     in.P = (instruction_word >> 15) & 0x01;
     in.M = (instruction_word >> 14) & 0x01;
     in.W = (instruction_word >> (15 + 6)) & 0x01;
@@ -311,6 +312,8 @@ instruction_32b_t decode_32b_A6_102_LDRD_imm(unsigned PC, unsigned int instructi
     
     instruction_32b_t in;
 
+    in.opcode = t32_LDRD;
+    in.meta_opcode = meta_t32_imm;
     in.P = (instruction_word >> (15 + 9)) & 0x01;
     in.U = (instruction_word >> (15 + 8)) & 0x01;
     in.W = (instruction_word >> (15 + 6)) & 0x01;
@@ -326,6 +329,8 @@ instruction_32b_t decode_32b_A6_104_LDRDL(unsigned PC, unsigned int instruction_
 
     instruction_32b_t in;
 
+    in.opcode = t32_LDRD;
+    in.meta_opcode = meta_t32_literal;
     in.P = (instruction_word >> (15 + 9)) & 0x01;
     in.U = (instruction_word >> (15 + 8)) & 0x01;
     in.Rt = (instruction_word >> 12) & 0x0F;
@@ -338,6 +343,7 @@ instruction_32b_t decode_32b_A6_106_LDREX(unsigned PC, unsigned int instruction_
     
     instruction_32b_t in;
 
+    in.opcode = t32_LDREX;
     in.Rn = (instruction_word >>(15 +1)) & 0x0F;
     in.Rt = (instruction_word >> 12) & 0x0F;
     in.u32 = (instruction_word >> 0) & 0xFF;
@@ -350,6 +356,7 @@ instruction_32b_t decode_32b_A6_107_LDREXB(unsigned PC, unsigned int instruction
 
     instruction_32b_t in;
 
+    in.opcode = t32_LDREXB;
     in.Rn = (instruction_word >>(15 +1)) & 0x0F;
     in.Rt = (instruction_word >> 12) & 0x0F;
 
@@ -360,6 +367,7 @@ instruction_32b_t decode_32b_A6_108_LDREXH(unsigned PC, unsigned int instruction
 
     instruction_32b_t in;
 
+    in.opcode = t32_LDREXH;
     in.Rn = (instruction_word >>(15 +1)) & 0x0F;
     in.Rt = (instruction_word >> 12) & 0x0F;
 
@@ -370,6 +378,7 @@ instruction_32b_t decode_32b_A6_184_POP(unsigned PC, unsigned int instruction_wo
 
     instruction_32b_t in;
 
+    in.opcode = t32_POP;
     in.P = (instruction_word >> 15) & 0x01;
     in.M = (instruction_word >> 14) & 0x01;
     in.Rlist = (instruction_word >> 0) & 0x1FFF;
@@ -382,6 +391,7 @@ instruction_32b_t decode_32b_A6_186_PUSH(unsigned PC, unsigned int instruction_w
 
     instruction_32b_t in;
 
+    in.opcode = t32_PUSH;
     in.M = (instruction_word >> 14) & 0x01;
     in.Rlist = (instruction_word >> 0) & 0x1FFF;
 
@@ -392,6 +402,7 @@ instruction_32b_t decode_32b_A6_216_STM(unsigned PC, unsigned int instruction_wo
 
     instruction_32b_t in;
 
+    in.opcode = t32_STM;
     in.W = (instruction_word >> (15 + 6)) & 0x01;
     in.M = (instruction_word >> 14) & 0x01;
     in.Rn = (instruction_word >> (15 + 1)) & 0x0F;
@@ -404,6 +415,7 @@ instruction_32b_t decode_32b_A6_218_STMDB(unsigned PC, unsigned int instruction_
 
     instruction_32b_t in;
 
+    in.opcode = t32_STMDB;
     in.W = (instruction_word >> (15 + 6)) & 0x01;
     in.M = (instruction_word >> 14) & 0x01;
     in.Rn = (instruction_word >> (15 + 1)) & 0x0F;
@@ -416,6 +428,7 @@ instruction_32b_t decode_32b_A6_232_STREX(unsigned PC, unsigned int instruction_
     
     instruction_32b_t in;
 
+    in.opcode = t32_STREX;
     in.Rn = (instruction_word >>(15 +1)) & 0x0F;
     in.Rt = (instruction_word >> 12) & 0x0F;
     in.Rd = (instruction_word >> 8) & 0x0F;
@@ -429,6 +442,7 @@ instruction_32b_t decode_32b_A6_230_STRD(unsigned PC, unsigned int instruction_w
     
     instruction_32b_t in;
 
+    in.opcode = t32_STRD;
     in.P = (instruction_word >> (15 + 9)) & 0x01;
     in.U = (instruction_word >> (15 + 8)) & 0x01;
     in.W = (instruction_word >> (15 + 6)) & 0x01;
@@ -445,6 +459,7 @@ instruction_32b_t decode_32b_A6_233_STREXB(unsigned PC, unsigned int instruction
     
     instruction_32b_t in;
 
+    in.opcode = t32_STREXB;
     in.Rn = (instruction_word >>(15 +1)) & 0x0F;
     in.Rt = (instruction_word >> 12) & 0x0F;
     in.Rd = (instruction_word >> 0) & 0x0F;
@@ -456,6 +471,7 @@ instruction_32b_t decode_32b_A6_234_STREXH(unsigned PC, unsigned int instruction
     
     instruction_32b_t in;
 
+    in.opcode = t32_STREXH;
     in.Rn = (instruction_word >>(15 +1)) & 0x0F;
     in.Rt = (instruction_word >> 12) & 0x0F;
     in.Rd = (instruction_word >> 0) & 0x0F;
@@ -463,10 +479,24 @@ instruction_32b_t decode_32b_A6_234_STREXH(unsigned PC, unsigned int instruction
     return in;
 }
 
-instruction_32b_t decode_32b_A6_256_TBB_TBH(unsigned PC, unsigned int instruction_word){
+instruction_32b_t decode_32b_A6_256_TBB(unsigned PC, unsigned int instruction_word){
     
     instruction_32b_t in;
 
+    in.opcode = t32_TBB;
+    in.Rn = (instruction_word >>(15 +1)) & 0x0F;
+    in.Rm = (instruction_word >> 0) & 0x0F;
+    in.H  = (instruction_word >> 4) & 0x01;
+
+    return in;
+
+}
+
+instruction_32b_t decode_32b_A6_256_TBH(unsigned PC, unsigned int instruction_word){
+    
+    instruction_32b_t in;
+
+    in.opcode = t32_TBH;
     in.Rn = (instruction_word >>(15 +1)) & 0x0F;
     in.Rm = (instruction_word >> 0) & 0x0F;
     in.H  = (instruction_word >> 4) & 0x01;
