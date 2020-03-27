@@ -643,7 +643,7 @@ instruction_32b_t decode_32b_A6_32_AND_imm(unsigned PC, unsigned int instruction
 
     instruction_32b_t in;
 
-    
+
 
     return in;
 }
