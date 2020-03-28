@@ -13,6 +13,98 @@ static int asBin(const char* bstr) {
     return r;
 }
 
+//Modified immediate constants in Thumb-2 instructions on Table A5-11
+static int ThumbExpandImm(int& i, int& imm3, int imm8){
+
+    int a = (imm8 >> 7) & 0x01;
+    int imm32 = 0;
+
+    if(i == 0){
+        switch(imm3){
+            case 0: 
+                imm32 = imm32 | imm8;
+                return imm32;
+                break;
+            case 1:
+                if (imm8 == 0)
+                    std::runtime_error("In ThumbExpand : case 1 : Unpredictable behavior");
+                imm32 = imm32 | (imm8 << 16) | imm8;
+                return imm32;
+                break;
+            case 2:
+                if (imm8 == 0)
+                    std::runtime_error("In ThumbExpand : case 2 : Unpredictable behavior");
+                imm32 = imm32 | (imm8 << 24) | (imm8 << 8);
+                return imm32;
+                break;
+            case 3:
+                if (imm8 == 0)
+                    std::runtime_error("In ThumbExpand : case 1 : Unpredictable behavior");
+                imm32 = imm32 | (imm8 << 24) | (imm8 << 16) | (imm8 << 8) | imm8;
+                return imm32;
+                break;
+            case 4:
+                imm8  = imm8 | 0b10000000;
+                if (a == 0){
+                    imm32 = imm32 | (imm8 << 24);
+                    return imm32;
+                }
+                else{
+                    imm32 = imm32 | (imm8 << 23);
+                    return imm32;
+                } 
+                break;
+            case 5:
+                imm8  = imm8 | 0b10000000;
+                if (a == 0){
+                    imm32 = imm32 | (imm8 << 22);
+                    return imm32;
+                }
+                else{
+                    imm32 = imm32 | (imm8 << 21);
+                    return imm32;
+                }
+                break;
+            case 6:
+                std::runtime_error ("In ThumbExpand: case 6 not completed for i = 0"); 
+                break;
+            case 7: 
+                std::runtime_error ("In ThumbExpand: case 7 not completed for i = 0");
+                break;
+            default:
+                std::runtime_error("In ThumbExpand : default case for i = 0");
+        }
+    }
+    else{
+        switch(imm3){
+            imm8  = imm8 | 0b10000000;
+            case 0: case 1: case 2: case 3: case 4: case 5:
+                std::runtime_error("In ThumbExpand : For i = 1 : case 0, 1, 2, 3, 4, 5 not done ");
+                break;
+            case 6:
+                if(a == 1){
+                    imm32 = imm32 | (imm8 << 3);
+                    return imm32;
+                }
+                else 
+                    std::runtime_error("In ThumbExpand : case 6 : invalid value of a for i = 1");
+                break;
+            case 7:
+                if(a == 0){
+                    imm32 = imm32 | (imm8 << 2);
+                    return imm32;
+                }
+                else{
+                    imm32 = imm32 | (imm8 << 1);
+                    return imm32;
+                }
+                break;
+            default:
+                std::runtime_error("In ThumbExpand : default case for i = 1");
+        }
+    }
+}
+
 
 
 //Top level decoding
@@ -377,6 +469,16 @@ instruction_32b_t decode_32b_A6_18_ADC_imm(unsigned int PC, unsigned int instruc
 instruction_32b_t decode_32b_A6_22_ADD_imm(unsigned int PC, unsigned int instruction_word){
 
     instruction_32b_t in;
+
+    in.Rn = (instruction_word >> (15 + 1)) & 0x0F;
+    in.Rd = (instruction_word >> 8) & 0x0F;
+    in.S  = (instruction_word >> (15 + 5)) & 0x01;
+
+    int i    = (instruction_word >> (15 + 11)) & 0x01;
+    int imm3 = (instruction_word >> 12) & 0x03;
+    int imm8 = (instruction_word >> 0) & 0xFF;
+
+    in.imm32 = ThumbExpandImm(i, imm3, imm8);
     
     return in;
 }
@@ -750,4 +852,3 @@ instruction_32b_t decode_32b_A6_260_TST_imm(unsigned int PC, unsigned int instru
     
     return in;
 }
-
