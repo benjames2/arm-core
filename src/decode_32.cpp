@@ -76,8 +76,8 @@ static int ThumbExpandImm(int& i, int& imm3, int imm8){
         }
     }
     else{
+        imm8  = imm8 | 0b10000000;
         switch(imm3){
-            imm8  = imm8 | 0b10000000;
             case 0: case 1: case 2: case 3: case 4: case 5:
                 std::runtime_error("In ThumbExpand : For i = 1 : case 0, 1, 2, 3, 4, 5 not done ");
                 break;
