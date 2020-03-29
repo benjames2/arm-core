@@ -392,13 +392,13 @@ instruction_32b_t decode_32b_A5_22(unsigned int PC, unsigned int instruction_wor
 
     if(Rn != 0b1111){
         if(op1 == 0x01)
-            return decode_32b_A6_88_LDR_imm(PC, instruction_word);
+            return decode_32b_A6_88_LDR_imm_T3(PC, instruction_word);
 
         else if(op1 == 0x00){
             int mask = 0b100100;
             int mask2 = 0b110000;
             if(((op2 & mask) == 0x100100)  || ((op2 & mask2) == 0x110000))
-                return decode_32b_A6_88_LDR_imm(PC, instruction_word);
+                return decode_32b_A6_88_LDR_imm_T4(PC, instruction_word);
 
             mask = 0b111000;
             if((op2 & mask) == 0b111000)
@@ -462,6 +462,16 @@ instruction_32b_t decode_32b_A5_31(unsigned int PC, unsigned int instruction_wor
 instruction_32b_t decode_32b_A6_18_ADC_imm(unsigned int PC, unsigned int instruction_word){
 
     instruction_32b_t in;
+
+    in.Rn = (instruction_word >> (15 + 1)) & 0x0F;
+    in.Rd = (instruction_word >> 8) & 0x0F;
+    in.S  = (instruction_word >> (15 + 5)) & 0x01;
+
+    int i    = (instruction_word >> (15 + 11)) & 0x01;
+    int imm3 = (instruction_word >> 12) & 0x07;
+    int imm8 = (instruction_word >> 0) & 0xFF;
+
+    in.imm32 = ThumbExpandImm(i, imm3, imm8);
     
     return in;
 }
@@ -475,7 +485,7 @@ instruction_32b_t decode_32b_A6_22_ADD_imm(unsigned int PC, unsigned int instruc
     in.S  = (instruction_word >> (15 + 5)) & 0x01;
 
     int i    = (instruction_word >> (15 + 11)) & 0x01;
-    int imm3 = (instruction_word >> 12) & 0x03;
+    int imm3 = (instruction_word >> 12) & 0x07;
     int imm8 = (instruction_word >> 0) & 0xFF;
 
     in.imm32 = ThumbExpandImm(i, imm3, imm8);
@@ -487,6 +497,19 @@ instruction_32b_t decode_32b_A6_32_AND_imm(unsigned int PC, unsigned int instruc
 
     instruction_32b_t in;
 
+    //(imm32, carry) = ThumbExpandImm_C(i:imm3:imm8, APSR.C);  Carry was not taken into consideraton 
+    //Might need to implement ThumbExpandImm_C function
+
+    in.Rn = (instruction_word >> (15 + 1)) & 0x0F;
+    in.Rd = (instruction_word >> 8) & 0x0F;
+    in.S  = (instruction_word >> (15 + 5)) & 0x01;
+
+    int i    = (instruction_word >> (15 + 11)) & 0x01;
+    int imm3 = (instruction_word >> 12) & 0x07;
+    int imm8 = (instruction_word >> 0) & 0xFF;
+
+    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+
 
     return in;
 }
@@ -494,6 +517,20 @@ instruction_32b_t decode_32b_A6_32_AND_imm(unsigned int PC, unsigned int instruc
 instruction_32b_t decode_32b_A6_44_BIC_imm(unsigned int PC, unsigned int instruction_word){
 
     instruction_32b_t in;
+
+    //(imm32, carry) = ThumbExpandImm_C(i:imm3:imm8, APSR.C);  Carry flag was not taken into consideraton 
+    //Might need to implement ThumbExpandImm_C function
+
+    in.Rn = (instruction_word >> (15 + 1)) & 0x0F;
+    in.Rd = (instruction_word >> 8) & 0x0F;
+    in.S  = (instruction_word >> (15 + 5)) & 0x01;
+
+    int i    = (instruction_word >> (15 + 11)) & 0x01;
+    int imm3 = (instruction_word >> 12) & 0x07;
+    int imm8 = (instruction_word >> 0) & 0xFF;
+
+    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+
     
     return in;
 }
@@ -501,6 +538,18 @@ instruction_32b_t decode_32b_A6_44_BIC_imm(unsigned int PC, unsigned int instruc
 instruction_32b_t decode_32b_A6_58_CMN_imm(unsigned int PC, unsigned int instruction_word){
 
     instruction_32b_t in;
+
+    //imm32 = ThumbExpandImm(i:imm3:imm8);  It should update the condition flags
+    //based on the result, and discards the result.
+
+    in.Rn = (instruction_word >> (15 + 1)) & 0x0F;
+
+    int i    = (instruction_word >> (15 + 11)) & 0x01;
+    int imm3 = (instruction_word >> 12) & 0x07;
+    int imm8 = (instruction_word >> 0) & 0xFF;
+
+    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+
     
     return in;
 }
@@ -508,6 +557,17 @@ instruction_32b_t decode_32b_A6_58_CMN_imm(unsigned int PC, unsigned int instruc
 instruction_32b_t decode_32b_A6_62_CMP_imm(unsigned int PC, unsigned int instruction_word){
 
     instruction_32b_t in;
+
+    //imm32 = ThumbExpandImm(i:imm3:imm8);  It should update the condition flags
+    //based on the result, and discards the result.
+
+    in.Rn = (instruction_word >> (15 + 1)) & 0x0F;
+
+    int i    = (instruction_word >> (15 + 11)) & 0x01;
+    int imm3 = (instruction_word >> 12) & 0x07;
+    int imm8 = (instruction_word >> 0) & 0xFF;
+
+    in.imm32 = ThumbExpandImm(i, imm3, imm8);
     
     return in;
 }
@@ -515,6 +575,16 @@ instruction_32b_t decode_32b_A6_62_CMP_imm(unsigned int PC, unsigned int instruc
 instruction_32b_t decode_32b_A6_72_EOR_imm(unsigned int PC, unsigned int instruction_word){
 
     instruction_32b_t in;
+
+    in.Rn = (instruction_word >> (15 + 1)) & 0x0F;
+    in.Rd = (instruction_word >> 8) & 0x0F;
+    in.S  = (instruction_word >> (15 + 5)) & 0x01;
+
+    int i    = (instruction_word >> (15 + 11)) & 0x01;
+    int imm3 = (instruction_word >> 12) & 0x07;
+    int imm8 = (instruction_word >> 0) & 0xFF;
+
+    in.imm32 = ThumbExpandImm(i, imm3, imm8);
     
     return in;
 }
@@ -533,9 +603,22 @@ instruction_32b_t decode_32b_A6_84_LDM(unsigned int PC, unsigned int instruction
     return in;
 }
 
-instruction_32b_t decode_32b_A6_88_LDR_imm(unsigned int PC, unsigned int instruction_word){
+instruction_32b_t decode_32b_A6_88_LDR_imm_T3(unsigned int PC, unsigned int instruction_word){
 
+    //Encoding T3
     instruction_32b_t in;
+
+
+
+    return in;
+
+}
+
+instruction_32b_t decode_32b_A6_88_LDR_imm_T4(unsigned int PC, unsigned int instruction_word){
+
+    //Encoding T4
+    instruction_32b_t in;
+
 
 
     return in;
