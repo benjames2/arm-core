@@ -45,11 +45,11 @@ struct instruction_32b_t {
 
     int P, W, M, U, H, S;
     int Rn, Rd, Rm, Rt, Rt2, Rlist;
-    int imm32;
 
     union {
         uint32_t u32;
         int32_t  i32;
+        int32_t  imm32;
     };
 
 };
