@@ -962,30 +962,69 @@ instruction_32b_t decode_32b_A6_220_STR_imm_T3(unsigned int PC, unsigned int ins
 
     instruction_32b_t in;
 
+    in.opcode = t32_STR;
+    in.meta_opcode = meta_t32_imm;
+
+    in.Rn  = (instruction_word >>(15 +1)) & 0x0F;
+    in.Rt  = (instruction_word >> 12) & 0x0F;
+    in.u32 = (instruction_word >> 0) & 0xFFF;
+
     return in;
 }
+
 instruction_32b_t decode_32b_A6_220_STR_imm_T4(unsigned int PC, unsigned int instruction_word){
 
     instruction_32b_t in;
 
+    in.opcode = t32_STR;
+
+    in.P   = (instruction_word >> 10) & 0x01;
+    in.U   = (instruction_word >>  9) & 0x01;
+    in.W   = (instruction_word >>  8) & 0x01;
+    in.Rn  = (instruction_word >> (15 +1)) & 0x0F;
+    in.Rt  = (instruction_word >> 12) & 0x0F;
+    in.u32 = (instruction_word >> 0) & 0xFF;
+
     return in;
 }
+
 instruction_32b_t decode_32b_A6_222_STR_reg(unsigned int PC, unsigned int instruction_word){
 
     instruction_32b_t in;
 
+
+
     return in;
 
 }
+
 instruction_32b_t decode_32b_A6_224_STRB_imm_T2(unsigned int PC, unsigned int instruction_word){
 
     instruction_32b_t in;
+    
+    in.opcode = t32_STRB;
+    in.meta_opcode = meta_t32_imm;
+
+    in.Rn  = (instruction_word >>(15 +1)) & 0x0F;
+    in.Rt  = (instruction_word >> 12) & 0x0F;
+    in.u32 = (instruction_word >> 0) & 0xFFF;
+
 
     return in;
 }
 instruction_32b_t decode_32b_A6_224_STRB_imm_T3(unsigned int PC, unsigned int instruction_word){
 
     instruction_32b_t in;
+
+    in.opcode = t32_STRB;
+
+    in.P   = (instruction_word >> 10) & 0x01;
+    in.U   = (instruction_word >>  9) & 0x01;
+    in.W   = (instruction_word >>  8) & 0x01;
+    in.Rn  = (instruction_word >> (15 +1)) & 0x0F;
+    in.Rt  = (instruction_word >> 12) & 0x0F;
+    in.u32 = (instruction_word >> 0) & 0xFF;
+
 
     return in;
 }
@@ -1057,11 +1096,27 @@ instruction_32b_t decode_32b_A6_236_STRH_imm_T2(unsigned int PC, unsigned int in
 
     instruction_32b_t in;
 
+    in.opcode = t32_STRH;
+    in.meta_opcode = meta_t32_imm;
+
+    in.Rn  = (instruction_word >>(15 +1)) & 0x0F;
+    in.Rt  = (instruction_word >> 12) & 0x0F;
+    in.u32 = (instruction_word >> 0) & 0xFFF;
+
     return in;
 }
 instruction_32b_t decode_32b_A6_236_STRH_imm_T3(unsigned int PC, unsigned int instruction_word){
 
     instruction_32b_t in;
+
+    in.opcode = t32_STRH;
+
+    in.P   = (instruction_word >> 10) & 0x01;
+    in.U   = (instruction_word >>  9) & 0x01;
+    in.W   = (instruction_word >>  8) & 0x01;
+    in.Rn  = (instruction_word >> (15 +1)) & 0x0F;
+    in.Rt  = (instruction_word >> 12) & 0x0F;
+    in.u32 = (instruction_word >> 0) & 0xFF;
 
     return in;
 }

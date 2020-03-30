@@ -53,7 +53,7 @@ instruction_32b_t  decode_32b_A5_31(unsigned int PC, unsigned int instruction_wo
 
 
 /*******************************************************************************************************************************
-                        Third level decode functions for 32-bit Thumb2 insructions
+                            Third level decode functions for 32-bit Thumb2 insructions
 *******************************************************************************************************************************/
 instruction_32b_t decode_32b_A6_18_ADC_imm(      unsigned int PC, unsigned int instruction_word); //add with carry immediate
 instruction_32b_t decode_32b_A6_22_ADD_imm(      unsigned int PC, unsigned int instruction_word); //add mmediate
