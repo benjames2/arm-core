@@ -19,8 +19,13 @@ public:
 public:
 
     std::array<register_t, 16> reg;
-    uint32_t APSR; // application program status register
+    union {
+        uint32_t APSR; // application program status register
+        uint32_t CPSR; // current program status register
+    };
+    
     int current_mode; // mode_16 or mode_32;
+    uint64_t cycle_count;
 
 public:
 
@@ -54,6 +59,9 @@ public:
     void set_APSR_C(bool b); // set Carry flag
     void set_APSR_V(bool b); // set oVerflow flag
     void set_APSR_Q(bool b); // set saturate flag
+
+    uint32_t get_CPSR(void);
+    
 
     int get_current_mode(void);
     void set_current_mode(const int m);

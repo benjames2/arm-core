@@ -165,26 +165,26 @@ instruction_32b_t decode_32bit_instruction(unsigned int PC, unsigned int instruc
     int op  = (instruction_word >> 15)        & 0x01;
 
     if(op1 == 0x01) {
-        int mask = asBin("1100100");
-        if(op2 & mask == asBin("0000000"))
+        int mask = 0b1100100;
+        if(op2 & mask == 0b0000000)
             return decode_32b_A5_20(PC, instruction_word);
 
-        mask = asBin("1100100");
-        if(op2 & mask == asBin("0000100"))
+        mask = 0b1100100;
+        if(op2 & mask == 0b0000100)
             return decode_32b_A5_21(PC, instruction_word);
 
-        mask = asBin("1100000");
-        if(op2 & mask == asBin("0100000"))
+        mask = 0b1100000;
+        if(op2 & mask == 0b0100000)
             return decode_32b_A5_26(PC, instruction_word);
 
-        mask = asBin("1000000");
-        if(op2 & mask == asBin("1000000"))
+        mask = 0b1000000;
+        if(op2 & mask == 0b1000000)
             return decode_32b_A5_31(PC, instruction_word);
     }
     else if(op1 == 0x02) {
 
         if(op == 0x00) {
-            int mask = asBin("0100000");
+            int mask = 0b0100000;
             if(op2 & mask == 0x00) {
                 return decode_32b_A5_14(PC, instruction_word);
             }
@@ -198,36 +198,36 @@ instruction_32b_t decode_32bit_instruction(unsigned int PC, unsigned int instruc
     }
     else if(op1 == 0x03) {
 
-        int mask = asBin("1110001");
+        int mask = 0b1110001;
         if(op2 & mask == 0x00)
             return decode_32b_A5_25(PC, instruction_word);
 
-        mask = asBin("1100111");
-        if(op2 & mask == asBin("0000001"))
+        mask = 0b1100111;
+        if(op2 & mask == 0b0000001)
             return decode_32b_A5_24(PC, instruction_word);
         
-        if(op2 & mask == asBin("0000011"))
+        if(op2 & mask == 0b0000011)
             return decode_32b_A5_23(PC, instruction_word);
 
-        if(op2 & mask == asBin("0000101"))
+        if(op2 & mask == 0b0000101)
             return decode_32b_A5_22(PC, instruction_word);
         
-        if(op2 & mask == asBin("0000111"))
+        if(op2 & mask == 0b0000111)
             throw std::runtime_error("decode_32bit_instruction : invalid op2 field");
 
-        mask = asBin("1110000");
-        if(op2 & mask == asBin("0100000"))
+        mask = 0b1110000;
+        if(op2 & mask == 0b0100000)
             return decode_32b_A5_27(PC, instruction_word);
 
-        mask = asBin("1111000");
-        if(op2 & mask == asBin("0110000"))
+        mask = 0b1111000;
+        if(op2 & mask == 0b0110000)
             return decode_32b_A5_29(PC, instruction_word);
 
-        if(op2 & mask == asBin("0111000"))
+        if(op2 & mask == 0b0111000)
             return decode_32b_A5_30(PC, instruction_word);
 
-        mask = asBin("1000000");
-        if(op2 & mask == asBin("1000000"))
+        mask = 0b1000000;
+        if(op2 & mask == 0b1000000)
             return decode_32b_A5_31(PC, instruction_word);
 
     }
@@ -348,7 +348,7 @@ instruction_32b_t decode_32b_A5_20(unsigned int PC, unsigned int instruction_wor
                 return decode_32b_A6_84_LDM(PC, instruction_word);
         }
         else
-            throw std::runtime_error("In Decode_32b_A5_20: L field is invalid for op = 1");
+            throw std::runtime_error("In decode_32b_A5_20: L field is invalid for op = 1");
     }
 
     else if(op == 0x10){
@@ -359,11 +359,11 @@ instruction_32b_t decode_32b_A5_20(unsigned int PC, unsigned int instruction_wor
                 return decode_32b_A6_218_STMDB(PC, instruction_word);
         }
         else
-            throw std::runtime_error("In Decode_32b_A5_20: L field is invalid for op = 2");
+            throw std::runtime_error("In decode_32b_A5_20: L field is invalid for op = 2");
     }
 
     else{
-        throw std::runtime_error("In decode_32b_A5_20: Invalid op value");
+        throw std::runtime_error("In decode_32b_A5_20: invalid op value");
     }
 
     throw std::runtime_error("In decode_32b_A5_20: invalid instruction encoding");
@@ -426,7 +426,9 @@ instruction_32b_t decode_32b_A5_21(unsigned int PC, unsigned int instruction_wor
         if((op2 == 0b01) || (op2 == 0b11))
             return decode_32b_A6_104_LDRD_lit(PC, instruction_word); 
     }
-    throw std::runtime_error("In decode_32b_A5_21: Invalid encoding instruction");
+
+    else
+        throw std::runtime_error("In decode_32b_A5_21: invalid encoding instruction");
     
 }
 
@@ -452,9 +454,10 @@ instruction_32b_t decode_32b_A5_22(unsigned int PC, unsigned int instruction_wor
 
             if (op2 == 0b00)
                 return decode_32b_A6_92_LDR_reg(PC, instruction_word);
+
         }
         else
-            throw std::runtime_error("In decode_32b_A5_22 : Invalid value for op1 field with Rn != 0b1111");
+            throw std::runtime_error("In decode_32b_A5_22 : invalid value for op1 field with Rn != 0b1111");
         
     }
     else{
@@ -462,10 +465,10 @@ instruction_32b_t decode_32b_A5_22(unsigned int PC, unsigned int instruction_wor
         if((op1 & mask) == 0b00)
             return decode_32b_A6_90_LDR_lit(PC, instruction_word);
         else
-            throw std::runtime_error("In decode_32b_A5_22 : Invalid value for op1 field");     
+            throw std::runtime_error("In decode_32b_A5_22 : invalid value for op1 field");     
     }
 
-    throw std::runtime_error("In decode_32b_A5_22 : Invalid encoding instruction");
+    throw std::runtime_error("In decode_32b_A5_22 : invalid instruction encoding");
 
 }
 
@@ -519,9 +522,9 @@ instruction_32b_t decode_32b_A5_25(unsigned int PC, unsigned int instruction_wor
         return decode_32b_A6_220_STR_imm_T3(PC, instruction_word);
 
     else
-        std::runtime_error("In decode_32b_A5_25 : Invalid op1 value");
+        std::runtime_error("In decode_32b_A5_25 : invalid op1 value");
 
-    std::runtime_error("In decode_32b_A5_25 : Invalid instruction encoding");
+    std::runtime_error("In decode_32b_A5_25 : invalid instruction encoding");
         
 }
 
@@ -535,7 +538,6 @@ instruction_32b_t decode_32b_A5_27(unsigned int PC, unsigned int instruction_wor
 
 instruction_32b_t decode_32b_A5_29(unsigned int PC, unsigned int instruction_word) {
     throw std::runtime_error("decode_32b_A5_29 : undefined");
-
 }
 
 instruction_32b_t decode_32b_A5_30(unsigned int PC, unsigned int instruction_word) {

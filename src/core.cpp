@@ -5,6 +5,7 @@ armv7_m3::armv7_m3(void) {
         this->reg[i].u32 = 0x00000000;
 
     this->current_mode = -1;
+    this->cycle_count = 0;
 }
 
 armv7_m3::register_t armv7_m3::get_register(int reg) { return this->reg[reg]; }
