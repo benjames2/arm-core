@@ -549,7 +549,7 @@ instruction_32b_t decode_32b_A5_31(unsigned int PC, unsigned int instruction_wor
 }
 
 // ========================================================
-// Third level decoding function (implmentations)
+// Third level decoding function (implementations)
 // ========================================================
 
 instruction_32b_t decode_32b_A6_18_ADC_imm(unsigned int PC, unsigned int instruction_word){
@@ -564,7 +564,7 @@ instruction_32b_t decode_32b_A6_18_ADC_imm(unsigned int PC, unsigned int instruc
     int imm3 = (instruction_word >> 12) & 0x07;
     int imm8 = (instruction_word >> 0) & 0xFF;
 
-    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+    in.i32 = ThumbExpandImm(i, imm3, imm8);
     
     return in;
 }
@@ -581,7 +581,7 @@ instruction_32b_t decode_32b_A6_22_ADD_imm(unsigned int PC, unsigned int instruc
     int imm3 = (instruction_word >> 12) & 0x07;
     int imm8 = (instruction_word >> 0) & 0xFF;
 
-    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+    in.i32 = ThumbExpandImm(i, imm3, imm8);
     
     return in;
 }
@@ -601,7 +601,7 @@ instruction_32b_t decode_32b_A6_32_AND_imm(unsigned int PC, unsigned int instruc
     int imm3 = (instruction_word >> 12) & 0x07;
     int imm8 = (instruction_word >> 0) & 0xFF;
 
-    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+    in.i32 = ThumbExpandImm(i, imm3, imm8);
 
 
     return in;
@@ -622,7 +622,7 @@ instruction_32b_t decode_32b_A6_44_BIC_imm(unsigned int PC, unsigned int instruc
     int imm3 = (instruction_word >> 12) & 0x07;
     int imm8 = (instruction_word >> 0) & 0xFF;
 
-    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+    in.i32 = ThumbExpandImm(i, imm3, imm8);
 
     
     return in;
@@ -641,8 +641,7 @@ instruction_32b_t decode_32b_A6_58_CMN_imm(unsigned int PC, unsigned int instruc
     int imm3 = (instruction_word >> 12) & 0x07;
     int imm8 = (instruction_word >> 0) & 0xFF;
 
-    in.imm32 = ThumbExpandImm(i, imm3, imm8);
-
+    in.i32 = ThumbExpandImm(i, imm3, imm8);
     
     return in;
 }
@@ -660,7 +659,7 @@ instruction_32b_t decode_32b_A6_62_CMP_imm(unsigned int PC, unsigned int instruc
     int imm3 = (instruction_word >> 12) & 0x07;
     int imm8 = (instruction_word >> 0) & 0xFF;
 
-    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+    in.i32 = ThumbExpandImm(i, imm3, imm8);
     
     return in;
 }
@@ -677,7 +676,7 @@ instruction_32b_t decode_32b_A6_72_EOR_imm(unsigned int PC, unsigned int instruc
     int imm3 = (instruction_word >> 12) & 0x07;
     int imm8 = (instruction_word >> 0) & 0xFF;
 
-    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+    in.i32 = ThumbExpandImm(i, imm3, imm8);
     
     return in;
 }
@@ -855,7 +854,7 @@ instruction_32b_t decode_32b_A6_148_MOV_imm(unsigned int PC, unsigned int instru
     int imm3 = (instruction_word >> 12) & 0x07;
     int imm8 = (instruction_word >> 0) & 0xFF;
 
-    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+    in.i32 = ThumbExpandImm(i, imm3, imm8);
 
     return in;
 }
@@ -874,7 +873,7 @@ instruction_32b_t decode_32b_A6_162_MVN_imm(unsigned int PC, unsigned int instru
     int imm3 = (instruction_word >> 12) & 0x07;
     int imm8 = (instruction_word >> 0) & 0xFF;
 
-    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+    in.i32 = ThumbExpandImm(i, imm3, imm8);
     
     return in;
 }
@@ -893,7 +892,7 @@ instruction_32b_t decode_32b_A6_168_ORN_imm(unsigned int PC, unsigned int instru
     int imm3 = (instruction_word >> 12) & 0x07;
     int imm8 = (instruction_word >> 0) & 0xFF;
 
-    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+    in.i32 = ThumbExpandImm(i, imm3, imm8);
 
     return in;
 }
@@ -912,7 +911,7 @@ instruction_32b_t decode_32b_A6_172_ORR_imm(unsigned int PC, unsigned int instru
     int imm3 = (instruction_word >> 12) & 0x07;
     int imm8 = (instruction_word >> 0) & 0xFF;
 
-    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+    in.i32 = ThumbExpandImm(i, imm3, imm8);
     
     return in;
 }
@@ -956,7 +955,7 @@ instruction_32b_t decode_32b_A6_198_RSB_imm(unsigned int PC, unsigned int instru
     int imm3 = (instruction_word >> 12) & 0x07;
     int imm8 = (instruction_word >> 0) & 0xFF;
 
-    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+    in.i32 = ThumbExpandImm(i, imm3, imm8);
     
     return in;
 }
@@ -975,7 +974,7 @@ instruction_32b_t decode_32b_A6_202_SBC_imm(unsigned int PC, unsigned int instru
     int imm3 = (instruction_word >> 12) & 0x07;
     int imm8 = (instruction_word >> 0) & 0xFF;
 
-    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+    in.i32 = ThumbExpandImm(i, imm3, imm8);
     
     return in;
 }
@@ -1196,7 +1195,7 @@ instruction_32b_t decode_32b_A6_242_SUB_imm(unsigned int PC, unsigned int instru
     int imm3 = (instruction_word >> 12) & 0x07;
     int imm8 = (instruction_word >> 0) & 0xFF;
 
-    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+    in.i32 = ThumbExpandImm(i, imm3, imm8);
     
     return in;
 }
@@ -1238,7 +1237,7 @@ instruction_32b_t decode_32b_A6_258_TEQ_imm(unsigned int PC, unsigned int instru
     int imm3 = (instruction_word >> 12) & 0x07;
     int imm8 = (instruction_word >> 0) & 0xFF;
 
-    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+    in.i32 = ThumbExpandImm(i, imm3, imm8);
     
     return in;
 }
@@ -1254,7 +1253,7 @@ instruction_32b_t decode_32b_A6_260_TST_imm(unsigned int PC, unsigned int instru
     int imm3 = (instruction_word >> 12) & 0x07;
     int imm8 = (instruction_word >> 0) & 0xFF;
 
-    in.imm32 = ThumbExpandImm(i, imm3, imm8);
+    in.i32 = ThumbExpandImm(i, imm3, imm8);
     
     return in;
 }
