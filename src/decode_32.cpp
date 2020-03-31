@@ -1,20 +1,8 @@
 #include <inc/decode_32.h>
 #include <string.h>
 
-static int asBin(const char* bstr) {
-    int r = 0;
-    const int len = strlen(bstr);
-
-    for(int i = 0; i < len; i++) {
-        r <<= 1;
-        r |= (bstr[i] == '0' ? 0 : 1);
-    }
-
-    return r;
-}
-
 //Modified immediate constants in Thumb-2 instructions on Table A5-11
-static int ThumbExpandImm(int& i, int& imm3, int imm8){
+static int ThumbExpandImm(int i, int imm3, int imm8){
 
     int a = (imm8 >> 7) & 0x01;
     int imm32 = 0;
