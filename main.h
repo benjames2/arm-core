@@ -1,5 +1,8 @@
 #pragma once
 
+//============================
+// 16-bit base formats
+//============================
 #define SHL(n) (1 << n)
 
 #define BASE_FORMAT_1  (0) // no bits on by default
@@ -21,6 +24,61 @@
 #define BASE_FORMAT_17 (SHL(15) | SHL(14) | SHL(12) | SHL(11) | SHL(10) | SHL(9) | SHL(8) | 0)
 #define BASE_FORMAT_18 (SHL(15) | SHL(14) | SHL(13) | 0)
 #define BASE_FORMAT_19 (SHL(15) | SHL(14) | SHL(13) | SHL(12) | 0)
+
+//======================================
+// 32-bit instruction formats
+//======================================
+#define TOP_32B_1 (SHL(31) | SHL(30) | SHL(29) | SHL(27) | 0)
+#define TOP_32B_2 (SHL(31) | SHL(30) | SHL(29) | SHL(28) | 0)
+#define TOP_32B_3 (SHL(31) | SHL(30) | SHL(29) | SHL(28) | SHL(27) | 0)
+
+#define FORMAT_ADC_IMM     (TOP_32B_2 | SHL(24) | SHL(22))
+#define FORMAT_ADD_IMM     (TOP_32B_2 | SHL(24))
+#define FORMAT_AND_IMM     (TOP_32B_2)
+#define FORMAT_BIC_IMM     (TOP_32B_2 | SHL(21))
+#define FORMAT_CMN_IMM     (TOP_32B_2 | SHL(24) | SHL(20) | SHL(11) | SHL(10) SHL(9) | SHL(8))
+#define FORMAT_CMP_IMM     (TOP_32B_2 | SHL(24) | SHL(23) | SHL(21) | SHL(20) | SHL(11) | SHL(10) | SHL(9) | SHL(8))
+#define FORMAT_EOR_IMM     (TOP_32B_2 | SHL(23))
+#define FORMAT_LDM         (TOP_32B_1 | SHL(23) | SHL(20))
+#define FORMAT_LDR_IMM_T3  (TOP_32B_3 | SHL(23) | SHL(22) | SHL(20))
+#define FORMAT_LDR_IMM_T4  (TOP_32B_3 | SHL(22) | SHL(20) | SHL(11))
+#define FORMAT_LDR_LIT     (TOP_32B_3 | SHL(22) | SHL(20) | SHL(19) | SHL(18) | SHL(17) | SHL(16))
+#define FORMAT_LDR_REG     (TOP_32B_3 | SHL(22) | SHL(20))
+#define FORMAT_LDRD_IMM    (TOP_32B_1 | SHL(22) | SHL(20))
+#define FORMAT_LDRD_LIT    (TOP_32B_1 | SHL(22) | SHL(20) | SHL(19) | SHL(18) | SHL(17) | SHL(16))
+#define FORMAT_LDREX       (TOP_32B_1 | SHL(22) | SHL(20) | SHL(11) | SHL(10) | SHL(9) | SHL(8))
+#define FORMAT_LDREXB      (TOP_32B_1 | SHL(23) | SHL(22) | SHL(20) | SHL(11) | SHL(10) | SHL(9) | SHL(8) | SHL(3) | SHL(2) SHL(1) | SHL(0))
+#define FORMAT_LDREXH      (TOP_32B_1 | SHL(23) | SHL(22) | SHL(20) | SHL(11) | SHL(10) | SHL(9) | SHL(8) | SHL(6) |SHL(4) | SHL(3) | SHL(2) SHL(1) | SHL(0))
+#define FORMAT_LDRT        (TOP_32B_3 | SHL(22) | SHL(20) | SHL(11) | SHL(10) | SHL(9))
+#define FORMAT_MOV_IMM     (TOP_32B_2 | SHL(25) | SHL(22))
+#define FORMAT_MVN_IMM     (TOP_32B_2 | SHL(22) | SHL(21) | SHL(19) | SHL(18) | SHL(17) | SHL(16))
+#define FORMAT_ORN_IMM     (TOP_32B_2 | SHL(22) | SHL(21))
+#define FORMAT_ORR_IMM     (TOP_32B_2 | SHL(22))
+#define FORMAT_POP         (TOP_32B_1 | SHL(23) | SHL(21) | SHL(20) | SHL(19) | SHL(18) | SHL(16))
+#define FORMAT_PUSH        (TOP_32B_1 | SHL(23) | SHL(21) | SHL(19) | SHL(18) | SHL(16))
+#define FORMAT_RSB_IMM     (TOP_32B_2 | SHL(24) | SHL(23) | SHL(22))
+#define FORMAT_SBC_IMM     (TOP_32B_2 | SHL(24) | SHL(22) | SHL(21))
+#define FORMAT_STM         (TOP_32B_1 | SHL(23))
+#define FORMAT_STMDB       (TOP_32B_1 | SHL(24))
+#define FORMAT_STR_IMM_T3  (TOP_32B_3 | SHL(23) | SHL(22))
+#define FORMAT_STR_IMM_T4  (TOP_32B_3 | SHL(22) | SHL(11))
+#define FORMAT_STR_REG     (TOP_32B_3 | SHL(22))
+#define FORMAT_STRB_IMM_T2 (TOP_32B_3 | SHL(23))
+#define FORMAT_STRB_IMM_T3 (TOP_32B_3 | SHL(11))
+#define FORMAT_STRB_REG    (TOP_32B_3)
+#define FORMAT_STRD_IMM    (TOP_32B_1 | SHL(22))
+#define FORMAT_STREX       (TOP_32B_1 | SHL(22))
+#define FORMAT_STREXB      (TOP_32B_1 | SHL(23) | SHL(22) | SHL(11) | SHL(10) | SHL(9) | SHL(8) | SHL(6))
+#define FORMAT_STREXH      (TOP_32B_1 | SHL(23) | SHL(22) | SHL(11) | SHL(10) | SHL(9) | SHL(8) | SHL(6) | SHL(4))
+#define FORMAT_STRH_IMM_T2 (TOP_32B_3 | SHL(23) | SHL(21))
+#define FORMAT_STRH_IMM_T3 (TOP_32B_3 | SHL(21) | SHL(11))
+#define FORMAT_STRH_REG    (TOP_32B_3 | SHL(21) | SHL(21))
+#define FORMAT_SUB_IMM     (TOP_32B_2 | SHL(24) | SHL(23) | SHL(21))
+#define FORMAT_TBB         (TOP_32B_1 | SHL(23) | SHL(22) | SHL(20) | SHL(15) | SHL(14) | SHL(13) | SHL(12))
+#define FORMAT_TBH         (TOP_32B_1 | SHL(23) | SHL(22) | SHL(20) | SHL(15) | SHL(14) | SHL(13) | SHL(12))
+#define FORMAT_TEQ_IMM     (TOP_32B_2 | SHL(23) | SHL(20) | SHL(11) | SHL(10) | SHL(9) | SHL(8))
+#define FORMAT_TST_IMM     (TOP_32B_2 | SHL(20) | SHL(11) | SHL(10) | SHL(9) | SHL(8))
+
 
 #include <iostream>
 #include <sstream>
