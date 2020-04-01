@@ -12,7 +12,8 @@ CPPOBJ= \
  ${OBJ}/decode_structure.o \
  ${OBJ}/memory_pool.o \
  ${OBJ}/fetch.o \
- ${OBJ}/decode.o
+ ${OBJ}/decode.o \
+ ${OBJ}/execute.o
 
 # defined in x86_64 Assembly
 ASMOBJ= \

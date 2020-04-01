@@ -27,14 +27,14 @@ auto decode(fetched_instruction_t instruction, uint32_t PC) -> decoded_instructi
     switch(instruction.type) {
         case fetched_instruction_t::t16:
             {
-                fin.di_t16           = decode_16bit_instruction(PC, instruction.in);
-                fin.instruction_type = decoded_instruction_t::t16;
+                fin.di_t16 = decode_16bit_instruction(PC, instruction.in);
+                fin.type   = decoded_instruction_t::t16;
                 return fin;
             }
         case fetched_instruction_t::t32:
             {
-                fin.di_t32           = decode_32bit_instruction(PC, instruction.in);
-                fin.instruction_type = decoded_instruction_t::t32;
+                fin.di_t32 = decode_32bit_instruction(PC, instruction.in);
+                fin.type   = decoded_instruction_t::t32;
                 return fin;
             }
         default:

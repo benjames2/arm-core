@@ -11,9 +11,11 @@ armv7_m3 execute(armv7_m3& cpu, memory_t& memory, decoded_instruction_t& inst) {
 
     switch(inst.type) {
         case decoded_instruction_t::t16:
-            return ::execute_t16(cpu, memory, inst);
-        case decoded_instruction_t::t16:
-            return ::execute_t32(cpu, memory, inst);
+            return ::execute_t16(cpu, memory, inst.di_t16);
+
+        case decoded_instruction_t::t32:
+            return ::execute_t32(cpu, memory, inst.di_t32);
+        
         default:
             throw std::runtime_error("execute : invalid instruction type");
     }

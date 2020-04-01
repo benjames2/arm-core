@@ -5,7 +5,7 @@
 
 struct decoded_instruction_t {
 
-    int instruction_type;
+    int type;
 
     union {
         instruction_16b_t di_t16;
