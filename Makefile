@@ -18,7 +18,7 @@ all: main
 clean:
 	rm ${OBJ}/*
 
-main: ${ALLOBJ}
+main: ${ALLOBJ} main.h
 	g++ -o main ${FLAGS} main.cpp ${ALLOBJ}
 
 ${OBJ}/byte_swap.o: ${SRC}/byte_swap.asm
