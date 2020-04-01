@@ -22,6 +22,7 @@ msg_adc: db "(asm) adc", 0x00 ; add with carry
 msg_sbb: db "(asm) sbb", 0x00 ; subtract with borrow
 msg_error: db "(asm) results_t ptr is NULL", 0x00
 msg_bad_op: db "(asm) op flag does not specify a valid operation", 0x00
+msg_null: db 0x00 ; no message
 
 section .text
 

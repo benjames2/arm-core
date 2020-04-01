@@ -8,8 +8,6 @@ struct results_t {
         signed int i32;
     };
 
-
-
 };
 
 const int x86_asm_ADD = 0;
@@ -31,27 +29,3 @@ extern "C" {
 
 // this is STRICTLY FOR PRINTING x86_64 FLAGS, NOT ARM CPU FLAGS
 void print_flag_results(int flags);
-
-
-/*
-
-if Rn == ‘1111’ then 
-    SEE LDR (literal);
-if P == ‘1’ && U == ‘1’ && W == ‘0’ then 
-    SEE LDRT;
-if Rn == ‘1101’ && P == ‘0’ && U == ‘1’ && W == ‘1’ && imm8 == ‘00000100’ then 
-    SEE POP;
-if P == ‘0’ && W == ‘0’ then 
-    UNDEFINED;
-
-t = UInt(Rt); 
-n = UInt(Rn); 
-imm32 = ZeroExtend(imm8, 32);
-index = (P == ‘1’); 
-add = (U == ‘1’); 
-wback = (W == ‘1’);
-
-if (wback && n == t) || (t == 15 && InITBlock() && !LastInITBlock()) then 
-    UNPREDICTABLE;
-
-*/

@@ -94,8 +94,6 @@ static uint32_t getFormat(int format) {
     }
 }
 
-
-
 void test_decode_fns(std::string filename) {
 
     std::cout << "\n=======================================================================\n";

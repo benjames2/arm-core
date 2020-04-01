@@ -3,26 +3,6 @@
 
 #define THROW_INVALID_METACODE(opcode) throw std::runtime_error("opcode(" #opcode ") : invalid meta opcode")
 
-instruction_t::instruction_t(void) {
-    this->opcode = -1;
-
-    this->meta_opcode = -1; // some opcodes get shared
-
-    this->PC = 0x00;
-    this->i_immediate = 0x00;
-    this->u_immediate = 0x00;
-
-    this->Rs = -1;
-    this->Rd = -1;
-    this->Rn = -1;
-    this->Rb = -1;
-    this->Ro = -1;
-
-    //this->Hs = -1;
-    //this->Hd = -1;
-    this->Rlist = -1;
-}
-
 std::string instruction_t::str(void) {
     std::stringstream ss;
     ss << *this << std::flush;
@@ -31,7 +11,7 @@ std::string instruction_t::str(void) {
 
 std::ostream& operator<<(std::ostream& os, instruction_t& in) {
 
-    // maintain a single instruction for BL
+    // maintain a single instruction for BL <-- c'mon joe, what does this even mean?
     static instruction_t sInstruction;
 
     switch(in.opcode) {
@@ -74,7 +54,6 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
                     case meta_RR:  os << 'r' << in.Rd << ", r" << in.Rs; break;
                     default:
                         THROW_INVALID_METACODE(ASR);
-                        //throw std::runtime_error("opcode(ASR) : invalid meta opcode");
                 }
             }
             break;
@@ -376,9 +355,9 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
             //SUB   = 2*(RRR, RRC), 3(RC)
             os << "SUB " ;
             switch (in.meta_opcode) {
-                case meta_RRR: os << 'r' << in.Rd << ", r" << in.Rs << ", r" << in.Rn;          break;
+                case meta_RRR: os << 'r' << in.Rd << ", r" << in.Rs << ", r" << in.Rn;         break;
                 case meta_RRC: os << 'r' << in.Rd << ", r" << in.Rs << ", #"<< in.u_immediate; break;   
-                case meta_RC:  os << 'r' << in.Rd << ", #"<< in.u_immediate;                    break;     
+                case meta_RC:  os << 'r' << in.Rd << ", #"<< in.u_immediate;                   break;     
                 default:
                     THROW_INVALID_METACODE(SUB);
             }

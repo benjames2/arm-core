@@ -31,7 +31,7 @@ struct instruction_t {
 
     std::string str(void);
 
-    instruction_t(void);
+    //instruction_t(void);
 
 };
 
@@ -64,31 +64,3 @@ struct instruction_32b_t {
 
 std::ostream& operator<<(std::ostream& os, instruction_32b_t& in);
 
-struct decoded_instruction_t {
-
-    int instruction_type;
-
-    union {
-        instruction_16b_t di_t16;
-        instruction_32b_t di_t32;
-    };
-
-    static const int t16 = 0;
-    static const int t32 = 1;
-
-};
-
-
-/*
-
-    fetch first 2 bytes
-
-    if 16-bit instruction
-        - call 16 bit decode
-    else
-        fetch the two bytes after that
-        - call 32 bit decode
-
-    return decoded_instruction_t
-
-*/

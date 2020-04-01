@@ -10,7 +10,6 @@
 
 armv7_m3 execute(armv7_m3& cpu, memory_t& memory, decoded_instruction_t& inst);
 
-
 /*
 
 
@@ -23,14 +22,8 @@ armv7_m3 execute(armv7_m3& cpu, memory_t& memory, decoded_instruction_t& inst);
     if(in.S)
         os << 's';
 
-    
+
 
     // rest of instruction
 
 */
-
-
-
-
-
-
