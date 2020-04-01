@@ -31,9 +31,11 @@ struct instruction_t {
 
     std::string str(void);
 
-    instruction_t(void);
+    //instruction_t(void);
 
 };
+
+typedef instruction_t instruction_16b_t;
 
 // operator overload to print instruction_t data (sort of like disassembling)
 std::ostream& operator<<(std::ostream& os, instruction_t& in);
@@ -55,9 +57,10 @@ struct instruction_32b_t {
     static const int encoding_T1 = 1;
     static const int encoding_T2 = 2;
     static const int encoding_T3 = 3;
-    static const int encoding_T4 = 4; 
+    static const int encoding_T4 = 4;
 
 };
 
 // operator overload to print instruction_32b_t data
 std::ostream& operator<<(std::ostream& os, instruction_32b_t& in);
+

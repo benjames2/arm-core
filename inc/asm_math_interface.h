@@ -8,8 +8,6 @@ struct results_t {
         signed int i32;
     };
 
-
-
 };
 
 const int x86_asm_ADD = 0;
