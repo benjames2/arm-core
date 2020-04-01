@@ -6,9 +6,9 @@
 
 #include "core.h"
 #include "memory_pool.h"
+#include "decode_structure.h"
 
-armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_t& inst);
-armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst);
+armv7_m3 execute(armv7_m3& cpu, memory_t& memory, decoded_instruction_t& inst);
 
 
 /*
@@ -18,6 +18,14 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst);
     Decode
     Execute
 
+
+    os << opcodename;
+    if(in.S)
+        os << 's';
+
+    
+
+    // rest of instruction
 
 */
 

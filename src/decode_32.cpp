@@ -1067,7 +1067,9 @@ instruction_32b_t decode_32b_A6_224_STRB_imm_T3(unsigned int PC, unsigned int in
 
     instruction_32b_t in;
 
-    in.opcode = t32_STRB;
+    in.opcode      = t32_STRB;
+    in.meta_opcode = meta_t32_imm;
+    in.encoding    = instruction_32b_t::encoding_T3;
 
     in.P   = (instruction_word >> 10) & 0x01;
     in.U   = (instruction_word >>  9) & 0x01;

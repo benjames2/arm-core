@@ -5,6 +5,7 @@
 #include <inc/decode_16.h>
 #include <inc/decode_32.h>
 #include <inc/asm_math_interface.h>
+#include <inc/fetch.h>
 
 #include "main.h"
 
@@ -41,11 +42,6 @@ int main(int argc, char* argv[]) {
         uint32_t instruction_word = mem.load_u16(addr);
 
         int prefix = (instruction_word >> 11) & 0x1F;
-
-        //for(int i : { 12, 8, 4, 0 }) {
-        //    cout << ((instruction_word >> i) & 0x0F)["0123456789ABCDEF"];
-        //}
-        //cout << ' ';
 
         if(prefix == 0x1D || prefix == 0x1E || prefix == 0x1F) {
             // 32-bit instruction
