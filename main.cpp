@@ -4,7 +4,9 @@
 #include <inc/decode_structure.h>
 #include <inc/decode_16.h>
 #include <inc/decode_32.h>
+#include <inc/decode.h>
 #include <inc/asm_math_interface.h>
+#include <inc/fetch.h>
 
 #include "main.h"
 
@@ -22,13 +24,12 @@ int main(int argc, char* argv[]) {
     //armv7_m3 armcpu;
     //armcpu.set_current_mode(armv7_m3::mode_16);
 
-    test_decode_fns("test/testfile.branch.txt");
-    test_decode_fns("test/testfile.bottom.txt");
-    test_decode_fns("test/testfile.txt");
+    //test_decode_fns("test/testfile.branch.txt");
+    //test_decode_fns("test/testfile.bottom.txt");
+    //test_decode_fns("test/testfile.txt");
+    //std::cout << "INSTRUCTION TESTS PASSED\n\n" << std::flush;
 
-    std::cout << "INSTRUCTION TESTS PASSED\n\n" << std::flush;
-
-    memory_t mem(memory_t::big_endian);
+    memory_t mem(memory_t::little_endian);
 
     for(auto cptr : { "test/input/assembly-code.txt", "test/input/memory.txt" }) {
         load_memory_file(cptr, mem);
@@ -38,25 +39,21 @@ int main(int argc, char* argv[]) {
     // starting address for machine code
 
     for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
-        uint32_t instruction_word = mem.load_u16(addr);
-
-        int prefix = (instruction_word >> 11) & 0x1F;
-
-        //for(int i : { 12, 8, 4, 0 }) {
-        //    cout << ((instruction_word >> i) & 0x0F)["0123456789ABCDEF"];
-        //}
-        //cout << ' ';
-
-        if(prefix == 0x1D || prefix == 0x1E || prefix == 0x1F) {
-            // 32-bit instruction
+        
+        auto inst_data = fetch(mem, addr);
+        
+        if(inst_data.type == fetched_instruction_t::t16) {
+            auto dec_inst = decode_16bit_instruction(addr, inst_data.in);
+            cout << dec_inst << endl;
+            addr += 2;
+        }
+        else {
             cout << "<32-BIT THUMB INSTRUCTION>\n";
             addr += 4;
         }
-        else {
-            auto decoded_inst = decode_16bit_instruction(addr, instruction_word);
-            cout << decoded_inst << endl;
-            addr += 2;
-        }
+
+        auto decoded_inst = decode(inst_data, addr);
+
     }
 
     return 0;

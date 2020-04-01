@@ -1,10 +1,12 @@
 #include <inc/decode_32.h>
 #include <string.h>
 
+#define THROW_UNDEFINED_T32(inst_f) throw std::runtime_error(#inst_f " : not implemented")
+
 //Modified immediate constants in Thumb-2 instructions on Table A5-11
 static int ThumbExpandImm(int i, int imm3, int imm8){
 
-    int a = (imm8 >> 7) & 0x01;
+    int a = (imm8 >> 7) & 0x01; // extract MSb of imm8
     int imm32 = 0;
 
     if(i == 0){
@@ -12,36 +14,34 @@ static int ThumbExpandImm(int i, int imm3, int imm8){
             case 0: 
                 imm32 = imm32 | imm8;
                 return imm32;
-                break;
             case 1:
                 if (imm8 == 0)
-                    std::runtime_error("In ThumbExpand : case 1 : Unpredictable behavior");
+                    throw std::runtime_error(
+                        "in ThumbExpandImm : i=0, imm3=1, imm8=0 results in unpredictable behavior");
                 imm32 = imm32 | (imm8 << 16) | imm8;
                 return imm32;
-                break;
             case 2:
                 if (imm8 == 0)
-                    std::runtime_error("In ThumbExpand : case 2 : Unpredictable behavior");
+                    throw std::runtime_error(
+                        "in ThumbExpandImm : i=0, imm3=2, imm8=0 results in unpredictable behavior");
                 imm32 = imm32 | (imm8 << 24) | (imm8 << 8);
                 return imm32;
-                break;
             case 3:
                 if (imm8 == 0)
-                    std::runtime_error("In ThumbExpand : case 1 : Unpredictable behavior");
+                    throw std::runtime_error(
+                        "in ThumbExpandImm : i=0, imm3=3, imm8=0 results in unpredictable behavior");
                 imm32 = imm32 | (imm8 << 24) | (imm8 << 16) | (imm8 << 8) | imm8;
                 return imm32;
-                break;
             case 4:
-                imm8  = imm8 | 0b10000000;
+                imm8  = imm8 | 0b10000000; // set highest bit to 1
                 if (a == 0){
                     imm32 = imm32 | (imm8 << 24);
                     return imm32;
                 }
-                else{
+                else {
                     imm32 = imm32 | (imm8 << 23);
                     return imm32;
-                } 
-                break;
+                }
             case 5:
                 imm8  = imm8 | 0b10000000;
                 if (a == 0){
@@ -54,20 +54,26 @@ static int ThumbExpandImm(int i, int imm3, int imm8){
                 }
                 break;
             case 6:
-                std::runtime_error ("In ThumbExpand: case 6 not completed for i = 0"); 
-                break;
+                throw std::runtime_error(
+                    "in ThumbExpandImm : case 6 not completed for i=0"); 
+                //break; 
+                // dont need to break here because we are throwing an exception 
+                // remember that exceptions CANT be ignored
             case 7: 
-                std::runtime_error ("In ThumbExpand: case 7 not completed for i = 0");
-                break;
+                throw std::runtime_error (
+                    "in ThumbExpandImm : case 7 not completed for i=0");
+                //break; // same here
             default:
-                std::runtime_error("In ThumbExpand : default case for i = 0");
+                throw std::runtime_error(
+                    "in ThumbExpandImm : if you are seeing this message, "
+                    "something terrible happened");
         }
     }
     else{
         imm8  = imm8 | 0b10000000;
         switch(imm3){
             case 0: case 1: case 2: case 3: case 4: case 5:
-                std::runtime_error("In ThumbExpand : For i = 1 : case 0, 1, 2, 3, 4, 5 not done ");
+                throw std::runtime_error("in ThumbExpandImm : for i=1 (imm3=0,1,2,3,4,5 not implemented)");
                 break;
             case 6:
                 if(a == 1){
@@ -75,7 +81,7 @@ static int ThumbExpandImm(int i, int imm3, int imm8){
                     return imm32;
                 }
                 else 
-                    std::runtime_error("In ThumbExpand : case 6 : invalid value of a for i = 1");
+                    throw std::runtime_error("in ThumbExpandImm : for imm3=6 and i=1 invalid value for a");
                 break;
             case 7:
                 if(a == 0){
@@ -88,7 +94,8 @@ static int ThumbExpandImm(int i, int imm3, int imm8){
                 }
                 break;
             default:
-                std::runtime_error("In ThumbExpand : default case for i = 1");
+                throw std::runtime_error(
+                    "in ThumbExpandImm : default case results in undefined behavior for i=1");
         }
     }
 }
@@ -510,9 +517,9 @@ instruction_32b_t decode_32b_A5_25(unsigned int PC, unsigned int instruction_wor
         return decode_32b_A6_220_STR_imm_T3(PC, instruction_word);
 
     else
-        std::runtime_error("In decode_32b_A5_25 : invalid op1 value");
+        throw std::runtime_error("In decode_32b_A5_25 : invalid op1 value");
 
-    std::runtime_error("In decode_32b_A5_25 : invalid instruction encoding");
+    throw std::runtime_error("In decode_32b_A5_25 : invalid instruction encoding");
         
 }
 
@@ -1039,7 +1046,13 @@ instruction_32b_t decode_32b_A6_220_STR_imm_T4(unsigned int PC, unsigned int ins
 }
 
 instruction_32b_t decode_32b_A6_222_STR_reg(unsigned int PC, unsigned int instruction_word){
-    throw std::runtime_error("In decode_32b_A6_222_STR_reg : undefined");
+
+    THROW_UNDEFINED_T32(__FUNCTION__);
+
+    instruction_32b_t in;
+
+    return in;
+
 }
 
 instruction_32b_t decode_32b_A6_224_STRB_imm_T2(unsigned int PC, unsigned int instruction_word){
@@ -1061,7 +1074,9 @@ instruction_32b_t decode_32b_A6_224_STRB_imm_T3(unsigned int PC, unsigned int in
 
     instruction_32b_t in;
 
-    in.opcode = t32_STRB;
+    in.opcode      = t32_STRB;
+    in.meta_opcode = meta_t32_imm;
+    in.encoding    = instruction_32b_t::encoding_T3;
 
     in.P   = (instruction_word >> 10) & 0x01;
     in.U   = (instruction_word >>  9) & 0x01;
@@ -1075,7 +1090,12 @@ instruction_32b_t decode_32b_A6_224_STRB_imm_T3(unsigned int PC, unsigned int in
 }
 
 instruction_32b_t decode_32b_A6_226_STRB_reg(unsigned int PC, unsigned int instruction_word){
-    throw std::runtime_error("In decode_32b_A6_226_STRB_reg : undefined");
+
+    THROW_UNDEFINED_T32(__FUNCTION__);
+
+    instruction_32b_t in;
+
+    return in;
 }
 
 instruction_32b_t decode_32b_A6_230_STRD_imm(unsigned int PC, unsigned int instruction_word){
@@ -1169,7 +1189,12 @@ instruction_32b_t decode_32b_A6_236_STRH_imm_T3(unsigned int PC, unsigned int in
 }
 
 instruction_32b_t decode_32b_A6_238_STRH_reg(unsigned int PC, unsigned int instruction_word){
-    throw std::runtime_error("In decode_32b_A6_238_STRH_reg : undefined");
+
+    THROW_UNDEFINED_T32(__FUNCTION__);
+
+    instruction_32b_t in;
+
+    return in;
 }
 
 instruction_32b_t decode_32b_A6_242_SUB_imm(unsigned int PC, unsigned int instruction_word){

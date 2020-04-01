@@ -4,40 +4,37 @@ INC=./inc
 
 FLAGS=-std=c++11 -no-pie -march=native -O3 -I.
 
-ALLOBJ= \
- ${OBJ}/byte_swap.o \
+# defined in C++
+CPPOBJ= \
  ${OBJ}/core.o \
  ${OBJ}/decode_16.o \
  ${OBJ}/decode_32.o \
  ${OBJ}/decode_structure.o \
- ${OBJ}/math.o \
- ${OBJ}/memory_pool.o
+ ${OBJ}/memory_pool.o \
+ ${OBJ}/fetch.o \
+ ${OBJ}/decode.o \
+ ${OBJ}/execute.o
+
+# defined in x86_64 Assembly
+ASMOBJ= \
+ ${OBJ}/byte_swap.o \
+ ${OBJ}/math.o
+
+ALLOBJ=${CPPOBJ} ${ASMOBJ}
 
 all: main
 
 clean:
 	rm ${OBJ}/*
 
-main: ${ALLOBJ} main.h
+# final executable
+main: ${ALLOBJ} main.h main.cpp
 	g++ -o main ${FLAGS} main.cpp ${ALLOBJ}
 
-${OBJ}/byte_swap.o: ${SRC}/byte_swap.asm
-	yasm -f elf64 src/byte_swap.asm -o obj/byte_swap.o
+# build all .cpp files
+${CPPOBJ}: ${OBJ}/%.o: ${SRC}/%.cpp ${INC}/%.h
+	g++ -c -o $@ $< ${FLAGS}
 
-${OBJ}/core.o: ${SRC}/core.cpp
-	g++ -c -o $@ ${SRC}/core.cpp ${FLAGS}
-
-${OBJ}/decode_16.o: ${SRC}/decode_16.cpp
-	g++ -c -o $@ ${SRC}/decode_16.cpp ${FLAGS}
-
-${OBJ}/decode_32.o: ${SRC}/decode_32.cpp
-	g++ -c -o $@ ${SRC}/decode_32.cpp ${FLAGS}
-
-${OBJ}/decode_structure.o: ${SRC}/decode_structure.cpp
-	g++ -c -o $@ ${SRC}/decode_structure.cpp ${FLAGS}
-
-${OBJ}/math.o: ${SRC}/math.asm
-	yasm -f elf64 ${SRC}/math.asm -o ${OBJ}/math.o
-
-${OBJ}/memory_pool.o: ${SRC}/memory_pool.cpp
-	g++ -c -o $@ ${SRC}/memory_pool.cpp ${FLAGS}
+# build all .asm files
+${ASMOBJ}: ${OBJ}/%.o: ${SRC}/%.asm
+	yasm -f elf64 $< -o $@

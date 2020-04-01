@@ -10,21 +10,16 @@ public:
         uint32_t u32;
     };
 
-    // armv7-m needs to execute in one of these modes. they are 
-    // both THUMB2 but one is 16-bit and the other is 32-bit
-    static const int mode_16 = 0;
-    static const int mode_32 = 1;
-
 // private:
 public:
 
     std::array<register_t, 16> reg;
+
     union {
         uint32_t APSR; // application program status register
         uint32_t CPSR; // current program status register
     };
     
-    int current_mode; // mode_16 or mode_32;
     uint64_t cycle_count;
 
 public:
@@ -61,9 +56,29 @@ public:
     void set_APSR_Q(bool b); // set saturate flag
 
     uint32_t get_CPSR(void);
-    
 
-    int get_current_mode(void);
-    void set_current_mode(const int m);
+    // ALU flags are exactly the same as for the APSR
+    bool get_CPSR_N(void); // get Negative flag
+    bool get_CPSR_Z(void); // get Zero flag
+    bool get_CPSR_C(void); // get Carry flag
+    bool get_CPSR_V(void); // get oVerflow flag
+    bool get_CPSR_Q(void); // get saturate flag
+
+    void set_CPSR_N(bool b); // set Negative flag
+    void set_CPSR_Z(bool b); // set Zero flag
+    void set_CPSR_C(bool b); // set Carry flag
+    void set_CPSR_V(bool b); // set oVerflow flag
+    void set_CPSR_Q(bool b); // set saturate flag
+
+    // bits specific to the CPSR
+    int  get_CPSR_IT(void); // If-Then state bits (7:0)
+    int  get_CPSR_GE(void); // Greater-then Equal flags (3:0)
+    bool get_CPSR_J(void);  // Jazelle (some weird JVM thing, we'll never need it)
+    bool get_CPSR_E(void);  // endianness bit
+    bool get_CPSR_A(void);  // asynchronous abort bit
+    bool get_CPSR_I(void);  // IRQ mask bit
+    bool get_CPSR_F(void);  // FIRQ mask bit
+    bool get_CPSR_T(void);  // THUMB execution state bit. for us, we'll always be in THUMB state
+    int  get_CPSR_M(void);  // Mode field (4:0)
 
 };
