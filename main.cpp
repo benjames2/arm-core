@@ -56,24 +56,6 @@ int main(int argc, char* argv[]) {
 
     }
 
-/*
-    for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
-        uint32_t instruction_word = mem.load_u16(addr);
-
-        int prefix = (instruction_word >> 11) & 0x1F;
-
-        if(prefix == 0x1D || prefix == 0x1E || prefix == 0x1F) {
-            // 32-bit instruction
-            cout << "<32-BIT THUMB INSTRUCTION>\n";
-            addr += 4;
-        }
-        else {
-            auto decoded_inst = decode_16bit_instruction(addr, instruction_word);
-            cout << decoded_inst << endl;
-            addr += 2;
-        }
-    }
-*/
     return 0;
 }
 

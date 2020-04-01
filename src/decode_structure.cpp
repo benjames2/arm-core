@@ -2,6 +2,8 @@
 #include <sstream>
 
 #define THROW_INVALID_METACODE(opcode) throw std::runtime_error("opcode(" #opcode ") : invalid meta opcode")
+#define THROW_INVALID_METACODE_32B(opcode) throw std::runtime_error("opcode(" #opcode ") : invalid meta opcode for 32-bit instruction")
+#define THROW_INVALID_ENCODING(instruction) throw std::runtime_error("Invalid encoding for : " #instruction " instruction")
 
 std::string instruction_t::str(void) {
     std::stringstream ss;
@@ -374,4 +376,168 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
     }
 
     return os;
+}
+
+std::ostream& operator<<(std::ostream& os, instruction_32b_t& in){
+
+    switch(in.opcode){
+        case t32_ADC:
+            switch(in.meta_opcode){
+                case meta_t32_imm:
+                    os << "ADC";
+                    if(in.S)
+                        os << "s";
+                    os << " r" << in.Rd << ", r" << in.Rn << ", #" << in.i32;
+                    break;
+                default:
+                    THROW_INVALID_METACODE_32B(ADC);
+            }
+            break;
+
+        case t32_ADD:
+            switch(in.meta_opcode){
+                case meta_t32_imm:
+                    switch(in.encoding){
+                        case 3:
+                            os << "ADD";
+                            if(in.S)
+                                os << "s";
+                            os << " r" << in.Rd << ", r" << in.Rn << ", #" << in.i32;
+                            break;
+                        default: 
+                            THROW_INVALID_ENCODING(ADD);
+                    }
+                    break;
+                default:
+                    THROW_INVALID_METACODE_32B(ADD);
+            }
+            break;
+
+        case t32_AND:
+            switch(in.meta_opcode){
+                case meta_t32_imm:
+                    os << "AND";
+                    if(in.S)
+                        os << "s";
+                    os << " r" << in.Rd << ", r" << in.Rn << ", #" << in.i32;
+                    break;
+                default:
+                    THROW_INVALID_METACODE_32B(AND);
+            }
+            break;
+
+        case t32_BIC:
+            switch(in.meta_opcode){
+                case meta_t32_imm:
+                    os << "BIC";
+                    if(in.S)
+                        os << "s";
+                    os << " r" << in.Rd << ", r" << in.Rn << ", #" << in.i32;
+                    break;
+                default:
+                    THROW_INVALID_METACODE_32B(BIC);
+            }
+            break;
+
+        case t32_CMN:
+            switch(in.meta_opcode){
+                case meta_t32_imm:
+                    os << "CMN r" << in.Rn << ", #" << in.i32;
+                    break;
+                default:
+                    THROW_INVALID_METACODE_32B(CMN);
+            }
+            break;
+
+        case t32_CMP:
+            switch(in.meta_opcode){
+                case meta_t32_imm:
+                    os << "CMP r" << in.Rn << ", #" << in.i32;
+                    break;
+                default:
+                    THROW_INVALID_METACODE_32B(CMP);
+            }
+            break;
+
+        case t32_EOR:
+            switch(in.meta_opcode){
+                case meta_t32_imm:
+                    os << "EOR";
+                    if(in.S)
+                        os << "s";
+                    os << " r" << in.Rd << ", r" << in.Rn << ", #" << in.i32;
+                    break;
+                default:
+                    THROW_INVALID_METACODE_32B(EOR);
+            }
+            break;
+
+        case t32_LDM:
+        case t32_LDR:
+            switch(in.meta_opcode){
+                case meta_t32_imm:
+                    switch(in.encoding){
+                        case 3:
+                            os << "LDR r" << in.Rt << ", r" << in.Rn << ", #" << in.u32;
+                            break;
+                        case 4:
+                            os << "LDR r" << in.Rt << ", r" << in.Rn << ", #" << in.i32;
+                            break;
+                        default: 
+                            THROW_INVALID_ENCODING(LDR);
+                    }
+                    break;
+                case meta_t32_literal:
+                    std::runtime_error("LDR literal not done yet");
+                    break;
+                case meta_t32_reg:
+                    os << "LDR r" << in.Rt << ", r" << in.Rn << ", r" << in.Rm << ", #" << in.u32;
+                    break;
+                default:
+                    THROW_INVALID_METACODE_32B(LDR);
+            }
+            break;
+
+        case t32_LDRD:
+            switch(in.meta_opcode){
+                case meta_t32_imm:
+                    os << "LDRD r" << in.Rt << ", r" << in.Rt2 << ", r" << in.Rn << ", #" << in.u32;
+                    break;
+                case meta_t32_literal:
+                    os << "LDRD r" << in.Rt << ", r" << in.Rt2 << ", #" << in.u32;
+                    break;
+                default:
+                    THROW_INVALID_METACODE_32B(LDRD);
+            }
+            break;
+        case t32_LDREX:
+        case t32_LDREXB:
+        case t32_LDREXH:
+        case t32_LDRT:
+        case t32_MOV:
+        case t32_MVN:
+        case t32_ORN:
+        case t32_ORR:
+        case t32_POP:
+        case t32_PUSH:
+        case t32_RSB:
+        case t32_SBC:
+        case t32_STM:
+        case t32_STMDB:
+        case t32_STR:
+        case t32_STRB:
+        case t32_STRD:
+        case t32_STREX:
+        case t32_STREXB:
+        case t32_STREXH:
+        case t32_STRH:
+        case t32_SUB:
+        case t32_TBB:
+        case t32_TBH:
+        case t32_TEQ:
+        case t32_TST:
+            default:
+                std::runtime_error("Undefined 32-bit instruction ormat");
+
+    }
 }

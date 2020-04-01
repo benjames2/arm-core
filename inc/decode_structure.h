@@ -52,7 +52,6 @@ struct instruction_32b_t {
     union {
         uint32_t u32;
         int32_t  i32;
-        int32_t  imm32;
     };
 
     static const int encoding_T1 = 1;
@@ -62,5 +61,6 @@ struct instruction_32b_t {
 
 };
 
+// operator overload to print instruction_32b_t data
 std::ostream& operator<<(std::ostream& os, instruction_32b_t& in);
 
