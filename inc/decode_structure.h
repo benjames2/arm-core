@@ -42,6 +42,7 @@ struct instruction_32b_t {
 
     opcode_t opcode;
     int meta_opcode;
+    int encoding;
 
     int P, W, M, U, H, S;
     int Rn, Rd, Rm, Rt, Rt2, Rlist;
@@ -51,6 +52,12 @@ struct instruction_32b_t {
         int32_t  i32;
     };
 
+    static const int encoding_T1 = 1;
+    static const int encoding_T2 = 2;
+    static const int encoding_T3 = 3;
+    static const int encoding_T4 = 4; 
+
 };
 
+// operator overload to print instruction_32b_t data
 std::ostream& operator<<(std::ostream& os, instruction_32b_t& in);

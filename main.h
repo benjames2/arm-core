@@ -1,5 +1,8 @@
 #pragma once
 
+//============================
+// 16-bit base formats
+//============================
 #define SHL(n) (1 << n)
 
 #define BASE_FORMAT_1  (0) // no bits on by default
@@ -21,6 +24,61 @@
 #define BASE_FORMAT_17 (SHL(15) | SHL(14) | SHL(12) | SHL(11) | SHL(10) | SHL(9) | SHL(8) | 0)
 #define BASE_FORMAT_18 (SHL(15) | SHL(14) | SHL(13) | 0)
 #define BASE_FORMAT_19 (SHL(15) | SHL(14) | SHL(13) | SHL(12) | 0)
+
+//======================================
+// 32-bit instruction formats
+//======================================
+#define TOP_32B_1 (SHL(31) | SHL(30) | SHL(29) | SHL(27) | 0)
+#define TOP_32B_2 (SHL(31) | SHL(30) | SHL(29) | SHL(28) | 0)
+#define TOP_32B_3 (SHL(31) | SHL(30) | SHL(29) | SHL(28) | SHL(27) | 0)
+
+#define FORMAT_ADC_IMM     (TOP_32B_2 | SHL(24) | SHL(22))
+#define FORMAT_ADD_IMM     (TOP_32B_2 | SHL(24))
+#define FORMAT_AND_IMM     (TOP_32B_2)
+#define FORMAT_BIC_IMM     (TOP_32B_2 | SHL(21))
+#define FORMAT_CMN_IMM     (TOP_32B_2 | SHL(24) | SHL(20) | SHL(11) | SHL(10) | SHL(9) | SHL(8))
+#define FORMAT_CMP_IMM     (TOP_32B_2 | SHL(24) | SHL(23) | SHL(21) | SHL(20) | SHL(11) | SHL(10) | SHL(9) | SHL(8))
+#define FORMAT_EOR_IMM     (TOP_32B_2 | SHL(23))
+#define FORMAT_LDM         (TOP_32B_1 | SHL(23) | SHL(20))
+#define FORMAT_LDR_IMM_T3  (TOP_32B_3 | SHL(23) | SHL(22) | SHL(20))
+#define FORMAT_LDR_IMM_T4  (TOP_32B_3 | SHL(22) | SHL(20) | SHL(11))
+#define FORMAT_LDR_LIT     (TOP_32B_3 | SHL(22) | SHL(20) | SHL(19) | SHL(18) | SHL(17) | SHL(16))
+#define FORMAT_LDR_REG     (TOP_32B_3 | SHL(22) | SHL(20))
+#define FORMAT_LDRD_IMM    (TOP_32B_1 | SHL(22) | SHL(20))
+#define FORMAT_LDRD_LIT    (TOP_32B_1 | SHL(22) | SHL(20) | SHL(19) | SHL(18) | SHL(17) | SHL(16))
+#define FORMAT_LDREX       (TOP_32B_1 | SHL(22) | SHL(20) | SHL(11) | SHL(10) | SHL(9) | SHL(8))
+#define FORMAT_LDREXB      (TOP_32B_1 | SHL(23) | SHL(22) | SHL(20) | SHL(11) | SHL(10) | SHL(9) | SHL(8) | SHL(3) | SHL(2) | SHL(1) | SHL(0))
+#define FORMAT_LDREXH      (TOP_32B_1 | SHL(23) | SHL(22) | SHL(20) | SHL(11) | SHL(10) | SHL(9) | SHL(8) | SHL(6) | SHL(4) | SHL(3) | SHL(2) | SHL(1) | SHL(0))
+#define FORMAT_LDRT        (TOP_32B_3 | SHL(22) | SHL(20) | SHL(11) | SHL(10) | SHL(9))
+#define FORMAT_MOV_IMM     (TOP_32B_2 | SHL(25) | SHL(22))
+#define FORMAT_MVN_IMM     (TOP_32B_2 | SHL(22) | SHL(21) | SHL(19) | SHL(18) | SHL(17) | SHL(16))
+#define FORMAT_ORN_IMM     (TOP_32B_2 | SHL(22) | SHL(21))
+#define FORMAT_ORR_IMM     (TOP_32B_2 | SHL(22))
+#define FORMAT_POP         (TOP_32B_1 | SHL(23) | SHL(21) | SHL(20) | SHL(19) | SHL(18) | SHL(16))
+#define FORMAT_PUSH        (TOP_32B_1 | SHL(23) | SHL(21) | SHL(19) | SHL(18) | SHL(16))
+#define FORMAT_RSB_IMM     (TOP_32B_2 | SHL(24) | SHL(23) | SHL(22))
+#define FORMAT_SBC_IMM     (TOP_32B_2 | SHL(24) | SHL(22) | SHL(21))
+#define FORMAT_STM         (TOP_32B_1 | SHL(23))
+#define FORMAT_STMDB       (TOP_32B_1 | SHL(24))
+#define FORMAT_STR_IMM_T3  (TOP_32B_3 | SHL(23) | SHL(22))
+#define FORMAT_STR_IMM_T4  (TOP_32B_3 | SHL(22) | SHL(11))
+#define FORMAT_STR_REG     (TOP_32B_3 | SHL(22))
+#define FORMAT_STRB_IMM_T2 (TOP_32B_3 | SHL(23))
+#define FORMAT_STRB_IMM_T3 (TOP_32B_3 | SHL(11))
+#define FORMAT_STRB_REG    (TOP_32B_3)
+#define FORMAT_STRD_IMM    (TOP_32B_1 | SHL(22))
+#define FORMAT_STREX       (TOP_32B_1 | SHL(22))
+#define FORMAT_STREXB      (TOP_32B_1 | SHL(23) | SHL(22) | SHL(11) | SHL(10) | SHL(9) | SHL(8) | SHL(6))
+#define FORMAT_STREXH      (TOP_32B_1 | SHL(23) | SHL(22) | SHL(11) | SHL(10) | SHL(9) | SHL(8) | SHL(6) | SHL(4))
+#define FORMAT_STRH_IMM_T2 (TOP_32B_3 | SHL(23) | SHL(21))
+#define FORMAT_STRH_IMM_T3 (TOP_32B_3 | SHL(21) | SHL(11))
+#define FORMAT_STRH_REG    (TOP_32B_3 | SHL(21) | SHL(21))
+#define FORMAT_SUB_IMM     (TOP_32B_2 | SHL(24) | SHL(23) | SHL(21))
+#define FORMAT_TBB         (TOP_32B_1 | SHL(23) | SHL(22) | SHL(20) | SHL(15) | SHL(14) | SHL(13) | SHL(12))
+#define FORMAT_TBH         (TOP_32B_1 | SHL(23) | SHL(22) | SHL(20) | SHL(15) | SHL(14) | SHL(13) | SHL(12))
+#define FORMAT_TEQ_IMM     (TOP_32B_2 | SHL(23) | SHL(20) | SHL(11) | SHL(10) | SHL(9) | SHL(8))
+#define FORMAT_TST_IMM     (TOP_32B_2 | SHL(20) | SHL(11) | SHL(10) | SHL(9) | SHL(8))
+
 
 #include <iostream>
 #include <sstream>
@@ -135,6 +193,64 @@ void test_decode_fns(std::string filename) {
         std::cout << "SUCCESS\n\n";
     }
 
+}
+
+//============================================
+// 32-bit
+//============================================
+
+static uint32_t get32bFormat(int format){
+
+    switch(format){
+        case 1:  return FORMAT_ADC_IMM;     
+        case 2:  return FORMAT_ADD_IMM;     
+        case 3:  return FORMAT_AND_IMM;     
+        case 4:  return FORMAT_BIC_IMM;     
+        case 5:  return FORMAT_CMN_IMM;     
+        case 6:  return FORMAT_CMP_IMM;     
+        case 7:  return FORMAT_EOR_IMM;     
+        case 8:  return FORMAT_LDM;         
+        case 9:  return FORMAT_LDR_IMM_T3;  
+        case 10: return FORMAT_LDR_IMM_T4;  
+        case 11: return FORMAT_LDR_LIT;     
+        case 12: return FORMAT_LDR_REG;     
+        case 13: return FORMAT_LDRD_IMM;    
+        case 14: return FORMAT_LDRD_LIT;    
+        case 15: return FORMAT_LDREX;       
+        case 16: return FORMAT_LDREXB;      
+        case 17: return FORMAT_LDREXH;      
+        case 18: return FORMAT_LDRT;        
+        case 19: return FORMAT_MOV_IMM;     
+        case 20: return FORMAT_MVN_IMM;     
+        case 21: return FORMAT_ORN_IMM;     
+        case 22: return FORMAT_ORR_IMM;     
+        case 23: return FORMAT_POP;         
+        case 24: return FORMAT_PUSH;        
+        case 25: return FORMAT_RSB_IMM;     
+        case 26: return FORMAT_SBC_IMM;     
+        case 27: return FORMAT_STM;         
+        case 28: return FORMAT_STMDB;       
+        case 29: return FORMAT_STR_IMM_T3;  
+        case 30: return FORMAT_STR_IMM_T4;  
+        case 31: return FORMAT_STR_REG;     
+        case 32: return FORMAT_STRB_IMM_T2; 
+        case 33: return FORMAT_STRB_IMM_T3; 
+        case 34: return FORMAT_STRB_REG;    
+        case 35: return FORMAT_STRD_IMM;    
+        case 36: return FORMAT_STREX;       
+        case 37: return FORMAT_STREXB;      
+        case 38: return FORMAT_STREXH;      
+        case 39: return FORMAT_STRH_IMM_T2; 
+        case 40: return FORMAT_STRH_IMM_T3; 
+        case 41: return FORMAT_STRH_REG;    
+        case 42: return FORMAT_SUB_IMM;     
+        case 43: return FORMAT_TBB;         
+        case 44: return FORMAT_TBH;         
+        case 45: return FORMAT_TEQ_IMM;     
+        case 46: return FORMAT_TST_IMM;     
+        default:
+            throw std::runtime_error("get32bFormat : invalid format specifier");
+    } 
 }
 
 #undef SHL
