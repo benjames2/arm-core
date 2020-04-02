@@ -607,7 +607,7 @@ instruction_32b_t decode_32b_A5_25(unsigned int PC, unsigned int instruction_wor
     else
         throw std::runtime_error("In decode_32b_A5_25 : invalid op1 value");
 
-    throw std::runtime_error("In decode_32b_A5_25 : invalid instruction encoding");
+    //throw std::runtime_error("In decode_32b_A5_25 : invalid instruction encoding");
         
 }
 
@@ -727,7 +727,6 @@ instruction_32b_t decode_32b_A6_44_BIC_imm(unsigned int PC, unsigned int instruc
     int imm8 = (instruction_word >> 0) & 0xFF;
 
     in.i32 = ThumbExpandImm(i, imm3, imm8);
-
     
     return in;
 }
@@ -956,6 +955,7 @@ instruction_32b_t decode_32b_A6_148_MOV_imm(unsigned int PC, unsigned int instru
 
     in.opcode      = t32_MOV;
     in.meta_opcode = meta_t32_imm;
+    in.encoding    = instruction_32b_t::encoding_T2;
 
     in.S  = (instruction_word >> (15 + 5)) & 0x01;
     in.Rd = (instruction_word >> 8) & 0x0F;
@@ -1021,6 +1021,7 @@ instruction_32b_t decode_32b_A6_172_ORR_imm(unsigned int PC, unsigned int instru
 
     in.S  = (instruction_word >> (15 + 5)) & 0x01;
     in.Rd = (instruction_word >> 8) & 0x0F;
+    in.Rn = (instruction_word >> (15 + 1)) & 0x0F;
 
     int i    = (instruction_word >> (15 + 11)) & 0x01;
     int imm3 = (instruction_word >> 12) & 0x07;

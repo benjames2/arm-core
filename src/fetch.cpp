@@ -33,7 +33,6 @@ fetched_instruction_t fetch(memory_t& memory, uint32_t PC) {
         case 0b11111:
             // 32-bit THUMB, need next halfword as well
             {
-
                 std::cout 
                     << "[0x" << std::hex << pad_hex_number(PC) 
                     << std::dec << " 32-bit] " << std::flush;
@@ -46,7 +45,6 @@ fetched_instruction_t fetch(memory_t& memory, uint32_t PC) {
             }
         default:
             // 16-bit THUMB, first halfword is entire instruction
-
             std::cout 
                 << "[0x" << std::hex << pad_hex_number(PC) 
                 << std::dec << " 16-bit] " << std::flush;

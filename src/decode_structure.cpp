@@ -515,9 +515,37 @@ std::ostream& operator<<(std::ostream& os, instruction_32b_t& in){
         case t32_LDREXH:
         case t32_LDRT:
         case t32_MOV:
+            switch(in.meta_opcode){
+                case meta_t32_imm:
+                    switch(in.encoding){
+                        case 2:
+                            os << "MOV";
+                            if(in.S)
+                                os << "s";
+                            os << " r" << in.Rd << ", #" << in.i32;
+                            break;
+                        default: 
+                            THROW_INVALID_ENCODING(MOV);
+                    }
+                    break;
+                default:
+                    THROW_INVALID_METACODE_32B(MOV);
+            }
+            break;
         case t32_MVN:
         case t32_ORN:
         case t32_ORR:
+            switch(in.meta_opcode){
+                case meta_t32_imm:
+                    os << "ORR";
+                    if(in.S)
+                        os << "s";
+                    os << " r" << in.Rd << ", r" << in.Rn << ", #" << in.i32;
+                    break;
+                default:
+                    THROW_INVALID_METACODE_32B(ORR);
+            }
+            break;
         case t32_POP:
         case t32_PUSH:
         case t32_RSB:
@@ -537,7 +565,7 @@ std::ostream& operator<<(std::ostream& os, instruction_32b_t& in){
         case t32_TEQ:
         case t32_TST:
             default:
-                std::runtime_error("Undefined 32-bit instruction ormat");
+                std::runtime_error("Undefined 32-bit instruction format");
 
     }
 }
