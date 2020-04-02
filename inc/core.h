@@ -24,15 +24,17 @@ public:
 
 public:
 
-    // initialize all regs to zero. mode is set to -1 so as to be 
-    // undefined. user MUST explicitly set it to either 0 (16 bit mode) 
-    // or 1 (32 bit mode)
     armv7_m3(void);
+
+    uint32_t& PC();
 
     // register data fetching methods
     uint32_t   get_register_u32(int reg);
     int32_t    get_register_i32(int reg);
     register_t get_register(int reg);
+
+    void set_register_i32(int reg, int32_t value);
+    void set_register_u32(int reg, uint32_t value);
 
     // get specific registers
     uint32_t get_PC(void);

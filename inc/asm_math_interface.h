@@ -8,8 +8,12 @@ struct results_t {
         signed int i32;
     };
 
-    
-
+    bool get_x86_flag_Carry(void); // unsigned carry
+    bool get_x86_flag_Par(void);
+    bool get_x86_flag_Adj(void);
+    bool get_x86_flag_Zero(void);
+    bool get_x86_flag_Sign(void);
+    bool get_x86_flag_Ov(void);   // signed overflow
 };
 
 const int x86_asm_ADD = 0;

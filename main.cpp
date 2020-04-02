@@ -23,8 +23,8 @@ int main(int argc, char* argv[]) {
     static_assert(offsetof(results_t, u32) == 4,   "alignment of .u32 in results_t incorrect (should be 4)");
     static_assert(offsetof(results_t, i32) == 4,   "alignment of .i32 in results_t incorrect (should be 4)");
 
-    //armv7_m3 armcpu;
-    //armcpu.set_current_mode(armv7_m3::mode_16);
+    armv7_m3 armcpu;
+    armcpu.PC() = 0x0224;
 
     //test_decode_fns("test/testfile.branch.txt");
     //test_decode_fns("test/testfile.bottom.txt");
