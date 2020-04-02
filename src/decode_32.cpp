@@ -201,7 +201,7 @@ instruction_32b_t decode_32bit_instruction(unsigned int PC, unsigned int instruc
             //std::cout << "toplevel 32b decode op2: " << std::hex 
             // << (op2 & mask) << std::dec << std::endl;
 
-            if((op2 & mask) == 0x00) {
+            if((op2 & mask) == 0x00) { 
                 return decode_32b_A5_14(PC, instruction_word);
             }
             else {
@@ -262,7 +262,7 @@ instruction_32b_t decode_32b_A5_14(unsigned int PC, unsigned int instruction_wor
 
     int op = (instruction_word >> (4 + 16)) & 0x1F;
     int Rn = (instruction_word >> (0 + 16)) & 0x0F;
-    int Rd = (instruction_word >> (8 + 0)) & 0x0F;
+    int Rd = (instruction_word >> (8 + 0))  & 0x0F;
 
     if (Rd != 0b1111){
         int mask = 0b11110;
@@ -299,7 +299,7 @@ instruction_32b_t decode_32b_A5_14(unsigned int PC, unsigned int instruction_wor
             return decode_32b_A6_62_CMP_imm(PC, instruction_word);
     }
 
-    if(Rn =! 0b1111){
+    if(Rn != 0b1111){
         int mask = 0b00100;
         if((op & mask) == 0b00100)
             return decode_32b_A6_172_ORR_imm(PC, instruction_word);

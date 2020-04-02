@@ -30,7 +30,7 @@ struct instruction_t {
     };
 
     std::string str(void);
-
+    
     //instruction_t(void);
 
 };
