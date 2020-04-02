@@ -84,6 +84,7 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include <map>
 #include <assert.h>
 #include <inc/decode_structure.h>
 #include <inc/decode_16.h>
@@ -199,7 +200,22 @@ void test_decode_fns(std::string filename) {
 // 32-bit
 //============================================
 
+static uint32_t get32bformat(std::string format) {
+
+    const std::map<std::string, uint32_t> lut = {
+        { "ADC_IMM", FORMAT_ADC_IMM },
+    };
+
+    auto iter = lut.find(format);
+    if(iter == lut.end())
+        throw std::runtime_error("get32bformat : string rep is not available");
+    else
+        return iter->second;
+}
+
 static uint32_t get32bFormat(int format){
+
+
 
     switch(format){
         case 1:  return FORMAT_ADC_IMM;     
