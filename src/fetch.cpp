@@ -26,6 +26,7 @@ fetched_instruction_t fetch(memory_t& memory, uint32_t PC) {
     };
 
     int flag_bits = (first_halfword >> 11) & 0x1F;
+    
     switch(flag_bits) {
         case 0b11101:
         case 0b11110:

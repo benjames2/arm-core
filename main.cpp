@@ -12,6 +12,8 @@
 
 using namespace std;
 
+void print_bin_number(uint32_t u32);
+
 int main(int argc, char* argv[]) {
 
     // for the assembly portion to work properly with the rest of the 
@@ -49,14 +51,28 @@ int main(int argc, char* argv[]) {
         }
         else {
             cout << "<32-BIT THUMB INSTRUCTION>\n";
+            //print_bin_number(inst_data.in);
             addr += 4;
         }
 
-        auto decoded_inst = decode(inst_data, addr);
-
+        // catch those pesky 32-bit decode errors
+        try {
+            auto decoded_inst = decode(inst_data, addr);
+        }
+        catch(runtime_error& ex) {
+            cout << ex.what() << endl;
+        }
     }
 
     return 0;
+}
+
+void print_bin_number(uint32_t u32) {
+
+    for(int i = 31; i >= 0; i--)
+        cout << (((u32>>i)&1) ? "1" : "0");
+    cout << endl;
+
 }
 
 void print_flag_results(int flags) {
