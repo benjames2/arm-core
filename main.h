@@ -199,6 +199,67 @@ void test_decode_fns(std::string filename) {
 // 32-bit
 //============================================
 
+static uint32_t get32bformat(std::string format) {
+
+    const std::map<std::string, uint32_t> lut = {
+
+        { "ADC_IMM",      FORMAT_ADC_IMM     },   
+        { "ADD_IMM",      FORMAT_ADD_IMM     }, 
+        { "ANC_IMM",      FORMAT_AND_IMM     },  
+        { "BIC_IMM",      FORMAT_BIC_IMM     },   
+        { "CMN_IMM",      FORMAT_CMN_IMM     },
+        { "CMP_IMM",      FORMAT_CMP_IMM     },  
+        { "EOR_IMM",      FORMAT_EOR_IMM     }, 
+        { "LDM ",         FORMAT_LDM         },
+        { "LDR_IMM_T3",   FORMAT_LDR_IMM_T3  },
+        { "LDR_IMM_T4",   FORMAT_LDR_IMM_T4  },
+        { "LDR_LIT",      FORMAT_LDR_LIT     },
+        { "LDR_REG",      FORMAT_LDR_REG     },
+        { "LDRD_IMM ",    FORMAT_LDRD_IMM    },
+        { "LDRD_LIT",     FORMAT_LDRD_LIT    },
+        { "LDREX ",       FORMAT_LDREX       },
+        { "LDREXB",       FORMAT_LDREXB      },
+        { "LDREXH",       FORMAT_LDREXH      },
+        { "LDRT",         FORMAT_LDRT        },
+        { "MOV_IMM",      FORMAT_MOV_IMM     },
+        { "MVN_IMM",      FORMAT_MVN_IMM     },
+        { "ORN_IMM",      FORMAT_ORN_IMM     },
+        { "ORR_IMM",      FORMAT_ORR_IMM     },
+        { "POP",          FORMAT_POP         },
+        { "PUSH",         FORMAT_PUSH        },
+        { "RSB_IMM ",     FORMAT_RSB_IMM     },
+        { "SBC_IMM",      FORMAT_SBC_IMM     },
+        { "STM",          FORMAT_STM         },
+        { "STMDB",        FORMAT_STMDB       },
+        { "STR_IMM_T3",   FORMAT_STR_IMM_T3  },
+        { "STR_IMM_T4",   FORMAT_STR_IMM_T4  },
+        { "STR_REG",      FORMAT_STR_REG     },
+        { "STRB_IMM_T2",  FORMAT_STRB_IMM_T2 },
+        { "STRB_IMM_T3",  FORMAT_STRB_IMM_T3 },
+        { "STRB_REG",     FORMAT_STRB_REG    },
+        { "STRD_IMM",     FORMAT_STRD_IMM    },
+        { "STREX",        FORMAT_STREX       },
+        { "STREXB",       FORMAT_STREXB      },
+        { "STREXH",       FORMAT_STREXH      },
+        { "STRH_IMM_T2",  FORMAT_STRH_IMM_T2 },
+        { "STRH_IMM_T3",  FORMAT_STRH_IMM_T3 },
+        { "STRH_REG",     FORMAT_STRH_REG    },
+        { "SUB_IMM",      FORMAT_SUB_IMM     },
+        { "TBB",          FORMAT_TBB         },
+        { "TBH",          FORMAT_TBH         },
+        { "TEQ_IMM",      FORMAT_TEQ_IMM     },
+        { "TST_IMM",      FORMAT_TST_IMM     },
+
+
+    };
+
+    auto iter = lut.find(format);
+    if(iter == lut.end())
+        throw std::runtime_error("get32bformat : string rep is not available");
+    else
+        return iter->second;
+}
+
 static uint32_t get32bFormat(int format){
 
     switch(format){
