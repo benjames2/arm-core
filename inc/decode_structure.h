@@ -59,6 +59,8 @@ struct instruction_32b_t {
     static const int encoding_T3 = 3;
     static const int encoding_T4 = 4;
 
+    std::string str(void);
+
 };
 
 // operator overload to print instruction_32b_t data

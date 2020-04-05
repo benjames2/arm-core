@@ -90,6 +90,8 @@
 #include <inc/decode_32.h>
 #include <inc/memory_pool.h>
 
+
+static uint32_t get32bformat(std::string format);
 void load_memory_file(std::string filename, memory_t& mempool) {
 
     std::cout << "Loading '" << filename << "'..." << std::flush;
@@ -199,6 +201,103 @@ void test_decode_fns(std::string filename) {
 // 32-bit
 //============================================
 
+void printBaseFormat(uint32_t number){
+
+    std::cout << "Instruction passed: ";
+    for(int i = 31; i != -1; i--){
+        std::cout << (((1 << i) & number) ? "1" : "0");
+    }
+    std::cout << "\n";
+}
+///*
+void test_32b_decode(std::string filename){
+
+    std::cout << "\n=======================================================================\n";
+    std::cout << " " << filename << "\n";
+    std::cout << "=======================================================================\n\n";
+    std::cout << std::flush;
+    
+    std::ifstream file(filename);
+    std::string line;
+   
+    while (std::getline(file, line)){
+
+        std::string line2;
+        std::getline(file, line2);
+        std::stringstream ss(line2);
+        std::string instruction_name;
+        ss >> instruction_name;
+        uint32_t base_32b_format = get32bformat(instruction_name);
+
+
+        std::string stringval;
+        uint32_t val, shift;
+        while(ss >> stringval){
+            if(stringval == ";")
+                break;
+
+            val = std::stoul(stringval);
+
+            ss >> shift;
+            base_32b_format |= (val << shift); 
+        }
+
+        printBaseFormat(base_32b_format);
+        auto dec     = decode_32bit_instruction(0x00, base_32b_format);
+        auto dec_str = dec.str();
+
+        std::cout << "Expected: " << line << std::endl;
+        std::cout << "Decoded:  " << dec_str << std::endl << std::flush;
+        assert (line == dec_str);
+        std::cout << "SUCCESS\n\n";
+    }
+    
+}
+//*/
+/*
+void test_32b_decode(std::string filename) {
+
+    std::cout << "\n=======================================================================\n";
+    std::cout << " " << filename << "\n";
+    std::cout << "=======================================================================\n\n";
+    std::cout << std::flush;
+
+    std::ifstream is(filename);
+    std::string str;
+
+    while(std::getline(is, str)) {
+        
+        //is.ignore();
+        std::stringstream ss(str);
+        std::string format;
+        ss >> format;
+        uint32_t base_format = get32bformat(format);
+
+        std::string strval;
+        uint32_t shft, val;
+        while(ss >> strval) {
+            if(strval == ";")
+                break;
+
+            val = std::stoul(strval);
+            ss >> shft;
+
+            base_format |= (val << shft);
+        }
+
+        std::getline(is, strval);
+        //is.ignore();
+        auto dec     = decode_32bit_instruction(0x00, base_format);
+        auto dec_str = dec.str();
+        
+        std::cout << "Expected : " << strval << std::endl;
+        std::cout << "Decoded  : " << dec_str << std::endl << std::flush;
+        assert(strval == dec_str);
+        std::cout << "SUCCESS\n\n";
+    }
+
+}
+*/
 static uint32_t get32bformat(std::string format) {
 
     const std::map<std::string, uint32_t> lut = {
@@ -255,63 +354,9 @@ static uint32_t get32bformat(std::string format) {
 
     auto iter = lut.find(format);
     if(iter == lut.end())
-        throw std::runtime_error("get32bformat : string rep is not available");
+        throw std::runtime_error("get32bformat : string representation is not available");
     else
         return iter->second;
-}
-
-static uint32_t get32bFormat(int format){
-
-    switch(format){
-        case 1:  return FORMAT_ADC_IMM;     
-        case 2:  return FORMAT_ADD_IMM;     
-        case 3:  return FORMAT_AND_IMM;     
-        case 4:  return FORMAT_BIC_IMM;     
-        case 5:  return FORMAT_CMN_IMM;     
-        case 6:  return FORMAT_CMP_IMM;     
-        case 7:  return FORMAT_EOR_IMM;     
-        case 8:  return FORMAT_LDM;         
-        case 9:  return FORMAT_LDR_IMM_T3;  
-        case 10: return FORMAT_LDR_IMM_T4;  
-        case 11: return FORMAT_LDR_LIT;     
-        case 12: return FORMAT_LDR_REG;     
-        case 13: return FORMAT_LDRD_IMM;    
-        case 14: return FORMAT_LDRD_LIT;    
-        case 15: return FORMAT_LDREX;       
-        case 16: return FORMAT_LDREXB;      
-        case 17: return FORMAT_LDREXH;      
-        case 18: return FORMAT_LDRT;        
-        case 19: return FORMAT_MOV_IMM;     
-        case 20: return FORMAT_MVN_IMM;     
-        case 21: return FORMAT_ORN_IMM;     
-        case 22: return FORMAT_ORR_IMM;     
-        case 23: return FORMAT_POP;         
-        case 24: return FORMAT_PUSH;        
-        case 25: return FORMAT_RSB_IMM;     
-        case 26: return FORMAT_SBC_IMM;     
-        case 27: return FORMAT_STM;         
-        case 28: return FORMAT_STMDB;       
-        case 29: return FORMAT_STR_IMM_T3;  
-        case 30: return FORMAT_STR_IMM_T4;  
-        case 31: return FORMAT_STR_REG;     
-        case 32: return FORMAT_STRB_IMM_T2; 
-        case 33: return FORMAT_STRB_IMM_T3; 
-        case 34: return FORMAT_STRB_REG;    
-        case 35: return FORMAT_STRD_IMM;    
-        case 36: return FORMAT_STREX;       
-        case 37: return FORMAT_STREXB;      
-        case 38: return FORMAT_STREXH;      
-        case 39: return FORMAT_STRH_IMM_T2; 
-        case 40: return FORMAT_STRH_IMM_T3; 
-        case 41: return FORMAT_STRH_REG;    
-        case 42: return FORMAT_SUB_IMM;     
-        case 43: return FORMAT_TBB;         
-        case 44: return FORMAT_TBH;         
-        case 45: return FORMAT_TEQ_IMM;     
-        case 46: return FORMAT_TST_IMM;     
-        default:
-            throw std::runtime_error("get32bFormat : invalid format specifier");
-    } 
 }
 
 #undef SHL

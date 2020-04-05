@@ -12,6 +12,12 @@ std::string instruction_t::str(void) {
     return ss.str();
 }
 
+std::string instruction_32b_t::str(void){
+    std::stringstream ss;
+    ss << *this << std::flush;
+    return ss.str();
+}
+
 std::ostream& operator<<(std::ostream& os, instruction_t& in) {
 
     // maintain a single instruction for BL <-- c'mon joe, what does this even mean?

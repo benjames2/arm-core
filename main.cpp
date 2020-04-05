@@ -27,17 +27,20 @@ int main(int argc, char* argv[]) {
     //test_decode_fns("test/testfile.branch.txt");
     //test_decode_fns("test/testfile.bottom.txt");
     //test_decode_fns("test/testfile.txt");
+    test_32b_decode("test/testfile32b");
     //std::cout << "INSTRUCTION TESTS PASSED\n\n" << std::flush;
+
+    
 
     memory_t mem(memory_t::little_endian);
 
-    for(auto cptr : { "test/input/assembly-code.txt", "test/input/memory.txt" }) {
-        load_memory_file(cptr, mem);
-        std::cout << mem << std::endl;
-    }
+  //  for(auto cptr : { "test/input/assembly-code.txt", "test/input/memory.txt" }) {
+   //     load_memory_file(cptr, mem);
+    //    std::cout << mem << std::endl;
+   // }
 
     // starting address for machine code
-
+/*
     for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
         
         auto inst_data = fetch(mem, addr);
@@ -56,7 +59,7 @@ int main(int argc, char* argv[]) {
         auto decoded_inst = decode(inst_data, addr);
 
     }
-
+*/
     return 0;
 }
 

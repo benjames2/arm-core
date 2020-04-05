@@ -264,73 +264,60 @@ instruction_32b_t decode_32b_A5_14(unsigned int PC, unsigned int instruction_wor
     int Rn = (instruction_word >> (0 + 16)) & 0x0F;
     int Rd = (instruction_word >> (8 + 0))  & 0x0F;
 
+    int mask = 0b11110;
+
     if (Rd != 0b1111){
-        int mask = 0b11110;
         if((op & mask) == 0b00000)
             return decode_32b_A6_32_AND_imm(PC, instruction_word);
         
-        mask = 0b01000;
         if((op & mask) == 0b01000)
             return decode_32b_A6_72_EOR_imm(PC, instruction_word);
 
-        mask = 0b10000;
         if((op & mask) == 0b10000)
             return decode_32b_A6_22_ADD_imm(PC, instruction_word);
 
-        mask = 0b11010;
         if ((op & mask) == 0b11010)
             return decode_32b_A6_242_SUB_imm(PC, instruction_word);
     }
     else{
-        int mask = 0b11110;
         if((op & mask) == 0b00000)
             return decode_32b_A6_260_TST_imm(PC, instruction_word);
 
-        mask = 0b01000;
         if((op & mask) == 0b01000)
             return decode_32b_A6_258_TEQ_imm(PC, instruction_word);
 
-        mask = 0b10000;
         if((op & mask) == 0b10000)
             return decode_32b_A6_58_CMN_imm(PC, instruction_word);
 
-        mask = 0b11010;
         if ((op & mask) == 0b11010)
             return decode_32b_A6_62_CMP_imm(PC, instruction_word);
     }
 
     if(Rn != 0b1111){
-        int mask = 0b00100;
         if((op & mask) == 0b00100)
             return decode_32b_A6_172_ORR_imm(PC, instruction_word);
 
-        mask = 0b00110;
         if((op & mask) == 0b00110)
             return decode_32b_A6_168_ORN_imm(PC, instruction_word);
     }
     else{
-        int mask = 0b00100;
         if((op & mask) == 0b00100)
             return decode_32b_A6_148_MOV_imm(PC, instruction_word);
 
-        mask = 0b00110;
         if((op & mask) == 0b00110)
             return decode_32b_A6_162_MVN_imm(PC, instruction_word);
     }
 
-    int mask = 0b00010;
+    
     if((op & mask) == 0b00010)
         return decode_32b_A6_44_BIC_imm(PC, instruction_word);
 
-    mask = 0b10100;
     if((op & mask) == 0b10100)
         return decode_32b_A6_18_ADC_imm(PC, instruction_word);
 
-    mask = 0b10110;
     if((op & mask) == 0b10110)
         return decode_32b_A6_202_SBC_imm(PC, instruction_word);
 
-    mask = 0b11100;
     if((op & mask) == 0b11100)
         return decode_32b_A6_198_RSB_imm(PC, instruction_word);
 
