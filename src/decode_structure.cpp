@@ -480,6 +480,7 @@ std::ostream& operator<<(std::ostream& os, instruction_32b_t& in){
             break;
 
         case t32_LDM:
+            THROW_UNDEFINED(LDM);
         case t32_LDR:
             switch(in.meta_opcode){
                 case meta_t32_imm:
@@ -488,7 +489,14 @@ std::ostream& operator<<(std::ostream& os, instruction_32b_t& in){
                             os << "LDR r" << in.Rt << ", r" << in.Rn << ", #" << in.u32;
                             break;
                         case 4:
-                            os << "LDR r" << in.Rt << ", r" << in.Rn << ", #" << in.i32;
+                            os << "LDR";
+                            if(in.P)
+                                os << "p";
+                            if(in.  U)
+                                os << "u";
+                            if(in.W)
+                                os << "w";
+                            os << " r" << in.Rt << ", r" << in.Rn << ", #" << in.i32;
                             break;
                         default: 
                             THROW_INVALID_ENCODING(LDR);

@@ -265,7 +265,7 @@ instruction_32b_t decode_32b_A5_14(unsigned int PC, unsigned int instruction_wor
     int Rd = (instruction_word >> (8 + 0))  & 0x0F;
 
     int mask = 0b11110;
-
+    
     if (Rd != 0b1111){
         if((op & mask) == 0b00000)
             return decode_32b_A6_32_AND_imm(PC, instruction_word);
@@ -308,7 +308,6 @@ instruction_32b_t decode_32b_A5_14(unsigned int PC, unsigned int instruction_wor
             return decode_32b_A6_162_MVN_imm(PC, instruction_word);
     }
 
-    
     if((op & mask) == 0b00010)
         return decode_32b_A6_44_BIC_imm(PC, instruction_word);
 
@@ -672,7 +671,7 @@ instruction_32b_t decode_32b_A6_32_AND_imm(unsigned int PC, unsigned int instruc
 
     instruction_32b_t in;
 
-    in.opcode      = t32_ADD;
+    in.opcode      = t32_AND;
     in.meta_opcode = meta_t32_imm;
 
     in.Rn = (instruction_word >> (15 + 1)) & 0x0F;

@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
     //test_decode_fns("test/testfile.branch.txt");
     //test_decode_fns("test/testfile.bottom.txt");
     //test_decode_fns("test/testfile.txt");
-    test_32b_decode("test/testfile32b");
+    test_32b_decode("test/testfile32b.txt");
     //std::cout << "INSTRUCTION TESTS PASSED\n\n" << std::flush;
 
     

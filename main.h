@@ -222,6 +222,12 @@ void test_32b_decode(std::string filename){
    
     while (std::getline(file, line)){
 
+        std::stringstream ss0(line);
+        std::string parentheses;
+        ss0 >> parentheses;
+        if(parentheses == "//")
+            continue;
+            
         std::string line2;
         std::getline(file, line2);
         std::stringstream ss(line2);
@@ -304,7 +310,7 @@ static uint32_t get32bformat(std::string format) {
 
         { "ADC_IMM",      FORMAT_ADC_IMM     },   
         { "ADD_IMM",      FORMAT_ADD_IMM     }, 
-        { "ANC_IMM",      FORMAT_AND_IMM     },  
+        { "AND_IMM",      FORMAT_AND_IMM     },  
         { "BIC_IMM",      FORMAT_BIC_IMM     },   
         { "CMN_IMM",      FORMAT_CMN_IMM     },
         { "CMP_IMM",      FORMAT_CMP_IMM     },  
