@@ -42,10 +42,10 @@ EOR_IMM 1 20 12 8 2 16 98 0       ;
 LDR r0, r0, #0
 LDR_IMM_T3                        ;
 LDR r1, r2, #4095
-LDR_IMM_T3  1 12 2 16 4095 0       ;
+LDR_IMM_T3  1 12 2 16 4095 0      ;
 //
-// LDR r0, r0, #0
-// LDR_IMM_T4                        ;
+LDR r0, r0, #0
+LDR_IMM_T4                       ;
 // LDRpuw r1, r2, #255
 // LDR_IMM_T4  1 12 2 16 255 0 3 8   ;
 //

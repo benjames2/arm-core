@@ -223,11 +223,11 @@ void test_32b_decode(std::string filename){
     while (std::getline(file, line)){
 
         std::stringstream ss0(line);
-        std::string parentheses;
-        ss0 >> parentheses;
-        if(parentheses == "//")
+        std::string commment;
+        ss0 >> commment;
+        if(commment == "//")
             continue;
-            
+
         std::string line2;
         std::getline(file, line2);
         std::stringstream ss(line2);

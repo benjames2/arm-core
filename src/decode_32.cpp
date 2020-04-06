@@ -265,7 +265,7 @@ instruction_32b_t decode_32b_A5_14(unsigned int PC, unsigned int instruction_wor
     int Rd = (instruction_word >> (8 + 0))  & 0x0F;
 
     int mask = 0b11110;
-    
+
     if (Rd != 0b1111){
         if((op & mask) == 0b00000)
             return decode_32b_A6_32_AND_imm(PC, instruction_word);
@@ -511,18 +511,20 @@ instruction_32b_t decode_32b_A5_22(unsigned int PC, unsigned int instruction_wor
         if(op1 == 0x01)
             return decode_32b_A6_88_LDR_imm_T3(PC, instruction_word);
 
-        else if(op1 == 0x00){
+        else if(op1 == 0b00){
             int mask = 0b100100;
-            int mask2 = 0b110000;
-            if(((op2 & mask) == 0x100100)  || ((op2 & mask2) == 0x110000))
+            int mask2 = 0b111100;
+            if(((op2 & mask) == 0b100100)  || ((op2 & mask2) == 0b110000))
                 return decode_32b_A6_88_LDR_imm_T4(PC, instruction_word);
 
-            mask = 0b111000;
-            if((op2 & mask) == 0b111000)
+            else if((op2 & 0b111100) == 0b111000)
                 return decode_32b_A6_133_LDRT(PC, instruction_word);
 
-            if (op2 == 0b00)
+            else if (op2 == 0b000000)
                 return decode_32b_A6_92_LDR_reg(PC, instruction_word);
+
+            else
+                throw std::runtime_error("In decode_32b_A5_22 : invalid value for op2 field with Rn != 0b1111");
 
         }
         else
@@ -537,7 +539,7 @@ instruction_32b_t decode_32b_A5_22(unsigned int PC, unsigned int instruction_wor
             throw std::runtime_error("In decode_32b_A5_22 : invalid value for op1 field");     
     }
 
-    throw std::runtime_error("In decode_32b_A5_22 : invalid instruction encoding");
+    //throw std::runtime_error("In decode_32b_A5_22 : invalid instruction encoding");
 
 }
 
