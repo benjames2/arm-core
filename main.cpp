@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
         auto decoded_inst = decode(inst_data, addr);
 
     }
-*/
+//*/
     return 0;
 }
 
