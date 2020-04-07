@@ -44,8 +44,22 @@ LDR_IMM_T3                        ;
 LDR r1, r2, #4095
 LDR_IMM_T3  1 12 2 16 4095 0      ;
 //
-LDR r0, r0, #0
-LDR_IMM_T4                       ;
-// LDRpuw r1, r2, #255
-// LDR_IMM_T4  1 12 2 16 255 0 3 8   ;
+LDRp r0, r0, #0
+LDR_IMM_T4 1 10                   ;
+LDRpuw r1, r2, #255
+LDR_IMM_T4  1 12 2 16 255 0 7 8   ;
+LDRw r0, r0, #0
+LDR_IMM_T4 1 8                    ;
 //
+LDR r0, r0, r0, #0
+LDR_REG                           ;
+//
+LDRD_IMM r0, r0, r0, #0
+LDRD_IMM 7 20                     ;  
+LDRD_IMM r0, r0, r0, #16
+LDRD_IMM 15 20 4 0                ;  
+LDRD_IMM r5, r5, r5, #16
+LDRD_IMM 15 20 5 8 5 12 5 16 4 0  ;
+//
+LDRD_LIT r0, r0, #0
+LDRD_LIT 1 24

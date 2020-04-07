@@ -875,6 +875,8 @@ instruction_32b_t decode_32b_A6_104_LDRD_lit(unsigned int PC, unsigned int instr
 
     instruction_32b_t in;
 
+    int imm8 = (instruction_word >> 0) & 0xFF;
+
     in.opcode      = t32_LDRD;
     in.meta_opcode = meta_t32_literal;
 
@@ -882,6 +884,7 @@ instruction_32b_t decode_32b_A6_104_LDRD_lit(unsigned int PC, unsigned int instr
     in.U   = (instruction_word >> (15 + 8)) & 0x01;
     in.Rt  = (instruction_word >> 12) & 0x0F;
     in.Rt2 = (instruction_word >> 8) & 0x0F;
+    in.u32 = imm8 << 2;
 
     return in;
 }

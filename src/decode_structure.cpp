@@ -516,10 +516,10 @@ std::ostream& operator<<(std::ostream& os, instruction_32b_t& in){
         case t32_LDRD:
             switch(in.meta_opcode){
                 case meta_t32_imm:
-                    os << "LDRD r" << in.Rt << ", r" << in.Rt2 << ", r" << in.Rn << ", #" << in.u32;
+                    os << "LDRD_IMM r" << in.Rt << ", r" << in.Rt2 << ", r" << in.Rn << ", #" << in.u32;
                     break;
                 case meta_t32_literal:
-                    os << "LDRD r" << in.Rt << ", r" << in.Rt2 << ", #" << in.u32;
+                    os << "LDRD_LIT r" << in.Rt << ", r" << in.Rt2 << ", #" << in.u32;
                     break;
                 default:
                     THROW_INVALID_METACODE_32B(LDRD);
