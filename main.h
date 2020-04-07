@@ -50,7 +50,7 @@
 #define FORMAT_LDREXB      (TOP_32B_1 | SHL(23) | SHL(22) | SHL(20) | SHL(11) | SHL(10) | SHL(9) | SHL(8) | SHL(3) | SHL(2) | SHL(1) | SHL(0))
 #define FORMAT_LDREXH      (TOP_32B_1 | SHL(23) | SHL(22) | SHL(20) | SHL(11) | SHL(10) | SHL(9) | SHL(8) | SHL(6) | SHL(4) | SHL(3) | SHL(2) | SHL(1) | SHL(0))
 #define FORMAT_LDRT        (TOP_32B_3 | SHL(22) | SHL(20) | SHL(11) | SHL(10) | SHL(9))
-#define FORMAT_MOV_IMM     (TOP_32B_2 | SHL(25) | SHL(22))
+#define FORMAT_MOV_IMM     (TOP_32B_2 | SHL(22) | SHL(19) | SHL(18) | SHL(17) | SHL(16))
 #define FORMAT_MVN_IMM     (TOP_32B_2 | SHL(22) | SHL(21) | SHL(19) | SHL(18) | SHL(17) | SHL(16))
 #define FORMAT_ORN_IMM     (TOP_32B_2 | SHL(22) | SHL(21))
 #define FORMAT_ORR_IMM     (TOP_32B_2 | SHL(22))

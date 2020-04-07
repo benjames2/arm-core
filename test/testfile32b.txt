@@ -13,7 +13,7 @@ AND_IMM 10 8 15 16 255 0          ; add i=0, imm3=0, imm8=255, AND Rd(8) Rn(16) 
 ANDs r14, r13, #200
 AND_IMM 14 8 13 16 1 20 200 0     ; add i=0, imm3=0, S=1, imm8=200, AND Rd(8) Rn(16) const
 // AND r15, r15, #255             ;
-// AND_IMM 15 8 15 16 255 0       ;commenting out this should throw an error
+// AND_IMM 15 8 15 16 255 0       ; commenting out this should throw an error
 //
 BIC r0, r0, #0
 BIC_IMM                           ;
@@ -63,3 +63,21 @@ LDRD_IMM 15 20 5 8 5 12 5 16 4 0  ;
 //
 LDRD_LIT r0, r0, #0
 LDRD_LIT 1 24
+LDRD_LIT r0, r15, #0
+LDRD_LIT 3 23 1 21 15 8
+LDRD_LIT r0, r0, #8
+LDRD_LIT 1 24 1 21 2 0
+LDRD_LIT r9, r0, #0
+LDRD_LIT 3 23 9 12
+//
+MOV r0, #0
+MOV_IMM
+MOVs r0, #0
+MOV_IMM 1 20
+MOVs r15, #131074
+MOV_IMM 1 20 15 8 1 12 2 0
+//
+ORR r0, r0, #0
+ORR_IMM
+ORRs r0, r0, #0
+ORR_IMM 1 20
