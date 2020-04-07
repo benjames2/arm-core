@@ -10,9 +10,19 @@ armv7_m3::armv7_m3(void) {
 }
 
 // register access
-armv7_m3::register_t armv7_m3::get_register(int reg) { return this->reg[reg]; }
-uint32_t armv7_m3::get_register_u32(int reg) { return this->reg[reg].u32; }
-int32_t armv7_m3::get_register_i32(int reg) { return this->reg[reg].i32; }
+armv7_m3::register_t armv7_m3::get_register(int reg) {
+    if(reg > 15 || reg < 0)
+        throw std::runtime_error("armv7_m3::get_register : invalid register access. valid accesses are r(0-15)");
+    return this->reg[reg]; 
+}
+
+uint32_t armv7_m3::get_register_u32(int reg) { 
+    return this->get_register(reg).u32;
+}
+
+int32_t armv7_m3::get_register_i32(int reg) {
+    return this->get_register(reg).i32;
+}
 
 uint32_t armv7_m3::get_PC(void)  { return this->reg[15].u32; }
 uint32_t armv7_m3::get_MSP(void) { return this->reg[13].u32; }
@@ -26,11 +36,23 @@ bool armv7_m3::get_APSR_C(void) { return (this->APSR & (1 << 29)) ? 1 : 0; }
 bool armv7_m3::get_APSR_V(void) { return (this->APSR & (1 << 28)) ? 1 : 0; }
 bool armv7_m3::get_APSR_Q(void) { return (this->APSR & (1 << 27)) ? 1 : 0; }
 
-bool armv7_m3::get_CPSR_N(void) { return (this->APSR & (1 << 31)) ? 1 : 0; }
-bool armv7_m3::get_CPSR_Z(void) { return (this->APSR & (1 << 30)) ? 1 : 0; }
-bool armv7_m3::get_CPSR_C(void) { return (this->APSR & (1 << 29)) ? 1 : 0; }
-bool armv7_m3::get_CPSR_V(void) { return (this->APSR & (1 << 28)) ? 1 : 0; }
-bool armv7_m3::get_CPSR_Q(void) { return (this->APSR & (1 << 27)) ? 1 : 0; }
+void armv7_m3::set_APSR_N(bool b) { if(b) this->APSR |= (1 << 31); else this->APSR &= ~(1 << 31); }
+void armv7_m3::set_APSR_Z(bool b) { if(b) this->APSR |= (1 << 30); else this->APSR &= ~(1 << 30); }
+void armv7_m3::set_APSR_C(bool b) { if(b) this->APSR |= (1 << 29); else this->APSR &= ~(1 << 29); }
+void armv7_m3::set_APSR_V(bool b) { if(b) this->APSR |= (1 << 28); else this->APSR &= ~(1 << 28); }
+void armv7_m3::set_APSR_Q(bool b) { if(b) this->APSR |= (1 << 27); else this->APSR &= ~(1 << 27); }
+
+bool armv7_m3::get_CPSR_N(void) { return (this->CPSR & (1 << 31)) ? 1 : 0; }
+bool armv7_m3::get_CPSR_Z(void) { return (this->CPSR & (1 << 30)) ? 1 : 0; }
+bool armv7_m3::get_CPSR_C(void) { return (this->CPSR & (1 << 29)) ? 1 : 0; }
+bool armv7_m3::get_CPSR_V(void) { return (this->CPSR & (1 << 28)) ? 1 : 0; }
+bool armv7_m3::get_CPSR_Q(void) { return (this->CPSR & (1 << 27)) ? 1 : 0; }
+
+void armv7_m3::set_CPSR_N(bool b) { if(b) this->CPSR |= (1 << 31); else this->CPSR &= ~(1 << 31); }
+void armv7_m3::set_CPSR_Z(bool b) { if(b) this->CPSR |= (1 << 30); else this->CPSR &= ~(1 << 30); }
+void armv7_m3::set_CPSR_C(bool b) { if(b) this->CPSR |= (1 << 29); else this->CPSR &= ~(1 << 29); }
+void armv7_m3::set_CPSR_V(bool b) { if(b) this->CPSR |= (1 << 28); else this->CPSR &= ~(1 << 28); }
+void armv7_m3::set_CPSR_Q(bool b) { if(b) this->CPSR |= (1 << 27); else this->CPSR &= ~(1 << 27); }
 
 // fields specific to the CPSR
 int armv7_m3::get_CPSR_IT(void) { return ((this->CPSR >> 8) & 0b11111100) | ((this->CPSR >> 25) & 0b11); }

@@ -1,0 +1,83 @@
+ADC r14, r13, #200
+ADC_IMM 14 8 13 16 200 0          ; adc i=0, imm3=0, imm8=200, ADC Rd(8) Rn(16) const
+ADCs r14, r13, #250
+ADC_IMM 14 8 13 16 1 20 250 0     ; adc i=0, imm3=0, S=1, imm8=200, ADC Rd(8) Rn(16) const
+// 
+ADD r14, r13, #255
+ADD_IMM 14 8 13 16 255 0          ; add i=0, imm3=0, imm8=200, ADD Rd(8) Rn(16) const
+ADDs r14, r13, #200
+ADD_IMM 14 8 13 16 1 20 200 0     ; add i=0, imm3=0, S=1, imm8=200, ADD Rd(8) Rn(16) const
+//
+AND r10, r15, #255
+AND_IMM 10 8 15 16 255 0          ; add i=0, imm3=0, imm8=255, AND Rd(8) Rn(16) const
+ANDs r14, r13, #200
+AND_IMM 14 8 13 16 1 20 200 0     ; add i=0, imm3=0, S=1, imm8=200, AND Rd(8) Rn(16) const
+// AND r15, r15, #255             ;
+// AND_IMM 15 8 15 16 255 0       ; commenting out this should throw an error
+//
+BIC r0, r0, #0
+BIC_IMM                           ;
+BICs r0, r0, #0
+BIC_IMM 1 20                      ;
+BICs r12, r2, #98
+BIC_IMM 1 20 12 8 2 16 98 0       ;
+//
+CMN r0, #0
+CMN_IMM                           ;
+CMN r11, #98
+CMN_IMM 11 16 98 0                ;
+//
+CMP r0, #0
+CMP_IMM                           ;
+CMP r11, #98
+CMP_IMM 11 16 98 0                ;
+//
+EOR r0, r0, #0
+EOR_IMM                           ;
+EORs r0, r0, #0
+EOR_IMM 1 20                      ;
+EORs r12, r2, #98
+EOR_IMM 1 20 12 8 2 16 98 0       ;
+//
+LDR r0, r0, #0
+LDR_IMM_T3                        ;
+LDR r1, r2, #4095
+LDR_IMM_T3  1 12 2 16 4095 0      ;
+//
+LDRp r0, r0, #0
+LDR_IMM_T4 1 10                   ;
+LDRpuw r1, r2, #255
+LDR_IMM_T4  1 12 2 16 255 0 7 8   ;
+LDRw r0, r0, #0
+LDR_IMM_T4 1 8                    ;
+//
+LDR r0, r0, r0, #0
+LDR_REG                           ;
+//
+LDRD_IMM r0, r0, r0, #0
+LDRD_IMM 7 20                     ;  
+LDRD_IMM r0, r0, r0, #16
+LDRD_IMM 15 20 4 0                ;  
+LDRD_IMM r5, r5, r5, #16
+LDRD_IMM 15 20 5 8 5 12 5 16 4 0  ;
+//
+LDRD_LIT r0, r0, #0
+LDRD_LIT 1 24
+LDRD_LIT r0, r15, #0
+LDRD_LIT 3 23 1 21 15 8
+LDRD_LIT r0, r0, #8
+LDRD_LIT 1 24 1 21 2 0
+LDRD_LIT r9, r0, #0
+LDRD_LIT 3 23 9 12
+//
+MOV r0, #0
+MOV_IMM
+MOVs r0, #0
+MOV_IMM 1 20
+MOVs r15, #131074
+MOV_IMM 1 20 15 8 1 12 2 0
+//
+ORR r0, r0, #0
+ORR_IMM
+ORRs r0, r0, #0
+ORR_IMM 1 20

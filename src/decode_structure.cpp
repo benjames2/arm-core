@@ -4,8 +4,15 @@
 #define THROW_INVALID_METACODE(opcode) throw std::runtime_error("opcode(" #opcode ") : invalid meta opcode")
 #define THROW_INVALID_METACODE_32B(opcode) throw std::runtime_error("opcode(" #opcode ") : invalid meta opcode for 32-bit instruction")
 #define THROW_INVALID_ENCODING(instruction) throw std::runtime_error("Invalid encoding for : " #instruction " instruction")
+#define THROW_UNDEFINED(instruction) throw std::runtime_error ("Operator overload undefined for " #instruction " ")
 
 std::string instruction_t::str(void) {
+    std::stringstream ss;
+    ss << *this << std::flush;
+    return ss.str();
+}
+
+std::string instruction_32b_t::str(void){
     std::stringstream ss;
     ss << *this << std::flush;
     return ss.str();
@@ -473,6 +480,7 @@ std::ostream& operator<<(std::ostream& os, instruction_32b_t& in){
             break;
 
         case t32_LDM:
+            THROW_UNDEFINED(LDM);
         case t32_LDR:
             switch(in.meta_opcode){
                 case meta_t32_imm:
@@ -481,7 +489,14 @@ std::ostream& operator<<(std::ostream& os, instruction_32b_t& in){
                             os << "LDR r" << in.Rt << ", r" << in.Rn << ", #" << in.u32;
                             break;
                         case 4:
-                            os << "LDR r" << in.Rt << ", r" << in.Rn << ", #" << in.i32;
+                            os << "LDR";
+                            if(in.P)
+                                os << "p";
+                            if(in.  U)
+                                os << "u";
+                            if(in.W)
+                                os << "w";
+                            os << " r" << in.Rt << ", r" << in.Rn << ", #" << in.i32;
                             break;
                         default: 
                             THROW_INVALID_ENCODING(LDR);
@@ -501,43 +516,94 @@ std::ostream& operator<<(std::ostream& os, instruction_32b_t& in){
         case t32_LDRD:
             switch(in.meta_opcode){
                 case meta_t32_imm:
-                    os << "LDRD r" << in.Rt << ", r" << in.Rt2 << ", r" << in.Rn << ", #" << in.u32;
+                    os << "LDRD_IMM r" << in.Rt << ", r" << in.Rt2 << ", r" << in.Rn << ", #" << in.u32;
                     break;
                 case meta_t32_literal:
-                    os << "LDRD r" << in.Rt << ", r" << in.Rt2 << ", #" << in.u32;
+                    os << "LDRD_LIT r" << in.Rt << ", r" << in.Rt2 << ", #" << in.u32;
                     break;
                 default:
                     THROW_INVALID_METACODE_32B(LDRD);
             }
             break;
-        case t32_LDREX:
-        case t32_LDREXB:
-        case t32_LDREXH:
+        case t32_LDREX: 
+            THROW_UNDEFINED(LDREX);
+        case t32_LDREXB: 
+            THROW_UNDEFINED(LDREXB);
+        case t32_LDREXH: 
+            THROW_UNDEFINED(LDREXH);
         case t32_LDRT:
+            THROW_UNDEFINED(LDRT);
         case t32_MOV:
+            switch(in.meta_opcode){
+                case meta_t32_imm:
+                    switch(in.encoding){
+                        case 2:
+                            os << "MOV";
+                            if(in.S)
+                                os << "s";
+                            os << " r" << in.Rd << ", #" << in.i32;
+                            break;
+                        default: 
+                            THROW_INVALID_ENCODING(MOV);
+                    }
+                    break;
+                default:
+                    THROW_INVALID_METACODE_32B(MOV);
+            }
+            break;
         case t32_MVN:
+            THROW_UNDEFINED(MVN);
         case t32_ORN:
+            THROW_UNDEFINED(ORN);
         case t32_ORR:
+            switch(in.meta_opcode){
+                case meta_t32_imm:
+                    os << "ORR";
+                    if(in.S)
+                        os << "s";
+                    os << " r" << in.Rd << ", r" << in.Rn << ", #" << in.i32;
+                    break;
+                default:
+                    THROW_INVALID_METACODE_32B(ORR);
+            }
+            break;
         case t32_POP:
+            THROW_UNDEFINED(POP);
         case t32_PUSH:
+            THROW_UNDEFINED(PUSH);
         case t32_RSB:
+            THROW_UNDEFINED(RSB);
         case t32_SBC:
+            THROW_UNDEFINED(SBC);
         case t32_STM:
+            THROW_UNDEFINED(STM);
         case t32_STMDB:
+            THROW_UNDEFINED(STMDB);
         case t32_STR:
+            THROW_UNDEFINED(STR);
         case t32_STRB:
+            THROW_UNDEFINED(STRB);
         case t32_STRD:
+            THROW_UNDEFINED(STRD);
         case t32_STREX:
+            THROW_UNDEFINED(STREX);
         case t32_STREXB:
+            THROW_UNDEFINED(STREXB);
         case t32_STREXH:
+            THROW_UNDEFINED(STREXH);
         case t32_STRH:
+            THROW_UNDEFINED(STRH);
         case t32_SUB:
+            THROW_UNDEFINED(SUB);
         case t32_TBB:
+            THROW_UNDEFINED(TBB);
         case t32_TBH:
+            THROW_UNDEFINED(TBH);
         case t32_TEQ:
+            THROW_UNDEFINED(TEQ);
         case t32_TST:
-            default:
-                std::runtime_error("Undefined 32-bit instruction ormat");
-
+            THROW_UNDEFINED(TST);
+        default:
+            std::runtime_error("Undefined 32-bit instruction format");
     }
 }
