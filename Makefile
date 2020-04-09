@@ -16,11 +16,10 @@ CPPOBJ= \
  ${OBJ}/execute.o
 
 # defined in x86_64 Assembly
-ASMOBJ= \
- ${OBJ}/byte_swap.o \
- ${OBJ}/math.o
+ASMOBJ= ${OBJ}/byte_swap.o
+ASMMATHOBJ= ${OBJ}/math.o # <-- this one is awkward
 
-ALLOBJ=${CPPOBJ} ${ASMOBJ}
+ALLOBJ=${CPPOBJ} ${ASMOBJ} ${ASMMATHOBJ}
 
 all: main
 
@@ -35,6 +34,21 @@ main: ${ALLOBJ} main.h main.cpp
 ${CPPOBJ}: ${OBJ}/%.o: ${SRC}/%.cpp ${INC}/%.h
 	g++ -c -o $@ $< ${FLAGS}
 
-# build all .asm files
+# build all .asm files (except for the special asm math stuff)
 ${ASMOBJ}: ${OBJ}/%.o: ${SRC}/%.asm
 	yasm -f elf64 $< -o $@
+
+# asm math stuff has a weird dependency chain. this is the most 
+# straightforward fix. it doesnt fit nicely with the other stuff 
+# but that is how it be sometimes
+#
+# 1.) generate two temporary object files
+# 2.) combine them into a single object file with ld
+# 3.) remove temp object files
+#
+${ASMMATHOBJ}: ${SRC}/math.asm ${SRC}/asm_math_interface.cpp
+	yasm -f elf64 ${SRC}/math.asm -o ${OBJ}/tmp_asm_math.o
+	g++ -c -o ${OBJ}/tmp_cpp_math.o ${SRC}/asm_math_interface.cpp ${FLAGS}
+	ld -relocatable ${OBJ}/tmp_cpp_math.o ${OBJ}/tmp_asm_math.o -o $@
+	rm ${OBJ}/tmp_cpp_math.o
+	rm ${OBJ}/tmp_asm_math.o

@@ -30,9 +30,84 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
     switch(inst.opcode) {
         case i_ADC  :// add with carry
-            
+            {
+                auto Rd      = new_cpu.get_register(inst.Rd).i32;
+                auto Rs      = new_cpu.get_register(inst.Rs).i32;
+                int CarryBit = new_cpu.get_CPSR_C();
+
+                results_t results;
+                
+                // this routine is written in assembly. this is because assembly does 
+                // not have undefined behavior when it comes to overflows regardless of 
+                // the signed-ness of two operands
+                auto msg = gp_operation(&results, Rd, Rs, CarryBit, x86_asm_ADC);
+
+                new_cpu.set_register_i32(inst.Rd, results.i32);
+                new_cpu.set_CPSR_C(results.get_x86_flag_Carry());
+
+                new_cpu.cycle_count++;
+                if(Rd != 15)
+                    new_cpu.PC() += 2;
+                else
+                    new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
         case i_ADD  :// add
+            switch(inst.meta_opcode) {
+            case meta_RR:
+            {
+                auto Rd      = new_cpu.get_register(inst.Rd).i32;
+                auto Rs      = new_cpu.get_register(inst.Rs).i32;
+
+                results_t results;
+                
+                // this routine is written in assembly. this is because assembly does 
+                // not have undefined behavior when it comes to overflows regardless of 
+                // the signed-ness of two operands
+                auto msg = gp_operation(&results, Rd, Rs, 0, x86_asm_ADD);
+
+                new_cpu.set_register_i32(inst.Rd, results.i32);
+                new_cpu.set_CPSR_C(results.get_x86_flag_Carry());
+
+                new_cpu.cycle_count++;
+                if(Rd != 15)
+                    new_cpu.PC() += 2;
+                else
+                    new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
+            // i_ADD has a lot of forms:
+            case meta_RRR:
+            case meta_RRC:
+            case meta_RC:
+            case meta_RC_pc:
+            case meta_RC_sp:
+            case meta_C_sp:
+            default:
+                throw std::runtime_error("execute_t16(i_ADD) : meta opcode not implemented");
+            }
         case i_AND  :// bitwise AND
+            {
+                auto Rd = new_cpu.get_register(inst.Rd).u32;
+                auto Rs = new_cpu.get_register(inst.Rs).u32;
+
+                auto res = Rd & Rs;
+
+                // update these two flags with results
+                new_cpu.set_CPSR_Z(res == 0);
+                new_cpu.set_CPSR_N(res & (1 << 31));
+                new_cpu.set_register_u32(inst.Rd, res);
+
+                new_cpu.cycle_count++;
+                if(Rd != 15)
+                    new_cpu.PC() += 2;
+                else
+                    new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
         case i_ASR  :// arithmetic shift right
         case i_B    :// unconditional branch
         case i_Bxx  :// conditional branch

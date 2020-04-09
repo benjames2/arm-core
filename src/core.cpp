@@ -24,6 +24,29 @@ int32_t armv7_m3::get_register_i32(int reg) {
     return this->get_register(reg).i32;
 }
 
+void armv7_m3::set_register_i32(int reg, int32_t value) {
+    if(reg > 15 || reg < 0)
+        throw std::runtime_error(
+            "armv7_m3::set_register_i32 : invalid register "
+            "access. valid accesses are r(0-15)");
+
+    this->reg[reg].i32 = value;
+}
+
+void armv7_m3::set_register_u32(int reg, uint32_t value) {
+    if(reg > 15 || reg < 0)
+        throw std::runtime_error(
+            "armv7_m3::set_register_u32 : invalid register "
+            "access. valid accesses are r(0-15)");
+
+    this->reg[reg].u32 = value;
+}
+
+uint32_t& armv7_m3::PC() {
+    return this->reg[15].u32;
+}
+
+
 uint32_t armv7_m3::get_PC(void)  { return this->reg[15].u32; }
 uint32_t armv7_m3::get_MSP(void) { return this->reg[13].u32; }
 uint32_t armv7_m3::get_PSP(void) { return this->reg[13].u32; }

@@ -84,6 +84,7 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include <map>
 #include <assert.h>
 #include <inc/decode_structure.h>
 #include <inc/decode_16.h>
