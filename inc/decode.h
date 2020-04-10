@@ -18,3 +18,5 @@ struct decoded_instruction_t {
 };
 
 auto decode(fetched_instruction_t instruction, uint32_t PC) -> decoded_instruction_t;
+
+std::ostream& operator<<(std::ostream& os, const decoded_instruction_t& inst);

@@ -41,3 +41,18 @@ auto decode(fetched_instruction_t instruction, uint32_t PC) -> decoded_instructi
             throw std::runtime_error("decode : invalid instruction type (must be either t16 or t32)");
     }
 }
+
+std::ostream& operator<<(std::ostream& os, const decoded_instruction_t& inst) {
+
+    if(inst.type == decoded_instruction_t::t16) {
+        os << inst.di_t16;
+    }
+    else if(inst.type == decoded_instruction_t::t32) {
+        os << inst.di_t32;
+    }
+    else {
+        throw std::runtime_error("error printing decoded_instruction_t : invalid instruction type");
+    }
+
+    return os;
+}

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <array>
 
 struct armv7_m3 {
@@ -84,3 +85,5 @@ public:
     int  get_CPSR_M(void);  // Mode field (4:0)
 
 };
+
+void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os);

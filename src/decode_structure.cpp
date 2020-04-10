@@ -11,7 +11,7 @@ std::string instruction_t::str(void) {
     return ss.str();
 }
 
-std::ostream& operator<<(std::ostream& os, instruction_t& in) {
+std::ostream& operator<<(std::ostream& os, const instruction_t& in) {
 
     // maintain a single instruction for BL <-- c'mon joe, what does this even mean?
     static instruction_t sInstruction;
@@ -378,7 +378,7 @@ std::ostream& operator<<(std::ostream& os, instruction_t& in) {
     return os;
 }
 
-std::ostream& operator<<(std::ostream& os, instruction_32b_t& in){
+std::ostream& operator<<(std::ostream& os, const instruction_32b_t& in){
 
     switch(in.opcode){
         case t32_ADC:

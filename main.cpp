@@ -7,6 +7,7 @@
 #include <inc/decode.h>
 #include <inc/asm_math_interface.h>
 #include <inc/fetch.h>
+#include <inc/execute.h>
 
 #include "main.h"
 
@@ -40,10 +41,17 @@ int main(int argc, char* argv[]) {
 
     // starting address for machine code
 
+    armv7_m3 cpu;
+
     for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
         
-        auto inst_data = fetch(mem, addr);
-        
+        auto inst_data   = fetch(mem, addr);
+        auto decode_data = decode(inst_data, addr);
+        auto newcpu      = execute(cpu, mem, decode_data);
+
+        // compare new cpu with old cpu
+
+        /*
         if(inst_data.type == fetched_instruction_t::t16) {
             auto dec_inst = decode_16bit_instruction(addr, inst_data.in);
             cout << dec_inst << endl;
@@ -62,6 +70,8 @@ int main(int argc, char* argv[]) {
         catch(runtime_error& ex) {
             cout << ex.what() << endl;
         }
+        */
+
     }
 
     return 0;

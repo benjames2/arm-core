@@ -88,4 +88,8 @@ bool armv7_m3::get_CPSR_I(void) { return ((this->CPSR >> 7) & 0x01); }
 bool armv7_m3::get_CPSR_F(void) { return ((this->CPSR >> 6) & 0x01); }
 bool armv7_m3::get_CPSR_T(void) { return ((this->CPSR >> 5) & 0x01); }
 
+void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os) {
 
+    
+
+}

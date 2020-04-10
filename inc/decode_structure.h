@@ -18,6 +18,8 @@ struct instruction_t {
     union {
         int i_immediate;
         unsigned int u_immediate;
+        int i32;
+        unsigned int u32;
     };
 
     // register references
@@ -38,7 +40,7 @@ struct instruction_t {
 typedef instruction_t instruction_16b_t;
 
 // operator overload to print instruction_t data (sort of like disassembling)
-std::ostream& operator<<(std::ostream& os, instruction_t& in);
+std::ostream& operator<<(std::ostream& os, const instruction_t& in);
 
 struct instruction_32b_t {
 
@@ -62,5 +64,5 @@ struct instruction_32b_t {
 };
 
 // operator overload to print instruction_32b_t data
-std::ostream& operator<<(std::ostream& os, instruction_32b_t& in);
+std::ostream& operator<<(std::ostream& os, const instruction_32b_t& in);
 
