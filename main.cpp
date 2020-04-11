@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
     //test_decode_fns("test/testfile.branch.txt");
     //test_decode_fns("test/testfile.bottom.txt");
     //test_decode_fns("test/testfile.txt");
-    test_32b_decode("test/testfile32b.txt");
+    //test_32b_decode("test/testfile32b.txt");
     //std::cout << "INSTRUCTION TESTS PASSED\n\n" << std::flush;
 
     
@@ -56,10 +56,8 @@ int main(int argc, char* argv[]) {
             addr += 2;
         }
         else {
-            cout << "<32-BIT THUMB INSTRUCTION>\n";
-            //print_bin_number(inst_data.in);
-            //auto dec_inst = decode_32bit_instruction(addr, inst_data.in);
-            //cout << dec_inst << endl;
+            auto dec_inst = decode_32bit_instruction(addr, inst_data.in);
+            cout << dec_inst << endl;
             addr += 4;
         }
 
@@ -71,12 +69,11 @@ int main(int argc, char* argv[]) {
             cout << ex.what() << endl;
         }
         
-
     }
 
-    cout << "\n\n==========================================\n";
+    cout << "==========================================\n";
     cout << "  disassembly complete";
-    cout << "\n==========================================\n";
+    cout << "\n==========================================\n\n";
 
     for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
         
