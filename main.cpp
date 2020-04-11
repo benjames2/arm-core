@@ -43,15 +43,12 @@ int main(int argc, char* argv[]) {
 
     armv7_m3 cpu;
 
+    cpu.PC() = 0x00000224;
+
     for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
         
         auto inst_data   = fetch(mem, addr);
-        auto decode_data = decode(inst_data, addr);
-        auto newcpu      = execute(cpu, mem, decode_data);
-
-        // compare new cpu with old cpu
-
-        /*
+        
         if(inst_data.type == fetched_instruction_t::t16) {
             auto dec_inst = decode_16bit_instruction(addr, inst_data.in);
             cout << dec_inst << endl;
@@ -60,6 +57,8 @@ int main(int argc, char* argv[]) {
         else {
             cout << "<32-BIT THUMB INSTRUCTION>\n";
             //print_bin_number(inst_data.in);
+            //auto dec_inst = decode_32bit_instruction(addr, inst_data.in);
+            //cout << dec_inst << endl;
             addr += 4;
         }
 
@@ -70,7 +69,21 @@ int main(int argc, char* argv[]) {
         catch(runtime_error& ex) {
             cout << ex.what() << endl;
         }
-        */
+        
+
+    }
+
+    cout << "\n\n==========================================\n";
+    cout << "  disassembly complete";
+    cout << "\n==========================================\n";
+
+    for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
+        
+        auto inst_data   = fetch(mem, addr);
+        auto decode_data = decode(inst_data, addr);
+        auto newcpu      = execute(cpu, mem, decode_data);
+
+        // compare new cpu with old cpu
 
     }
 

@@ -11,7 +11,7 @@ std::string instruction_t::str(void) {
     return ss.str();
 }
 
-std::ostream& operator<<(std::ostream& os, const instruction_t& in) {
+std::ostream& operator<<(std::ostream& os, const instruction_16b_t& in) {
 
     // maintain a single instruction for BL <-- c'mon joe, what does this even mean?
     static instruction_t sInstruction;

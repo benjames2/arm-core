@@ -48,15 +48,14 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 new_cpu.set_register_i32(inst.Rd, results.i32);
                 new_cpu.set_CPSR_C(results.get_x86_flag_Carry());
 
+                // maintain cycle count and advance IP as needed
                 new_cpu.cycle_count++;
-                if(Rd != 15)
-                    new_cpu.PC() += 2;
-                else
-                    new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
 
                 return new_cpu;
             }
-        case i_ADD  :// add
+        case i_ADD  :// add (updates CPSR.[Negative,Zero,Carry,oVerflow])
             if(inst.meta_opcode == meta_RR) {
                 auto Rd      = new_cpu.get_register(inst.Rd).i32;
                 auto Rs      = new_cpu.get_register(inst.Rs).i32;
@@ -69,22 +68,94 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 auto msg = gp_operation(&results, Rd, Rs, 0, x86_asm_ADD);
 
                 new_cpu.set_register_i32(inst.Rd, results.i32);
+
+                // set flags
+                new_cpu.set_CPSR_N(results.get_x86_flag_Sign());
+                new_cpu.set_CPSR_Z(results.get_x86_flag_Zero());
                 new_cpu.set_CPSR_C(results.get_x86_flag_Carry());
+                new_cpu.set_CPSR_V(results.get_x86_flag_Ov());
 
                 new_cpu.cycle_count++;
-                if(inst.Rd != 15)
-                    new_cpu.PC() += 2;
-                else
-                    new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
 
                 return new_cpu;
+            }
+            else if(inst.meta_opcode == meta_RRR) { // (2) Rd = Rs + Rn
+
+                auto Rs = new_cpu.get_register(inst.Rs).i32;
+                auto Rn = new_cpu.get_register(inst.Rn).i32;
+
+                results_t results;
+                auto msg = gp_operation(&results, Rs, Rn, 0, x86_asm_ADD);
+
+                new_cpu.set_register_i32(inst.Rd, results.i32);
+                
+                // set flags
+                new_cpu.set_CPSR_N(results.get_x86_flag_Sign());
+                new_cpu.set_CPSR_Z(results.get_x86_flag_Zero());
+                new_cpu.set_CPSR_C(results.get_x86_flag_Carry());
+                new_cpu.set_CPSR_V(results.get_x86_flag_Ov());
+                
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
+            else if(inst.meta_opcode == meta_RRC) { // (2) Rd = Rs + u32
+
+                auto Rs  = new_cpu.get_register(inst.Rs).i32;
+                auto u32 = inst.i32;
+
+                results_t results;
+                auto msg = gp_operation(&results, Rs, u32, 0, x86_asm_ADD);
+
+                new_cpu.set_register_i32(inst.Rd, results.i32);
+
+                // set flags
+                new_cpu.set_CPSR_N(results.get_x86_flag_Sign());
+                new_cpu.set_CPSR_Z(results.get_x86_flag_Zero());
+                new_cpu.set_CPSR_C(results.get_x86_flag_Carry());
+                new_cpu.set_CPSR_V(results.get_x86_flag_Ov());
+
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
+            else if(inst.meta_opcode == meta_RC) { // (3) Rd = Rd + u32
+                
+                auto Rd  = new_cpu.get_register(inst.Rd).i32;
+                auto u32 = inst.i32;
+
+                results_t results;
+                auto msg = gp_operation(&results, Rd, u32, 0, x86_asm_ADD);
+
+                new_cpu.set_register_i32(inst.Rd, results.i32);
+
+                // set flags
+                new_cpu.set_CPSR_N(results.get_x86_flag_Sign());
+                new_cpu.set_CPSR_Z(results.get_x86_flag_Zero());
+                new_cpu.set_CPSR_C(results.get_x86_flag_Carry());
+                new_cpu.set_CPSR_V(results.get_x86_flag_Ov());
+
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
+            else if(inst.meta_opcode == meta_RC_pc) {
+
             }
             else {
                 // i_ADD has a lot of forms:
                 /*
-                case meta_RRR:   (2)
-                case meta_RRC:   (2)
-                case meta_RC:    (3)
+                ##case meta_RRR:   (2)
+                ##case meta_RRC:   (2)
+                ##case meta_RC:    (3)
                 case meta_RC_pc: (12)
                 case meta_RC_sp: (12)
                 case meta_C_sp:  (13)
