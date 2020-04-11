@@ -51,12 +51,17 @@ int main(int argc, char* argv[]) {
         auto inst_data   = fetch(mem, addr);
         
         if(inst_data.type == fetched_instruction_t::t16) {
-            auto dec_inst = decode_16bit_instruction(addr, inst_data.in);
-            cout << dec_inst << endl;
+            try {
+                auto dec_inst = decode_16bit_instruction(addr, inst_data.in);
+                cout << dec_inst << endl;
+            }
+            catch(runtime_error& ex){
+                cout << ex.what() << endl;
+            }
             addr += 2;
         }
         else {
-
+            
             // catch those pesky 32-bit decode errors
             try {
                 auto decoded_inst = decode(inst_data, addr);
@@ -64,8 +69,7 @@ int main(int argc, char* argv[]) {
             }
             catch(runtime_error& ex) {
                 cout << ex.what() << endl;
-            }
-            
+            } 
             addr += 4;
         }
 
