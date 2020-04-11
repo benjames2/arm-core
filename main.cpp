@@ -13,8 +13,6 @@
 
 using namespace std;
 
-void print_bin_number(uint32_t u32);
-
 int main(int argc, char* argv[]) {
 
     // for the assembly portion to work properly with the rest of the 
@@ -30,7 +28,10 @@ int main(int argc, char* argv[]) {
     //test_decode_fns("test/testfile.branch.txt");
     //test_decode_fns("test/testfile.bottom.txt");
     //test_decode_fns("test/testfile.txt");
+    test_32b_decode("test/testfile32b.txt");
     //std::cout << "INSTRUCTION TESTS PASSED\n\n" << std::flush;
+
+    
 
     memory_t mem(memory_t::little_endian);
 
@@ -88,14 +89,6 @@ int main(int argc, char* argv[]) {
     }
 
     return 0;
-}
-
-void print_bin_number(uint32_t u32) {
-
-    for(int i = 31; i >= 0; i--)
-        cout << (((u32>>i)&1) ? "1" : "0");
-    cout << endl;
-
 }
 
 void print_flag_results(int flags) {

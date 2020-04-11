@@ -32,7 +32,7 @@ struct instruction_t {
     };
 
     std::string str(void);
-
+    
     //instruction_t(void);
 
 };
@@ -60,6 +60,8 @@ struct instruction_32b_t {
     static const int encoding_T2 = 2;
     static const int encoding_T3 = 3;
     static const int encoding_T4 = 4;
+
+    std::string str(void);
 
 };
 

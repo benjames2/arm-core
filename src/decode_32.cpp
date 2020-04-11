@@ -201,7 +201,7 @@ instruction_32b_t decode_32bit_instruction(unsigned int PC, unsigned int instruc
             //std::cout << "toplevel 32b decode op2: " << std::hex 
             // << (op2 & mask) << std::dec << std::endl;
 
-            if((op2 & mask) == 0x00) {
+            if((op2 & mask) == 0x00) { 
                 return decode_32b_A5_14(PC, instruction_word);
             }
             else {
@@ -262,75 +262,61 @@ instruction_32b_t decode_32b_A5_14(unsigned int PC, unsigned int instruction_wor
 
     int op = (instruction_word >> (4 + 16)) & 0x1F;
     int Rn = (instruction_word >> (0 + 16)) & 0x0F;
-    int Rd = (instruction_word >> (8 + 0)) & 0x0F;
+    int Rd = (instruction_word >> (8 + 0))  & 0x0F;
+
+    int mask = 0b11110;
 
     if (Rd != 0b1111){
-        int mask = 0b11110;
         if((op & mask) == 0b00000)
             return decode_32b_A6_32_AND_imm(PC, instruction_word);
         
-        mask = 0b01000;
         if((op & mask) == 0b01000)
             return decode_32b_A6_72_EOR_imm(PC, instruction_word);
 
-        mask = 0b10000;
         if((op & mask) == 0b10000)
             return decode_32b_A6_22_ADD_imm(PC, instruction_word);
 
-        mask = 0b11010;
         if ((op & mask) == 0b11010)
             return decode_32b_A6_242_SUB_imm(PC, instruction_word);
     }
     else{
-        int mask = 0b11110;
         if((op & mask) == 0b00000)
             return decode_32b_A6_260_TST_imm(PC, instruction_word);
 
-        mask = 0b01000;
         if((op & mask) == 0b01000)
             return decode_32b_A6_258_TEQ_imm(PC, instruction_word);
 
-        mask = 0b10000;
         if((op & mask) == 0b10000)
             return decode_32b_A6_58_CMN_imm(PC, instruction_word);
 
-        mask = 0b11010;
         if ((op & mask) == 0b11010)
             return decode_32b_A6_62_CMP_imm(PC, instruction_word);
     }
 
-    if(Rn =! 0b1111){
-        int mask = 0b00100;
+    if(Rn != 0b1111){
         if((op & mask) == 0b00100)
             return decode_32b_A6_172_ORR_imm(PC, instruction_word);
 
-        mask = 0b00110;
         if((op & mask) == 0b00110)
             return decode_32b_A6_168_ORN_imm(PC, instruction_word);
     }
     else{
-        int mask = 0b00100;
         if((op & mask) == 0b00100)
             return decode_32b_A6_148_MOV_imm(PC, instruction_word);
 
-        mask = 0b00110;
         if((op & mask) == 0b00110)
             return decode_32b_A6_162_MVN_imm(PC, instruction_word);
     }
 
-    int mask = 0b00010;
     if((op & mask) == 0b00010)
         return decode_32b_A6_44_BIC_imm(PC, instruction_word);
 
-    mask = 0b10100;
     if((op & mask) == 0b10100)
         return decode_32b_A6_18_ADC_imm(PC, instruction_word);
 
-    mask = 0b10110;
     if((op & mask) == 0b10110)
         return decode_32b_A6_202_SBC_imm(PC, instruction_word);
 
-    mask = 0b11100;
     if((op & mask) == 0b11100)
         return decode_32b_A6_198_RSB_imm(PC, instruction_word);
 
@@ -525,18 +511,20 @@ instruction_32b_t decode_32b_A5_22(unsigned int PC, unsigned int instruction_wor
         if(op1 == 0x01)
             return decode_32b_A6_88_LDR_imm_T3(PC, instruction_word);
 
-        else if(op1 == 0x00){
+        else if(op1 == 0b00){
             int mask = 0b100100;
-            int mask2 = 0b110000;
-            if(((op2 & mask) == 0x100100)  || ((op2 & mask2) == 0x110000))
+            int mask2 = 0b111100;
+            if(((op2 & mask) == 0b100100)  || ((op2 & mask2) == 0b110000))
                 return decode_32b_A6_88_LDR_imm_T4(PC, instruction_word);
 
-            mask = 0b111000;
-            if((op2 & mask) == 0b111000)
+            else if((op2 & 0b111100) == 0b111000)
                 return decode_32b_A6_133_LDRT(PC, instruction_word);
 
-            if (op2 == 0b00)
+            else if (op2 == 0b000000)
                 return decode_32b_A6_92_LDR_reg(PC, instruction_word);
+
+            else
+                throw std::runtime_error("In decode_32b_A5_22 : invalid value for op2 field with Rn != 0b1111");
 
         }
         else
@@ -551,7 +539,7 @@ instruction_32b_t decode_32b_A5_22(unsigned int PC, unsigned int instruction_wor
             throw std::runtime_error("In decode_32b_A5_22 : invalid value for op1 field");     
     }
 
-    throw std::runtime_error("In decode_32b_A5_22 : invalid instruction encoding");
+    //throw std::runtime_error("In decode_32b_A5_22 : invalid instruction encoding");
 
 }
 
@@ -607,7 +595,7 @@ instruction_32b_t decode_32b_A5_25(unsigned int PC, unsigned int instruction_wor
     else
         throw std::runtime_error("In decode_32b_A5_25 : invalid op1 value");
 
-    throw std::runtime_error("In decode_32b_A5_25 : invalid instruction encoding");
+    //throw std::runtime_error("In decode_32b_A5_25 : invalid instruction encoding");
         
 }
 
@@ -685,7 +673,7 @@ instruction_32b_t decode_32b_A6_32_AND_imm(unsigned int PC, unsigned int instruc
 
     instruction_32b_t in;
 
-    in.opcode      = t32_ADD;
+    in.opcode      = t32_AND;
     in.meta_opcode = meta_t32_imm;
 
     in.Rn = (instruction_word >> (15 + 1)) & 0x0F;
@@ -727,7 +715,6 @@ instruction_32b_t decode_32b_A6_44_BIC_imm(unsigned int PC, unsigned int instruc
     int imm8 = (instruction_word >> 0) & 0xFF;
 
     in.i32 = ThumbExpandImm(i, imm3, imm8);
-
     
     return in;
 }
@@ -888,6 +875,8 @@ instruction_32b_t decode_32b_A6_104_LDRD_lit(unsigned int PC, unsigned int instr
 
     instruction_32b_t in;
 
+    int imm8 = (instruction_word >> 0) & 0xFF;
+
     in.opcode      = t32_LDRD;
     in.meta_opcode = meta_t32_literal;
 
@@ -895,6 +884,7 @@ instruction_32b_t decode_32b_A6_104_LDRD_lit(unsigned int PC, unsigned int instr
     in.U   = (instruction_word >> (15 + 8)) & 0x01;
     in.Rt  = (instruction_word >> 12) & 0x0F;
     in.Rt2 = (instruction_word >> 8) & 0x0F;
+    in.u32 = imm8 << 2;
 
     return in;
 }
@@ -956,6 +946,7 @@ instruction_32b_t decode_32b_A6_148_MOV_imm(unsigned int PC, unsigned int instru
 
     in.opcode      = t32_MOV;
     in.meta_opcode = meta_t32_imm;
+    in.encoding    = instruction_32b_t::encoding_T2;
 
     in.S  = (instruction_word >> (15 + 5)) & 0x01;
     in.Rd = (instruction_word >> 8) & 0x0F;
@@ -1021,6 +1012,7 @@ instruction_32b_t decode_32b_A6_172_ORR_imm(unsigned int PC, unsigned int instru
 
     in.S  = (instruction_word >> (15 + 5)) & 0x01;
     in.Rd = (instruction_word >> 8) & 0x0F;
+    in.Rn = (instruction_word >> (15 + 1)) & 0x0F;
 
     int i    = (instruction_word >> (15 + 11)) & 0x01;
     int imm3 = (instruction_word >> 12) & 0x07;
