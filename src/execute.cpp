@@ -287,7 +287,39 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
     switch (inst.opcode){
 
         case t32_ADC:
-            throw std::runtime_error("execute_t32 : opcode not implemented");   
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+                    
+                    auto Rn       = new_cpu.get_register(inst.Rn).i32;
+                    auto imm      = inst.i32;
+                    int carryBit = new_cpu.get_CPSR_C(); 
+
+                    results_t result;
+
+                    auto msg = gp_operation(&result, Rn, imm, carryBit, x86_asm_ADC);
+
+                    new_cpu.set_register_i32(inst.Rd, result.i32);
+
+                    //Set Flags
+                    if(inst.S){
+                        new_cpu.set_CPSR_N(result.get_x86_flag_Sign);
+                        new_cpu.set_CPSR_Z(result.get_x86_flag_Zero);
+                        new_cpu.set_CPSR_C(result.get_x86_flag_Carry);
+                        new_cpu.set_CPSR_V(result.get_x86_flag_Ov);
+                    }
+                    
+                    //not sure about this
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 4;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for ADC instruction");
+            }   
         case t32_ADD:
             {
                 if(inst.meta_opcode == meta_t32_imm){
@@ -327,8 +359,37 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
                 else
                     throw std::runtime_error("execute_t32 : invalid meta_opcode for ADD instruction");
             }   
-        case t32_ADR:   
-        case t32_AND:   
+        case t32_ADR:
+            throw std::runtime_error("execute_t32 : opcode not implemented");   
+        case t32_AND:
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+
+                    auto Rn  = new_cpu.get_register(inst.Rn).i32;
+                    auto imm = inst.i32;
+                    auto result = Rn & imm;
+
+                    new_cpu.set_register_i32(inst.Rd, result);
+                    
+                    //Set Flags
+                    if(inst.S){
+                        new_cpu.set_CPSR_N(result & (1 << 31));
+                        new_cpu.set_CPSR_Z(result == 0);
+                        new_cpu.set_CPSR_C(false);
+                    }
+                    
+                    //Set PC and cycle count
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 4;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for AND instruction");
+            }   
         case t32_ASR:   
         case t32_B:     
         case t32_BFC:   
