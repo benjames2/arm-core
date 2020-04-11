@@ -293,8 +293,38 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
         case t32_ASR:   
         case t32_B:     
         case t32_BFC:   
-        case t32_BFI:   
+        case t32_BFI:
+            throw std::runtime_error("execute_t32 : opcode not implemented");   
         case t32_BIC:
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+                    
+                    auto Rn     = new_cpu.get_register(inst.Rn).i32;
+                    auto imm    = inst.i32;
+                    auto result = Rn & (~imm);
+
+                    new_cpu.set_register_i32(inst.Rd, result);
+
+                    //Set Flags
+                    if(inst.S){
+                        new_cpu.set_CPSR_N(result & (1 << 31));
+                        new_cpu.set_CPSR_Z(result == 0);
+                        new_cpu.set_CPSR_C(false);
+                    }
+                    
+                    //not sure about this
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 4;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for BIC instruction"); 
+            }
         case t32_BKPT:  
         case t32_BL:    
         case t32_BLX:   
