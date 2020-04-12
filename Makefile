@@ -23,6 +23,10 @@ ALLOBJ=${CPPOBJ} ${ASMOBJ} ${ASMMATHOBJ}
 
 all: main
 
+# count the number of lines of code in the project
+count:
+	cloc src/ inc/ ./
+
 clean:
 	rm ${OBJ}/*
 
