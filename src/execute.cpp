@@ -433,9 +433,70 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
         case t32_CDP:   
         case t32_CDP2:  
         case t32_CLREX: 
-        case t32_CLZ:   
-        case t32_CMN:   
-        case t32_CMP:   
+        case t32_CLZ:
+            throw std::runtime_error("execute_t32 : opcode not implemented");   
+        case t32_CMN:
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+
+                    auto Rn  = new_cpu.get_register(inst.Rn).i32;
+                    auto imm = inst.i32;
+
+                    results_t result;
+
+                    auto msg = gp_operation(&result, Rn, imm, 0, x86_asm_ADD); //should this be x86_asm_ADC instead
+                    
+                    //Set Flags
+                    if(inst.S){
+                        new_cpu.set_CPSR_N(result.get_x86_flag_Sign);
+                        new_cpu.set_CPSR_Z(result.get_x86_flag_Zero);
+                        new_cpu.set_CPSR_C(new_cpu.get_CPSR_C); // instead of false, shouldn it be that instead
+                        new_cpu.set_CPSR_V(result.get_x86_flag_Ov);
+                    }
+                    
+                    //Set PC and cycle count
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 4;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for CMN instruction");
+            }   
+        case t32_CMP:
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+
+                    auto Rn  = new_cpu.get_register(inst.Rn).i32;
+                    auto imm = inst.i32;
+
+                    results_t result;
+
+                    auto msg = gp_operation(&result, Rn, imm, 0, x86_asm_SUB); //should this be x86_asm_SUB
+                    
+                    //Set Flags
+                    if(inst.S){
+                        new_cpu.set_CPSR_N(result.get_x86_flag_Sign);
+                        new_cpu.set_CPSR_Z(result.get_x86_flag_Zero);
+                        new_cpu.set_CPSR_C(false); // instead of false, shouldn it be this "new_cpu.get_CPSR_C" instead
+                        new_cpu.set_CPSR_V(result.get_x86_flag_Ov);
+                    }
+                    
+                    //Set PC and cycle count
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 4;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for CMP instruction");
+            }    
         case t32_CPS:   
         case t32_CPY:   
         case t32_DBG:   
