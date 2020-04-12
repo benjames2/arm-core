@@ -42,10 +42,13 @@ void armv7_m3::set_register_u32(int reg, uint32_t value) {
     this->reg[reg].u32 = value;
 }
 
-uint32_t& armv7_m3::PC() {
+uint32_t& armv7_m3::PC(void) {
     return this->reg[15].u32;
 }
 
+uint32_t& armv7_m3::SP(void) {
+    return this->reg[13].u32;
+}
 
 uint32_t armv7_m3::get_PC(void)  { return this->reg[15].u32; }
 uint32_t armv7_m3::get_MSP(void) { return this->reg[13].u32; }
@@ -90,6 +93,6 @@ bool armv7_m3::get_CPSR_T(void) { return ((this->CPSR >> 5) & 0x01); }
 
 void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os) {
 
-    
+
 
 }

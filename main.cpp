@@ -13,25 +13,23 @@
 
 using namespace std;
 
-int main(int argc, char* argv[]) {
+// for the assembly portion to work properly with the rest of the 
+// system, certain alignment requirements must be met:
+static_assert(sizeof(results_t) == 8,          "sizeof results_t incorrect (should be 8)");
+static_assert(offsetof(results_t, flags) == 0, "alignment of .flags in results_t incorrect (should be 0)");
+static_assert(offsetof(results_t, u32) == 4,   "alignment of .u32 in results_t incorrect (should be 4)");
+static_assert(offsetof(results_t, i32) == 4,   "alignment of .i32 in results_t incorrect (should be 4)");
 
-    // for the assembly portion to work properly with the rest of the 
-    // system, certain alignment requirements must be met:
-    static_assert(sizeof(results_t) == 8,          "sizeof results_t incorrect (should be 8)");
-    static_assert(offsetof(results_t, flags) == 0, "alignment of .flags in results_t incorrect (should be 0)");
-    static_assert(offsetof(results_t, u32) == 4,   "alignment of .u32 in results_t incorrect (should be 4)");
-    static_assert(offsetof(results_t, i32) == 4,   "alignment of .i32 in results_t incorrect (should be 4)");
+int main(int argc, char* argv[]) {
 
     armv7_m3 armcpu;
     armcpu.PC() = 0x0224;
 
-    //test_decode_fns("test/testfile.branch.txt");
-    //test_decode_fns("test/testfile.bottom.txt");
-    //test_decode_fns("test/testfile.txt");
-    //test_32b_decode("test/testfile32b.txt");
-    //std::cout << "INSTRUCTION TESTS PASSED\n\n" << std::flush;
-
-    
+    test_decode_fns("test/testfile.branch.txt");
+    test_decode_fns("test/testfile.bottom.txt");
+    test_decode_fns("test/testfile.txt");
+    test_32b_decode("test/testfile32b.txt");
+    std::cout << "INSTRUCTION TESTS PASSED\n\n" << std::flush;
 
     memory_t mem(memory_t::little_endian);
 
@@ -83,6 +81,9 @@ int main(int argc, char* argv[]) {
         auto inst_data   = fetch(mem, addr);
         auto decode_data = decode(inst_data, addr);
         auto newcpu      = execute(cpu, mem, decode_data);
+
+        cpu = newcpu;
+        addr = newcpu.PC();
 
         // compare new cpu with old cpu
 

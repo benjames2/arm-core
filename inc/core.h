@@ -28,6 +28,7 @@ public:
     armv7_m3(void);
 
     uint32_t& PC();
+    uint32_t& SP();
 
     // register data fetching methods
     uint32_t   get_register_u32(int reg);

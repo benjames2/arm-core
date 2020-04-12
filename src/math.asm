@@ -149,7 +149,7 @@ perform_sbb:
     stc        ; set carry flag
 
   do_sbb:
-    sbb esi, edx
+    sbb esi, edx ; perform subtraction with carry (borrow) set properly
     pushfq  ; save flags
     pop rcx ; pop flags into different register for sakekeeping
     mov [rdi], ecx     ; store flags in memory
