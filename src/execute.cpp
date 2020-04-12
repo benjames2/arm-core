@@ -444,15 +444,14 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
 
                     results_t result;
 
-                    auto msg = gp_operation(&result, Rn, imm, 0, x86_asm_ADD); //should this be x86_asm_ADC instead
+                    auto msg = gp_operation(&result, Rn, imm, 0, x86_asm_ADD);
                     
                     //Set Flags
-                    if(inst.S){
-                        new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
-                        new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
-                        new_cpu.set_CPSR_C(false); 
-                        new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
-                    }
+                    new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                    new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                    new_cpu.set_CPSR_C(false); 
+                    new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
+                    
                     
                     //Set PC and cycle count
                     new_cpu.cycle_count++;
@@ -475,15 +474,14 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
 
                     results_t result;
 
-                    auto msg = gp_operation(&result, Rn, imm, 0, x86_asm_SUB); //should this be x86_asm_SUB
+                    auto msg = gp_operation(&result, Rn, imm, 0, x86_asm_SUB);
                     
                     //Set Flags
-                    if(inst.S){
-                        new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
-                        new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
-                        new_cpu.set_CPSR_C(result.get_x86_flag_Carry()); 
-                        new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
-                    }
+                    new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                    new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                    new_cpu.set_CPSR_C(result.get_x86_flag_Carry()); 
+                    new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
+                    
                     
                     //Set PC and cycle count
                     new_cpu.cycle_count++;
@@ -502,7 +500,35 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
         case t32_DBG:   
         case t32_DMB:   
         case t32_DSB:   
-        case t32_EOR:   
+        case t32_EOR:
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+
+                    auto Rn  = new_cpu.get_register(inst.Rn).i32;
+                    auto imm = inst.i32;
+                    auto result = Rn ^ imm;
+
+                    new_cpu.set_register_i32(inst.Rd, result);
+                    
+                    //Set Flags
+                    if(inst.S){
+                        new_cpu.set_CPSR_N(result & (1 << 31));
+                        new_cpu.set_CPSR_Z(result == 0);
+                        new_cpu.set_CPSR_C(false);
+                    }
+                    
+                    //Set PC and cycle count
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 4;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for EOR instruction");
+            }   
         case t32_ISB:   
         case t32_IT :   
         case t32_LDC:   

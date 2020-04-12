@@ -43,7 +43,6 @@ int main(int argc, char* argv[]) {
     // starting address for machine code
 
     armv7_m3 cpu;
-
     cpu.PC() = 0x00000224;
 
     for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
@@ -72,7 +71,6 @@ int main(int argc, char* argv[]) {
             } 
             addr += 4;
         }
-
     
     }
 
