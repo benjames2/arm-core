@@ -302,10 +302,10 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
 
                     //Set Flags
                     if(inst.S){
-                        new_cpu.set_CPSR_N(result.get_x86_flag_Sign);
-                        new_cpu.set_CPSR_Z(result.get_x86_flag_Zero);
-                        new_cpu.set_CPSR_C(result.get_x86_flag_Carry);
-                        new_cpu.set_CPSR_V(result.get_x86_flag_Ov);
+                        new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                        new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                        new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                        new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
                     }
                     
                     //not sure about this
@@ -337,10 +337,10 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
 
                                 //Set Flags
                                 if(inst.S){
-                                    new_cpu.set_CPSR_N(result.get_x86_flag_Sign);
-                                    new_cpu.set_CPSR_Z(result.get_x86_flag_Zero);
-                                    new_cpu.set_CPSR_C(result.get_x86_flag_Carry);
-                                    new_cpu.set_CPSR_V(result.get_x86_flag_Ov);
+                                    new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                                    new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                                    new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                                    new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
                                 }
 
                                 //Set PC and cycle counts
@@ -448,10 +448,10 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
                     
                     //Set Flags
                     if(inst.S){
-                        new_cpu.set_CPSR_N(result.get_x86_flag_Sign);
-                        new_cpu.set_CPSR_Z(result.get_x86_flag_Zero);
-                        new_cpu.set_CPSR_C(new_cpu.get_CPSR_C); // instead of false, shouldn it be that instead
-                        new_cpu.set_CPSR_V(result.get_x86_flag_Ov);
+                        new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                        new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                        new_cpu.set_CPSR_C(false); 
+                        new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
                     }
                     
                     //Set PC and cycle count
@@ -479,10 +479,10 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
                     
                     //Set Flags
                     if(inst.S){
-                        new_cpu.set_CPSR_N(result.get_x86_flag_Sign);
-                        new_cpu.set_CPSR_Z(result.get_x86_flag_Zero);
-                        new_cpu.set_CPSR_C(false); // instead of false, shouldn it be this "new_cpu.get_CPSR_C" instead
-                        new_cpu.set_CPSR_V(result.get_x86_flag_Ov);
+                        new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                        new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                        new_cpu.set_CPSR_C(result.get_x86_flag_Carry()); 
+                        new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
                     }
                     
                     //Set PC and cycle count
