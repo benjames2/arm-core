@@ -52,13 +52,26 @@ static int ThumbExpandImm(int i, int imm3, int imm8){
                     imm32 = imm32 | (imm8 << 21);
                     return imm32;
                 }
-                break;
             case 6:
-                throw std::runtime_error(
-                    "in ThumbExpandImm : case 6 not completed for i=0"); 
+                imm8  = imm8 | 0b10000000;
+                if (a == 0){
+                    imm32 = imm32 | (imm8 << 20);
+                    return imm32;
+                }
+                else{
+                    imm32 = imm32 | (imm8 << 19);
+                    return imm32;
+                } 
             case 7: 
-                throw std::runtime_error (
-                    "in ThumbExpandImm : case 7 not completed for i=0");
+                imm8  = imm8 | 0b10000000;
+                if (a == 0){
+                    imm32 = imm32 | (imm8 << 18);
+                    return imm32;
+                }
+                else{
+                    imm32 = imm32 | (imm8 << 17);
+                    return imm32;
+                }
             default:
                 throw std::runtime_error(
                     "in ThumbExpandImm : if you are seeing this message, "
@@ -68,16 +81,62 @@ static int ThumbExpandImm(int i, int imm3, int imm8){
     else{
         imm8  = imm8 | 0b10000000;
         switch(imm3){
-            case 0: case 1: case 2: case 3: case 4: case 5:
-                throw std::runtime_error("in ThumbExpandImm : for i=1 (imm3=0,1,2,3,4,5 not implemented)");
+            case 0:     
+                throw std::runtime_error("in ThumbExpandImm : for i=1 (imm3=0,1, not implemented)");
+            case 1:
+                if(a == 0){
+                    imm32 = imm32 | (imm8 << 14);
+                    return imm32;
+                }
+                else{
+                    imm32 = imm32 | (imm8 << 13);
+                    return imm32;
+                }
+            case 2:
+                if(a == 0){
+                    imm32 = imm32 | (imm8 << 12);
+                    return imm32;
+                }
+                else{
+                    imm32 = imm32 | (imm8 << 11);
+                    return imm32;
+                }
+            case 3:
+                if(a == 0){
+                    imm32 = imm32 | (imm8 << 10);
+                    return imm32;
+                }
+                else{
+                    imm32 = imm32 | (imm8 << 9);
+                    return imm32;
+                }
+            case 4:
+                if(a == 0){
+                    imm32 = imm32 | (imm8 << 8);
+                    return imm32;
+                }
+                else{
+                    imm32 = imm32 | (imm8 << 7);
+                    return imm32;
+                }
+            case 5:
+                if(a == 0){
+                    imm32 = imm32 | (imm8 << 6);
+                    return imm32;
+                }
+                else{
+                    imm32 = imm32 | (imm8 << 5);
+                    return imm32;
+                }
             case 6:
-                if(a == 1){
+                if(a == 0){
+                    imm32 = imm32 | (imm8 << 4);
+                    return imm32;
+                }
+                else{
                     imm32 = imm32 | (imm8 << 3);
                     return imm32;
                 }
-                else 
-                    throw std::runtime_error("in ThumbExpandImm : for imm3=6 and i=1 invalid value for a");
-                break;
             case 7:
                 if(a == 0){
                     imm32 = imm32 | (imm8 << 2);
@@ -87,7 +146,6 @@ static int ThumbExpandImm(int i, int imm3, int imm8){
                     imm32 = imm32 | (imm8 << 1);
                     return imm32;
                 }
-                break;
             default:
                 throw std::runtime_error(
                     "in ThumbExpandImm : default case results in undefined behavior for i=1");

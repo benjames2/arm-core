@@ -571,9 +571,9 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
                 else
                     throw std::runtime_error("execute_t32 : invalid meta_opcode for LDR instruction");
             } 
-        case t32_LDRB : 
+        case t32_LDRB: 
         case t32_LDRBT: 
-        case t32_LDRD : 
+        case t32_LDRD: 
         case t32_LDREX: 
         case t32_LDREXB:
         case t32_LDREXH:

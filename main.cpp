@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
 
     memory_t mem(memory_t::little_endian);
 
-    for(auto cptr : { "test/input/assembly-code.txt", "test/input_rit/memory.txt" }) {
+    for(auto cptr : { "test/input_rit/assembly-code.txt", "test/input_rit/memory.txt" }) {
         load_memory_file(cptr, mem);
         std::cout << mem << std::endl;
     }
@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
     armv7_m3 cpu;
     cpu.PC() = 0x00000224;
 
-    for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
+    for(address_t addr = 0x00000220; addr <= 0x000002c6;) {
         
         auto inst_data   = fetch(mem, addr);
         
