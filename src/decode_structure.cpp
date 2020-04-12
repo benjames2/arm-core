@@ -405,7 +405,7 @@ std::ostream& operator<<(std::ostream& os, const instruction_32b_t& in){
             switch(in.meta_opcode){
                 case meta_t32_imm:
                     switch(in.encoding){
-                        case 3:
+                        case instruction_32b_t::encoding_T3:
                             os << "ADD";
                             if(in.S)
                                 os << "s";
@@ -485,10 +485,10 @@ std::ostream& operator<<(std::ostream& os, const instruction_32b_t& in){
             switch(in.meta_opcode){
                 case meta_t32_imm:
                     switch(in.encoding){
-                        case 3:
+                        case instruction_32b_t::encoding_T3:
                             os << "LDR r" << in.Rt << ", r" << in.Rn << ", #" << in.u32;
                             break;
-                        case 4:
+                        case instruction_32b_t::encoding_T4:
                             os << "LDR";
                             if(in.P)
                                 os << "p";

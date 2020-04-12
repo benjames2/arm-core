@@ -499,7 +499,8 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
         case t32_CPY:   
         case t32_DBG:   
         case t32_DMB:   
-        case t32_DSB:   
+        case t32_DSB:
+            throw std::runtime_error("execute_t32 : opcode not implemented");   
         case t32_EOR:
             {
                 if(inst.meta_opcode == meta_t32_imm){
@@ -537,8 +538,39 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
         case t32_LDMIA: 
         case t32_LDMFD: 
         case t32_LDMDB: 
-        case t32_LDMEA: 
-        case t32_LDR  : 
+        case t32_LDMEA:
+            throw std::runtime_error("execute_t32 : opcode not implemented"); 
+        case t32_LDR:
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+                    switch(inst.encoding){
+                        case instruction_32b_t::encoding_T3:
+                            {
+                                auto imm = inst.i32;
+                                auto pc  = new_cpu.PC();
+                                pc += 4;
+
+                                auto addr  = pc + imm;
+                                auto bytes = memory.load_u32(addr);
+
+                                new_cpu.set_register_i32(inst.Rd, bytes);
+
+                                //Set PC and count cycle
+                                new_cpu.cycle_count++;
+                                if(inst.Rd != 15)
+                                    new_cpu.PC() += 4;
+                                else
+                                    new_cpu.cycle_count++;
+
+                                return new_cpu;
+                            }
+                        default:
+                            throw std::runtime_error("execute_t32 : invalid encoding for LDR instruction");
+                    }
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for LDR instruction");
+            } 
         case t32_LDRB : 
         case t32_LDRBT: 
         case t32_LDRD : 
@@ -565,7 +597,7 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
             {
                 if(inst.meta_opcode == meta_t32_imm){
                     switch(inst.encoding){
-                        case 2:
+                        case instruction_32b_t::encoding_T2:
                             {
                                 auto result = inst.i32;
 
