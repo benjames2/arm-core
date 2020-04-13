@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
 
     memory_t mem(memory_t::little_endian);
 
-    for(auto cptr : { "test/input/assembly-code.txt", "test/input/memory.txt" }) {
+    for(auto cptr : { "test/input_rit/assembly-code.txt", "test/input_rit/memory.txt" }) {
         load_memory_file(cptr, mem);
         std::cout << mem << std::endl;
     }
@@ -41,40 +41,40 @@ int main(int argc, char* argv[]) {
     // starting address for machine code
 
     armv7_m3 cpu;
-
     cpu.PC() = 0x00000224;
 
-    for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
+    for(address_t addr = 0x00000220; addr <= 0x000002c6;) {
         
         auto inst_data   = fetch(mem, addr);
         
         if(inst_data.type == fetched_instruction_t::t16) {
-            auto dec_inst = decode_16bit_instruction(addr, inst_data.in);
-            cout << dec_inst << endl;
+            try {
+                auto dec_inst = decode_16bit_instruction(addr, inst_data.in);
+                cout << dec_inst << endl;
+            }
+            catch(runtime_error& ex){
+                cout << ex.what() << endl;
+            }
             addr += 2;
         }
         else {
-            //cout << "<32-BIT THUMB INSTRUCTION>\n";
-            //print_bin_number(inst_data.in);
-            auto dec_inst = decode_32bit_instruction(addr, inst_data.in);
-            cout << dec_inst << endl;
+
+            // catch those pesky 32-bit decode errors
+            try {
+                auto decoded_inst = decode(inst_data, addr);
+                cout << decoded_inst << endl;
+            }
+            catch(runtime_error& ex) {
+                cout << ex.what() << endl;
+            } 
             addr += 4;
         }
-
-        // catch those pesky 32-bit decode errors
-        try {
-            auto decoded_inst = decode(inst_data, addr);
-        }
-        catch(runtime_error& ex) {
-            cout << ex.what() << endl;
-        }
-        
-
+    
     }
 
-    cout << "\n\n==========================================\n";
+    cout << "==========================================\n";
     cout << "  disassembly complete";
-    cout << "\n==========================================\n";
+    cout << "\n==========================================\n\n";
 
     for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
         

@@ -382,6 +382,449 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 }
 
 armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
-    throw std::runtime_error("execute_t32 : not implemented");
-    //return cpu;
+    
+    auto new_cpu = cpu;
+
+    switch (inst.opcode){
+
+        case t32_ADC:
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+                    
+                    auto Rn       = new_cpu.get_register(inst.Rn).i32;
+                    auto imm      = inst.i32;
+                    int carryBit = new_cpu.get_CPSR_C(); 
+
+                    results_t result;
+
+                    auto msg = gp_operation(&result, Rn, imm, carryBit, x86_asm_ADC);
+
+                    new_cpu.set_register_i32(inst.Rd, result.i32);
+
+                    //Set Flags
+                    if(inst.S){
+                        new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                        new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                        new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                        new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
+                    }
+                    
+                    //not sure about this
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 4;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for ADC instruction");
+            }   
+        case t32_ADD:
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+                    switch(inst.encoding){
+                        case 3:
+                            {
+                                results_t result;
+
+                                auto Rn  = new_cpu.get_register(inst.Rn).i32;
+                                auto imm = inst.i32;
+
+                                auto msg = gp_operation(&result, Rn, imm, 0, x86_asm_ADD);
+
+                                new_cpu.set_register_i32(inst.Rd, result.i32);
+
+                                //Set Flags
+                                if(inst.S){
+                                    new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                                    new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                                    new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                                    new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
+                                }
+
+                                //Set PC and cycle counts
+                                new_cpu.cycle_count++;
+                                if(inst.Rd != 15)
+                                    new_cpu.PC() += 4;
+                                else
+                                    new_cpu.cycle_count++;
+
+                                return new_cpu;
+                            }
+                        default:
+                            throw std::runtime_error("execute_t32 : invalid encoding for ADD instruction");
+                    }
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for ADD instruction");
+            }   
+        case t32_ADR:
+            throw std::runtime_error("execute_t32 : opcode not implemented");   
+        case t32_AND:
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+
+                    auto Rn  = new_cpu.get_register(inst.Rn).i32;
+                    auto imm = inst.i32;
+                    auto result = Rn & imm;
+
+                    new_cpu.set_register_i32(inst.Rd, result);
+                    
+                    //Set Flags
+                    if(inst.S){
+                        new_cpu.set_CPSR_N(result & (1 << 31));
+                        new_cpu.set_CPSR_Z(result == 0);
+                        new_cpu.set_CPSR_C(false);
+                    }
+                    
+                    //Set PC and cycle count
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 4;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for AND instruction");
+            }   
+        case t32_ASR:   
+        case t32_B:     
+        case t32_BFC:   
+        case t32_BFI:
+            throw std::runtime_error("execute_t32 : opcode not implemented");   
+        case t32_BIC:
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+                    
+                    auto Rn     = new_cpu.get_register(inst.Rn).i32;
+                    auto imm    = inst.i32;
+                    auto result = Rn & (~imm);
+
+                    new_cpu.set_register_i32(inst.Rd, result);
+
+                    //Set Flags
+                    if(inst.S){
+                        new_cpu.set_CPSR_N(result & (1 << 31));
+                        new_cpu.set_CPSR_Z(result == 0);
+                        new_cpu.set_CPSR_C(false);
+                    }
+                    
+                    //not sure about this
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 4;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for BIC instruction"); 
+            }
+        case t32_BKPT:  
+        case t32_BL:    
+        case t32_BLX:   
+        case t32_BX:    
+        case t32_CBNZ:  
+        case t32_CBZ:   
+        case t32_CDP:   
+        case t32_CDP2:  
+        case t32_CLREX: 
+        case t32_CLZ:
+            throw std::runtime_error("execute_t32 : opcode not implemented");   
+        case t32_CMN:
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+
+                    auto Rn  = new_cpu.get_register(inst.Rn).i32;
+                    auto imm = inst.i32;
+
+                    results_t result;
+
+                    auto msg = gp_operation(&result, Rn, imm, 0, x86_asm_ADD);
+                    
+                    //Set Flags
+                    new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                    new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                    new_cpu.set_CPSR_C(false); 
+                    new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
+                    
+                    
+                    //Set PC and cycle count
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 4;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for CMN instruction");
+            }   
+        case t32_CMP:
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+
+                    auto Rn  = new_cpu.get_register(inst.Rn).i32;
+                    auto imm = inst.i32;
+
+                    results_t result;
+
+                    auto msg = gp_operation(&result, Rn, imm, 0, x86_asm_SUB);
+                    
+                    //Set Flags
+                    new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                    new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                    new_cpu.set_CPSR_C(result.get_x86_flag_Carry()); 
+                    new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
+                    
+                    
+                    //Set PC and cycle count
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 4;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for CMP instruction");
+            }    
+        case t32_CPS:   
+        case t32_CPY:   
+        case t32_DBG:   
+        case t32_DMB:   
+        case t32_DSB:
+            throw std::runtime_error("execute_t32 : opcode not implemented");   
+        case t32_EOR:
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+
+                    auto Rn  = new_cpu.get_register(inst.Rn).i32;
+                    auto imm = inst.i32;
+                    auto result = Rn ^ imm;
+
+                    new_cpu.set_register_i32(inst.Rd, result);
+                    
+                    //Set Flags
+                    if(inst.S){
+                        new_cpu.set_CPSR_N(result & (1 << 31));
+                        new_cpu.set_CPSR_Z(result == 0);
+                        new_cpu.set_CPSR_C(false);
+                    }
+                    
+                    //Set PC and cycle count
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 4;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for EOR instruction");
+            }   
+        case t32_ISB:   
+        case t32_IT :   
+        case t32_LDC:   
+        case t32_LDC2:  
+        case t32_LDM:   
+        case t32_LDMIA: 
+        case t32_LDMFD: 
+        case t32_LDMDB: 
+        case t32_LDMEA:
+            throw std::runtime_error("execute_t32 : opcode not implemented"); 
+        case t32_LDR:
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+                    switch(inst.encoding){
+                        case instruction_32b_t::encoding_T3:
+                            {
+                                auto imm = inst.i32;
+                                auto pc  = new_cpu.PC();
+                                pc += 4;
+
+                                auto addr  = pc + imm;
+                                auto bytes = memory.load_u32(addr);
+
+                                new_cpu.set_register_i32(inst.Rd, bytes);
+
+                                //Set PC and count cycle
+                                new_cpu.cycle_count++;
+                                if(inst.Rd != 15)
+                                    new_cpu.PC() += 4;
+                                else
+                                    new_cpu.cycle_count++;
+
+                                return new_cpu;
+                            }
+                        default:
+                            throw std::runtime_error("execute_t32 : invalid encoding for LDR instruction");
+                    }
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for LDR instruction");
+            } 
+        case t32_LDRB: 
+        case t32_LDRBT: 
+        case t32_LDRD: 
+        case t32_LDREX: 
+        case t32_LDREXB:
+        case t32_LDREXH:
+        case t32_LDRH  :
+        case t32_LDRHT :
+        case t32_LDRSB :
+        case t32_LDRSBT:
+        case t32_LDRSH :
+        case t32_LDRSHT:
+        case t32_LDRT  :
+        case t32_LSL   :
+        case t32_LSR   :
+        case t32_MCR   :
+        case t32_MCR2  :
+        case t32_MCRR  :
+        case t32_MCRR2 :
+        case t32_MLA   :
+        case t32_MLS   :
+            throw std::runtime_error("execute_t32 : opcode not implemented");
+        case t32_MOV   :
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+                    switch(inst.encoding){
+                        case instruction_32b_t::encoding_T2:
+                            {
+                                auto result = inst.i32;
+
+                                new_cpu.set_register_i32(inst.Rd, result);
+
+                                //Set Flags
+                                if(inst.S){
+                                    new_cpu.set_CPSR_N(result & (1 << 31));
+                                    new_cpu.set_APSR_Z(result == 0);
+                                    new_cpu.set_CPSR_C(false);
+                                }
+
+                                //not sure about this
+                                new_cpu.cycle_count++;
+                                if(inst.Rd != 15) 
+                                    new_cpu.PC() += 4;
+                                else        
+                                    new_cpu.cycle_count++;
+
+                                return new_cpu;
+                            }
+                        default:
+                            throw std::runtime_error("execute_t32 : invalid encoding for MOV instruction");
+                    }
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for BIC instruction");
+            }
+        case t32_MOVT  :
+        case t32_MRC   :
+        case t32_MRC2  :
+        case t32_MRRC  :
+        case t32_MRRC2 :
+        case t32_MRS   :
+        case t32_MSR   :
+        case t32_MUL   :
+        case t32_MVN   :
+        case t32_NEG   :
+        case t32_NOP   :
+        case t32_ORN   :
+            throw std::runtime_error("execute_t32 : opcode not implemented");
+        case t32_ORR:
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+
+                    auto Rn  = new_cpu.get_register(inst.Rn).i32;
+                    auto imm = inst.i32;
+                    auto result = Rn | imm;
+
+                    new_cpu.set_register_i32(inst.Rd, result);
+                    
+                    //Set Flags
+                    if(inst.S){
+                        new_cpu.set_CPSR_N(result & (1 << 31));
+                        new_cpu.set_CPSR_Z(result == 0);
+                        new_cpu.set_CPSR_C(false);
+                    }
+                    
+                    //not sure about this
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 4;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for ORR instruction");                
+            }
+        case t32_PLD   :
+        case t32_PLI   :
+        case t32_POP   :
+        case t32_PUSH  :
+        case t32_RBIT  :
+        case t32_REV   :
+        case t32_REV16 :
+        case t32_REVSH :
+        case t32_ROR   :
+        case t32_RRX   :
+        case t32_RSB   :
+        case t32_SBC   :
+        case t32_SBFX  :
+        case t32_SDIV  :
+        case t32_SEV   :
+        case t32_SMLAL :
+        case t32_SMULL :
+        case t32_SSAT  :
+        case t32_STC   :
+        case t32_STC2  :
+        case t32_STM   :
+        case t32_STMIA :
+        case t32_STMEA :
+        case t32_STMDB :
+        case t32_STMFD :
+        case t32_STR   :
+        case t32_STRB  :
+        case t32_STRBT :
+        case t32_STRD  :
+        case t32_STREX :
+        case t32_STREXB:
+        case t32_STREXH:
+        case t32_STRH  :
+        case t32_STRHT :
+        case t32_STRT  :
+        case t32_SUB   :
+        case t32_SVC   :
+        case t32_SXTB  :
+        case t32_SXTH  :
+        case t32_TBB   :
+        case t32_TBH   :
+        case t32_TEQ   :
+        case t32_TST   :
+        case t32_UBFX  :
+        case t32_UDIV  :
+        case t32_UMLAL :
+        case t32_UMULL :
+        case t32_USAT  :
+        case t32_UXTB  :
+        case t32_UXTH  :
+        case t32_WFE   :
+        case t32_WFI   :
+        case t32_YIELD :
+            throw std::runtime_error("execute_t32 : opcode not implemented");
+        default:
+            throw std::runtime_error("execute_t32 : invalid opcode");  
+    }
 }
