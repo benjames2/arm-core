@@ -3,10 +3,7 @@
 #include <inc/fetch.h>
 #include <inc/memory_pool.h>
 
-
-
-
-fetched_instruction_t fetch(memory_t& memory, uint32_t PC) {
+fetched_instruction_t fetch(memory_t& memory, uint32_t PC, bool should_print) {
 
     // contains which encoding is used
     fetched_instruction_t fi;
