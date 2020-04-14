@@ -246,7 +246,30 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
         case i_BIC  :// bit clear
         case i_BL   :// branch and link
         case i_BX   :// branch and exchange
+            throw std::runtime_error("execute_t16 : opcode not implemented");
         case i_CMN  :// compare negative
+            {
+                results_t result;
+
+                auto Rd = new_cpu.get_register(inst.Rd).i32;
+                auto Rs = new_cpu.get_register(inst.Rs).i32;
+
+                //Operation
+                auto msg = gp_operation(&result, Rd, Rs, 0, x86_asm_ADD);
+
+                //Set Flags
+                new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                new_cpu.set_APSR_V(result.get_x86_flag_Ov());
+
+                //Set PC and cycle count
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
         case i_CMP  :// compare
             {
                 if(inst.meta_opcode == meta_RC){
@@ -277,7 +300,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                     results_t result;
 
-                    auto Rd = new_cpu.get_register(inst.Rs).i32;
+                    auto Rd = new_cpu.get_register(inst.Rd).i32;
                     auto Rs = new_cpu.get_register(inst.Rs).i32;
 
                     //Operation
