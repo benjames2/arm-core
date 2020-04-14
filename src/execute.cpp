@@ -248,7 +248,57 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
         case i_BX   :// branch and exchange
         case i_CMN  :// compare negative
         case i_CMP  :// compare
-            throw std::runtime_error("execute_t16 : opcode not implemented");
+            {
+                if(inst.meta_opcode == meta_RC){
+
+                    results_t result;
+
+                    auto Rd     = new_cpu.get_register(inst.Rd).i32;
+                    auto offset = inst.i_immediate;
+                    
+                    //Operation
+                    auto msg = gp_operation(&result, Rd, offset, 0, x86_asm_SBB); 
+
+                    //Set Flags
+                    new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                    new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                    new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                    new_cpu.set_APSR_V(result.get_x86_flag_Ov());
+
+                    //Set PC and cycle count
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) new_cpu.PC() += 2;
+                    else              new_cpu.cycle_count++;
+
+                    return new_cpu;
+
+                }
+                else if(inst.meta_opcode == meta_RR){
+
+                    results_t result;
+
+                    auto Rd = new_cpu.get_register(inst.Rs).i32;
+                    auto Rs = new_cpu.get_register(inst.Rs).i32;
+
+                    //Operation
+                    auto msg = gp_operation(&result, Rd, Rs, 0, x86_asm_SBB);
+
+                    //Set Flags
+                    new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                    new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                    new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                    new_cpu.set_APSR_V(result.get_x86_flag_Ov());
+
+                    //Set PC and cycle count
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) new_cpu.PC() += 2;
+                    else              new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else 
+                    throw std::runtime_error("execute_t16(i_MOV) : Invalid meta opcode ");
+            }
         case i_EOR  :// **DONE** bitwise XOR
             {
                 auto Rd = new_cpu.get_register(inst.Rd).u32;
