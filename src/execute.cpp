@@ -240,6 +240,9 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                     << new_cpu.PC() << std::dec << Std::endl;
                 #endif // EXECUTE_DEBUG
 
+                //Set cycle count
+                new_cpu.cycle_count += 2;
+
                 return new_cpu;
             }
         case i_Bxx  :// conditional branch
@@ -265,9 +268,22 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 else              new_cpu.cycle_count++;
 
                 return new_cpu;  
-
             }
         case i_BL   :// branch and link
+            {
+                if(inst.meta_opcode == meta_R){
+                    auto Rs = new_cpu.get_register(inst.Rs).u32;
+
+                    new_cpu.PC() = Rs;
+
+                    //Set cycle count
+                    new_cpu.cycle_count += 2;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t16(i_BL) : Invalid meta opcode ");
+            }
         case i_BX   :// branch and exchange
             throw std::runtime_error("execute_t16 : opcode not implemented");
         case i_CMN  :// compare negative
