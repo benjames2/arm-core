@@ -243,7 +243,30 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 return new_cpu;
             }
         case i_Bxx  :// conditional branch
+            throw std::runtime_error("execute_t16 : opcode not implemented");
         case i_BIC  :// bit clear
+            {
+                auto Rd = new_cpu.get_register(inst.Rd).i32;
+                auto Rs = new_cpu.get_register(inst.Rs).i32;
+
+                //Operation
+                auto result = Rd & (~Rs);
+
+                new_cpu.set_register_i32(inst.Rd, result);
+
+                //Set Flags
+                new_cpu.set_CPSR_N(result & (1 << 31));
+                new_cpu.set_CPSR_Z(result == 0);
+                new_cpu.set_CPSR_C(false);
+                
+                //Set PC and cycle count
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                return new_cpu;  
+
+            }
         case i_BL   :// branch and link
         case i_BX   :// branch and exchange
             throw std::runtime_error("execute_t16 : opcode not implemented");
