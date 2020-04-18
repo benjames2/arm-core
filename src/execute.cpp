@@ -246,7 +246,47 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 return new_cpu;
             }
         case i_Bxx  :// conditional branch
-            throw std::runtime_error("execute_t16 : opcode not implemented");
+            {
+                switch(inst.condition_code){
+                    case 0:
+                    case 1:
+                    case 2:
+                        std::runtime_error("execute_t16 (Bxx) : condition code is not implemented");
+                    case 3:
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(new_cpu.get_CPSR_C() == false){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                    case 10:
+                    case 11:
+                    case 12:
+                    case 13:
+                        std::runtime_error("execute_t16 (Bxx) : condition code is not implemented");
+                    default:
+                        std::runtime_error("execute_t16 (Bxx) : condition code is undefined and should not be used");
+                }
+            }
         case i_BIC  :// bit clear
             {
                 auto Rd = new_cpu.get_register(inst.Rd).i32;
