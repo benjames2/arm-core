@@ -248,11 +248,67 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
         case i_Bxx  :// conditional branch
             {
                 switch(inst.condition_code){
-                    case 0:
-                    case 1:
-                    case 2:
-                        std::runtime_error("execute_t16 (Bxx) : condition code is not implemented");
-                    case 3:
+                    case 0: //BEQ: Branch if Z set
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(new_cpu.get_CPSR_Z() == true){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 1://BNE: Branch if Z clear
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(new_cpu.get_CPSR_Z() == false){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 2: //BCS: Branch if C set
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(new_cpu.get_CPSR_C() == true){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 3: //BCC: Branch if C clear
                         {
                             auto PC = new_cpu.PC();
                             PC += 4; // prefetch operation
@@ -272,17 +328,216 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                             return new_cpu;
                         }
-                    case 4:
-                    case 5:
-                    case 6:
-                    case 7:
-                    case 8:
-                    case 9:
-                    case 10:
-                    case 11:
-                    case 12:
-                    case 13:
-                        std::runtime_error("execute_t16 (Bxx) : condition code is not implemented");
+                    case 4://BMI: Branch if N set
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(new_cpu.get_CPSR_N() == true){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 5://BPL: Branch if N clear
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(new_cpu.get_CPSR_N() == false){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 6://BVS: Branch if V set
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(new_cpu.get_CPSR_V() == true){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 7://BVC: Branch if V clear
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(new_cpu.get_CPSR_V() == false){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 8://BHI: Branch if C set and Z clear
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if((new_cpu.get_CPSR_C() == true) && (new_cpu.get_CPSR_Z() == false)){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 9://BLS: Branch if C clear or Z set
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if((new_cpu.get_CPSR_C() == false) || (new_cpu.get_CPSR_Z() == true)){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 10://BGE: Branch if N set and V set OR N clear and V clear
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(((new_cpu.get_CPSR_N() == true) && (new_cpu.get_CPSR_V() == true)) ||
+                               ((new_cpu.get_CPSR_N() == false) && (new_cpu.get_CPSR_V() == false))){
+
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 11://BLT: Branch if N set and V clear OR N clear and V set
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(((new_cpu.get_CPSR_N() == true) && (new_cpu.get_CPSR_V() == false)) ||
+                               ((new_cpu.get_CPSR_N() == false) && (new_cpu.get_CPSR_V() == true))){
+
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 12://BGT: Branch if Z clear, AND either N set and V set OR N clear and V clear
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if( (new_cpu.get_CPSR_Z() == false) &&
+                                (((new_cpu.get_CPSR_N() == true) && (new_cpu.get_CPSR_V() == true)) ||
+                                ((new_cpu.get_CPSR_N() == false) && (new_cpu.get_CPSR_V() == false))))  {
+
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 13://BLE: Branch if Z set, OR N set and V clear OR N clear and V set
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if( (new_cpu.get_CPSR_Z() == true) ||
+                                ((new_cpu.get_CPSR_N() == true) && (new_cpu.get_CPSR_V() == false)) ||
+                                ((new_cpu.get_CPSR_N() == false) && (new_cpu.get_CPSR_V() == true)))    {
+
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
                     default:
                         std::runtime_error("execute_t16 (Bxx) : condition code is undefined and should not be used");
                 }
