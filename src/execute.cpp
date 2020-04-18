@@ -522,6 +522,78 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
         case i_SBC  :// subtract with carry
         case i_STMIA:// store multiple
         case i_STR  :// store word
+            {
+                if(inst.meta_opcode == meta_RRC){
+
+                    results_t address;
+
+                    auto Rb  = new_cpu.get_register(inst.Rb).i32;
+                    auto Rd  = new_cpu.get_register(inst.Rd).i32;
+                    auto imm = inst.i32;
+                    
+                    auto msg = gp_operation(&address, Rb, imm, 0, x86_asm_ADD);
+
+                    //Operation
+                    memory.store_u32(address.u32, Rd); //should this be address.i32 + 4 ?
+
+                    //Set PC and cycle count
+                    new_cpu.cycle_count += 4;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 2;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+
+                }
+                else if(inst.meta_opcode == meta_RC_sp){
+
+                    results_t address;
+
+                    auto SP  = new_cpu.get_SP();
+                    auto Rd  = new_cpu.get_register(inst.Rd).i32;
+                    auto imm = inst.i32;
+                    
+                    auto msg = gp_operation(&address, SP, imm, 0, x86_asm_ADD);
+
+                    //Operation
+                    memory.store_u32(address.u32, Rd); //should this be address.i32 + 4 ?
+
+                    //Set PC and cycle count
+                    new_cpu.cycle_count += 4;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 2;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else if(inst.meta_opcode == meta_RRR){
+
+                    results_t address;
+
+                    auto Rb = new_cpu.get_register(inst.Rb).i32;
+                    auto Ro = new_cpu.get_register(inst.Ro).i32;
+                    auto Rd = new_cpu.get_register(inst.Rd).i32;
+                    
+                    auto msg = gp_operation(&address, Rb, Ro, 0, x86_asm_ADD);
+
+                    //Operation
+                    memory.store_u32(address.i32, Rd); //should this be address.i32 + 4 ?
+
+                    //Set PC and cycle count
+                    new_cpu.cycle_count += 4;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 2;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+
+                }
+                else 
+                    throw std::runtime_error("execute_t16(i_STR) : Invalid meta opcode ");
+            }
         case i_STRB :// store byte
         case i_STRH :// store halfword
         case i_SWI  :// software interrupt
