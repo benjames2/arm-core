@@ -240,15 +240,422 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                     << new_cpu.PC() << std::dec << Std::endl;
                 #endif // EXECUTE_DEBUG
 
+                //Set cycle count
+                new_cpu.cycle_count += 2;
+
                 return new_cpu;
             }
         case i_Bxx  :// conditional branch
+            {
+                switch(inst.condition_code){
+                    case 0: //BEQ: Branch if Z set
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(new_cpu.get_CPSR_Z() == true){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 1://BNE: Branch if Z clear
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(new_cpu.get_CPSR_Z() == false){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 2: //BCS: Branch if C set
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(new_cpu.get_CPSR_C() == true){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 3: //BCC: Branch if C clear
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(new_cpu.get_CPSR_C() == false){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 4://BMI: Branch if N set
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(new_cpu.get_CPSR_N() == true){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 5://BPL: Branch if N clear
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(new_cpu.get_CPSR_N() == false){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 6://BVS: Branch if V set
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(new_cpu.get_CPSR_V() == true){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 7://BVC: Branch if V clear
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(new_cpu.get_CPSR_V() == false){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 8://BHI: Branch if C set and Z clear
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if((new_cpu.get_CPSR_C() == true) && (new_cpu.get_CPSR_Z() == false)){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 9://BLS: Branch if C clear or Z set
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if((new_cpu.get_CPSR_C() == false) || (new_cpu.get_CPSR_Z() == true)){
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 10://BGE: Branch if N set and V set OR N clear and V clear
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(((new_cpu.get_CPSR_N() == true) && (new_cpu.get_CPSR_V() == true)) ||
+                               ((new_cpu.get_CPSR_N() == false) && (new_cpu.get_CPSR_V() == false))){
+
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 11://BLT: Branch if N set and V clear OR N clear and V set
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if(((new_cpu.get_CPSR_N() == true) && (new_cpu.get_CPSR_V() == false)) ||
+                               ((new_cpu.get_CPSR_N() == false) && (new_cpu.get_CPSR_V() == true))){
+
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 12://BGT: Branch if Z clear, AND either N set and V set OR N clear and V clear
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if( (new_cpu.get_CPSR_Z() == false) &&
+                                (((new_cpu.get_CPSR_N() == true) && (new_cpu.get_CPSR_V() == true)) ||
+                                ((new_cpu.get_CPSR_N() == false) && (new_cpu.get_CPSR_V() == false))))  {
+
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    case 13://BLE: Branch if Z set, OR N set and V clear OR N clear and V set
+                        {
+                            auto PC = new_cpu.PC();
+                            PC += 4; // prefetch operation
+
+                            results_t result;
+                            auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
+
+                            //Set PC and cycle count
+                            if( (new_cpu.get_CPSR_Z() == true) ||
+                                ((new_cpu.get_CPSR_N() == true) && (new_cpu.get_CPSR_V() == false)) ||
+                                ((new_cpu.get_CPSR_N() == false) && (new_cpu.get_CPSR_V() == true)))    {
+
+                                new_cpu.PC() = result.i32;
+                                new_cpu.cycle_count += 2;
+                            }
+                            else{
+                                new_cpu.PC() += 2;
+                                new_cpu.cycle_count++;
+                            }
+
+                            return new_cpu;
+                        }
+                    default:
+                        std::runtime_error("execute_t16 (Bxx) : condition code is undefined and should not be used");
+                }
+            }
         case i_BIC  :// bit clear
+            {
+                auto Rd = new_cpu.get_register(inst.Rd).i32;
+                auto Rs = new_cpu.get_register(inst.Rs).i32;
+
+                //Operation
+                auto result = Rd & (~Rs);
+
+                new_cpu.set_register_i32(inst.Rd, result);
+
+                //Set Flags
+                new_cpu.set_CPSR_N(result & (1 << 31));
+                new_cpu.set_CPSR_Z(result == 0);
+                new_cpu.set_CPSR_C(false);
+                
+                //Set PC and cycle count
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                return new_cpu;  
+            }
         case i_BL   :// branch and link
+            {
+                if(inst.meta_opcode == meta_R){
+                    auto Rs = new_cpu.get_register(inst.Rs).u32;
+
+                    new_cpu.PC() = Rs;
+
+                    //Set cycle count
+                    new_cpu.cycle_count += 2;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t16(i_BL) : Invalid meta opcode ");
+            }
         case i_BX   :// branch and exchange
-        case i_CMN  :// compare negative
-        case i_CMP  :// compare
             throw std::runtime_error("execute_t16 : opcode not implemented");
+        case i_CMN  :// compare negative
+            {
+                results_t result;
+
+                auto Rd = new_cpu.get_register(inst.Rd).i32;
+                auto Rs = new_cpu.get_register(inst.Rs).i32;
+
+                //Operation
+                auto msg = gp_operation(&result, Rd, Rs, 0, x86_asm_ADD);
+
+                //Set Flags
+                new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                new_cpu.set_APSR_V(result.get_x86_flag_Ov());
+
+                //Set PC and cycle count
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
+        case i_CMP  :// compare
+            {
+                if(inst.meta_opcode == meta_RC){
+
+                    results_t result;
+
+                    auto Rd     = new_cpu.get_register(inst.Rd).i32;
+                    auto offset = inst.i_immediate;
+                    
+                    //Operation
+                    auto msg = gp_operation(&result, Rd, offset, 0, x86_asm_SBB); 
+
+                    //Set Flags
+                    new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                    new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                    new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                    new_cpu.set_APSR_V(result.get_x86_flag_Ov());
+
+                    //Set PC and cycle count
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) new_cpu.PC() += 2;
+                    else              new_cpu.cycle_count++;
+
+                    return new_cpu;
+
+                }
+                else if(inst.meta_opcode == meta_RR){
+
+                    results_t result;
+
+                    auto Rd = new_cpu.get_register(inst.Rd).i32;
+                    auto Rs = new_cpu.get_register(inst.Rs).i32;
+
+                    //Operation
+                    auto msg = gp_operation(&result, Rd, Rs, 0, x86_asm_SBB);
+
+                    //Set Flags
+                    new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                    new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                    new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                    new_cpu.set_APSR_V(result.get_x86_flag_Ov());
+
+                    //Set PC and cycle count
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) new_cpu.PC() += 2;
+                    else              new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else 
+                    throw std::runtime_error("execute_t16(i_MOV) : Invalid meta opcode ");
+            }
         case i_EOR  :// **DONE** bitwise XOR
             {
                 auto Rd = new_cpu.get_register(inst.Rd).u32;
@@ -339,6 +746,47 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
         case i_LDSH :// load sign-extended halfword
         case i_LSR  :// logical shift right
         case i_MOV  :// move register
+            {
+                if(inst.meta_opcode == meta_RC){
+
+                    auto imm = inst.i_immediate;
+                    
+                    new_cpu.set_register_i32(inst.Rd, imm);
+
+                    //Set Flags
+                    new_cpu.set_CPSR_N(imm & (1 << 31));
+                    new_cpu.set_CPSR_Z(imm == 0);
+                    new_cpu.set_CPSR_C(false);
+
+                    //Set PC and cycle count
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) new_cpu.PC() += 2;
+                    else              new_cpu.cycle_count++;
+
+                    return new_cpu;
+
+                }
+                else if(inst.meta_opcode == meta_RR){
+
+                    auto Hs = new_cpu.get_register(inst.Rs).i32;
+                    
+                    new_cpu.set_register_i32(inst.Rd, Hs);
+
+                    //Set Flags
+                    new_cpu.set_CPSR_N(Hs & (1 << 31));
+                    new_cpu.set_CPSR_Z(Hs == 0);
+                    new_cpu.set_CPSR_C(false);
+
+                    //Set PC and cycle count
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) new_cpu.PC() += 2;
+                    else              new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else 
+                    throw std::runtime_error("execute_t16(i_MOV) : Invalid meta opcode ");
+            }
         case i_MUL  :// multiply
         case i_MVN  :// move negative register
         case i_NEG  :// negate
@@ -369,6 +817,78 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
         case i_SBC  :// subtract with carry
         case i_STMIA:// store multiple
         case i_STR  :// store word
+            {
+                if(inst.meta_opcode == meta_RRC){
+
+                    results_t address;
+
+                    auto Rb  = new_cpu.get_register(inst.Rb).i32;
+                    auto Rd  = new_cpu.get_register(inst.Rd).i32;
+                    auto imm = inst.i32;
+                    
+                    auto msg = gp_operation(&address, Rb, imm, 0, x86_asm_ADD);
+
+                    //Operation
+                    memory.store_u32(address.u32, Rd); //should this be address.i32 + 4 ?
+
+                    //Set PC and cycle count
+                    new_cpu.cycle_count += 4;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 2;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+
+                }
+                else if(inst.meta_opcode == meta_RC_sp){
+
+                    results_t address;
+
+                    auto SP  = new_cpu.get_SP();
+                    auto Rd  = new_cpu.get_register(inst.Rd).i32;
+                    auto imm = inst.i32;
+                    
+                    auto msg = gp_operation(&address, SP, imm, 0, x86_asm_ADD);
+
+                    //Operation
+                    memory.store_u32(address.u32, Rd); //should this be address.i32 + 4 ?
+
+                    //Set PC and cycle count
+                    new_cpu.cycle_count += 4;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 2;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else if(inst.meta_opcode == meta_RRR){
+
+                    results_t address;
+
+                    auto Rb = new_cpu.get_register(inst.Rb).i32;
+                    auto Ro = new_cpu.get_register(inst.Ro).i32;
+                    auto Rd = new_cpu.get_register(inst.Rd).i32;
+                    
+                    auto msg = gp_operation(&address, Rb, Ro, 0, x86_asm_ADD);
+
+                    //Operation
+                    memory.store_u32(address.i32, Rd); //should this be address.i32 + 4 ?
+
+                    //Set PC and cycle count
+                    new_cpu.cycle_count += 4;
+                    if(inst.Rd != 15) 
+                        new_cpu.PC() += 2;
+                    else        
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+
+                }
+                else 
+                    throw std::runtime_error("execute_t16(i_STR) : Invalid meta opcode ");
+            }
         case i_STRB :// store byte
         case i_STRH :// store halfword
         case i_SWI  :// software interrupt
