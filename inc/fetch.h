@@ -13,4 +13,4 @@ struct fetched_instruction_t {
     static const int t32 = 1;
 };
 
-fetched_instruction_t fetch(memory_t& memory, uint32_t PC);
+fetched_instruction_t fetch(memory_t& memory, uint32_t PC, const bool should_print = false);

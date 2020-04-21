@@ -3,7 +3,7 @@
 #include <inc/fetch.h>
 #include <inc/memory_pool.h>
 
-fetched_instruction_t fetch(memory_t& memory, uint32_t PC, bool should_print) {
+fetched_instruction_t fetch(memory_t& memory, uint32_t PC, const bool should_print) {
 
     // contains which encoding is used
     fetched_instruction_t fi;
@@ -30,9 +30,10 @@ fetched_instruction_t fetch(memory_t& memory, uint32_t PC, bool should_print) {
         case 0b11111:
             // 32-bit THUMB, need next halfword as well
             {
-                std::cout 
-                    << "[0x" << std::hex << pad_hex_number(PC) 
-                    << std::dec << " 32-bit] " << std::flush;
+                if(should_print)
+                    std::cout 
+                        << "[0x" << std::hex << pad_hex_number(PC) 
+                        << std::dec << " 32-bit] " << std::flush;
 
                 uint32_t second_halfword = memory.load_u16(PC+2);
 
@@ -42,9 +43,10 @@ fetched_instruction_t fetch(memory_t& memory, uint32_t PC, bool should_print) {
             }
         default:
             // 16-bit THUMB, first halfword is entire instruction
-            std::cout 
-                << "[0x" << std::hex << pad_hex_number(PC) 
-                << std::dec << " 16-bit] " << std::flush;
+            if(should_print)
+                std::cout 
+                    << "[0x" << std::hex << pad_hex_number(PC) 
+                    << std::dec << " 16-bit] " << std::flush;
 
             fi.in   = first_halfword;
             fi.type = fetched_instruction_t::t16;
