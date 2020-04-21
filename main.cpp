@@ -22,31 +22,24 @@ static_assert(offsetof(results_t, i32) == 4,   "alignment of .i32 in results_t i
 
 int main(int argc, char* argv[]) {
 
-    test_decode_fns("test/testfile.branch.txt");
-    test_decode_fns("test/testfile.bottom.txt");
-    test_decode_fns("test/testfile.txt");
-    test_32b_decode("test/testfile32b.txt");
-    std::cout << "INSTRUCTION TESTS PASSED\n\n" << std::flush;
+    //test_decode_fns("test/testfile.branch.txt");
+    //test_decode_fns("test/testfile.bottom.txt");
+    //test_decode_fns("test/testfile.txt");
+    //test_32b_decode("test/testfile32b.txt");
+    //std::cout << "INSTRUCTION TESTS PASSED\n\n" << std::flush;
 
-    return 0;
 
     memory_t mem(memory_t::little_endian);
 
     for(auto cptr : { "test/input/assembly-code.txt", "test/input/memory.txt" }) {
         load_memory_file(cptr, mem);
-        std::cout << mem << std::endl;
+        cout << mem << std::endl;
     }
 
     // starting address for machine code
-<<<<<<< HEAD
     armv7_m3 cpu;
     cpu.PC() = 0x00000224;
-=======
-    armv7_m3 armcpu;
-    armcpu.PC() = 0x0224;
->>>>>>> 78682b1139357085ef1932100cab2871de4b31ec
-
-    std::cout << cpu;
+    cpu.CPSR = 0x41000000;
 
     for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
 
@@ -81,7 +74,6 @@ int main(int argc, char* argv[]) {
     cout << "  disassembly complete";
     cout << "\n==========================================\n\n";
 
-<<<<<<< HEAD
  ///*   
     for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
         
@@ -89,26 +81,11 @@ int main(int argc, char* argv[]) {
         auto decode_data = decode(inst_data, addr);
         auto newcpu      = execute(cpu, mem, decode_data);
 
+       std::cout << "\n" << newcpu << endl;
+
         addr +=2;
         if(inst_data.t32)
             addr+=2;
-=======
-    armv7_m3 cpu;
-    cpu.PC() = 0x00000232;
-
-    //for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
-    for(cpu.PC() = 0x00000224; cpu.PC() <= 0x000002d4;) {
-  
-        auto inst_data   = fetch(mem, cpu.PC(), true); cout << endl;
-        auto decode_data = decode(inst_data);
-        auto newcpu      = execute(cpu, mem, decode_data);
-
-        cpu = newcpu;
-        //addr = newcpu.PC();
-
-        // TODO: compare new cpu with old cpu
-
->>>>>>> 78682b1139357085ef1932100cab2871de4b31ec
     }
 
     cout << "\n\n==========================================\n";

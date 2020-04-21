@@ -82,15 +82,15 @@ void armv7_m3::set_CPSR_V(bool b) { if(b) this->CPSR |= (1 << 28); else this->CP
 void armv7_m3::set_CPSR_Q(bool b) { if(b) this->CPSR |= (1 << 27); else this->CPSR &= ~(1 << 27); }
 
 // fields specific to the CPSR
-int armv7_m3::get_CPSR_IT(void) { return ((this->CPSR >> 8) & 0b11111100) | ((this->CPSR >> 25) & 0b11); }
-int armv7_m3::get_CPSR_GE(void) { return ((this->CPSR >> 16) & 0x0F); }
-int armv7_m3::get_CPSR_M(void)  { return this->CPSR & 0x1F; }
-bool armv7_m3::get_CPSR_J(void) { return ((this->CPSR >> 24) & 0x01); }
-bool armv7_m3::get_CPSR_E(void) { return ((this->CPSR >> 9) & 0x01); }
-bool armv7_m3::get_CPSR_A(void) { return ((this->CPSR >> 8) & 0x01); }
-bool armv7_m3::get_CPSR_I(void) { return ((this->CPSR >> 7) & 0x01); }
-bool armv7_m3::get_CPSR_F(void) { return ((this->CPSR >> 6) & 0x01); }
-bool armv7_m3::get_CPSR_T(void) { return ((this->CPSR >> 5) & 0x01); }
+int  armv7_m3::get_CPSR_IT(void) { return ((this->CPSR >> 8) & 0b11111100) | ((this->CPSR >> 25) & 0b11); }
+int  armv7_m3::get_CPSR_GE(void) { return ((this->CPSR >> 16) & 0x0F);}
+int  armv7_m3::get_CPSR_M(void)  { return this->CPSR & 0x1F; }
+bool armv7_m3::get_CPSR_J(void)  { return ((this->CPSR >> 24) & 0x01);}
+bool armv7_m3::get_CPSR_E(void)  { return ((this->CPSR >> 9) & 0x01); }
+bool armv7_m3::get_CPSR_A(void)  { return ((this->CPSR >> 8) & 0x01); }
+bool armv7_m3::get_CPSR_I(void)  { return ((this->CPSR >> 7) & 0x01); }
+bool armv7_m3::get_CPSR_F(void)  { return ((this->CPSR >> 6) & 0x01); }
+bool armv7_m3::get_CPSR_T(void)  { return ((this->CPSR >> 5) & 0x01); }
 
 void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os) {
 
@@ -124,16 +124,12 @@ std::ostream& operator<<(std::ostream& os, const armv7_m3& cpu){
             os << " :   Ox" << padhexnumber(cpu.reg[i].i32) << "\n";
     }
 
-    os << "\n";
-
     os << "xPSR:   0x" << padhexnumber(cpu.CPSR) << "\n";
     os << "    N   " << ((cpu.CPSR & (1 << 31)) ? "1" : "0") << "\n";
     os << "    Z   " << ((cpu.CPSR & (1 << 30)) ? "1" : "0") << "\n";
     os << "    C   " << ((cpu.CPSR & (1 << 29)) ? "1" : "0") << "\n";
     os << "    V   " << ((cpu.CPSR & (1 << 28)) ? "1" : "0") << "\n";
     os << "    Q   " << ((cpu.CPSR & (1 << 27)) ? "1" : "0") << "\n";
-
-    os << "\n";
 
     return os;
 }

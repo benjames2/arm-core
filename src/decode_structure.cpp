@@ -606,4 +606,6 @@ std::ostream& operator<<(std::ostream& os, const instruction_32b_t& in){
         default:
             std::runtime_error("Undefined 32-bit instruction format");
     }
+
+    return os;
 }
