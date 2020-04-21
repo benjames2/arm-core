@@ -211,7 +211,7 @@ void printBaseFormat(uint32_t number){
     }
     std::cout << "\n";
 }
-///*
+
 void test_32b_decode(std::string filename){
 
     std::cout << "\n=======================================================================\n";
@@ -261,51 +261,7 @@ void test_32b_decode(std::string filename){
     }
     
 }
-//*/
-/*
-void test_32b_decode(std::string filename) {
 
-    std::cout << "\n=======================================================================\n";
-    std::cout << " " << filename << "\n";
-    std::cout << "=======================================================================\n\n";
-    std::cout << std::flush;
-
-    std::ifstream is(filename);
-    std::string str;
-
-    while(std::getline(is, str)) {
-        
-        //is.ignore();
-        std::stringstream ss(str);
-        std::string format;
-        ss >> format;
-        uint32_t base_format = get32bformat(format);
-
-        std::string strval;
-        uint32_t shft, val;
-        while(ss >> strval) {
-            if(strval == ";")
-                break;
-
-            val = std::stoul(strval);
-            ss >> shft;
-
-            base_format |= (val << shft);
-        }
-
-        std::getline(is, strval);
-        //is.ignore();
-        auto dec     = decode_32bit_instruction(0x00, base_format);
-        auto dec_str = dec.str();
-        
-        std::cout << "Expected : " << strval << std::endl;
-        std::cout << "Decoded  : " << dec_str << std::endl << std::flush;
-        assert(strval == dec_str);
-        std::cout << "SUCCESS\n\n";
-    }
-
-}
-*/
 static uint32_t get32bformat(std::string format) {
 
     const std::map<std::string, uint32_t> lut = {
