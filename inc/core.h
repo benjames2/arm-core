@@ -88,3 +88,6 @@ public:
 };
 
 void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os);
+
+//Operator Overload to print the cpu state
+std::ostream& operator<<(std::ostream& os, const armv7_m3& cpu);

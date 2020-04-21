@@ -1,4 +1,5 @@
 #include <inc/core.h>
+#include <sstream>
 
 armv7_m3::armv7_m3(void) {
     // initialize all registers to zero. the PC will 
@@ -95,4 +96,44 @@ void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os) {
 
 
 
+}
+
+std::ostream& operator<<(std::ostream& os, const armv7_m3& cpu){
+
+    auto padhexnumber = [](unsigned int number) {
+        
+        std::stringstream ss;
+        ss << std::hex << number;
+        
+        auto s = ss.str();
+
+        while (s.size() < 8)
+            s = "0" + s;
+
+        return s;
+    };
+
+    os << "\n  cpu state\n";
+
+    for(int i = 0; i < cpu.reg.size(); i++){
+
+        os << "R" << i;
+        if(i < 10)
+            os << "  :   Ox" << padhexnumber(cpu.reg[i].i32) << "\n";
+        else
+            os << " :   Ox" << padhexnumber(cpu.reg[i].i32) << "\n";
+    }
+
+    os << "\n";
+
+    os << "xPSR:   0x" << padhexnumber(cpu.CPSR) << "\n";
+    os << "    N   " << ((cpu.CPSR & (1 << 31)) ? "1" : "0") << "\n";
+    os << "    Z   " << ((cpu.CPSR & (1 << 30)) ? "1" : "0") << "\n";
+    os << "    C   " << ((cpu.CPSR & (1 << 29)) ? "1" : "0") << "\n";
+    os << "    V   " << ((cpu.CPSR & (1 << 28)) ? "1" : "0") << "\n";
+    os << "    Q   " << ((cpu.CPSR & (1 << 27)) ? "1" : "0") << "\n";
+
+    os << "\n";
+
+    return os;
 }

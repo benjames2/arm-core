@@ -22,9 +22,6 @@ static_assert(offsetof(results_t, i32) == 4,   "alignment of .i32 in results_t i
 
 int main(int argc, char* argv[]) {
 
-    armv7_m3 armcpu;
-    armcpu.PC() = 0x0224;
-
     test_decode_fns("test/testfile.branch.txt");
     test_decode_fns("test/testfile.bottom.txt");
     test_decode_fns("test/testfile.txt");
@@ -39,9 +36,10 @@ int main(int argc, char* argv[]) {
     }
 
     // starting address for machine code
-
     armv7_m3 cpu;
     cpu.PC() = 0x00000224;
+
+    std::cout << cpu;
 
     for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
         
@@ -76,19 +74,22 @@ int main(int argc, char* argv[]) {
     cout << "  disassembly complete";
     cout << "\n==========================================\n\n";
 
+ ///*   
     for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
         
         auto inst_data   = fetch(mem, addr);
         auto decode_data = decode(inst_data, addr);
         auto newcpu      = execute(cpu, mem, decode_data);
 
-        cpu = newcpu;
-        addr = newcpu.PC();
-
-        // compare new cpu with old cpu
-
+        addr +=2;
+        if(inst_data.t32)
+            addr+=2;
     }
 
+    cout << "\n\n==========================================\n";
+    cout << "  execute complete";
+    cout << "\n==========================================\n\n";
+//*/
     return 0;
 }
 
