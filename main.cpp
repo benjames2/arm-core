@@ -36,10 +36,10 @@ int main(int argc, char* argv[]) {
         cout << mem << std::endl;
     }
 
-    // starting address for machine code
+    // loading nvic file to get starting address for machine code
     armv7_m3 cpu;
-    cpu.PC() = 0x00000224;
-    cpu.CPSR = 0x41000000;
+    load_nvic_file("test/input/nvic.txt", cpu);
+
 
     for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
 

@@ -94,7 +94,7 @@
 
 static uint32_t get32bformat(std::string format);
 
-void load_memory_file(std::string filename, memory_t& mempool) {
+void load_memory_file(const std::string filename, memory_t& mempool) {
 
     std::cout << "Loading '" << filename << "'..." << std::flush;
 
@@ -128,6 +128,32 @@ void load_memory_file(std::string filename, memory_t& mempool) {
     }
 
     std::cout << "DONE\n" << std::flush;
+}
+
+void load_nvic_file(const std::string filename, armv7_m3& cpu){
+
+    std::cout << "Loading '" << filename << "'..." << std::flush;
+
+    std::ifstream file(filename);
+    std::string line;
+
+    while(std::getline(file, line)){
+
+        std::stringstream ss(line);
+        uint32_t reg_num;
+        uint32_t reg_data;
+
+        ss >> std::hex >> reg_num;
+        ss >> std::hex >> reg_data;
+        if(reg_num >= 0 && reg_num < 16)
+            cpu.reg[reg_num].u32 = reg_data;
+        else if(reg_num == 16)
+            cpu.CPSR = reg_data;
+        else
+            throw std::runtime_error("armv7_m3::get_register : invalid register access. valid accesses are r(0-15)");
+    }
+
+    std::cout << "  DONE" << std::flush;
 }
 
 static uint32_t getFormat(int format) {
