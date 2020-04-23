@@ -13,7 +13,8 @@ CPPOBJ= \
  ${OBJ}/memory_pool.o \
  ${OBJ}/fetch.o \
  ${OBJ}/decode.o \
- ${OBJ}/execute.o
+ ${OBJ}/execute.o \
+ ${OBJ}/import.o
 
 # defined in x86_64 Assembly
 ASMOBJ= ${OBJ}/byte_swap.o

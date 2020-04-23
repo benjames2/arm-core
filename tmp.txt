@@ -1,0 +1,794 @@
+
+=======================================================================
+ test/testfile.branch.txt
+=======================================================================
+
+Expected : Beq #254
+Decoded  : Beq #254
+SUCCESS
+
+Expected : Bne #-256
+Decoded  : Bne #-256
+SUCCESS
+
+Expected : Bcs #254
+Decoded  : Bcs #254
+SUCCESS
+
+Expected : Bcc #0
+Decoded  : Bcc #0
+SUCCESS
+
+Expected : Bmi #2
+Decoded  : Bmi #2
+SUCCESS
+
+Expected : Bpl #-2
+Decoded  : Bpl #-2
+SUCCESS
+
+Expected : Bvs #-128
+Decoded  : Bvs #-128
+SUCCESS
+
+Expected : Bvc #128
+Decoded  : Bvc #128
+SUCCESS
+
+Expected : Bhi #-6
+Decoded  : Bhi #-6
+SUCCESS
+
+Expected : Bls #64
+Decoded  : Bls #64
+SUCCESS
+
+Expected : Bge #-64
+Decoded  : Bge #-64
+SUCCESS
+
+Expected : Blt #32
+Decoded  : Blt #32
+SUCCESS
+
+Expected : Bgt #34
+Decoded  : Bgt #34
+SUCCESS
+
+Expected : Ble #36
+Decoded  : Ble #36
+SUCCESS
+
+
+=======================================================================
+ test/testfile.bottom.txt
+=======================================================================
+
+Expected : TST r4, r7
+Decoded  : TST r4, r7
+SUCCESS
+
+Expected : SUB r3, r7, r6
+Decoded  : SUB r3, r7, r6
+SUCCESS
+
+Expected : SUB r1, r3, #5
+Decoded  : SUB r1, r3, #5
+SUCCESS
+
+Expected : SUB r7, #255
+Decoded  : SUB r7, #255
+SUCCESS
+
+Expected : SWI #200
+Decoded  : SWI #200
+SUCCESS
+
+Expected : STRH r7, [r6, r5]
+Decoded  : STRH r7, [r6, r5]
+SUCCESS
+
+Expected : STRH r4, [r0, #60]
+Decoded  : STRH r4, [r0, #60]
+SUCCESS
+
+Expected : STRB r2, [r7, r1]
+Decoded  : STRB r2, [r7, r1]
+SUCCESS
+
+Expected : STRB r7, [r6, #28]
+Decoded  : STRB r7, [r6, #28]
+SUCCESS
+
+Expected : STR r3, [r2, r1]
+Decoded  : STR r3, [r2, r1]
+SUCCESS
+
+Expected : STR r7, [r6, #28]
+Decoded  : STR r7, [r6, #28]
+SUCCESS
+
+Expected : STR r0, [SP, #250]
+Decoded  : STR r0, [SP, #250]
+SUCCESS
+
+Expected : STMIA r0!, { r0 r1 r2 r3 r4 r5 }
+Decoded  : STMIA r0!, { r0 r1 r2 r3 r4 r5 }
+SUCCESS
+
+Expected : SBC r3, r4
+Decoded  : SBC r3, r4
+SUCCESS
+
+Expected : ROR r3, r4
+Decoded  : ROR r3, r4
+SUCCESS
+
+Expected : ORR r7, r4
+Decoded  : ORR r7, r4
+SUCCESS
+
+Expected : NEG r3, r4
+Decoded  : NEG r3, r4
+SUCCESS
+
+Expected : MVN r3, r4
+Decoded  : MVN r3, r4
+SUCCESS
+
+Expected : MUL r3, r4
+Decoded  : MUL r3, r4
+SUCCESS
+
+Expected : MOV r6, #19
+Decoded  : MOV r6, #19
+SUCCESS
+
+Expected : MOV r4, r11
+Decoded  : MOV r4, r11
+SUCCESS
+
+Expected : MOV r12, r3
+Decoded  : MOV r12, r3
+SUCCESS
+
+Expected : MOV r12, r11
+Decoded  : MOV r12, r11
+SUCCESS
+
+Expected : LSR r1, r7, #28
+Decoded  : LSR r1, r7, #28
+SUCCESS
+
+Expected : LSR r2, r5
+Decoded  : LSR r2, r5
+SUCCESS
+
+Expected : LDSH r4, [r5, r6]
+Decoded  : LDSH r4, [r5, r6]
+SUCCESS
+
+Expected : LDSB r3, [r2, r1]
+Decoded  : LDSB r3, [r2, r1]
+SUCCESS
+
+Expected : LSL r1, r7, #28
+Decoded  : LSL r1, r7, #28
+SUCCESS
+
+Expected : LSL r2, r5
+Decoded  : LSL r2, r5
+SUCCESS
+
+Expected : LDRH r3, [r2, r1]
+Decoded  : LDRH r3, [r2, r1]
+SUCCESS
+
+Expected : LDRH r2, [r4, #34]
+Decoded  : LDRH r2, [r4, #34]
+SUCCESS
+
+Expected : LDRB r2, [r7, r1]
+Decoded  : LDRB r2, [r7, r1]
+SUCCESS
+
+Expected : LDRB r7, [r6, #28]
+Decoded  : LDRB r7, [r6, #28]
+SUCCESS
+
+
+=======================================================================
+ test/testfile.txt
+=======================================================================
+
+Expected : ADC r1, r3
+Decoded  : ADC r1, r3
+SUCCESS
+
+Expected : ADD r5, r2, r0
+Decoded  : ADD r5, r2, r0
+SUCCESS
+
+Expected : ADD r5, r2, #4
+Decoded  : ADD r5, r2, #4
+SUCCESS
+
+Expected : ADD r7, #255
+Decoded  : ADD r7, #255
+SUCCESS
+
+Expected : ADD r8, r5
+Decoded  : ADD r8, r5
+SUCCESS
+
+Expected : ADD r3, r13
+Decoded  : ADD r3, r13
+SUCCESS
+
+Expected : ADD r9, r12
+Decoded  : ADD r9, r12
+SUCCESS
+
+Expected : ADD r5, PC, #45
+Decoded  : ADD r5, PC, #45
+SUCCESS
+
+Expected : ADD r7, SP, #128
+Decoded  : ADD r7, SP, #128
+SUCCESS
+
+Expected : ADD SP, #508
+Decoded  : ADD SP, #508
+SUCCESS
+
+Expected : ADD SP, #-508
+Decoded  : ADD SP, #-508
+SUCCESS
+
+Expected : AND r0, r3
+Decoded  : AND r0, r3
+SUCCESS
+
+Expected : ASR r4, r4, #28
+Decoded  : ASR r4, r4, #28
+SUCCESS
+
+Expected : ASR r1, r2
+Decoded  : ASR r1, r2
+SUCCESS
+
+Expected : B #2046
+Decoded  : B #2046
+SUCCESS
+
+Expected : B #-2048
+Decoded  : B #-2048
+SUCCESS
+
+Expected : BIC r4, r5
+Decoded  : BIC r4, r5
+SUCCESS
+
+Expected : BL (H=0)
+Decoded  : BL (H=0)
+SUCCESS
+
+Expected : BL #0
+Decoded  : BL #0
+SUCCESS
+
+Expected : BL (H=0)
+Decoded  : BL (H=0)
+SUCCESS
+
+Expected : BL #-2
+Decoded  : BL #-2
+SUCCESS
+
+Expected : BL (H=0)
+Decoded  : BL (H=0)
+SUCCESS
+
+Expected : BL #4194302
+Decoded  : BL #4194302
+SUCCESS
+
+Expected : BL (H=0)
+Decoded  : BL (H=0)
+SUCCESS
+
+Expected : BL #-4194304
+Decoded  : BL #-4194304
+SUCCESS
+
+Expected : BX r4
+Decoded  : BX r4
+SUCCESS
+
+Expected : BX r11
+Decoded  : BX r11
+SUCCESS
+
+Expected : CMN r5, r2
+Decoded  : CMN r5, r2
+SUCCESS
+
+Expected : CMP r0, #251
+Decoded  : CMP r0, #251
+SUCCESS
+
+Expected : CMP r2, r4
+Decoded  : CMP r2, r4
+SUCCESS
+
+Expected : CMP r8, r5
+Decoded  : CMP r8, r5
+SUCCESS
+
+Expected : CMP r3, r13
+Decoded  : CMP r3, r13
+SUCCESS
+
+Expected : CMP r9, r12
+Decoded  : CMP r9, r12
+SUCCESS
+
+Expected : EOR r3, r5
+Decoded  : EOR r3, r5
+SUCCESS
+
+Expected : LDMIA r5!, { }
+Decoded  : LDMIA r5!, { }
+SUCCESS
+
+Expected : LDMIA r3!, { r0 r1 r2 r3 r4 r5 r6 r7 }
+Decoded  : LDMIA r3!, { r0 r1 r2 r3 r4 r5 r6 r7 }
+SUCCESS
+
+Expected : LDMIA r7!, { r0 r7 }
+Decoded  : LDMIA r7!, { r0 r7 }
+SUCCESS
+
+Expected : LDR r3, [PC, #0]
+Decoded  : LDR r3, [PC, #0]
+SUCCESS
+
+Expected : LDR r5, [PC, #12]
+Decoded  : LDR r5, [PC, #12]
+SUCCESS
+
+Expected : LDR r2, [PC, #1020]
+Decoded  : LDR r2, [PC, #1020]
+SUCCESS
+
+Expected : LDR r7, [r6, r5]
+Decoded  : LDR r7, [r6, r5]
+SUCCESS
+
+Expected : LDR r3, [r0, #60]
+Decoded  : LDR r3, [r0, #60]
+SUCCESS
+
+Expected : LDR r7, [r1, #124]
+Decoded  : LDR r7, [r1, #124]
+SUCCESS
+
+Expected : LDRB r3, [r7, r1]
+Decoded  : LDRB r3, [r7, r1]
+SUCCESS
+
+Expected : LDRB r1, [r5, #0]
+Decoded  : LDRB r1, [r5, #0]
+SUCCESS
+
+Expected : LDRB r1, [r5, #31]
+Decoded  : LDRB r1, [r5, #31]
+SUCCESS
+
+Expected : LDRH r2, [r3, r7]
+Decoded  : LDRH r2, [r3, r7]
+SUCCESS
+
+Expected : LDRH r3, [r4, #0]
+Decoded  : LDRH r3, [r4, #0]
+SUCCESS
+
+Expected : LDRH r5, [r1, #62]
+Decoded  : LDRH r5, [r1, #62]
+SUCCESS
+
+Expected : LSL r0, r5, #0
+Decoded  : LSL r0, r5, #0
+SUCCESS
+
+Expected : LSL r1, r6, #31
+Decoded  : LSL r1, r6, #31
+SUCCESS
+
+Expected : LSL r2, r3
+Decoded  : LSL r2, r3
+SUCCESS
+
+Expected : LDSB r7, [r6, r5]
+Decoded  : LDSB r7, [r6, r5]
+SUCCESS
+
+
+=======================================================================
+ test/testfile32b.txt
+=======================================================================
+
+Instruction passed: 11110001010011010000111011001000
+Expected: ADC r14, r13, #200
+Decoded:  ADC r14, r13, #200
+SUCCESS
+
+Instruction passed: 11110001010111010000111011111010
+Expected: ADCs r14, r13, #250
+Decoded:  ADCs r14, r13, #250
+SUCCESS
+
+Instruction passed: 11110001000011010000111011111111
+Expected: ADD r14, r13, #255
+Decoded:  ADD r14, r13, #255
+SUCCESS
+
+Instruction passed: 11110001000111010000111011001000
+Expected: ADDs r14, r13, #200
+Decoded:  ADDs r14, r13, #200
+SUCCESS
+
+Instruction passed: 11110000000011110000101011111111
+Expected: AND r10, r15, #255
+Decoded:  AND r10, r15, #255
+SUCCESS
+
+Instruction passed: 11110000000111010000111011001000
+Expected: ANDs r14, r13, #200
+Decoded:  ANDs r14, r13, #200
+SUCCESS
+
+Instruction passed: 11110000001000000000000000000000
+Expected: BIC r0, r0, #0
+Decoded:  BIC r0, r0, #0
+SUCCESS
+
+Instruction passed: 11110000001100000000000000000000
+Expected: BICs r0, r0, #0
+Decoded:  BICs r0, r0, #0
+SUCCESS
+
+Instruction passed: 11110000001100100000110001100010
+Expected: BICs r12, r2, #98
+Decoded:  BICs r12, r2, #98
+SUCCESS
+
+Instruction passed: 11110001000100000000111100000000
+Expected: CMN r0, #0
+Decoded:  CMN r0, #0
+SUCCESS
+
+Instruction passed: 11110001000110110000111101100010
+Expected: CMN r11, #98
+Decoded:  CMN r11, #98
+SUCCESS
+
+Instruction passed: 11110001101100000000111100000000
+Expected: CMP r0, #0
+Decoded:  CMP r0, #0
+SUCCESS
+
+Instruction passed: 11110001101110110000111101100010
+Expected: CMP r11, #98
+Decoded:  CMP r11, #98
+SUCCESS
+
+Instruction passed: 11110000100000000000000000000000
+Expected: EOR r0, r0, #0
+Decoded:  EOR r0, r0, #0
+SUCCESS
+
+Instruction passed: 11110000100100000000000000000000
+Expected: EORs r0, r0, #0
+Decoded:  EORs r0, r0, #0
+SUCCESS
+
+Instruction passed: 11110000100100100000110001100010
+Expected: EORs r12, r2, #98
+Decoded:  EORs r12, r2, #98
+SUCCESS
+
+Instruction passed: 11111000110100000000000000000000
+Expected: LDR r0, r0, #0
+Decoded:  LDR r0, r0, #0
+SUCCESS
+
+Instruction passed: 11111000110100100001111111111111
+Expected: LDR r1, r2, #4095
+Decoded:  LDR r1, r2, #4095
+SUCCESS
+
+Instruction passed: 11111000010100000000110000000000
+Expected: LDRp r0, r0, #0
+Decoded:  LDRp r0, r0, #0
+SUCCESS
+
+Instruction passed: 11111000010100100001111111111111
+Expected: LDRpuw r1, r2, #255
+Decoded:  LDRpuw r1, r2, #255
+SUCCESS
+
+Instruction passed: 11111000010100000000100100000000
+Expected: LDRw r0, r0, #0
+Decoded:  LDRw r0, r0, #0
+SUCCESS
+
+Instruction passed: 11111000010100000000000000000000
+Expected: LDR r0, r0, r0, #0
+Decoded:  LDR r0, r0, r0, #0
+SUCCESS
+
+Instruction passed: 11101000011100000000000000000000
+Expected: LDRD_IMM r0, r0, r0, #0
+Decoded:  LDRD_IMM r0, r0, r0, #0
+SUCCESS
+
+Instruction passed: 11101000111100000000000000000100
+Expected: LDRD_IMM r0, r0, r0, #16
+Decoded:  LDRD_IMM r0, r0, r0, #16
+SUCCESS
+
+Instruction passed: 11101000111101010101010100000100
+Expected: LDRD_IMM r5, r5, r5, #16
+Decoded:  LDRD_IMM r5, r5, r5, #16
+SUCCESS
+
+Instruction passed: 11101001010111110000000000000000
+Expected: LDRD_LIT r0, r0, #0
+Decoded:  LDRD_LIT r0, r0, #0
+SUCCESS
+
+Instruction passed: 11101001111111110000111100000000
+Expected: LDRD_LIT r0, r15, #0
+Decoded:  LDRD_LIT r0, r15, #0
+SUCCESS
+
+Instruction passed: 11101001011111110000000000000010
+Expected: LDRD_LIT r0, r0, #8
+Decoded:  LDRD_LIT r0, r0, #8
+SUCCESS
+
+Instruction passed: 11101001110111111001000000000000
+Expected: LDRD_LIT r9, r0, #0
+Decoded:  LDRD_LIT r9, r0, #0
+SUCCESS
+
+Instruction passed: 11110000010011110000000000000000
+Expected: MOV r0, #0
+Decoded:  MOV r0, #0
+SUCCESS
+
+Instruction passed: 11110000010111110000000000000000
+Expected: MOVs r0, #0
+Decoded:  MOVs r0, #0
+SUCCESS
+
+Instruction passed: 11110000010111110001111100000010
+Expected: MOVs r15, #131074
+Decoded:  MOVs r15, #131074
+SUCCESS
+
+Instruction passed: 11110000010000000000000000000000
+Expected: ORR r0, r0, #0
+Decoded:  ORR r0, r0, #0
+SUCCESS
+
+Instruction passed: 11110000010100000000000000000000
+Expected: ORRs r0, r0, #0
+Decoded:  ORRs r0, r0, #0
+SUCCESS
+
+INSTRUCTION TESTS PASSED
+
+Loading 'test/input/assembly-code.txt'...DONE
+0x00000220 :  00 00 00 00 2C 48 00 6A 40 F0 70 40 2A 49 08 62
+0x00000230 :  08 46 40 6B 20 F0 70 40 48 63 4B E0 00 20 27 49
+0x00000240 :  08 60 04 E0 25 48 00 68 40 1C 24 49 08 60 23 48
+0x00000250 :  00 68 23 49 09 68 88 42 F4 D3 4F F0 80 50 1E 49
+0x00000260 :  48 63 00 20 1D 49 08 60 04 E0 1C 48 00 68 40 1C
+0x00000270 :  1A 49 08 60 19 48 00 68 19 49 09 68 88 42 F4 D3
+0x00000280 :  4F F0 00 50 14 49 48 63 00 20 14 49 08 60 04 E0
+0x00000290 :  12 48 00 68 40 1C 11 49 08 60 10 48 00 68 10 49
+0x000002A0 :  09 68 88 42 F4 D3 4F F0 80 40 0B 49 48 63 00 20
+0x000002B0 :  0A 49 08 60 04 E0 09 48 00 68 40 1C 07 49 08 60
+0x000002C0 :  06 48 00 68 06 49 09 68 88 42 F4 D3 4F F0 00 40
+0x000002D0 :  01 49 48 63 B2 E7 00 00 00 00 00 00 00 00 00 00
+
+Loading 'test/input/memory.txt'...DONE
+0x00000220 :  00 00 00 00 2C 48 00 6A 40 F0 70 40 2A 49 08 62
+0x00000230 :  08 46 40 6B 20 F0 70 40 48 63 4B E0 00 20 27 49
+0x00000240 :  08 60 04 E0 25 48 00 68 40 1C 24 49 08 60 23 48
+0x00000250 :  00 68 23 49 09 68 88 42 F4 D3 4F F0 80 50 1E 49
+0x00000260 :  48 63 00 20 1D 49 08 60 04 E0 1C 48 00 68 40 1C
+0x00000270 :  1A 49 08 60 19 48 00 68 19 49 09 68 88 42 F4 D3
+0x00000280 :  4F F0 00 50 14 49 48 63 00 20 14 49 08 60 04 E0
+0x00000290 :  12 48 00 68 40 1C 11 49 08 60 10 48 00 68 10 49
+0x000002A0 :  09 68 88 42 F4 D3 4F F0 80 40 0B 49 48 63 00 20
+0x000002B0 :  0A 49 08 60 04 E0 09 48 00 68 40 1C 07 49 08 60
+0x000002C0 :  06 48 00 68 06 49 09 68 88 42 F4 D3 4F F0 00 40
+0x000002D0 :  01 49 48 63 B2 E7 00 00 00 C0 09 20 00 00 00 10
+0x000002E0 :  04 00 00 10 00 00 00 00 00 00 00 00 00 00 00 00
+0x000002F0 :  00 00 00 00 00 00 00 00 00 00 00 00 FF FF FF FF
+0x10000000 :  00 00 00 00 64 00 00 00 00 00 00 00 00 00 00 00
+
+[0x00000224 16-bit] LDR r0, [PC, #176]
+[0x00000226 16-bit] LDR r0, [r0, #32]
+[0x00000228 32-bit] ORR r0, r0, #-268435456
+[0x0000022c 16-bit] LDR r1, [PC, #168]
+[0x0000022e 16-bit] STR r0, [r1, #32]
+[0x00000230 16-bit] MOV r0, r1
+[0x00000232 16-bit] LDR r0, [r0, #52]
+[0x00000234 32-bit] BIC r0, r0, #-268435456
+[0x00000238 16-bit] STR r0, [r1, #52]
+[0x0000023a 16-bit] B #150
+[0x0000023c 16-bit] MOV r0, #0
+[0x0000023e 16-bit] LDR r1, [PC, #156]
+[0x00000240 16-bit] STR r0, [r1, #0]
+[0x00000242 16-bit] B #8
+[0x00000244 16-bit] LDR r0, [PC, #148]
+[0x00000246 16-bit] LDR r0, [r0, #0]
+[0x00000248 16-bit] ADD r0, r0, #1
+[0x0000024a 16-bit] LDR r1, [PC, #144]
+[0x0000024c 16-bit] STR r0, [r1, #0]
+[0x0000024e 16-bit] LDR r0, [PC, #140]
+[0x00000250 16-bit] LDR r0, [r0, #0]
+[0x00000252 16-bit] LDR r1, [PC, #140]
+[0x00000254 16-bit] LDR r1, [r1, #0]
+[0x00000256 16-bit] CMP r0, r1
+[0x00000258 16-bit] Bcc #-24
+[0x0000025a 32-bit] MOV r0, #268435456
+[0x0000025e 16-bit] LDR r1, [PC, #120]
+[0x00000260 16-bit] STR r0, [r1, #52]
+[0x00000262 16-bit] MOV r0, #0
+[0x00000264 16-bit] LDR r1, [PC, #116]
+[0x00000266 16-bit] STR r0, [r1, #0]
+[0x00000268 16-bit] B #8
+[0x0000026a 16-bit] LDR r0, [PC, #112]
+[0x0000026c 16-bit] LDR r0, [r0, #0]
+[0x0000026e 16-bit] ADD r0, r0, #1
+[0x00000270 16-bit] LDR r1, [PC, #104]
+[0x00000272 16-bit] STR r0, [r1, #0]
+[0x00000274 16-bit] LDR r0, [PC, #100]
+[0x00000276 16-bit] LDR r0, [r0, #0]
+[0x00000278 16-bit] LDR r1, [PC, #100]
+[0x0000027a 16-bit] LDR r1, [r1, #0]
+[0x0000027c 16-bit] CMP r0, r1
+[0x0000027e 16-bit] Bcc #-24
+[0x00000280 32-bit] MOV r0, #536870912
+[0x00000284 16-bit] LDR r1, [PC, #80]
+[0x00000286 16-bit] STR r0, [r1, #52]
+[0x00000288 16-bit] MOV r0, #0
+[0x0000028a 16-bit] LDR r1, [PC, #80]
+[0x0000028c 16-bit] STR r0, [r1, #0]
+[0x0000028e 16-bit] B #8
+[0x00000290 16-bit] LDR r0, [PC, #72]
+[0x00000292 16-bit] LDR r0, [r0, #0]
+[0x00000294 16-bit] ADD r0, r0, #1
+[0x00000296 16-bit] LDR r1, [PC, #68]
+[0x00000298 16-bit] STR r0, [r1, #0]
+[0x0000029a 16-bit] LDR r0, [PC, #64]
+[0x0000029c 16-bit] LDR r0, [r0, #0]
+[0x0000029e 16-bit] LDR r1, [PC, #64]
+[0x000002a0 16-bit] LDR r1, [r1, #0]
+[0x000002a2 16-bit] CMP r0, r1
+[0x000002a4 16-bit] Bcc #-24
+[0x000002a6 32-bit] MOV r0, #1073741824
+[0x000002aa 16-bit] LDR r1, [PC, #44]
+[0x000002ac 16-bit] STR r0, [r1, #52]
+[0x000002ae 16-bit] MOV r0, #0
+[0x000002b0 16-bit] LDR r1, [PC, #40]
+[0x000002b2 16-bit] STR r0, [r1, #0]
+[0x000002b4 16-bit] B #8
+[0x000002b6 16-bit] LDR r0, [PC, #36]
+[0x000002b8 16-bit] LDR r0, [r0, #0]
+[0x000002ba 16-bit] ADD r0, r0, #1
+[0x000002bc 16-bit] LDR r1, [PC, #28]
+[0x000002be 16-bit] STR r0, [r1, #0]
+[0x000002c0 16-bit] LDR r0, [PC, #24]
+[0x000002c2 16-bit] LDR r0, [r0, #0]
+[0x000002c4 16-bit] LDR r1, [PC, #24]
+[0x000002c6 16-bit] LDR r1, [r1, #0]
+[0x000002c8 16-bit] CMP r0, r1
+[0x000002ca 16-bit] Bcc #-24
+[0x000002cc 32-bit] MOV r0, #-2147483648
+[0x000002d0 16-bit] LDR r1, [PC, #4]
+[0x000002d2 16-bit] STR r0, [r1, #52]
+[0x000002d4 16-bit] B #-156
+
+==========================================
+  disassembly complete
+==========================================
+
+[0x00000224 16-bit] 
+[0x00000226 16-bit] 
+[0x00000228 32-bit] 
+[0x0000022c 16-bit] 
+[0x0000022e 16-bit] 
+[0x00000230 16-bit] 
+[0x00000232 16-bit] 
+[0x00000234 32-bit] 
+[0x00000238 16-bit] 
+[0x0000023a 16-bit] 
+[0x0000023c 16-bit] 
+[0x0000023e 16-bit] 
+[0x00000240 16-bit] 
+[0x00000242 16-bit] 
+[0x00000244 16-bit] 
+[0x00000246 16-bit] 
+[0x00000248 16-bit] 
+[0x0000024a 16-bit] 
+[0x0000024c 16-bit] 
+[0x0000024e 16-bit] 
+[0x00000250 16-bit] 
+[0x00000252 16-bit] 
+[0x00000254 16-bit] 
+[0x00000256 16-bit] 
+[0x00000258 16-bit] 
+[0x0000025a 32-bit] 
+[0x0000025e 16-bit] 
+[0x00000260 16-bit] 
+[0x00000262 16-bit] 
+[0x00000264 16-bit] 
+[0x00000266 16-bit] 
+[0x00000268 16-bit] 
+[0x0000026a 16-bit] 
+[0x0000026c 16-bit] 
+[0x0000026e 16-bit] 
+[0x00000270 16-bit] 
+[0x00000272 16-bit] 
+[0x00000274 16-bit] 
+[0x00000276 16-bit] 
+[0x00000278 16-bit] 
+[0x0000027a 16-bit] 
+[0x0000027c 16-bit] 
+[0x0000027e 16-bit] 
+[0x00000280 32-bit] 
+[0x00000284 16-bit] 
+[0x00000286 16-bit] 
+[0x00000288 16-bit] 
+[0x0000028a 16-bit] 
+[0x0000028c 16-bit] 
+[0x0000028e 16-bit] 
+[0x00000290 16-bit] 
+[0x00000292 16-bit] 
+[0x00000294 16-bit] 
+[0x00000296 16-bit] 
+[0x00000298 16-bit] 
+[0x0000029a 16-bit] 
+[0x0000029c 16-bit] 
+[0x0000029e 16-bit] 
+[0x000002a0 16-bit] 
+[0x000002a2 16-bit] 
+[0x000002a4 16-bit] 
+[0x000002a6 32-bit] 
+[0x000002aa 16-bit] 
+[0x000002ac 16-bit] 
+[0x000002ae 16-bit] 
+[0x000002b0 16-bit] 
+[0x000002b2 16-bit] 
+[0x000002b4 16-bit] 
+[0x000002b6 16-bit] 
+[0x000002b8 16-bit] 
+[0x000002ba 16-bit] 
+[0x000002bc 16-bit] 
+[0x000002be 16-bit] 
+[0x000002c0 16-bit] 
+[0x000002c2 16-bit] 
+[0x000002c4 16-bit] 
+[0x000002c6 16-bit] 
+[0x000002c8 16-bit] 
+[0x000002ca 16-bit] 
+[0x000002cc 32-bit] 
+[0x000002d0 16-bit] 
+[0x000002d2 16-bit] 
+[0x000002d4 16-bit] 

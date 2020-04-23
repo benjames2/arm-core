@@ -91,6 +91,10 @@ bool armv7_m3::get_CPSR_I(void) { return ((this->CPSR >> 7) & 0x01); }
 bool armv7_m3::get_CPSR_F(void) { return ((this->CPSR >> 6) & 0x01); }
 bool armv7_m3::get_CPSR_T(void) { return ((this->CPSR >> 5) & 0x01); }
 
+// these two do exactly the same thing
+void armv7_m3::set_CPSR(uint32_t cpsr) { this->CPSR = cpsr; }
+void armv7_m3::set_APSR(uint32_t apsr) { this->APSR = apsr; }
+
 void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os) {
 
 

@@ -60,6 +60,8 @@ public:
     void set_APSR_Q(bool b); // set saturate flag
 
     uint32_t get_CPSR(void);
+    void set_CPSR(uint32_t cpsr);
+    void set_APSR(uint32_t apsr);
 
     // ALU flags are exactly the same as for the APSR
     bool get_CPSR_N(void); // get Negative flag

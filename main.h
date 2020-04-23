@@ -86,13 +86,34 @@
 #include <string>
 #include <map>
 #include <assert.h>
+#include <inc/core.h>
 #include <inc/decode_structure.h>
 #include <inc/decode_16.h>
 #include <inc/decode_32.h>
 #include <inc/memory_pool.h>
 
-
 static uint32_t get32bformat(std::string format);
+
+void load_nvic(std::string filename, armv7_m3& cpu) {
+
+    std::ifstream is(filename);
+    is >> std::hex;
+
+    int regnum;
+    while(is >> regnum) {
+        uint32_t v;
+        is >> v;
+
+        if(regnum <= 15 && regnum >= 0)
+            cpu.set_register_u32(regnum, v);
+        else if(regnum == 16)
+            cpu.set_APSR(v);
+        else
+            throw std::runtime_error(
+                "load_nvic : invalid register reference 'r" + 
+                std::to_string(regnum) + "'");
+    }
+}
 
 void load_memory_file(std::string filename, memory_t& mempool) {
 
