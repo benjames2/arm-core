@@ -117,11 +117,11 @@ std::ostream& operator<<(std::ostream& os, const armv7_m3& cpu){
 
     for(int i = 0; i < cpu.reg.size(); i++){
 
-        os << "R" << i;
+        os << "R" << std::dec << i;
         if(i < 10)
-            os << "  :   Ox" << padhexnumber(cpu.reg[i].i32) << "\n";
+            os << std::hex << "  :   Ox" << padhexnumber(cpu.reg[i].i32) << "\n";
         else
-            os << " :   Ox" << padhexnumber(cpu.reg[i].i32) << "\n";
+            os << std::hex << " :   Ox" << padhexnumber(cpu.reg[i].i32) << "\n";
     }
 
     os << "xPSR:   0x" << padhexnumber(cpu.CPSR) << "\n";
