@@ -31,17 +31,17 @@ int main(int argc, char* argv[]) {
 
     memory_t mem(memory_t::little_endian);
 
-    for(auto cptr : { "test/input/assembly-code.txt", "test/input/memory.txt" }) {
+    for(auto cptr : { "test/input_rit/assembly-code.txt", "test/input_rit/memory.txt" }) {
         load_memory_file(cptr, mem);
         cout << mem << std::endl;
     }
 
     // loading nvic file to get starting address for machine code
     armv7_m3 cpu;
-    load_nvic_file("test/input/nvic.txt", cpu);
+    load_nvic_file("test/input_rit/nvic.txt", cpu);
 
 
-    for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
+    for(address_t addr = 0x00000220; addr <= 0x000002c6;) {
 
         auto inst_data   = fetch(mem, addr, true);
         
@@ -75,7 +75,7 @@ int main(int argc, char* argv[]) {
     cout << "\n==========================================\n\n";
 
  ///*   
-    for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
+    for(address_t addr = 0x00000220; addr <= 0x000002c6;) {
         
         auto inst_data   = fetch(mem, addr);
         auto decode_data = decode(inst_data, addr);
