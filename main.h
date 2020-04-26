@@ -153,7 +153,7 @@ void load_nvic_file(const std::string filename, armv7_m3& cpu){
             throw std::runtime_error("armv7_m3::get_register : invalid register access. valid accesses are r(0-15)");
     }
 
-    std::cout << "  DONE" << std::flush;
+    std::cout << "  DONE\n" << std::flush;
 }
 
 static uint32_t getFormat(int format) {

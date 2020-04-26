@@ -71,6 +71,10 @@ instruction_t decode_16bit_instruction(unsigned int PC, unsigned int instruction
                 if(flag == 0x0A)
                     return decode_format_14(PC, instruction_word);
 
+                flag = (instruction_word >> 0) & 0x1FFF;
+                    if(flag == 0x1F00)
+                        return decode_format_0(PC, instruction_word);
+
                 throw std::runtime_error(
                     "decode_instruction (superfamily: " + 
                     std::to_string(superfamily) + ")");
@@ -110,6 +114,15 @@ instruction_t decode_16bit_instruction(unsigned int PC, unsigned int instruction
         default:
             throw std::runtime_error("decode_instruction : unknown internal error");
     }
+}
+
+instruction_t decode_format_0(  unsigned int PC, unsigned int instruction_word){
+
+    instruction_t inst;
+
+    inst.opcode = i_NOP;
+
+    return inst;
 }
 
 instruction_t decode_format_1(  unsigned int PC, unsigned int instruction_word ) {

@@ -94,14 +94,11 @@ bool armv7_m3::get_CPSR_T(void)  { return ((this->CPSR >> 5) & 0x01); }
 
 void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os) {
 
-
-
 }
 
 std::ostream& operator<<(std::ostream& os, const armv7_m3& cpu){
 
     auto padhexnumber = [](unsigned int number) {
-        
         std::stringstream ss;
         ss << std::hex << number;
         

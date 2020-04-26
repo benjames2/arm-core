@@ -56,7 +56,6 @@ int main(int argc, char* argv[]) {
             addr += 2;
         }
         else {
-
             // catch those pesky 32-bit decode errors
             try {
                 auto decoded_inst = decode(inst_data, addr);
