@@ -1,7 +1,7 @@
 #include <inc/decode_structure.h>
 #include <sstream>
 
-#define THROW_INVALID_METACODE(opcode) throw std::runtime_error("opcode(" #opcode ") : invalid meta opcode")
+#define THROW_INVALID_METACODE(opcode) throw std::runtime_error("opcode(" #opcode ") : invalid meta opcode " + std::to_string(in.meta_opcode))
 #define THROW_INVALID_METACODE_32B(opcode) throw std::runtime_error("opcode(" #opcode ") : invalid meta opcode for 32-bit instruction")
 #define THROW_INVALID_ENCODING(instruction) throw std::runtime_error("Invalid encoding for : " #instruction " instruction")
 #define THROW_UNDEFINED(instruction) throw std::runtime_error ("Operator overload undefined for " #instruction)
@@ -90,7 +90,7 @@ std::ostream& operator<<(std::ostream& os, const instruction_16b_t& in) {
                 case 12: os << "Bgt "; break;
                 case 13: os << "Ble "; break;
                 default:
-                    throw std::runtime_error("opcode(Bxx) : invalid condition code");
+                    throw std::runtime_error("opcode(Bxx) : invalid condition code: " + std::to_string(in.condition_code));
             }
             os << "#" << in.i_immediate;
             break;
@@ -262,12 +262,11 @@ std::ostream& operator<<(std::ostream& os, const instruction_16b_t& in) {
                     os << "r" << i << " ";
             }
 
-            switch(in.i_immediate){
-                case meta_C:                        break; // do nothing for this case
+            switch(in.meta_opcode){
+                case meta_C:                 break; // <-- do nothing for this case
                 case meta_C_pc: os << "PC "; break;
                 default:
                     THROW_INVALID_METACODE(POP);
-                    //throw std::runtime_error("opcode(POP) : invalid meta opcode");
             }
 
             os << "}";
@@ -282,9 +281,9 @@ std::ostream& operator<<(std::ostream& os, const instruction_16b_t& in) {
                     os << "r" << i << " ";
             }
 
-            switch(in.i_immediate){
-                case meta_C:                 break; // do nothing for this case
-                case meta_C_pc: os << "LR "; break;
+            switch(in.meta_opcode){
+                case meta_C:                 break; // <-- do nothing for this case
+                case meta_C_lr: os << "LR "; break;
                 default:
                     THROW_INVALID_METACODE(PUSH);
             }

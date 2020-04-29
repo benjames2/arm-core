@@ -23,5 +23,16 @@ size_t import_bin_file(std::string filename, memory_t& memory, uint32_t address)
         address++;
     }
 
-    return sz;
+    auto iter = buf.end() - 4;
+
+    union {
+        unsigned int isz;
+        char cb[4];
+    };
+
+    for(int i = 0; i < 4; i++) {
+        cb[i] = *(iter + i);
+    }
+
+    return isz;
 }

@@ -105,6 +105,10 @@ instruction_t decode_16bit_instruction(unsigned int PC, unsigned int instruction
                 flag = (instruction_word >> 12) & 0x01;
                 if(flag == 0x01)
                     return decode_format_19(PC, instruction_word);
+
+                throw std::runtime_error(
+                    "decode_instruction (superfamily: " + 
+                    std::to_string(superfamily) + ")");
             }
             break;
         default:
@@ -422,6 +426,9 @@ instruction_t decode_format_11( unsigned int PC, unsigned int instruction_word )
         inst.opcode = i_LDR;
     }
 
+    // need a 10-bit constant from an 8-bit constant
+    inst.u_immediate <<= 2;
+
     return inst;
 }
 
@@ -443,6 +450,9 @@ instruction_t decode_format_12( unsigned int PC, unsigned int instruction_word )
         inst.meta_opcode = meta_RC_sp;
     }
     
+    // need a 10-bit constant from an 8-bit constant
+    inst.u_immediate <<= 2;
+
     return inst;
 }
 

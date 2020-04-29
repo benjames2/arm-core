@@ -48,15 +48,21 @@ int main(int argc, char* argv[]) {
     auto sz = import_bin_file("armasm/fullthumb16/main.bin", mem, 0x00000000);
     cout << mem << endl;
 
-    cout << "size of bin file: " << sz << " bytes\n";
+    cout << "size of instruction stream: " << sz << " bytes\n";
 
     for(size_t addr = 0; addr < sz;) {
         auto inst_data = fetch(mem, addr, true);
-        auto decode_data = decode(inst_data, addr);
-        cout << decode_data << endl;
 
+        try {
+            auto decode_data = decode(inst_data, addr);
+            cout << decode_data << endl;
+        }
+        catch(exception& up) {
+            cout << up.what() << endl;
+        }
+        
         addr += 2;
-        if(decode_data.type == decoded_instruction_t::t32)
+        if(inst_data.type == fetched_instruction_t::t32)
             addr += 2;
     }
 
