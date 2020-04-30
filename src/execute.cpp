@@ -862,16 +862,28 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                 return new_cpu;
             }
-            //else if(inst.meta_opcode == meta_RC_sp) { // (11) Rd = 
+            else if(inst.meta_opcode == meta_RC_sp) { // (11) Rd = word mem[R13 + uimm]
 
-                
+                auto sp = new_cpu.SP();
+                uint32_t uimm = inst.u32;
 
-            //}
+                //operation
+                auto addr = sp + uimm;
+                auto bytes = memory.load_u32(addr);
+                new_cpu.set_register_u32(inst.Rd, bytes);
+
+                // maintain cycle count and advance IP as needed
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                new_cpu.cpu_id++;
+
+                return new_cpu;
+
+            }
             else {
                 // ##6(RC_pc), may need to do some PC bit adjustment on this one 
-                // ##7(RRR), 
-                // ##9(RRC),
-                // 11(RC_sp) 
                 throw std::runtime_error("execute_t16(i_LDR) : meta opcode not implemented");
             }
         case i_LDRB :// load byte
