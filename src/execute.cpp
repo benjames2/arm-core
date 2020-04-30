@@ -688,7 +688,20 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                     throw std::runtime_error("execute_t16(i_BL) : Invalid meta opcode ");
             }
         case i_BX   :// branch and exchange
-            throw std::runtime_error("execute_t16 : opcode not implemented");
+            {
+                auto Rs = new_cpu.get_register(inst.Rs).u32;
+
+                //operation
+                new_cpu.PC() = Rs;
+
+                //Set cycle count
+                new_cpu.cycle_count += 2;
+
+                new_cpu.cpu_id++;
+
+                return new_cpu;
+            }
+            //throw std::runtime_error("execute_t16 : opcode not implemented");
         case i_CMN  :// compare negative
             {
                 results_t result;
