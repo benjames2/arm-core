@@ -13,6 +13,7 @@ static armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& 
 
 armv7_m3 execute(armv7_m3& cpu, memory_t& memory, decoded_instruction_t& inst) {
 
+    cpu.cpu_id++;
     switch(inst.type) {
         case decoded_instruction_t::t16:
             return ::execute_t16(cpu, memory, inst.di_t16);
@@ -129,7 +130,6 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 if(inst.Rd != 15) new_cpu.PC() += 2;
                 else              new_cpu.cycle_count++;
 
-                new_cpu.cpu_id++;
 
                 return new_cpu;
             }
@@ -807,7 +807,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
             }
         case i_LDMIA:// load multiple
             throw std::runtime_error("execute_t16 : opcode not implemented");
-        case i_LDR  :// **IN PROGRESS** load word
+        case i_LDR  :// **DONE** load word
             if(inst.meta_opcode == meta_RC_pc) { // (6) Rd = word mem[PC + uimm]
 
                 uint32_t pc = new_cpu.PC();
@@ -886,7 +886,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 // ##6(RC_pc), may need to do some PC bit adjustment on this one 
                 throw std::runtime_error("execute_t16(i_LDR) : invalid meta opcode ");
             }
-        case i_LDRB :// load byte
+        case i_LDRB :// **DONE** load byte 
             {
                 if(inst.meta_opcode == meta_RRR){
 
@@ -929,7 +929,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 else
                     throw std::runtime_error("execute_t16(i_LDRB) : invalid meta opcode ");
             }
-        case i_LDRH :// load halfword
+        case i_LDRH :// **DONE** load halfword
             {
                 if(inst.meta_opcode == meta_RRR){
 
@@ -972,7 +972,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 else
                     throw std::runtime_error("execute_t16(i_LDRH) : invalid meta opcode ");
             }
-        case i_LSL  :// logical shift left
+        case i_LSL  :// **DONE** logical shift left
             {
                 if(inst.meta_opcode == meta_RRC){
 
@@ -1031,6 +1031,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
             }
         case i_LDSB :// load sign-extended byte
         case i_LDSH :// load sign-extended halfword
+            throw std::runtime_error("execute_t16 : instrucion not implemented ");
         case i_LSR  :// logical shift right
             {
                 if(inst.meta_opcode == meta_RRC){
@@ -1207,6 +1208,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
         case i_ROR  :// rotate right
         case i_SBC  :// subtract with carry
         case i_STMIA:// store multiple
+            throw std::runtime_error("execute_t16 : opcode not implemented");
         case i_STR  :// store word
             {
                 if(inst.meta_opcode == meta_RRC){
