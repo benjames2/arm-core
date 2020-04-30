@@ -815,7 +815,16 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
         case i_PUSH :// push registers
         case i_ROR  :// rotate right
         case i_SBC  :// subtract with carry
+            throw std::runtime_error("execute_t16 : opcode not implemented");
         case i_STMIA:// store multiple
+            {
+                new_cpu.set_stack_mode(armv7_m3::stack_mode_IncrementAfter);
+                /*
+                    iterate through Rlist
+                        push_word(new_cpu, memory, <register value>)
+                */
+                return new_cpu;
+            }
         case i_STR  :// store word
             {
                 if(inst.meta_opcode == meta_RRC){

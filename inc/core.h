@@ -11,6 +11,16 @@ public:
         uint32_t u32;
     };
 
+    const static int stack_mode_undefined = -1;
+    const static int stack_mode_FullAscending   = 0;
+    const static int stack_mode_IncrementBefore = 0;
+    const static int stack_mode_FullDescending  = 1;
+    const static int stack_mode_DecrementBefore = 1;
+    const static int stack_mode_EmptyAscending  = 2;
+    const static int stack_mode_IncrementAfter  = 2;
+    const static int stack_mode_EmptyDescending = 3;
+    const static int stack_mode_DecrementAfter  = 3;
+
 // private:
 public:
 
@@ -21,11 +31,16 @@ public:
         uint32_t CPSR; // current program status register
     };
     
+    int stack_mode;
     uint64_t cycle_count;
 
 public:
 
     armv7_m3(void);
+
+    int get_stack_mode(void);
+    void set_stack_mode(const int newmode);
+    uint64_t get_cycle_count(void);
 
     uint32_t& PC();
     uint32_t& SP();

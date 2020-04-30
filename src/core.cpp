@@ -7,6 +7,7 @@ armv7_m3::armv7_m3(void) {
         this->reg[i].u32 = 0x00000000;
 
     this->cycle_count = 0;
+    this->stack_mode = armv7_m3::stack_mode_undefined;
 }
 
 // register access
@@ -95,8 +96,5 @@ bool armv7_m3::get_CPSR_T(void) { return ((this->CPSR >> 5) & 0x01); }
 void armv7_m3::set_CPSR(uint32_t cpsr) { this->CPSR = cpsr; }
 void armv7_m3::set_APSR(uint32_t apsr) { this->APSR = apsr; }
 
-void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os) {
-
-
-
-}
+int armv7_m3::get_stack_mode(void) { return this->stack_mode; }
+void armv7_m3::set_stack_mode(const int newmode) { this->stack_mode = newmode; }

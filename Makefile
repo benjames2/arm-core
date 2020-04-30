@@ -15,7 +15,8 @@ CPPOBJ= \
  ${OBJ}/decode.o \
  ${OBJ}/execute.o \
  ${OBJ}/import.o \
- ${OBJ}/test.o
+ ${OBJ}/test.o \
+ ${OBJ}/stack_operations.o
 
 # defined in x86_64 Assembly
 ASMOBJ= ${OBJ}/byte_swap.o
