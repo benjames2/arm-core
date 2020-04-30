@@ -884,9 +884,51 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
             }
             else {
                 // ##6(RC_pc), may need to do some PC bit adjustment on this one 
-                throw std::runtime_error("execute_t16(i_LDR) : meta opcode not implemented");
+                throw std::runtime_error("execute_t16(i_LDR) : invalid meta opcode ");
             }
         case i_LDRB :// load byte
+            {
+                if(inst.meta_opcode == meta_RRR){
+
+                    auto Rb   = new_cpu.get_register(inst.Rb).u32;
+                    auto Ro   = new_cpu.get_register(inst.Ro).u32;
+                    auto addr = Rb + Ro;
+
+                    //Operation
+                    auto bytes = memory.load_u8(addr);
+                    new_cpu.set_register_u32(inst.Rd, bytes);//it is automatically zero extended to 32-bits
+
+                    // maintain cycle count and advance IP as needed
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) new_cpu.PC() += 2;
+                    else              new_cpu.cycle_count++;
+
+                    new_cpu.cpu_id++;
+
+                    return new_cpu;
+                }
+                else if(inst.meta_opcode == meta_RRC){
+                    
+                    auto Rb       = new_cpu.get_register(inst.Rb).u32;
+                    auto offset   = inst.u32;
+                    auto addr = Rb + offset;
+
+                    //Operation
+                    auto bytes = memory.load_u8(addr);
+                    new_cpu.set_register_u32(inst.Rd, bytes);
+
+                    // maintain cycle count and advance IP as needed
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) new_cpu.PC() += 2;
+                    else              new_cpu.cycle_count++;
+
+                    new_cpu.cpu_id++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t16(i_LDRB) : invalid meta opcode ");
+            }
         case i_LDRH :// load halfword
         case i_LSL  :// logical shift left
         case i_LDSB :// load sign-extended byte
