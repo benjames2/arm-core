@@ -241,7 +241,63 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 return new_cpu;
             }
         case i_ASR  :// arithmetic shift right
-            throw std::runtime_error("execute_t16 : opcode not implemented");
+            {
+                if(inst.meta_opcode == meta_RRC){
+
+                    auto Rs     = new_cpu.get_register(inst.Rs).i32;
+                    auto offset = inst.u32;
+
+                    //operation
+                    auto result = Rs >> offset;
+                    new_cpu.set_register_u32(inst.Rd, result);
+
+                    //Flags update
+                    new_cpu.set_CPSR_N(result & (1 << 31));
+                    new_cpu.set_CPSR_Z(result == 0);
+                    new_cpu.set_CPSR_C(false);
+
+                    //Cycle count and PC update
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15)
+                        new_cpu.PC() += 2;
+                    else
+                        new_cpu.cycle_count++;
+
+                    //CPU id update
+                    new_cpu.cpu_id++;
+
+                    return new_cpu;
+
+                }
+                else if(inst.meta_opcode == meta_RR){
+                
+                    auto Rd = new_cpu.get_register(inst.Rd).i32;
+                    auto Rs = new_cpu.get_register(inst.Rs).i32;
+
+                    //operation
+                    auto result = Rd >> Rs;
+                    new_cpu.set_register_u32(inst.Rd, result);
+
+                    //Flags update
+                    new_cpu.set_CPSR_N(result & (1 << 31));
+                    new_cpu.set_CPSR_Z(result == 0);
+                    new_cpu.set_CPSR_C(false);
+
+                    //Cycle count and PC update
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15)
+                        new_cpu.PC() += 2;
+                    else
+                        new_cpu.cycle_count++;
+
+                    //CPU id update
+                    new_cpu.cpu_id++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t16(i_ASR) : invalid meta opcode");
+            }
         case i_B    :// **DONE** unconditional branch
             {
 
