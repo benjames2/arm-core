@@ -1135,6 +1135,27 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                     throw std::runtime_error("execute_t16(i_MOV) : Invalid meta opcode ");
             }
         case i_MUL  :// multiply
+            {
+                auto Rd = new_cpu.get_register_i32(inst.Rd);
+                auto Rs = new_cpu.get_register_i32(inst.Rs);
+
+                //operation
+                auto result = Rs * Rd;
+                new_cpu.set_register_i32(inst.Rd, result);
+
+                //flags update
+                new_cpu.set_CPSR_N(result & (1 << 31));
+                new_cpu.set_CPSR_Z(result == 0);
+
+                //Set PC and cycle count
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                new_cpu.cpu_id++;
+
+                return new_cpu;
+            }
         case i_MVN  :// move negative register
         case i_NEG  :// negate
             throw std::runtime_error("execute_t16 : opcode not implemented");
