@@ -16,7 +16,6 @@
 instruction_t decode_16bit_instruction(unsigned int PC, unsigned int instruction_word);
 
 
-instruction_t decode_format_0(  unsigned int PC, unsigned int instruction_word ); // no operation (nop)
 instruction_t decode_format_1(  unsigned int PC, unsigned int instruction_word ); // move shifted register
 instruction_t decode_format_2(  unsigned int PC, unsigned int instruction_word ); // add/subtract
 instruction_t decode_format_3(  unsigned int PC, unsigned int instruction_word ); // move/compare/add/subtract immediate

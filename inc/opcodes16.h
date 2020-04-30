@@ -44,11 +44,11 @@ const opcode_t i_SWI   = 34; // software interrupt
 const opcode_t i_SUB   = 35; // subtract
 const opcode_t i_TST   = 36; // test bits
 
-const int meta_RRR = 0;   // <op> Reg, Reg, Reg
-const int meta_RR  = 1;   // <op> Reg, Reg
-const int meta_RC  = 2;   // <op> Reg, #Constant
-const int meta_RRC = 3;   // <op> Reg, Reg, #Constant
-const int meta_R   = 4;   // <op> Reg
+const int meta_RRR   = 0; // <op> Reg, Reg, Reg
+const int meta_RR    = 1; // <op> Reg, Reg
+const int meta_RC    = 2; // <op> Reg, #Constant
+const int meta_RRC   = 3; // <op> Reg, Reg, #Constant
+const int meta_R     = 4; // <op> Reg
 const int meta_RC_pc = 5; // <op> Reg, [PC + #Constant]
 const int meta_RC_sp = 6; // <op> Reg, [SP + #Constant]
 const int meta_C_sp  = 7; // <op> [SP + #Constant]

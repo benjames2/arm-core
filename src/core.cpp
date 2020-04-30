@@ -8,6 +8,7 @@ armv7_m3::armv7_m3(void) {
         this->reg[i].u32 = 0x00000000;
 
     this->cycle_count = 0;
+    this->cpu_id      = 0;
 }
 
 // register access
@@ -51,11 +52,11 @@ uint32_t& armv7_m3::SP(void) {
     return this->reg[13].u32;
 }
 
-uint32_t armv7_m3::get_PC(void)  { return this->reg[15].u32; }
+uint32_t armv7_m3::get_PC( void) { return this->reg[15].u32; }
 uint32_t armv7_m3::get_MSP(void) { return this->reg[13].u32; }
 uint32_t armv7_m3::get_PSP(void) { return this->reg[13].u32; }
-uint32_t armv7_m3::get_SP(void)  { return this->reg[13].u32; }
-uint32_t armv7_m3::get_LR(void)  { return this->reg[14].u32; }
+uint32_t armv7_m3::get_SP( void) { return this->reg[13].u32; }
+uint32_t armv7_m3::get_LR( void) { return this->reg[14].u32; }
 
 bool armv7_m3::get_APSR_N(void) { return (this->APSR & (1 << 31)) ? 1 : 0; }
 bool armv7_m3::get_APSR_Z(void) { return (this->APSR & (1 << 30)) ? 1 : 0; }
@@ -84,49 +85,49 @@ void armv7_m3::set_CPSR_Q(bool b) { if(b) this->CPSR |= (1 << 27); else this->CP
 // fields specific to the CPSR
 int  armv7_m3::get_CPSR_IT(void) { return ((this->CPSR >> 8) & 0b11111100) | ((this->CPSR >> 25) & 0b11); }
 int  armv7_m3::get_CPSR_GE(void) { return ((this->CPSR >> 16) & 0x0F);}
-int  armv7_m3::get_CPSR_M(void)  { return this->CPSR & 0x1F; }
-bool armv7_m3::get_CPSR_J(void)  { return ((this->CPSR >> 24) & 0x01);}
-bool armv7_m3::get_CPSR_E(void)  { return ((this->CPSR >> 9) & 0x01); }
-bool armv7_m3::get_CPSR_A(void)  { return ((this->CPSR >> 8) & 0x01); }
-bool armv7_m3::get_CPSR_I(void)  { return ((this->CPSR >> 7) & 0x01); }
-bool armv7_m3::get_CPSR_F(void)  { return ((this->CPSR >> 6) & 0x01); }
-bool armv7_m3::get_CPSR_T(void)  { return ((this->CPSR >> 5) & 0x01); }
+int  armv7_m3::get_CPSR_M( void) { return   this->CPSR & 0x1F; }
+bool armv7_m3::get_CPSR_J( void) { return ((this->CPSR >> 24) & 0x01);}
+bool armv7_m3::get_CPSR_E( void) { return ((this->CPSR >> 9) & 0x01); }
+bool armv7_m3::get_CPSR_A( void) { return ((this->CPSR >> 8) & 0x01); }
+bool armv7_m3::get_CPSR_I( void) { return ((this->CPSR >> 7) & 0x01); }
+bool armv7_m3::get_CPSR_F( void) { return ((this->CPSR >> 6) & 0x01); }
+bool armv7_m3::get_CPSR_T( void) { return ((this->CPSR >> 5) & 0x01); }
 
 void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os) {
 
 }
 
-std::ostream& operator<<(std::ostream& os, const armv7_m3& cpu){
+std::ostream& operator<<(std::ostream& os, armv7_m3& cpu){
 
-    auto padhexnumber = [](unsigned int number) {
+    auto padhexnumber = [](const unsigned int number) {
         std::stringstream ss;
         ss << std::hex << number;
         
-        auto s = ss.str();
+        auto s = ss.str(); 
 
         while (s.size() < 8)
             s = "0" + s;
 
         return s;
     };
-
-    os << "\n  cpu state\n";
+    
+    os << "\n  cpu state " << cpu.cpu_id << "\n";
 
     for(int i = 0; i < cpu.reg.size(); i++){
 
-        os << "R" << std::dec << i;
+        os << "R" << std::dec << i; 
         if(i < 10)
-            os << std::hex << "  :   Ox" << padhexnumber(cpu.reg[i].i32) << "\n";
+            os << std::hex << "  :   Ox" << padhexnumber(cpu.get_register_i32(i)) << "\n";
         else
-            os << std::hex << " :   Ox" << padhexnumber(cpu.reg[i].i32) << "\n";
+            os << std::hex << " :   Ox" << padhexnumber(cpu.get_register_i32(i)) << "\n";
     }
 
     os << "xPSR:   0x" << padhexnumber(cpu.CPSR) << "\n";
-    os << "    N   " << ((cpu.CPSR & (1 << 31)) ? "1" : "0") << "\n";
-    os << "    Z   " << ((cpu.CPSR & (1 << 30)) ? "1" : "0") << "\n";
-    os << "    C   " << ((cpu.CPSR & (1 << 29)) ? "1" : "0") << "\n";
-    os << "    V   " << ((cpu.CPSR & (1 << 28)) ? "1" : "0") << "\n";
-    os << "    Q   " << ((cpu.CPSR & (1 << 27)) ? "1" : "0") << "\n";
+    os << "    N   " << (cpu.get_CPSR_N() ? "1" : "0") << "\n";
+    os << "    Z   " << (cpu.get_CPSR_Z() ? "1" : "0") << "\n";
+    os << "    C   " << (cpu.get_CPSR_C() ? "1" : "0") << "\n";
+    os << "    V   " << (cpu.get_CPSR_V() ? "1" : "0") << "\n";
+    os << "    Q   " << (cpu.get_CPSR_Q() ? "1" : "0") << "\n";
 
     return os;
 }

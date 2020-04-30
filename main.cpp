@@ -39,9 +39,27 @@ int main(int argc, char* argv[]) {
     // loading nvic file to get starting address for machine code
     armv7_m3 cpu;
     load_nvic_file("test/input_rit/nvic.txt", cpu);
+    cout << cpu << "\n";
 
 
     for(address_t addr = 0x00000220; addr <= 0x000002c6;) {
+
+        switch(addr){
+            case 0x00000256: 
+            case 0x00000258:
+            case 0x0000025a:
+            case 0x0000025c:
+            case 0x0000025e:
+            case 0x00000260: 
+            case 0x00000262:
+            case 0x00000264:
+            case 0x00000266:
+            case 0x00000268:
+            case 0x0000026a: 
+            case 0x0000026c:
+            case 0x0000026e:
+                addr += 2; continue;
+        }
 
         auto inst_data   = fetch(mem, addr, true);
         
@@ -69,9 +87,9 @@ int main(int argc, char* argv[]) {
     
     }
 
-    cout << "\n==========================================\n";
+    cout << "=============================================\n";
     cout << "  disassembly complete";
-    cout << "\n==========================================\n\n";
+    cout << "\n=============================================\n\n";
 
  ///*   
     for(address_t addr = 0x00000220; addr <= 0x000002c6;) {
