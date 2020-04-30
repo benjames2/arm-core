@@ -930,7 +930,105 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                     throw std::runtime_error("execute_t16(i_LDRB) : invalid meta opcode ");
             }
         case i_LDRH :// load halfword
+            {
+                if(inst.meta_opcode == meta_RRR){
+
+                    auto Rb   = new_cpu.get_register(inst.Rb).u32;
+                    auto Ro   = new_cpu.get_register(inst.Ro).u32;
+                    auto addr = Rb + Ro;
+
+                    //Operation
+                    auto bytes = memory.load_u16(addr);
+                    new_cpu.set_register_u32(inst.Rd, bytes);//it is automatically zero extended to 32-bits
+
+                    // maintain cycle count and advance IP as needed
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) new_cpu.PC() += 2;
+                    else              new_cpu.cycle_count++;
+
+                    new_cpu.cpu_id++;
+
+                    return new_cpu;
+                }
+                else if(inst.meta_opcode == meta_RRC){
+                    
+                    auto Rb       = new_cpu.get_register(inst.Rb).u32;
+                    auto offset   = inst.u32;
+                    auto addr     = Rb + offset;
+
+                    //Operation
+                    auto bytes = memory.load_u16(addr);
+                    new_cpu.set_register_u32(inst.Rd, bytes);
+
+                    // maintain cycle count and advance IP as needed
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) new_cpu.PC() += 2;
+                    else              new_cpu.cycle_count++;
+
+                    new_cpu.cpu_id++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t16(i_LDRH) : invalid meta opcode ");
+            }
         case i_LSL  :// logical shift left
+            {
+                if(inst.meta_opcode == meta_RRC){
+
+                    auto imm5 = inst.u32;
+                    auto Rs   = new_cpu.get_register_u32(inst.Rs);
+
+                    //Operation
+                    auto result = Rs << imm5;
+                    new_cpu.set_register_u32(inst.Rd, result);
+
+                    //Update flags
+                    new_cpu.set_CPSR_N(result & (1 << 31));
+                    new_cpu.set_CPSR_Z(result == 0);
+                    new_cpu.set_CPSR_C(false);
+
+                    //maintain cycle count and PC
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15)
+                        new_cpu.PC() += 2;
+                    else
+                        new_cpu.cycle_count++;
+
+                    //update cpu id
+                    new_cpu.cpu_id++;
+
+                    return new_cpu;
+                }
+                else if(inst.meta_opcode == meta_RR){
+
+                    auto Rd = new_cpu.get_register_i32(inst.Rd);
+                    auto Rs = new_cpu.get_register_u32(inst.Rs);
+
+                    //Operation
+                    auto result = Rd << Rs;
+                    new_cpu.set_register_u32(inst.Rd, result);
+
+                    //Update flags
+                    new_cpu.set_CPSR_N(result & (1 << 31));
+                    new_cpu.set_CPSR_Z(result == 0);
+                    new_cpu.set_CPSR_C(false);
+
+                    //maintain cycle count and PC
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15)
+                        new_cpu.PC() += 2;
+                    else
+                        new_cpu.cycle_count++;
+
+                    //update cpu id
+                    new_cpu.cpu_id++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t16(i_LSL) : invalid meta opcode ");
+            }
         case i_LDSB :// load sign-extended byte
         case i_LDSH :// load sign-extended halfword
         case i_LSR  :// logical shift right
