@@ -577,9 +577,9 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                             auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
 
                             //Set PC and cycle count
-                            if( (new_cpu.get_CPSR_Z() == true) ||
-                                ((new_cpu.get_CPSR_N() == true) && (new_cpu.get_CPSR_V() == false)) ||
-                                ((new_cpu.get_CPSR_N() == false) && (new_cpu.get_CPSR_V() == true)))    {
+                            if( (new_cpu.get_CPSR_Z()) ||
+                                ((new_cpu.get_CPSR_N()) && (new_cpu.get_CPSR_V() == false)) ||
+                                ((new_cpu.get_CPSR_N() == false) && (new_cpu.get_CPSR_V())))    {
 
                                 new_cpu.PC() = result.i32;
                                 new_cpu.cycle_count += 2;
@@ -617,7 +617,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                 return new_cpu;  
             }
-        case i_BL   :// branch and link
+        case i_BL   :// **DONE** branch and link
             {
                 if(inst.meta_opcode == meta_R){
                     auto Rs = new_cpu.get_register(inst.Rs).u32;
@@ -1155,9 +1155,33 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
         case i_POP  :// pop registers
         case i_PUSH :// push registers
         case i_ROR  :// rotate right
-        case i_SBC  :// subtract with carry
+        case i_SBC  ://**DONE** subtract with carry
+            {
+                auto Rd      = new_cpu.get_register_i32(inst.Rd);
+                auto Rs      = new_cpu.get_register_i32(inst.Rs);
+                int CarryBit = !new_cpu.get_CPSR_C();
+
+                results_t result;
+                
+                //operation
+                auto msg = gp_operation(&result, Rd, Rs, CarryBit, x86_asm_SBB);
+                new_cpu.set_register_i32(inst.Rd, result.i32);
+
+                //set flas
+                new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
+
+                //maintain cycle count and advance IP as needed
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
         case i_STMIA:// store multiple
-            throw std::runtime_error("execute_t16(POP, PUSH, ROR, SBC, STMIA) : opcode not implemented");
+            throw std::runtime_error("execute_t16(POP, PUSH, ROR, STMIA) : opcode not implemented");
         case i_STR  :// **DONE** store word
             {
                 if(inst.meta_opcode == meta_RRC){
