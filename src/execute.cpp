@@ -47,7 +47,12 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 auto msg = gp_operation(&results, Rd, Rs, CarryBit, x86_asm_ADC);
 
                 new_cpu.set_register_i32(inst.Rd, results.i32);
+
+                //set flas
+                new_cpu.set_CPSR_N(results.get_x86_flag_Sign());
+                new_cpu.set_CPSR_Z(results.get_x86_flag_Zero());
                 new_cpu.set_CPSR_C(results.get_x86_flag_Carry());
+                new_cpu.set_CPSR_V(results.get_x86_flag_Ov());
 
                 // maintain cycle count and advance IP as needed
                 new_cpu.cycle_count++;
