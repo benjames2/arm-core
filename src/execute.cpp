@@ -1110,8 +1110,28 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                 return new_cpu;
             }
-        case i_NEG  :// negate
-            throw std::runtime_error("execute_t16(NEG) : opcode not implemented");
+        case i_NEG  :// **DONE** negate
+            {
+                results_t result;
+                auto Rs = new_cpu.get_register_i32(inst.Rs);
+
+                //operation
+                auto msg = gp_operation(&result, 0, Rs, 0, x86_asm_SUB);
+                new_cpu.set_register_i32(inst.Rd, result.i32);
+
+                //flags update
+                new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
+
+                //Set PC and cycle count
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
         case i_ORR  :// **DONE** bitwise OR
             {
                 auto Rd = new_cpu.get_register(inst.Rd).u32;
