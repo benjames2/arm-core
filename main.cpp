@@ -9,25 +9,19 @@
 #include <inc/fetch.h>
 #include <inc/execute.h>
 #include <inc/import.h>
+#include <inc/test.h>
+#include <inc/exceptions.h>
 
 #include "main.h"
 
 using namespace std;
 
-// for the assembly portion to work properly with the rest of the 
-// system, certain alignment requirements must be met:
-static_assert(sizeof(results_t) == 8,          "sizeof results_t incorrect (should be 8)");
-static_assert(offsetof(results_t, flags) == 0, "alignment of .flags in results_t incorrect (should be 0)");
-static_assert(offsetof(results_t, u32) == 4,   "alignment of .u32 in results_t incorrect (should be 4)");
-static_assert(offsetof(results_t, i32) == 4,   "alignment of .i32 in results_t incorrect (should be 4)");
+// leave this include where it is
+#include <inc/static_asserts.h>
+
+void test_all_decode_fns(void);
 
 int main(int argc, char* argv[]) {
-
-    //test_decode_fns("test/testfile.branch.txt");
-    //test_decode_fns("test/testfile.bottom.txt");
-    //test_decode_fns("test/testfile.txt");
-    //test_32b_decode("test/testfile32b.txt");
-    //std::cout << "INSTRUCTION TESTS PASSED\n\n" << std::flush;
 
     memory_t mem(memory_t::little_endian);
 
@@ -39,11 +33,6 @@ int main(int argc, char* argv[]) {
     // starting address for machine code
     armv7_m3 armcpu;
     //armcpu.PC() = 0x0224;
-
-    //for(int i = 0; i < 16; i++) std::cout << i << ' ' << std::hex << armcpu.get_register_u32(i) << std::dec << std::endl;
-    //load_nvic("test/input/nvic.txt", armcpu);
-    //for(int i = 0; i < 16; i++) std::cout << i << ' ' << std::hex << armcpu.get_register_u32(i) << std::dec << std::endl;
-    //return 0;
 
     auto sz = import_bin_file("armasm/fullthumb16/main.bin", mem, 0x00000000);
     cout << mem << endl;
@@ -116,21 +105,15 @@ int main(int argc, char* argv[]) {
             addr += 2;
 
         cpu = newcpu;
-        //addr = newcpu.PC();
-
-        // TODO: compare new cpu with old cpu
     }
 
     return 0;
 }
 
-void print_flag_results(int flags) {
-
-    cout << "    " << (flags & 0x0001 ? "1 : CY(Carry)"           : "0 : NC(No Carry)") << endl;
-    cout << "    " << (flags & 0x0004 ? "1 : PE(Parity Even)"     : "0 : PO(Parity Odd)") << endl;
-    cout << "    " << (flags & 0x0010 ? "1 : AC(Auxiliary Carry)" : "0 : NA(No Auxiliary Carry)") << endl;
-    cout << "    " << (flags & 0x0040 ? "1 : ZR(Zero)"            : "0 : NZ(Not Zero)") << endl;
-    cout << "    " << (flags & 0x0080 ? "1 : NG(Negative)"        : "0 : PL(Positive)") << endl;
-    cout << "    " << (flags & 0x0800 ? "1 : OV(Overflow)"        : "0 : NV(Not Overflow)") << endl;
-
+void test_all_decode_fns(void) {
+    test_decode_fns("test/testfile.branch.txt");
+    test_decode_fns("test/testfile.bottom.txt");
+    test_decode_fns("test/testfile.txt");
+    test_32b_decode("test/testfile32b.txt");
+    std::cout << "INSTRUCTION TESTS PASSED\n\n" << std::flush;
 }

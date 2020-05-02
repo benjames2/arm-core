@@ -71,3 +71,19 @@ void push_word(armv7_m3& cpu, memory_t& memory, int32_t w) {
 void push_register(armv7_m3& cpu, memory_t& memory, int regn) {
     push_word(cpu, memory, cpu.get_register_u32(regn));
 }
+
+uint32_t push_word(armv7_m3& cpu, memory_t& memory, address_t addr, uint32_t w) {
+
+    
+
+}
+
+uint32_t push_word(armv7_m3& cpu, memory_t& memory, address_t addr, int32_t w) {
+    union {
+        int32_t i32;
+        uint32_t u32;
+    };
+
+    i32 = w;
+    return push_word(cpu, memory, addr, u32);
+}
