@@ -1115,6 +1115,14 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                 return new_cpu;
             }
+        case i_NOP  :
+            {
+                //update PC and cycle count
+                new_cpu.PC() +=2;
+                new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
         case i_NEG  :// **DONE** negate
             {
                 results_t result;
@@ -1493,8 +1501,6 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
                     else        
                         new_cpu.cycle_count++;
 
-                    
-
                     return new_cpu;
                 }
                 else
@@ -1528,8 +1534,6 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
                         new_cpu.PC() += 4;
                     else        
                         new_cpu.cycle_count++;
-
-                    
 
                     return new_cpu;
                 }
@@ -1837,10 +1841,31 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
             {
                 if(inst.meta_opcode == meta_t32_imm){
 
-                    
+                    switch(inst.encoding){
+                        case instruction_32b_t::encoding_T3:
+                            {
+                                auto imm32 = inst.u32;
+                                auto Rn    = new_cpu.get_register_u32(inst.Rn);
+                                auto Rt    = new_cpu.get_register_u32(inst.Rt);
+
+                                auto addr  = Rn + imm32;
+
+                                //operation
+                                memory.store_u32(addr, Rt);
+
+                                //update PC and cycle count
+                                new_cpu.PC()        += 4;
+                                new_cpu.cycle_count += 2;//could be one
+
+                                return new_cpu;
+
+                            }
+                        default:
+                            throw std::runtime_error("execute_t32 : invalid encoding for STR instruction");
+                    }
                 }
                 else if(inst.meta_opcode == meta_t32_reg){
-
+                    throw std::runtime_error("execute_t32 : meta_t32_reg not implemeented for STR instruction");
                 }
                 else
                     throw std::runtime_error("execute_t32 : invalid meta_opcode for STR instruction");

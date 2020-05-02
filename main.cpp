@@ -54,11 +54,11 @@ int main(int argc, char* argv[]) {
     }
 
     mem.debug_clear_pages();
-    for(auto cptr : { "test/input_rit/assembly-code.txt", "test/input_rit/memory.txt" }) {
+    for(auto cptr : { "test/input/assembly-code.txt", "test/input/memory.txt" }) {
         load_memory_file(cptr, mem);
         std::cout << mem << std::endl;
     }
-    load_nvic("test/input_rit/nvic.txt", armcpu);
+    load_nvic("test/input/nvic.txt", armcpu);
 
     cout << armcpu << endl;
 /*
@@ -75,17 +75,20 @@ int main(int argc, char* argv[]) {
 */
 
 ///*
-    for(address_t addr = 0x00000220; addr <= 0x000002c6;) {
+    int count = 1;
+    for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
 
-        if(addr > 0x00000256 && addr < 0x00000270 ){
-            addr += 2; continue;
-        }
+       // if(addr > 0x00000256 && addr < 0x00000270 ){
+       //     addr += 2; continue;
+       // }
 
         auto inst_data   = fetch(mem, addr, true);
         
         try {
             auto dec_inst = decode(inst_data, addr);
+            cout << count << "- ";
             cout << dec_inst << endl;
+            count++;
         }
         catch(runtime_error& ex){
             cout << ex.what() << endl;
@@ -102,11 +105,11 @@ int main(int argc, char* argv[]) {
 //    cout << "\n=============================================\n\n";
 
  ///*   
-    for(address_t addr = 0x00000220; addr <= 0x000002c6;) {
+    for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
 
-        if(addr > 0x00000256 && addr < 0x00000270 ){
-            addr += 2; continue;
-        }
+        //if(addr > 0x00000256 && addr < 0x00000270 ){
+        //    addr += 2; continue;
+        //}
 
         auto inst_data   = fetch(mem, addr);
         auto decode_data = decode(inst_data, addr);
