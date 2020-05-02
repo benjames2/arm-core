@@ -8,6 +8,7 @@ armv7_m3::armv7_m3(void) {
         this->reg[i].u32 = 0x00000000;
 
     this->cycle_count = 0;
+    this->stack_mode = armv7_m3::stack_mode_undefined;
     this->cpu_id      = 0;
 }
 
@@ -93,11 +94,14 @@ bool armv7_m3::get_CPSR_I( void) { return ((this->CPSR >> 7) & 0x01); }
 bool armv7_m3::get_CPSR_F( void) { return ((this->CPSR >> 6) & 0x01); }
 bool armv7_m3::get_CPSR_T( void) { return ((this->CPSR >> 5) & 0x01); }
 
-void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os) {
+// these two do exactly the same thing
+void armv7_m3::set_CPSR(uint32_t cpsr) { this->CPSR = cpsr; }
+void armv7_m3::set_APSR(uint32_t apsr) { this->APSR = apsr; }
 
-}
+int armv7_m3::get_stack_mode(void) { return this->stack_mode; }
+void armv7_m3::set_stack_mode(const int newmode) { this->stack_mode = newmode; }
 
-std::ostream& operator<<(std::ostream& os, armv7_m3& cpu){
+std::ostream& operator<<(std::ostream& os, armv7_m3& cpu) {
 
     auto padhexnumber = [](const unsigned int number) {
         std::stringstream ss;
@@ -111,6 +115,7 @@ std::ostream& operator<<(std::ostream& os, armv7_m3& cpu){
         return s;
     };
     
+    os << std::dec;
     os << "\n  cpu state " << cpu.cpu_id << "\n";
 
     for(int i = 0; i < cpu.reg.size(); i++){
@@ -123,11 +128,20 @@ std::ostream& operator<<(std::ostream& os, armv7_m3& cpu){
     }
 
     os << "xPSR:   0x" << padhexnumber(cpu.CPSR) << "\n";
-    os << "    N   " << (cpu.get_CPSR_N() ? "1" : "0") << "\n";
-    os << "    Z   " << (cpu.get_CPSR_Z() ? "1" : "0") << "\n";
-    os << "    C   " << (cpu.get_CPSR_C() ? "1" : "0") << "\n";
-    os << "    V   " << (cpu.get_CPSR_V() ? "1" : "0") << "\n";
-    os << "    Q   " << (cpu.get_CPSR_Q() ? "1" : "0") << "\n";
+
+    os << "NZCVQ\n";
+    os << 
+        cpu.get_CPSR_N() << 
+        cpu.get_CPSR_Z() << 
+        cpu.get_CPSR_C() << 
+        cpu.get_CPSR_V() << 
+        cpu.get_CPSR_Q() << "\n" << std::flush;
+
+    //os << "    N   " << (cpu.get_CPSR_N() ? "1" : "0") << "\n";
+    //os << "    Z   " << (cpu.get_CPSR_Z() ? "1" : "0") << "\n";
+    //os << "    C   " << (cpu.get_CPSR_C() ? "1" : "0") << "\n";
+    //os << "    V   " << (cpu.get_CPSR_V() ? "1" : "0") << "\n";
+    //os << "    Q   " << (cpu.get_CPSR_Q() ? "1" : "0") << "\n";
 
     return os;
 }

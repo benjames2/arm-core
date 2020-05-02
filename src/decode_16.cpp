@@ -406,6 +406,9 @@ instruction_t decode_format_11( unsigned int PC, unsigned int instruction_word )
     if(L == 0)  inst.opcode = i_STR;
     else        inst.opcode = i_LDR;
 
+    // need a 10-bit constant from an 8-bit constant
+    inst.u_immediate <<= 2;
+
     return inst;
 }
 
@@ -421,6 +424,16 @@ instruction_t decode_format_12( unsigned int PC, unsigned int instruction_word )
 
     if (SP == 0 ) inst.meta_opcode = meta_RC_pc;
     else          inst.meta_opcode = meta_RC_sp;
+
+    if (SP == 0 ){
+        inst.meta_opcode = meta_RC_pc;
+    }
+    else{
+        inst.meta_opcode = meta_RC_sp;
+    }
+    
+    // need a 10-bit constant from an 8-bit constant
+    inst.u_immediate <<= 2;
 
     return inst;
 }

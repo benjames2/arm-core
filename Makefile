@@ -13,7 +13,11 @@ CPPOBJ= \
  ${OBJ}/memory_pool.o \
  ${OBJ}/fetch.o \
  ${OBJ}/decode.o \
- ${OBJ}/execute.o
+ ${OBJ}/execute.o \
+ ${OBJ}/import.o \
+ ${OBJ}/test.o \
+ ${OBJ}/stack_operations.o \
+ ${OBJ}/exceptions.o
 
 # defined in x86_64 Assembly
 ASMOBJ= ${OBJ}/byte_swap.o
@@ -31,7 +35,7 @@ clean:
 	rm ${OBJ}/*
 
 # final executable
-main: ${ALLOBJ} main.h main.cpp
+main: ${ALLOBJ} main.h ${INC}/static_asserts.h main.cpp
 	g++ -o main ${FLAGS} main.cpp ${ALLOBJ}
 
 # build all .cpp files

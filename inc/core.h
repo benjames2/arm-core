@@ -11,7 +11,17 @@ public:
         uint32_t u32;
     };
 
-// private:
+    const static int stack_mode_undefined = -1;
+    const static int stack_mode_FullAscending   = 0;
+    const static int stack_mode_IncrementBefore = 0;
+    const static int stack_mode_FullDescending  = 1;
+    const static int stack_mode_DecrementBefore = 1;
+    const static int stack_mode_EmptyAscending  = 2;
+    const static int stack_mode_IncrementAfter  = 2;
+    const static int stack_mode_EmptyDescending = 3;
+    const static int stack_mode_DecrementAfter  = 3;
+
+//private:
 public:
 
     std::array<register_t, 16> reg;
@@ -21,12 +31,17 @@ public:
         uint32_t CPSR; // current program status register
     };
     
-    uint64_t  cycle_count;
-    long int  cpu_id;
+    int stack_mode;
+    uint64_t cycle_count;
+    int64_t  cpu_id;
 
 public:
 
     armv7_m3(void);
+
+    int get_stack_mode(void);
+    void set_stack_mode(const int newmode);
+    uint64_t get_cycle_count(void);
 
     uint32_t& PC();
     uint32_t& SP();
@@ -61,6 +76,8 @@ public:
     void set_APSR_Q(bool b); // set saturate flag
 
     uint32_t get_CPSR(void);
+    void set_CPSR(uint32_t cpsr);
+    void set_APSR(uint32_t apsr);
 
     // ALU flags are exactly the same as for the APSR
     bool get_CPSR_N(void); // get Negative flag
@@ -86,9 +103,7 @@ public:
     bool get_CPSR_T( void); // THUMB execution state bit. for us, we'll always be in THUMB state
     int  get_CPSR_M( void); // Mode field (4:0)
 
+    friend std::ostream& operator<<(std::ostream& os, armv7_m3& cpu);
+
 };
 
-void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os);
-
-//Operator Overload to print the cpu state
-std::ostream& operator<<(std::ostream& os, armv7_m3& cpu);

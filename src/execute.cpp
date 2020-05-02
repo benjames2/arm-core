@@ -602,8 +602,8 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
             }
         case i_BIC  :// **DONE** bit clear
             {
-                auto Rd = new_cpu.get_register(inst.Rd).i32;
-                auto Rs = new_cpu.get_register(inst.Rs).i32;
+                auto Rd = new_cpu.get_register(inst.Rd).u32;
+                auto Rs = new_cpu.get_register(inst.Rs).u32;
 
                 //Operation
                 auto result = Rd & (~Rs);
@@ -1160,6 +1160,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
         case i_POP  :// pop registers
         case i_PUSH :// push registers
         case i_ROR  :// rotate right
+            throw std::runtime_error("execute_t16() : opcode not implemented");
         case i_SBC  ://**DONE** subtract with carry
             {
                 auto Rd      = new_cpu.get_register_i32(inst.Rd);
@@ -1186,7 +1187,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 return new_cpu;
             }
         case i_STMIA:// store multiple
-            throw std::runtime_error("execute_t16(POP, PUSH, ROR, STMIA) : opcode not implemented");
+            throw std::runtime_error("execute_t16(STMIA) : opcode not implemented");
         case i_STR  :// **DONE** store word
             {
                 if(inst.meta_opcode == meta_RRC){
@@ -1546,38 +1547,34 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
         case t32_LDMEA:
             throw std::runtime_error("execute_t32 : opcode not implemented"); 
         case t32_LDR:
-            {
-                if(inst.meta_opcode == meta_t32_imm){
-                    switch(inst.encoding){
-                        case instruction_32b_t::encoding_T3:
-                            {
-                                auto imm = inst.i32;
-                                auto pc  = new_cpu.PC();
-                                pc += 4;
+            if(inst.meta_opcode == meta_t32_imm){
+                switch(inst.encoding){
+                    case instruction_32b_t::encoding_T3:
+                        {
+                            auto imm = inst.i32;
+                            auto pc  = new_cpu.PC();
+                            pc += 4;
 
-                                auto addr  = pc + imm;
-                                auto bytes = memory.load_u32(addr);
+                            auto addr  = pc + imm;
+                            auto bytes = memory.load_u32(addr);
 
-                                new_cpu.set_register_i32(inst.Rd, bytes);
+                            new_cpu.set_register_i32(inst.Rd, bytes);
 
-                                //Set PC and count cycle
+                            //Set PC and count cycle
+                            new_cpu.cycle_count++;
+                            if(inst.Rd != 15)
+                                new_cpu.PC() += 4;
+                            else
                                 new_cpu.cycle_count++;
-                                if(inst.Rd != 15)
-                                    new_cpu.PC() += 4;
-                                else
-                                    new_cpu.cycle_count++;
 
-                                
-
-                                return new_cpu;
-                            }
-                        default:
-                            throw std::runtime_error("execute_t32 : invalid encoding for LDR instruction");
-                    }
+                            return new_cpu;
+                        }
+                    default:
+                        throw std::runtime_error("execute_t32 : invalid encoding for LDR instruction");
                 }
-                else
-                    throw std::runtime_error("execute_t32 : invalid meta_opcode for LDR instruction");
-            } 
+            }
+            else
+                throw std::runtime_error("execute_t32 : invalid meta_opcode for LDR instruction");
         case t32_LDRB: 
         case t32_LDRBT: 
         case t32_LDRD: 
@@ -1601,40 +1598,36 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
         case t32_MLS   :
             throw std::runtime_error("execute_t32 : opcode not implemented");
         case t32_MOV   :
-            {
-                if(inst.meta_opcode == meta_t32_imm){
-                    switch(inst.encoding){
-                        case instruction_32b_t::encoding_T2:
-                            {
-                                auto result = inst.i32;
+            if(inst.meta_opcode == meta_t32_imm){
+                switch(inst.encoding){
+                    case instruction_32b_t::encoding_T2:
+                        {
+                            auto result = inst.i32;
 
-                                new_cpu.set_register_i32(inst.Rd, result);
+                            new_cpu.set_register_i32(inst.Rd, result);
 
-                                //Set Flags
-                                if(inst.S){
-                                    new_cpu.set_CPSR_N(result & (1 << 31));
-                                    new_cpu.set_APSR_Z(result == 0);
-                                    new_cpu.set_CPSR_C(false);
-                                }
-
-                                //not sure about this
-                                new_cpu.cycle_count++;
-                                if(inst.Rd != 15) 
-                                    new_cpu.PC() += 4;
-                                else        
-                                    new_cpu.cycle_count++;
-
-                                
-
-                                return new_cpu;
+                            //Set Flags
+                            if(inst.S){
+                                new_cpu.set_CPSR_N(result & (1 << 31));
+                                new_cpu.set_APSR_Z(result == 0);
+                                new_cpu.set_CPSR_C(false);
                             }
-                        default:
-                            throw std::runtime_error("execute_t32 : invalid encoding for MOV instruction");
-                    }
+
+                            //not sure about this
+                            new_cpu.cycle_count++;
+                            if(inst.Rd != 15) 
+                                new_cpu.PC() += 4;
+                            else        
+                                new_cpu.cycle_count++;
+
+                            return new_cpu;
+                        }
+                    default:
+                        throw std::runtime_error("execute_t32 : invalid encoding for MOV instruction");
                 }
-                else
-                    throw std::runtime_error("execute_t32 : invalid meta_opcode for BIC instruction");
             }
+            else
+                throw std::runtime_error("execute_t32 : invalid meta_opcode for BIC instruction");
         case t32_MOVT  :
         case t32_MRC   :
         case t32_MRC2  :
@@ -1649,37 +1642,32 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
         case t32_ORN   :
             throw std::runtime_error("execute_t32 : opcode not implemented");
         case t32_ORR:
-            {
-                if(inst.meta_opcode == meta_t32_imm){
+            if(inst.meta_opcode == meta_t32_imm){
 
-                    auto Rn  = new_cpu.get_register(inst.Rn).i32;
-                    auto imm = inst.i32;
-                    auto result = Rn | imm;
+                auto Rn  = new_cpu.get_register(inst.Rn).u32;
+                auto imm = inst.u32;
+                auto result = Rn | imm;
 
-                    new_cpu.set_register_i32(inst.Rd, result);
-                    
-                    //Set Flags
-                    if(inst.S){
-                        new_cpu.set_CPSR_N(result & (1 << 31));
-                        new_cpu.set_CPSR_Z(result == 0);
-                        new_cpu.set_CPSR_C(false);
-                    }
-                    
-                    //not sure about this
-                    new_cpu.cycle_count++;
-                    if(inst.Rd != 15) 
-                        new_cpu.PC() += 4;
-                    else        
-                        new_cpu.cycle_count++;
-
-                    
-
-                    return new_cpu;
+                new_cpu.set_register_u32(inst.Rd, result);
+                
+                //Set Flags
+                if(inst.S){
+                    new_cpu.set_CPSR_N(result & (1 << 31));
+                    new_cpu.set_CPSR_Z(result == 0);
+                    new_cpu.set_CPSR_C(false);
                 }
+                
+                //not sure about this
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) 
+                    new_cpu.PC() += 4;
+                else        
+                    new_cpu.cycle_count++;
 
-                else
-                    throw std::runtime_error("execute_t32 : invalid meta_opcode for ORR instruction");                
+                return new_cpu;
             }
+            else
+                throw std::runtime_error("execute_t32 : invalid meta_opcode for ORR instruction");                
         case t32_PLD   :
         case t32_PLI   :
         case t32_POP   :

@@ -930,18 +930,19 @@ instruction_32b_t decode_32b_A6_32_AND_imm(unsigned int PC, unsigned int instruc
 
 instruction_32b_t decode_32b_A6_40_B(unsigned int PC, unsigned int instruction_word){
 
-    THROW_UNDEFINED_T32(Branch);
+    THROW_UNDEFINED_T32(B);
 }
 
 instruction_32b_t decode_32b_A6_49_BL(unsigned int PC, unsigned int instruction_word){
 
-    THROW_UNDEFINED_T32(__FUNCTION__);
+    THROW_UNDEFINED_T32(BL);
 }
 
 instruction_32b_t decode_32b_A6_42_BFC(unsigned int PC, unsigned int instruction_word){
 
     THROW_UNDEFINED_T32(BFC);
 }
+
 instruction_32b_t decode_32b_A6_43_BFI(unsigned int PC, unsigned int instruction_word){
 
     THROW_UNDEFINED_T32(BFI);
@@ -1102,9 +1103,11 @@ instruction_32b_t decode_32b_A6_92_LDR_reg(unsigned int PC, unsigned int instruc
 instruction_32b_t decode_32b_A6_94_LDRB_imm(unsigned int PC, unsigned int instruction_word){
     THROW_UNDEFINED_T32(LDRB immediate);
 }
+
 instruction_32b_t decode_32b_A6_96_LDRB_lit(unsigned int PC, unsigned int instruction_word){
     THROW_UNDEFINED_T32(LDRB literal);
 }
+
 instruction_32b_t decode_32b_A6_98_LDRB_reg(unsigned int PC, unsigned int instruction_word){
 
     instruction_32b_t in;
@@ -1202,12 +1205,15 @@ instruction_32b_t decode_32b_A6_108_LDREXH(unsigned int PC, unsigned int instruc
 instruction_32b_t decode_32b_A6_118_LDRSB_imm(unsigned int PC, unsigned int instruction_word){
     THROW_UNDEFINED_T32(__FUNCTION__);
 }
+
 instruction_32b_t decode_32b_A6_120_LDRSB_lit(unsigned int PC, unsigned int instruction_word){
     THROW_UNDEFINED_T32(__FUNCTION__);
 }
+
 instruction_32b_t decode_32b_A6_122_LDRSB_reg(unsigned int PC, unsigned int instruction_word){
     THROW_UNDEFINED_T32(__FUNCTION__);
 }
+
 instruction_32b_t decode_32b_A6_124_LDRSBT(unsigned int PC, unsigned int instruction_word){
     THROW_UNDEFINED_T32(__FUNCTION__);
 }
@@ -1407,7 +1413,7 @@ instruction_32b_t decode_32b_A6_202_SBC_imm(unsigned int PC, unsigned int instru
     return in;
 }
 
-instruction_32b_t decode_32b_A6_206_SBFX(unsigned int PC, unsigned int instruction_word){
+instruction_32b_t decode_32b_A6_206_SBFX(unsigned int PC, unsigned int instruction_word) {
 
 }
 
@@ -1711,7 +1717,7 @@ instruction_32b_t decode_32b_A6_268_USAT(unsigned int PC, unsigned int instructi
     THROW_UNDEFINED_T32(USAT);
 }
 
-instruction_32b_t decode_32b_A6_264_UBFX(        unsigned int PC, unsigned int instruction_word){
+instruction_32b_t decode_32b_A6_264_UBFX(unsigned int PC, unsigned int instruction_word){
     
     THROW_UNDEFINED_T32(UBFX);
 }
