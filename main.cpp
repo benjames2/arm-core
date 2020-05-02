@@ -23,6 +23,8 @@ void test_all_decode_fns(void);
 
 int main(int argc, char* argv[]) {
 
+    throw ExecuteError("oh no, something went wrong!");
+
     memory_t mem(memory_t::little_endian);
 
     //for(auto cptr : { "test/input/assembly-code.txt", "test/input/memory.txt" }) {
@@ -36,9 +38,7 @@ int main(int argc, char* argv[]) {
 
     auto sz = import_bin_file("armasm/fullthumb16/main.bin", mem, 0x00000000);
     cout << mem << endl;
-
     cout << "size of instruction stream: " << sz << " bytes\n";
-
     for(size_t addr = 0; addr < sz;) {
         auto inst_data = fetch(mem, addr, true);
 
@@ -55,8 +55,27 @@ int main(int argc, char* argv[]) {
             addr += 2;
     }
 
-    return 0;
+    mem.debug_clear_pages();
+    for(auto cptr : { "test/input/assembly-code.txt", "test/input/memory.txt" }) {
+        load_memory_file(cptr, mem);
+        std::cout << mem << std::endl;
+    }
+    load_nvic("test/input/nvic.txt", armcpu);
 
+    cout << armcpu << endl;
+
+    for(int i = 0; i < 10; i++) {
+
+        auto inst_data   = fetch(mem, armcpu.PC(), true);
+        auto decode_data = decode(inst_data, armcpu.PC());
+        auto newcpu      = execute(armcpu, mem, decode_data);
+    
+        armcpu = newcpu;
+        cout << decode_data << endl;
+        cout << newcpu << endl;
+    }
+
+/*
     for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
 
         auto inst_data   = fetch(mem, addr, true);
@@ -72,7 +91,6 @@ int main(int argc, char* argv[]) {
             addr += 2;
         }
         else {
-
             // catch those pesky 32-bit decode errors
             try {
                 auto decoded_inst = decode(inst_data, addr);
@@ -85,28 +103,30 @@ int main(int argc, char* argv[]) {
         }
     
     }
+*/
 
-    cout << "\n==========================================\n";
-    cout << "  disassembly complete";
-    cout << "\n==========================================\n\n";
+//    cout << "=============================================\n";
+//    cout << "  disassembly complete";
+//    cout << "\n=============================================\n\n";
 
-    armv7_m3 cpu;
-    cpu.PC() = 0x00000232;
+ /*   
+    for(address_t addr = 0x00000220; addr <= 0x000002c6;) {
+        
+        auto inst_data   = fetch(mem, addr);
+        auto decode_data = decode(inst_data, addr);
+        auto newcpu      = execute(armcpu, mem, decode_data);
 
-    for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
-    //for(cpu.PC() = 0x00000224; cpu.PC() <= 0x000002d4;) {
-  
-        auto inst_data   = fetch(mem, addr, true); cout << endl;
-        auto decode_data = decode(inst_data);
-        auto newcpu      = execute(cpu, mem, decode_data);
+       std::cout << "\n" << newcpu << endl;
 
-        addr += 2;
-        if(inst_data.type == fetched_instruction_t::t32)
-            addr += 2;
-
-        cpu = newcpu;
+        addr +=2;
+        if(inst_data.t32)
+            addr+=2;
     }
 
+    cout << "\n\n==========================================\n";
+    cout << "  execute complete";
+    cout << "\n==========================================\n\n";
+*/
     return 0;
 }
 

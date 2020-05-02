@@ -30,7 +30,7 @@ void load_nvic(std::string filename, armv7_m3& cpu) {
     }
 }
 
-void load_memory_file(std::string filename, memory_t& mempool) {
+void load_memory_file(const std::string filename, memory_t& mempool) {
 
     std::cout << "Loading '" << filename << "'..." << std::flush;
 

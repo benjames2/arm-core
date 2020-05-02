@@ -15,5 +15,6 @@ struct exname : public std::exception { \
 // these names are mirrored in src/exceptions.cpp
 EXCEPTIONDECLARE(FetchError)
 EXCEPTIONDECLARE(DecodeError)
+EXCEPTIONDECLARE(ExecuteError)
 
 #undef EXCEPTIONDECLARE

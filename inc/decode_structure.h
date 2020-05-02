@@ -16,10 +16,10 @@ struct instruction_t {
 
     // some instructions contain an immediate
     union {
-        int i_immediate;
-        unsigned int u_immediate;
-        int i32;
-        unsigned int u32;
+        int32_t i_immediate;
+        uint32_t u_immediate;
+        int32_t i32;
+        uint32_t u32;
     };
 
     // register references
