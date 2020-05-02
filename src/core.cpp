@@ -129,19 +129,13 @@ std::ostream& operator<<(std::ostream& os, armv7_m3& cpu) {
 
     os << "xPSR:   0x" << padhexnumber(cpu.CPSR) << "\n";
 
-    os << "NZCVQ\n";
+    os << "N   Z   C   V    Q\n";
     os << 
-        cpu.get_CPSR_N() << 
-        cpu.get_CPSR_Z() << 
-        cpu.get_CPSR_C() << 
-        cpu.get_CPSR_V() << 
+        cpu.get_CPSR_N() << "   " <<
+        cpu.get_CPSR_Z() << "   " <<
+        cpu.get_CPSR_C() << "   " <<
+        cpu.get_CPSR_V() << "    " <<
         cpu.get_CPSR_Q() << "\n" << std::flush;
-
-    //os << "    N   " << (cpu.get_CPSR_N() ? "1" : "0") << "\n";
-    //os << "    Z   " << (cpu.get_CPSR_Z() ? "1" : "0") << "\n";
-    //os << "    C   " << (cpu.get_CPSR_C() ? "1" : "0") << "\n";
-    //os << "    V   " << (cpu.get_CPSR_V() ? "1" : "0") << "\n";
-    //os << "    Q   " << (cpu.get_CPSR_Q() ? "1" : "0") << "\n";
 
     return os;
 }
