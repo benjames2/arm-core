@@ -475,7 +475,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                             auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
 
                             //Set PC and cycle count
-                            if((new_cpu.get_CPSR_C()) && (new_cpu.get_CPSR_Z() == false)){
+                            if((new_cpu.get_CPSR_C()) && (!new_cpu.get_CPSR_Z())){
                                 new_cpu.PC() = result.i32;
                                 new_cpu.cycle_count += 2;
                             }
@@ -1575,7 +1575,34 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
             }
             else
                 throw std::runtime_error("execute_t32 : invalid meta_opcode for LDR instruction");
-        case t32_LDRB: 
+        case t32_LDRB:
+            {
+                if(inst.meta_opcode == meta_t32_reg){
+                    
+                    auto Rn      = new_cpu.get_register_u32(inst.Rn);
+                    auto Rm      = new_cpu.get_register_u32(inst.Rm);
+                    auto shift_l = inst.u32;
+
+                    Rm = Rm << shift_l;
+
+                    auto addr = Rn + Rm;
+
+                    //operation
+                    auto byte = memory.load_u8(addr);
+                    new_cpu.set_register_u32(inst.Rt, byte);
+
+                    //Set PC and count cycle
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15)
+                        new_cpu.PC() += 4;
+                    else
+                        new_cpu.cycle_count++;
+                        
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for LDRB instruction");
+            } 
         case t32_LDRBT: 
         case t32_LDRD: 
         case t32_LDREX: 

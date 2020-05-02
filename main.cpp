@@ -23,8 +23,6 @@ void test_all_decode_fns(void);
 
 int main(int argc, char* argv[]) {
 
-    throw ExecuteError("oh no, something went wrong!");
-
     memory_t mem(memory_t::little_endian);
 
     //for(auto cptr : { "test/input/assembly-code.txt", "test/input/memory.txt" }) {
@@ -56,14 +54,14 @@ int main(int argc, char* argv[]) {
     }
 
     mem.debug_clear_pages();
-    for(auto cptr : { "test/input/assembly-code.txt", "test/input/memory.txt" }) {
+    for(auto cptr : { "test/input_rit/assembly-code.txt", "test/input_rit/memory.txt" }) {
         load_memory_file(cptr, mem);
         std::cout << mem << std::endl;
     }
-    load_nvic("test/input/nvic.txt", armcpu);
+    load_nvic("test/input_rit/nvic.txt", armcpu);
 
     cout << armcpu << endl;
-
+/*
     for(int i = 0; i < 10; i++) {
 
         auto inst_data   = fetch(mem, armcpu.PC(), true);
@@ -74,59 +72,59 @@ int main(int argc, char* argv[]) {
         cout << decode_data << endl;
         cout << newcpu << endl;
     }
+*/
 
-/*
-    for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
+///*
+    for(address_t addr = 0x00000220; addr <= 0x000002c6;) {
+
+        if(addr > 0x00000256 && addr < 0x00000270 ){
+            addr += 2; continue;
+        }
 
         auto inst_data   = fetch(mem, addr, true);
         
-        if(inst_data.type == fetched_instruction_t::t16) {
-            try {
-                auto dec_inst = decode_16bit_instruction(addr, inst_data.in);
-                cout << dec_inst << endl;
-            }
-            catch(runtime_error& ex){
-                cout << ex.what() << endl;
-            }
+        try {
+            auto dec_inst = decode(inst_data, addr);
+            cout << dec_inst << endl;
+        }
+        catch(runtime_error& ex){
+            cout << ex.what() << endl;
+        }
+
+        addr += 2;
+        if(inst_data.type == fetched_instruction_t::t32)
             addr += 2;
-        }
-        else {
-            // catch those pesky 32-bit decode errors
-            try {
-                auto decoded_inst = decode(inst_data, addr);
-                cout << decoded_inst << endl;
-            }
-            catch(runtime_error& ex) {
-                cout << ex.what() << endl;
-            } 
-            addr += 4;
-        }
-    
     }
-*/
+//*/
 
 //    cout << "=============================================\n";
 //    cout << "  disassembly complete";
 //    cout << "\n=============================================\n\n";
 
- /*   
+ ///*   
     for(address_t addr = 0x00000220; addr <= 0x000002c6;) {
-        
+
+        if(addr > 0x00000256 && addr < 0x00000270 ){
+            addr += 2; continue;
+        }
+
         auto inst_data   = fetch(mem, addr);
         auto decode_data = decode(inst_data, addr);
+        cout << decode_data;
         auto newcpu      = execute(armcpu, mem, decode_data);
 
-       std::cout << "\n" << newcpu << endl;
+        //std::cout << "Before" << armcpu << endl;
+        std::cout << newcpu << endl;
 
         addr +=2;
-        if(inst_data.t32)
+        if(inst_data.type == fetched_instruction_t::t32)
             addr+=2;
     }
 
     cout << "\n\n==========================================\n";
     cout << "  execute complete";
     cout << "\n==========================================\n\n";
-*/
+//*/
     return 0;
 }
 
