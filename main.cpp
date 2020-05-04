@@ -120,7 +120,7 @@ int main(int argc, char* argv[]) {
         std::cout << newcpu << endl;
 
         addr +=2;
-        if(inst_data.type == fetched_instruction_t::t32)
+        if(inst_data.type == fetched_instruction_t::t32) 
             addr+=2;
     }
 

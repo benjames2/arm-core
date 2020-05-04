@@ -1115,7 +1115,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                 return new_cpu;
             }
-        case i_NOP  :
+        case i_NOP  :// **DONE**
             {
                 //update PC and cycle count
                 new_cpu.PC() +=2;
@@ -1299,9 +1299,49 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 else
                     throw std::runtime_error("execute_t16(i_STRB) : Invalid meta opcode ");
             }
-        case i_STRH :// store halfword
+        case i_STRH :// **DONE** store halfword
+            {
+                if(inst.meta_opcode == meta_RRC){
+                    
+                    auto imm32 = inst.u32;
+                    auto Rb    = new_cpu.get_register_u32(inst.Rb);
+                    auto Rd    = new_cpu.get_register_u32(inst.Rd);
+                    
+                    auto addr    = Rb + imm32;
+                    auto Rd_byte = Rd & 0xFFFF;
+
+                    //Operation
+                    memory.store_u16(addr, Rd_byte);
+
+                    //update PC and cycle count
+                    new_cpu.PC()        += 2;
+                    new_cpu.cycle_count += 2;//could be one
+
+                    return new_cpu;
+                }
+                else if(inst.meta_opcode = meta_RRR){
+
+                    auto Rb    = new_cpu.get_register_u32(inst.Rb);
+                    auto Ro    = new_cpu.get_register_u32(inst.Ro);
+                    auto Rd    = new_cpu.get_register_u32(inst.Rd);
+                    
+                    auto addr    = Rb + Ro;
+                    auto Rd_byte = Rd & 0xFFFF;
+
+                    //Operation
+                    memory.store_u16(addr, Rd_byte);
+
+                    //update PC and cycle count
+                    new_cpu.PC()        += 2;
+                    new_cpu.cycle_count += 2;//could be one
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t16(i_STRH) : Invalid meta opcode ");
+            }
         case i_SWI  :// software interrupt
-        case i_SUB  :// subtract
+        case i_SUB  :// **DONE** subtract
             {
                 if(inst.meta_opcode == meta_RRR){
 
@@ -1426,8 +1466,6 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
                         new_cpu.PC() += 4;
                     else        
                         new_cpu.cycle_count++;
-
-                    
 
                     return new_cpu;
                 }
