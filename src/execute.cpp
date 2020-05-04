@@ -4,6 +4,9 @@
 #include <inc/decode_structure.h>
 #include <inc/execute.h>
 #include <inc/asm_math_interface.h>
+#include <inc/range.h>
+#include <inc/exceptions.h>
+#include <inc/stack_operations.h>
 
 // comment to avoid lots of information
 //#define EXECUTE_DEBUG
@@ -13,7 +16,9 @@ static armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& 
 
 armv7_m3 execute(armv7_m3& cpu, memory_t& memory, decoded_instruction_t& inst) {
 
+    cpu.set_stack_mode(armv7_m3::stack_mode_undefined);
     cpu.cpu_id++;
+
     switch(inst.type) {
         case decoded_instruction_t::t16:
             return ::execute_t16(cpu, memory, inst.di_t16);
@@ -1165,15 +1170,71 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                 return new_cpu;
             }
-        case i_POP  :// pop registers
-        case i_PUSH :// push registers
+        case i_POP  :// **DONE** pop registers
+            {
+                new_cpu.set_stack_mode(armv7_m3::stack_mode_FullDescending);
+
+                address_t sp = new_cpu.SP();
+                int numregs = 0;
+
+                // pop PC if needed
+                if(inst.meta_opcode == meta_C_pc) {
+                    sp = pop_word(new_cpu, memory, sp, 15);
+                    new_cpu.cycle_count++;
+                }
+                else if(inst.meta_opcode != meta_C)
+                    throw ExecuteError("execute(i_POP), invalid meta opcode");
+
+                // pop appropriate GP registers
+                for(int i : range(7, -1)) {
+                    if(inst.Rlist & (1 << i)) {
+                        sp = pop_word(new_cpu, memory, sp, i);
+                        numregs++;
+                    }
+                }
+
+                if(inst.meta_opcode != meta_C_pc)
+                    new_cpu.PC() += 2;
+
+                new_cpu.SP() = sp;
+                new_cpu.cycle_count += (numregs + 1);
+
+                return new_cpu;
+            }
+        case i_PUSH :// **DONE** push registers
+            {
+                new_cpu.set_stack_mode(armv7_m3::stack_mode_FullDescending);
+
+                address_t sp = new_cpu.SP();
+                int numregs = 0;
+
+                // push appropriate GP registers onto stack
+                for(int i : range(0, 8)) {
+                    if(inst.Rlist & (1 << i)) {
+                        sp = push_word(new_cpu, memory, sp, new_cpu.get_register_u32(i));
+                        numregs++;
+                    }
+                }
+
+                // push LR if needed
+                if(inst.meta_opcode == meta_C_lr)
+                    sp = push_word(new_cpu, memory, sp, new_cpu.LR());
+                else if(inst.meta_opcode != meta_C)
+                    throw ExecuteError("execute(i_PUSH), invalid meta opcode");
+
+                new_cpu.SP() = sp;
+                new_cpu.PC() += 2;
+                new_cpu.cycle_count += (numregs + 1);
+
+                return new_cpu;
+            }
         case i_ROR  :// rotate right
-            throw std::runtime_error("execute_t16() : opcode not implemented");
+            throw std::runtime_error("execute_t16(ROR) : opcode not implemented");
         case i_SBC  ://**DONE** subtract with carry
             {
                 auto Rd      = new_cpu.get_register_i32(inst.Rd);
                 auto Rs      = new_cpu.get_register_i32(inst.Rs);
-                int CarryBit = !new_cpu.get_CPSR_C();
+                int CarryBit = new_cpu.get_CPSR_C();
 
                 results_t result;
                 

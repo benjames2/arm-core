@@ -16,5 +16,6 @@ struct exname : public std::exception { \
 EXCEPTIONDECLARE(FetchError)
 EXCEPTIONDECLARE(DecodeError)
 EXCEPTIONDECLARE(ExecuteError)
+EXCEPTIONDECLARE(StackError)
 
 #undef EXCEPTIONDECLARE

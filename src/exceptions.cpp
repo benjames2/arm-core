@@ -12,5 +12,6 @@ const char* exname::what(void) const noexcept { \
 EXCEPTIONDEFINE(FetchError)
 EXCEPTIONDEFINE(DecodeError)
 EXCEPTIONDEFINE(ExecuteError)
+EXCEPTIONDEFINE(StackError)
 
 #undef EXCEPTIONDEFINE

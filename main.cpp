@@ -8,9 +8,11 @@
 #include <inc/asm_math_interface.h>
 #include <inc/fetch.h>
 #include <inc/execute.h>
+#include <inc/stack_operations.h>
 #include <inc/import.h>
 #include <inc/test.h>
 #include <inc/exceptions.h>
+#include <inc/range.h>
 
 #include "main.h"
 
@@ -23,16 +25,13 @@ void test_all_decode_fns(void);
 
 int main(int argc, char* argv[]) {
 
+    armv7_m3 armcpu;
     memory_t mem(memory_t::little_endian);
 
     //for(auto cptr : { "test/input/assembly-code.txt", "test/input/memory.txt" }) {
     //    load_memory_file(cptr, mem);
     //    std::cout << mem << std::endl;
     //}
-
-    // starting address for machine code
-    armv7_m3 armcpu;
-    //armcpu.PC() = 0x0224;
 
     auto sz = import_bin_file("armasm/fullthumb16/main.bin", mem, 0x00000000);
     cout << mem << endl;

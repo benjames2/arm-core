@@ -13,13 +13,9 @@ public:
 
     const static int stack_mode_undefined = -1;
     const static int stack_mode_FullAscending   = 0;
-    const static int stack_mode_IncrementBefore = 0;
     const static int stack_mode_FullDescending  = 1;
-    const static int stack_mode_DecrementBefore = 1;
     const static int stack_mode_EmptyAscending  = 2;
-    const static int stack_mode_IncrementAfter  = 2;
     const static int stack_mode_EmptyDescending = 3;
-    const static int stack_mode_DecrementAfter  = 3;
 
 //private:
 public:
@@ -43,8 +39,9 @@ public:
     void set_stack_mode(const int newmode);
     uint64_t get_cycle_count(void);
 
-    uint32_t& PC();
-    uint32_t& SP();
+    uint32_t& PC(void);
+    uint32_t& SP(void);
+    uint32_t& LR(void);
 
     // register data fetching methods
     uint32_t   get_register_u32(int reg);

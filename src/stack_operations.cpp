@@ -1,89 +1,84 @@
 #include <iostream>
 #include <inc/core.h>
 #include <inc/memory_pool.h>
+#include <inc/exceptions.h>
 
-void push_word(armv7_m3& cpu, memory_t& memory, uint32_t w) {
-
+address_t push_word(armv7_m3& cpu, memory_t& memory, address_t addr, uint32_t word) {
+    
     switch(cpu.get_stack_mode()) {
-        case armv7_m3::stack_mode_IncrementBefore:
-            cpu.SP() += 4;
-            memory.store_u32(cpu.SP(), w);
+        case armv7_m3::stack_mode_FullAscending:
+            addr += 4;
+            memory.store_u32(addr, word);
             break;
-        case armv7_m3::stack_mode_DecrementBefore:
-            cpu.SP() -= 4;
-            memory.store_u32(cpu.SP(), w);
+        case armv7_m3::stack_mode_FullDescending:
+            addr -= 4;
+            memory.store_u32(addr, word);
             break;
-        case armv7_m3::stack_mode_IncrementAfter:
-            memory.store_u32(cpu.SP(), w);
-            cpu.SP() += 4;
+        case armv7_m3::stack_mode_EmptyAscending:
+            memory.store_u32(addr, word);
+            addr += 4;
             break;
-        case armv7_m3::stack_mode_DecrementAfter:
-            memory.store_u32(cpu.SP(), w);
-            cpu.SP() -= 4;
-            break;
+        case armv7_m3::stack_mode_EmptyDescending:
+            memory.store_u32(addr, word);
+            addr -= 4;
         default:
-            throw std::runtime_error("armv7_m3::push_word : invalid stack mode specified");
+            throw StackError("when calling push_word(), invalid stack mode");
     }
 
+    return addr;
 }
 
-uint32_t pop_word(armv7_m3& cpu, memory_t& memory) {
-
-    uint32_t w = 0;
-
-    switch(cpu.get_stack_mode()) {
-        case armv7_m3::stack_mode_IncrementBefore:
-            cpu.SP() += 4;
-            w = memory.load_u32(cpu.SP());
+address_t push_word(armv7_m3& cpu, memory_t& memory, address_t addr, int32_t word) {
+    
+     switch(cpu.get_stack_mode()) {
+        case armv7_m3::stack_mode_FullAscending:
+            addr += 4;
+            memory.store_i32(addr, word);
             break;
-        case armv7_m3::stack_mode_DecrementBefore:
-            cpu.SP() -= 4;
-            w = memory.load_u32(cpu.SP());
+        case armv7_m3::stack_mode_FullDescending:
+            addr -= 4;
+            memory.store_i32(addr, word);
             break;
-        case armv7_m3::stack_mode_IncrementAfter:
-            w = memory.load_u32(cpu.SP());
-            cpu.SP() += 4;
+        case armv7_m3::stack_mode_EmptyAscending:
+            memory.store_i32(addr, word);
+            addr += 4;
             break;
-        case armv7_m3::stack_mode_DecrementAfter:
-            w = memory.load_u32(cpu.SP());
-            cpu.SP() -= 4;
-            break;
+        case armv7_m3::stack_mode_EmptyDescending:
+            memory.store_i32(addr, word);
+            addr -= 4;
         default:
-            throw std::runtime_error("armv7_m3::push_word : invalid stack mode specified");
+            throw StackError("when calling push_word(), invalid stack mode");
     }
 
-    return w;
+    return addr;
 }
 
-void push_word(armv7_m3& cpu, memory_t& memory, int32_t w) {
+address_t pop_word(armv7_m3& cpu, memory_t& memory, address_t addr, int regn) {
     
-    union {
-        int32_t i32;
-        uint32_t u32;
-    };
-    
-    i32 = w;
+    uint32_t val = 0;
 
-    // call the other push_word function
-    push_word(cpu, memory, u32);
+    switch(cpu.get_stack_mode()) {
+        case armv7_m3::stack_mode_FullAscending:
+            val = memory.load_u32(addr);
+            addr -= 4;
+            break;
+        case armv7_m3::stack_mode_FullDescending:
+            val = memory.load_u32(addr);
+            addr += 4;
+            break;
+        case armv7_m3::stack_mode_EmptyAscending:
+            addr -= 4;
+            val = memory.load_u32(addr);
+            break;
+        case armv7_m3::stack_mode_EmptyDescending:
+            addr += 4;
+            val = memory.load_u32(addr);
+            break;
+        default:
+            throw StackError("when calling pop_word(), invalid stack mode");
+    }
+
+    cpu.set_register_u32(regn, val);
+    return addr;
 }
 
-void push_register(armv7_m3& cpu, memory_t& memory, int regn) {
-    push_word(cpu, memory, cpu.get_register_u32(regn));
-}
-
-uint32_t push_word(armv7_m3& cpu, memory_t& memory, address_t addr, uint32_t w) {
-
-    
-
-}
-
-uint32_t push_word(armv7_m3& cpu, memory_t& memory, address_t addr, int32_t w) {
-    union {
-        int32_t i32;
-        uint32_t u32;
-    };
-
-    i32 = w;
-    return push_word(cpu, memory, addr, u32);
-}
