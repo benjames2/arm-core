@@ -28,6 +28,55 @@ int main(int argc, char* argv[]) {
     armv7_m3 armcpu;
     memory_t mem(memory_t::little_endian);
 
+    for(int i : range(0, 16)){
+        armcpu.set_register_u32(i, i);
+    }
+
+    armcpu.set_stack_mode(armv7_m3::stack_mode_FullDescending);
+
+    auto addr = push_word(armcpu, mem, 12, armcpu.get_register_u32(12));
+    auto addr1 = push_word(armcpu, mem, addr, armcpu.get_register_u32(11));
+    auto addr2 = push_word(armcpu, mem, addr1, armcpu.get_register_u32(10));
+
+    cout << addr  << endl;
+    cout << addr1 << endl;
+    cout << addr2 << endl;
+    cout << mem << endl;
+
+    auto addr3 = pop_word(armcpu, mem, addr2, 0);
+    auto addr4 = pop_word(armcpu, mem, addr3, 1);
+    auto addr5 = pop_word(armcpu, mem, addr4, 2);
+
+    cout << addr3  << endl;
+    cout << addr4 << endl;
+    cout << addr5 << endl;
+    cout << mem << endl;
+
+    cout << hex << armcpu.get_register_u32(0) << armcpu.get_register_u32(1) << armcpu.get_register_u32(2) << endl;
+
+
+    return 0;
+
+/*
+    armcpu.set_stack_mode(armv7_m3::stack_mode_FullAscending); 
+
+
+    auto addr  = push_word(armcpu, mem, 0, 0xEFBEADED);
+    auto addr1 = push_word(armcpu, mem, addr, 0xDEADBEEF);
+
+    auto addr2 = pop_word(armcpu, mem, addr1, 0);
+    auto addr3 = pop_word(armcpu, mem, addr2, 1);
+
+    cout << mem << "\n";
+    cout << addr << "\n";
+    cout << addr1 << "\n";
+    cout << addr2 << "\n";
+    cout << addr3 << "\n";
+    cout << hex << armcpu.get_register_u32(0) << "\n";
+    cout << hex << armcpu.get_register_u32(1) << "\n";
+
+    return 0;
+//*/
     //for(auto cptr : { "test/input/assembly-code.txt", "test/input/memory.txt" }) {
     //    load_memory_file(cptr, mem);
     //    std::cout << mem << std::endl;
@@ -58,8 +107,8 @@ int main(int argc, char* argv[]) {
         std::cout << mem << std::endl;
     }
     load_nvic("test/input/nvic.txt", armcpu);
-
     cout << armcpu << endl;
+
 /*
     for(int i = 0; i < 10; i++) {
 
