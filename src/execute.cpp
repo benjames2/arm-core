@@ -749,8 +749,28 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                 return new_cpu;
             }
-        case i_LDMIA:// load multiple
-            throw std::runtime_error("execute_t16 : opcode not implemented");
+        case i_LDMIA:// **DONE** load multiple
+            {
+                int  numregs   = 0;
+                auto base_addr = new_cpu.get_register_u32(inst.Rb);
+
+                //operation
+                for(int i : range(0, 8)){
+                    if(inst.Rlist & (1 << i)){
+                        new_cpu.set_register_u32(i, memory.load_u32(base_addr));
+                        base_addr += 4;
+                        numregs++;
+                    }
+                }
+                new_cpu.set_register_u32(inst.Rb, base_addr);
+
+                //upate PC and cycle count
+                new_cpu.PC() += 2;
+                new_cpu.cycle_count = (numregs + 1);
+
+                return new_cpu; 
+            }
+            //throw std::runtime_error("execute_t16 : opcode not implemented");
         case i_LDR  :// **DONE** load word
             if(inst.meta_opcode == meta_RC_pc) { // (6) Rd = word mem[PC + uimm]
 
@@ -1277,7 +1297,6 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 return new_cpu;
 
             }
-            //throw std::runtime_error("execute_t16(STMIA) : opcode not implemented");
         case i_STR  :// **DONE** store word
             {
                 if(inst.meta_opcode == meta_RRC){
