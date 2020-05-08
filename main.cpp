@@ -26,6 +26,9 @@ void import_bin(void);
 
 int main(int argc, char* argv[]) {
 
+    test_all_decode_fns();
+    return 0;
+
     armv7_m3 armcpu;
     memory_t mem(memory_t::little_endian);
 
@@ -109,10 +112,10 @@ int main(int argc, char* argv[]) {
 }
 
 void test_all_decode_fns(void) {
-    test_decode_fns("test/testfile.branch.txt");
-    test_decode_fns("test/testfile.bottom.txt");
-    test_decode_fns("test/testfile.txt");
-    test_32b_decode("test/testfile32b.txt");
+    test_decode_fns("test/instruction_test/testfile.branch.txt");
+    test_decode_fns("test/instruction_test/testfile.bottom.txt");
+    test_decode_fns("test/instruction_test/testfile.txt");
+    test_32b_decode("test/instruction_test/testfile32b.txt");
     std::cout << "INSTRUCTION TESTS PASSED\n\n" << std::flush;
 }
 
