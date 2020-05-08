@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
         load_memory_file(cptr, mem);
         std::cout << mem << std::endl;
     }
-    load_nvic("test/input_ext/nvic.txt", armcpu);
+    load_nvic_file("test/input_ext/nvic.txt", armcpu);
     cout << armcpu << endl;
 
 
