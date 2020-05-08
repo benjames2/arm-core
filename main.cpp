@@ -26,24 +26,21 @@ void import_bin(void);
 
 int main(int argc, char* argv[]) {
 
-    test_all_decode_fns();
-    return 0;
-
     armv7_m3 armcpu;
     memory_t mem(memory_t::little_endian);
 
-    for(auto cptr : { "test/input/assembly-code.txt", "test/input/memory.txt" }) {
+    for(auto cptr : { "test/input_ext/assembly-code.txt", "test/input_ext/memory.txt" }) {
         load_memory_file(cptr, mem);
         std::cout << mem << std::endl;
     }
-    load_nvic("test/input/nvic.txt", armcpu);
+    load_nvic("test/input_ext/nvic.txt", armcpu);
     cout << armcpu << endl;
 
 
 
 ///*
     int count = 1;
-    for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
+    for(address_t addr = 0x00000238; addr <= 0x0000027C;) {
 
        // if(addr > 0x00000256 && addr < 0x00000270 ){
        //     addr += 2; continue;
@@ -71,6 +68,7 @@ int main(int argc, char* argv[]) {
     cout << "  disassembly complete";
     cout << "\n=============================================\n\n";
 
+    return 0;
 ///*
     for(int i = 0; i < 10; i++) {
 
