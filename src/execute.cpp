@@ -655,6 +655,36 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                 return new_cpu;
             }
+        case i_CBNZ: 
+            {
+                auto pc = new_cpu.PC();
+                pc += 4; // prefetch operation
+
+                //operation
+                results_t result;
+                auto msg = gp_operation(&result, pc, inst.u32, 0, x86_asm_ADD);
+                new_cpu.PC() = result.u32;
+
+                //Set cycle count
+                new_cpu.cycle_count += 3;
+
+                return new_cpu;
+            }
+        case i_CBZ: 
+            {
+                auto pc = new_cpu.PC();
+                pc += 4; // prefetch operation
+
+                //operation
+                results_t result;
+                auto msg = gp_operation(&result, pc, inst.u32, 0, x86_asm_ADD);
+                new_cpu.PC() = result.u32;
+
+                //Set cycle count
+                new_cpu.cycle_count += 3;
+
+                return new_cpu;
+            }
         case i_CMN  :// **DONE** compare negative
             {
                 results_t result;
