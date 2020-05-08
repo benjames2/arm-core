@@ -17,7 +17,6 @@ static armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& 
 armv7_m3 execute(armv7_m3& cpu, memory_t& memory, decoded_instruction_t& inst) {
 
     cpu.set_stack_mode(armv7_m3::stack_mode_undefined);
-    cpu.cpu_id++;
 
     switch(inst.type) {
         case decoded_instruction_t::t16:
@@ -36,6 +35,8 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
     // first things first, switch by opcode
 
     auto new_cpu = cpu;
+
+    new_cpu.cpu_id++;
 
     switch(inst.opcode) {
         case i_ADC  :// **DONE** add with carry
@@ -1536,6 +1537,8 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
     
     auto new_cpu = cpu;
+
+    new_cpu.cpu_id++;
 
     switch (inst.opcode){
 

@@ -72,11 +72,11 @@ instruction_t decode_16bit_instruction(unsigned int PC, unsigned int instruction
                     return decode_format_14(PC, instruction_word);
 
                 flag = (instruction_word >> 0) & 0x1FFF;
-                    if(flag == 0x1F00){
-                        instruction_t inst;
-                        inst.opcode = i_NOP;
-                        return inst;
-                    }
+                if(flag == 0x1F00){
+                    instruction_t inst;
+                    inst.opcode = i_NOP;
+                    return inst;
+                }
 
                 throw std::runtime_error(
                     "decode_instruction (superfamily: " + 
