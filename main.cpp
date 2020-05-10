@@ -68,7 +68,6 @@ int main(int argc, char* argv[]) {
     cout << "  disassembly complete";
     cout << "\n=============================================\n\n";
 
-    return 0;
 ///*
     for(int i = 0; i < 10; i++) {
 

@@ -806,10 +806,12 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
             if(inst.meta_opcode == meta_RC_pc) { // (6) Rd = word mem[PC + uimm]
 
                 uint32_t pc = new_cpu.PC();
-                pc += 4; // prefetch operation
+                pc += 2;                     // prefetch operation
+                if(pc & (1 << 1)) pc += 2;   // bit [1] of PC is forced to be zero to ensure it is word-aligned
+                
                 uint32_t uimm = inst.u32;
 
-                auto addr = pc + uimm;
+                auto addr = pc + uimm; std::cout << "LDR addr: 0x" << std::hex << addr << " "; 
                 auto bytes = memory.load_u32(addr);
                 new_cpu.set_register_u32(inst.Rd, bytes);
 
