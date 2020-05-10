@@ -118,19 +118,27 @@ std::ostream& operator<<(std::ostream& os, armv7_m3& cpu) {
 
         os << "R" << std::dec << i; 
         if(i < 10)
-            os << std::hex << "  :   Ox" << padhexnumber(cpu.get_register_i32(i)) << "\n";
-        else
-            os << std::hex << " :   Ox" << padhexnumber(cpu.get_register_i32(i)) << "\n";
+            os << std::hex << "     :  Ox" << padhexnumber(cpu.get_register_i32(i)) << "\n";
+        else{
+            if(i < 13) 
+                os << std::hex << "    :  Ox" << padhexnumber(cpu.get_register_i32(i)) << "\n";
+            if(i == 13)
+                os << std::hex << "(SP):  Ox" << padhexnumber(cpu.get_register_i32(i)) << "\n";
+            if(i == 14)
+                os << std::hex << "(LR):  Ox" << padhexnumber(cpu.get_register_i32(i)) << "\n";
+            if(i == 15)
+                os << std::hex << "(PC):  Ox" << padhexnumber(cpu.get_register_i32(i)) << "\n";
+        }
     }
 
-    os << "xPSR:   0x" << padhexnumber(cpu.CPSR) << "\n";
+    os << "xPSR   :  0x" << padhexnumber(cpu.CPSR) << "\n";
 
-    os << "N   Z   C   V    Q\n";
+    os << "N    Z    C    V   Q\n";
     os << 
-        cpu.get_CPSR_N() << "   " <<
-        cpu.get_CPSR_Z() << "   " <<
-        cpu.get_CPSR_C() << "   " <<
-        cpu.get_CPSR_V() << "    " <<
+        cpu.get_CPSR_N() << "    " <<
+        cpu.get_CPSR_Z() << "    " <<
+        cpu.get_CPSR_C() << "    " <<
+        cpu.get_CPSR_V() << "   " <<
         cpu.get_CPSR_Q() << "\n" << std::flush;
 
     return os;
