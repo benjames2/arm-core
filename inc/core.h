@@ -11,7 +11,7 @@ public:
         uint32_t u32;
     };
 
-    const static int stack_mode_undefined = -1;
+    const static int stack_mode_undefined       = -1;
     const static int stack_mode_FullAscending   = 0;
     const static int stack_mode_FullDescending  = 1;
     const static int stack_mode_EmptyAscending  = 2;
@@ -101,6 +101,6 @@ public:
     int  get_CPSR_M( void); // Mode field (4:0)
 
     friend std::ostream& operator<<(std::ostream& os, armv7_m3& cpu);
-
+    
 };
 

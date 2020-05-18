@@ -12,6 +12,10 @@ armv7_m3::armv7_m3(void) {
     this->cpu_id      = 0;
 }
 
+uint64_t armv7_m3::get_cycle_count(void){
+    return this->cycle_count;
+}
+
 // register access
 armv7_m3::register_t armv7_m3::get_register(int reg) {
     if(reg > 15 || reg < 0)
@@ -139,7 +143,9 @@ std::ostream& operator<<(std::ostream& os, armv7_m3& cpu) {
         cpu.get_CPSR_Z() << "    " <<
         cpu.get_CPSR_C() << "    " <<
         cpu.get_CPSR_V() << "   " <<
-        cpu.get_CPSR_Q() << "\n" << std::flush;
+        cpu.get_CPSR_Q() << "\n";
+        
+    os << "Cycle  : " << std::dec << cpu.get_cycle_count() << std::endl;
 
     return os;
 }
