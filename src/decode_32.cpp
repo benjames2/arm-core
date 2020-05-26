@@ -3,6 +3,15 @@
 
 #define THROW_UNDEFINED_T32(inst_f) throw std::runtime_error(#inst_f " : not implemented")
 
+//This function performs the check for the register numbers 13 and 15 that are disallowed for many Thumb
+//register specifiers. Page AppxD-22
+static bool BadReg(int reg){
+    if(reg == 13 || reg == 15)
+        return true;
+    else
+        return false;
+}
+
 //Modified immediate constants in Thumb-2 instructions on Table A5-11
 static int ThumbExpandImm(int i, int imm3, int imm8){
 
@@ -38,7 +47,7 @@ static int ThumbExpandImm(int i, int imm3, int imm8){
                     imm32 = imm32 | (imm8 << 24);
                     return imm32;
                 }
-                else {
+                else{
                     imm32 = imm32 | (imm8 << 23);
                     return imm32;
                 }
@@ -160,6 +169,8 @@ instruction_32b_t decode_32b_A6_18_ADC_imm(      unsigned int PC, unsigned int i
 instruction_32b_t decode_32b_A6_22_ADD_imm(      unsigned int PC, unsigned int instruction_word); //add mmediate
 instruction_32b_t decode_32b_A6_30_ADR(          unsigned int PC, unsigned int instruction_word); //
 instruction_32b_t decode_32b_A6_32_AND_imm(      unsigned int PC, unsigned int instruction_word); //bitwise and immediate
+instruction_32b_t decode_32b_A6_40_B(            unsigned int PC, unsigned int instruction_word);
+instruction_32b_t decode_32b_A6_49_BL(           unsigned int PC, unsigned int instruction_word);
 instruction_32b_t decode_32b_A6_42_BFC(          unsigned int PC, unsigned int instruction_word); //
 instruction_32b_t decode_32b_A6_43_BFI(          unsigned int PC, unsigned int instruction_word); //
 instruction_32b_t decode_32b_A6_44_BIC_imm(      unsigned int PC, unsigned int instruction_word); //bitwise clear immeddiate
@@ -171,17 +182,35 @@ instruction_32b_t decode_32b_A6_88_LDR_imm_T3(   unsigned int PC, unsigned int i
 instruction_32b_t decode_32b_A6_88_LDR_imm_T4(   unsigned int PC, unsigned int instruction_word); //load register immediate T4 encoding
 instruction_32b_t decode_32b_A6_90_LDR_lit(      unsigned int PC, unsigned int instruction_word); //load register (literal)
 instruction_32b_t decode_32b_A6_92_LDR_reg(      unsigned int PC, unsigned int instruction_word); //load register (register)
+instruction_32b_t decode_32b_A6_94_LDRB_imm(     unsigned int PC, unsigned int instruction_word);
+instruction_32b_t decode_32b_A6_96_LDRB_lit(     unsigned int PC, unsigned int instruction_word);
+instruction_32b_t decode_32b_A6_98_LDRB_reg(     unsigned int PC, unsigned int instruction_word);
+instruction_32b_t decode_32b_A6_100_LDRBT(       unsigned int PC, unsigned int instruction_word);
 instruction_32b_t decode_32b_A6_102_LDRD_imm(    unsigned int PC, unsigned int instruction_word); //load register dual immediate
 instruction_32b_t decode_32b_A6_104_LDRD_lit(    unsigned int PC, unsigned int instruction_word); //load register dual (literal)
 instruction_32b_t decode_32b_A6_106_LDREX(       unsigned int PC, unsigned int instruction_word); //load register exclusive
 instruction_32b_t decode_32b_A6_107_LDREXB(      unsigned int PC, unsigned int instruction_word); //load register exclusive byte
 instruction_32b_t decode_32b_A6_108_LDREXH(      unsigned int PC, unsigned int instruction_word); //load register exclusive halfword
+instruction_32b_t decode_32b_A6_118_LDRSB_imm(   unsigned int PC, unsigned int instruction_word);
+instruction_32b_t decode_32b_A6_120_LDRSB_lit(   unsigned int PC, unsigned int instruction_word);
+instruction_32b_t decode_32b_A6_122_LDRSB_reg(   unsigned int PC, unsigned int instruction_word);
+instruction_32b_t decode_32b_A6_124_LDRSBT(      unsigned int PC, unsigned int instruction_word);
 instruction_32b_t decode_32b_A6_133_LDRT(        unsigned int PC, unsigned int instruction_word); //load register unprivileged
 instruction_32b_t decode_32b_A6_148_MOV_imm(     unsigned int PC, unsigned int instruction_word); //move immediate
 instruction_32b_t decode_32b_A6_153_MOVT(        unsigned int PC, unsigned int instruction_word); //
+instruction_32b_t decode_32b_A6_158_MRS(         unsigned int PC, unsigned int instruction_word);
+instruction_32b_t decode_32b_A6_159_MSR(         unsigned int PC, unsigned int instruction_word);
 instruction_32b_t decode_32b_A6_162_MVN_imm(     unsigned int PC, unsigned int instruction_word); //bitwise not immediate
 instruction_32b_t decode_32b_A6_168_ORN_imm(     unsigned int PC, unsigned int instruction_word); //bitwise OR NOT immediate
 instruction_32b_t decode_32b_A6_172_ORR_imm(     unsigned int PC, unsigned int instruction_word); //bitwise inclusive OR
+instruction_32b_t decode_32b_A6_176_PLD_imm_T1(  unsigned int PC, unsigned int instruction_word);
+instruction_32b_t decode_32b_A6_176_PLD_imm_T2(  unsigned int PC, unsigned int instruction_word);
+instruction_32b_t decode_32b_A6_176_PLD_lit_T3(  unsigned int PC, unsigned int instruction_word);
+instruction_32b_t decode_32b_A6_178_PLD_reg(     unsigned int PC, unsigned int instruction_word);
+instruction_32b_t decode_32b_A6_180_PLI_imm_T1(  unsigned int PC, unsigned int instruction_word);
+instruction_32b_t decode_32b_A6_180_PLI_imm_T2(  unsigned int PC, unsigned int instruction_word);
+instruction_32b_t decode_32b_A6_180_PLI_lit_T3(  unsigned int PC, unsigned int instruction_word);
+instruction_32b_t decode_32b_A6_182_PLI_reg(     unsigned int PC, unsigned int instruction_word);
 instruction_32b_t decode_32b_A6_184_POP(         unsigned int PC, unsigned int instruction_word); //pop multiple registers
 instruction_32b_t decode_32b_A6_186_PUSH(        unsigned int PC, unsigned int instruction_word); //push multiple registers
 instruction_32b_t decode_32b_A6_198_RSB_imm(     unsigned int PC, unsigned int instruction_word); //reverse substact immediate
@@ -454,7 +483,57 @@ instruction_32b_t decode_32b_A5_17(unsigned int PC, unsigned int instruction_wor
 }
 
 instruction_32b_t decode_32b_A5_18(unsigned int PC, unsigned int instruction_word) {
-    throw std::runtime_error("decode_32b_A5_18 : undefined");
+    
+    int op1 = (instruction_word >> (15 + 5)) & 0x7F;
+    int op2 = (instruction_word >> 12) & 0x07;
+
+    if((op2 == 0b010) && (op1 == 0b1111111)){
+        throw std::runtime_error("in decode_32b_A5_18: permanently undefined");
+    }
+
+    else if((op2 == 0b000) || (op2 == 0b010)){
+        int mask = 0b0111000;
+        if((op1 & mask) != 0b0111000)
+            return decode_32b_A6_40_B(PC, instruction_word);
+
+        else if((op1 == 0b0111000) || (op1 == 0b0111001))
+            return decode_32b_A6_159_MSR(PC, instruction_word);
+
+        else if(op1 == 0b0111010)
+            return decode_32b_A5_19_H(PC, instruction_word);
+
+        else if(op1 == 0b0111011)
+            return decode_32b_A5_19_M(PC, instruction_word);
+
+        else if((op1 == 0111110) || (op1 == 0b0111111))
+            return decode_32b_A6_158_MRS(PC, instruction_word);
+        
+        else
+            throw std::runtime_error("decode_32b_A5_18: invalid op1 value");
+
+    }
+
+    else if((op2 == 0b001) || (op2 == 0b011))
+        return decode_32b_A6_40_B(PC, instruction_word);
+
+    else if((op2 == 0b100) || (op2 == 0b110))
+        throw std::runtime_error("decode_32b_A5_18: nothing is happening here");
+
+    else if((op2 == 0b101) || (op2 == 0b111))
+        return decode_32b_A6_49_BL(PC, instruction_word);
+
+    else
+        throw std::runtime_error("decode_32b_A5_18 : invalid instruction encoding");
+}
+
+instruction_32b_t  decode_32b_A5_19_H(unsigned int PC, unsigned int instruction_word){
+
+    throw std::runtime_error("decode_32b_A5_19_H : undefined");
+}
+
+instruction_32b_t  decode_32b_A5_19_M(unsigned int PC, unsigned int instruction_word){
+
+    throw std::runtime_error("decode_32b_A5_19_H : undefined");
 }
 
 instruction_32b_t decode_32b_A5_20(unsigned int PC, unsigned int instruction_word) {
@@ -606,7 +685,109 @@ instruction_32b_t decode_32b_A5_23(unsigned int PC, unsigned int instruction_wor
 }
 
 instruction_32b_t decode_32b_A5_24(unsigned int PC, unsigned int instruction_word) {
-    throw std::runtime_error("decode_32b_A5_24 : undefined");
+    
+    int Rn  = (instruction_word >> (15 + 1)) & 0x0F;
+    int Rt  = (instruction_word >> 12) & 0x0F;
+    int op1 = (instruction_word >> (15 + 8)) & 0x03;
+    int op2 = (instruction_word >> 6) & 0x3F;
+
+    int mask;
+
+    if(op1 == 0b00){
+        mask = 0b100100;
+        if(((op2 & mask) == 0b100100) && (Rn != 0b1111))
+            return decode_32b_A6_94_LDRB_imm(PC, instruction_word);
+
+        mask = 0b111100;
+        if(((op2 & mask) == 0b110000) && (Rn != 0b1111) && (Rt != 0b1111))
+            return decode_32b_A6_94_LDRB_imm(PC, instruction_word);
+
+        mask = 0b111100;
+        if(((op2 & mask) == 0b111000) && (Rn != 0b1111))
+            return decode_32b_A6_100_LDRBT(PC, instruction_word);
+
+        if((Rn == 0b1111) && (Rt != 0b1111))
+            return decode_32b_A6_96_LDRB_lit(PC, instruction_word);
+
+        if((op2 == 0b000000) && (Rn != 0b1111) && (Rt != 0b1111))
+            return decode_32b_A6_98_LDRB_reg(PC, instruction_word);
+
+        if(((op2 & mask) == 0b110000) && (Rn != 0b1111) && (Rt == 0b1111))
+            return decode_32b_A6_176_PLD_imm_T2(PC, instruction_word);
+
+        if((op2 == 0b000000) && (Rn != 0b1111) && (Rt == 0b1111))
+            return decode_32b_A6_178_PLD_reg(PC, instruction_word);
+
+        if((Rn == 0b1111) && (Rt == 0b1111))
+            return decode_32b_A6_176_PLD_lit_T3(PC, instruction_word);
+
+        throw std::runtime_error("decode_32b_A5_24 : invalid instruction encoding for op1 == 0)");
+    }
+
+    else if(op1 == 0b01){
+        if((Rn != 0b1111) && (Rt != 0b1111))
+            return decode_32b_A6_94_LDRB_imm(PC, instruction_word);
+
+        if((Rn == 0b1111) && (Rt != 0b1111))
+            return decode_32b_A6_96_LDRB_lit(PC, instruction_word);
+
+        if((Rn != 0b1111) && (Rt == 0b1111))
+            return decode_32b_A6_176_PLD_imm_T1(PC, instruction_word);
+
+        if((Rn == 0b1111) && (Rt == 0b1111))
+            return decode_32b_A6_176_PLD_lit_T3(PC, instruction_word);
+
+        throw std::runtime_error("decode_32b_A5_24 : invalid instruction encoding for op1 == 1)");
+    }
+
+    else if(op1 == 0b10){
+        mask = 0b100100;
+        if(((op2 & mask) == 0b100100) && (Rn != 0b1111))
+            return decode_32b_A6_118_LDRSB_imm(PC, instruction_word);
+
+        mask = 0b111100;
+        if(((op2 & mask) == 0b110000) && (Rn != 0b1111) && (Rt != 0b1111))
+            return decode_32b_A6_118_LDRSB_imm(PC, instruction_word);
+
+        if(((op2 & mask) == 0b111000) && (Rn != 0b1111))
+            return decode_32b_A6_124_LDRSBT(PC, instruction_word);
+
+        if((Rn == 0b1111) && (Rt != 0b1111))
+            return decode_32b_A6_120_LDRSB_lit(PC, instruction_word);
+
+        if((op2 == 0b000000) && (Rn != 0b1111) && (Rt != 0b1111))
+            return decode_32b_A6_122_LDRSB_reg(PC, instruction_word);
+
+        mask = 0b111100;
+        if(((op2 & mask) == 0b110000) && (Rn != 0b1111) && (Rt == 0b1111))
+            return decode_32b_A6_180_PLI_imm_T2(PC, instruction_word);
+
+        if((Rn == 0b1111) && (Rt == 0b1111))
+            return decode_32b_A6_180_PLI_lit_T3(PC, instruction_word);
+
+        if((op2 == 0b000000) && (Rn != 0b1111) && (Rt == 0b1111))
+            return decode_32b_A6_182_PLI_reg(PC, instruction_word);
+
+        throw std::runtime_error("decode_32b_A5_24 : invalid instruction encoding for op1 == 2)");
+    }
+
+    else if(op1 == 0b11){
+        if((Rn != 0b1111) && (Rt != 0b1111))
+            return decode_32b_A6_118_LDRSB_imm(PC, instruction_word);
+
+        if((Rn == 0b1111) && (Rt != 0b1111))
+            return decode_32b_A6_120_LDRSB_lit(PC, instruction_word);
+
+        if((Rn != 0b1111) && (Rt == 0b1111))
+             return decode_32b_A6_180_PLI_imm_T1(PC, instruction_word);
+
+        if((Rn == 0b1111) && (Rt == 0b1111))
+            return decode_32b_A6_180_PLI_lit_T3(PC, instruction_word);
+
+    }
+
+    else 
+        throw std::runtime_error("decode_32b_A5_24 : invalid instruction encoding for op1 == 3)");
 }
 
 instruction_32b_t decode_32b_A5_25(unsigned int PC, unsigned int instruction_word) {
@@ -724,7 +905,7 @@ instruction_32b_t decode_32b_A6_22_ADD_imm(unsigned int PC, unsigned int instruc
 
 instruction_32b_t decode_32b_A6_30_ADR(unsigned int PC, unsigned int instruction_word){
 
-    THROW_UNDEFINED_T32(__FUNCTION__);
+    THROW_UNDEFINED_T32(ADR);
 }
 
 instruction_32b_t decode_32b_A6_32_AND_imm(unsigned int PC, unsigned int instruction_word){
@@ -744,17 +925,27 @@ instruction_32b_t decode_32b_A6_32_AND_imm(unsigned int PC, unsigned int instruc
 
     in.i32 = ThumbExpandImm(i, imm3, imm8);
 
-
     return in;
+}
+
+instruction_32b_t decode_32b_A6_40_B(unsigned int PC, unsigned int instruction_word){
+
+    THROW_UNDEFINED_T32(B);
+}
+
+instruction_32b_t decode_32b_A6_49_BL(unsigned int PC, unsigned int instruction_word){
+
+    THROW_UNDEFINED_T32(BL);
 }
 
 instruction_32b_t decode_32b_A6_42_BFC(unsigned int PC, unsigned int instruction_word){
 
-    THROW_UNDEFINED_T32(__FUNCTION__);
+    THROW_UNDEFINED_T32(BFC);
 }
+
 instruction_32b_t decode_32b_A6_43_BFI(unsigned int PC, unsigned int instruction_word){
 
-    THROW_UNDEFINED_T32(__FUNCTION__);
+    THROW_UNDEFINED_T32(BFI);
 }
 
 instruction_32b_t decode_32b_A6_44_BIC_imm(unsigned int PC, unsigned int instruction_word){
@@ -909,6 +1100,33 @@ instruction_32b_t decode_32b_A6_92_LDR_reg(unsigned int PC, unsigned int instruc
     return in;
 }
 
+instruction_32b_t decode_32b_A6_94_LDRB_imm(unsigned int PC, unsigned int instruction_word){
+    THROW_UNDEFINED_T32(LDRB immediate);
+}
+
+instruction_32b_t decode_32b_A6_96_LDRB_lit(unsigned int PC, unsigned int instruction_word){
+    THROW_UNDEFINED_T32(LDRB literal);
+}
+
+instruction_32b_t decode_32b_A6_98_LDRB_reg(unsigned int PC, unsigned int instruction_word){
+
+    instruction_32b_t in;
+
+    in.opcode      = t32_LDRB;
+    in.meta_opcode = meta_t32_reg;
+
+    in.Rn  = (instruction_word >> (15 + 1)) & 0x0F;
+    in.Rt  = (instruction_word >> 12) & 0x0F;
+    in.Rm  = (instruction_word >> 0) & 0x0F;
+    in.u32 = (instruction_word >> 4) & 0x03;
+
+    return in;
+}
+
+instruction_32b_t decode_32b_A6_100_LDRBT(unsigned int PC, unsigned int instruction_word){
+    THROW_UNDEFINED_T32(LDRBT);
+}
+
 instruction_32b_t decode_32b_A6_102_LDRD_imm(unsigned int PC, unsigned int instruction_word){
     
     instruction_32b_t in;
@@ -984,6 +1202,22 @@ instruction_32b_t decode_32b_A6_108_LDREXH(unsigned int PC, unsigned int instruc
     return in;
 }
 
+instruction_32b_t decode_32b_A6_118_LDRSB_imm(unsigned int PC, unsigned int instruction_word){
+    THROW_UNDEFINED_T32(__FUNCTION__);
+}
+
+instruction_32b_t decode_32b_A6_120_LDRSB_lit(unsigned int PC, unsigned int instruction_word){
+    THROW_UNDEFINED_T32(__FUNCTION__);
+}
+
+instruction_32b_t decode_32b_A6_122_LDRSB_reg(unsigned int PC, unsigned int instruction_word){
+    THROW_UNDEFINED_T32(__FUNCTION__);
+}
+
+instruction_32b_t decode_32b_A6_124_LDRSBT(unsigned int PC, unsigned int instruction_word){
+    THROW_UNDEFINED_T32(__FUNCTION__);
+}
+
 instruction_32b_t decode_32b_A6_133_LDRT(unsigned int PC, unsigned int instruction_word){
 
     instruction_32b_t in;
@@ -1020,7 +1254,17 @@ instruction_32b_t decode_32b_A6_148_MOV_imm(unsigned int PC, unsigned int instru
 
 instruction_32b_t decode_32b_A6_153_MOVT(unsigned int PC, unsigned int instruction_word){
 
-    THROW_UNDEFINED_T32(__FUNCTION__);
+    THROW_UNDEFINED_T32(MOVT);
+}
+
+instruction_32b_t decode_32b_A6_158_MRS(unsigned int PC, unsigned int instruction_word){
+
+    THROW_UNDEFINED_T32(MRS);
+}
+
+instruction_32b_t decode_32b_A6_159_MSR(unsigned int PC, unsigned int instruction_word){
+
+    THROW_UNDEFINED_T32(MSR);
 }
 
 instruction_32b_t decode_32b_A6_162_MVN_imm(unsigned int PC, unsigned int instruction_word){
@@ -1079,6 +1323,31 @@ instruction_32b_t decode_32b_A6_172_ORR_imm(unsigned int PC, unsigned int instru
     in.i32 = ThumbExpandImm(i, imm3, imm8);
     
     return in;
+}
+
+instruction_32b_t decode_32b_A6_176_PLD_imm_T1(unsigned int PC, unsigned int instruction_word){
+    THROW_UNDEFINED_T32(__FUNCTION__);
+}
+instruction_32b_t decode_32b_A6_176_PLD_imm_T2(unsigned int PC, unsigned int instruction_word){
+    THROW_UNDEFINED_T32(__FUNCTION__);
+}
+instruction_32b_t decode_32b_A6_176_PLD_lit_T3(unsigned int PC, unsigned int instruction_word){
+    THROW_UNDEFINED_T32(__FUNCTION__);
+}
+instruction_32b_t decode_32b_A6_178_PLD_reg(unsigned int PC, unsigned int instruction_word){
+    THROW_UNDEFINED_T32(__FUNCTION__);
+}
+instruction_32b_t decode_32b_A6_180_PLI_imm_T1(unsigned int PC, unsigned int instruction_word){
+    THROW_UNDEFINED_T32(__FUNCTION__);
+}
+instruction_32b_t decode_32b_A6_180_PLI_imm_T2(unsigned int PC, unsigned int instruction_word){
+    THROW_UNDEFINED_T32(__FUNCTION__);
+}
+instruction_32b_t decode_32b_A6_180_PLI_lit_T3(unsigned int PC, unsigned int instruction_word){
+    THROW_UNDEFINED_T32(__FUNCTION__);
+}
+instruction_32b_t decode_32b_A6_182_PLI_reg(unsigned int PC, unsigned int instruction_word){
+    THROW_UNDEFINED_T32(__FUNCTION__);
 }
 
 instruction_32b_t decode_32b_A6_184_POP(unsigned int PC, unsigned int instruction_word){
@@ -1144,7 +1413,7 @@ instruction_32b_t decode_32b_A6_202_SBC_imm(unsigned int PC, unsigned int instru
     return in;
 }
 
-instruction_32b_t decode_32b_A6_206_SBFX(unsigned int PC, unsigned int instruction_word){
+instruction_32b_t decode_32b_A6_206_SBFX(unsigned int PC, unsigned int instruction_word) {
 
 }
 
@@ -1184,12 +1453,13 @@ instruction_32b_t decode_32b_A6_220_STR_imm_T3(unsigned int PC, unsigned int ins
 
     instruction_32b_t in;
 
-    in.opcode = t32_STR;
+    in.opcode      = t32_STR;
     in.meta_opcode = meta_t32_imm;
+    in.encoding    = instruction_32b_t::encoding_T3;
 
-    in.Rn  = (instruction_word >>(15 +1)) & 0x0F;
-    in.Rt  = (instruction_word >> 12) & 0x0F;
-    in.u32 = (instruction_word >> 0) & 0xFFF;
+    in.Rn          = (instruction_word >>(15 +1)) & 0x0F;
+    in.Rt          = (instruction_word >> 12) & 0x0F;
+    in.u32         = (instruction_word >> 0) & 0xFFF;
 
     return in;
 }
@@ -1198,14 +1468,16 @@ instruction_32b_t decode_32b_A6_220_STR_imm_T4(unsigned int PC, unsigned int ins
 
     instruction_32b_t in;
 
-    in.opcode = t32_STR;
+    in.opcode      = t32_STR;
+    in.meta_opcode = meta_t32_imm;
+    in.encoding    = instruction_32b_t::encoding_T4;
 
-    in.P   = (instruction_word >> 10) & 0x01;
-    in.U   = (instruction_word >>  9) & 0x01;
-    in.W   = (instruction_word >>  8) & 0x01;
-    in.Rn  = (instruction_word >> (15 +1)) & 0x0F;
-    in.Rt  = (instruction_word >> 12) & 0x0F;
-    in.u32 = (instruction_word >> 0) & 0xFF;
+    in.P           = (instruction_word >> 10) & 0x01;
+    in.U           = (instruction_word >>  9) & 0x01;
+    in.W           = (instruction_word >>  8) & 0x01;
+    in.Rn          = (instruction_word >> (15 +1)) & 0x0F;
+    in.Rt          = (instruction_word >> 12) & 0x0F;
+    in.u32         = (instruction_word >> 0) & 0xFF;
 
     return in;
 }
@@ -1224,12 +1496,12 @@ instruction_32b_t decode_32b_A6_224_STRB_imm_T2(unsigned int PC, unsigned int in
 
     instruction_32b_t in;
     
-    in.opcode = t32_STRB;
+    in.opcode      = t32_STRB;
     in.meta_opcode = meta_t32_imm;
 
-    in.Rn  = (instruction_word >>(15 +1)) & 0x0F;
-    in.Rt  = (instruction_word >> 12) & 0x0F;
-    in.u32 = (instruction_word >> 0) & 0xFFF;
+    in.Rn          = (instruction_word >>(15 +1)) & 0x0F;
+    in.Rt          = (instruction_word >> 12) & 0x0F;
+    in.u32         = (instruction_word >> 0) & 0xFFF;
 
 
     return in;
@@ -1243,12 +1515,12 @@ instruction_32b_t decode_32b_A6_224_STRB_imm_T3(unsigned int PC, unsigned int in
     in.meta_opcode = meta_t32_imm;
     in.encoding    = instruction_32b_t::encoding_T3;
 
-    in.P   = (instruction_word >> 10) & 0x01;
-    in.U   = (instruction_word >>  9) & 0x01;
-    in.W   = (instruction_word >>  8) & 0x01;
-    in.Rn  = (instruction_word >> (15 +1)) & 0x0F;
-    in.Rt  = (instruction_word >> 12) & 0x0F;
-    in.u32 = (instruction_word >> 0) & 0xFF;
+    in.P           = (instruction_word >> 10) & 0x01;
+    in.U           = (instruction_word >>  9) & 0x01;
+    in.W           = (instruction_word >>  8) & 0x01;
+    in.Rn          = (instruction_word >> (15 +1)) & 0x0F;
+    in.Rt          = (instruction_word >> 12) & 0x0F;
+    in.u32         = (instruction_word >> 0) & 0xFF;
 
 
     return in;
@@ -1267,17 +1539,17 @@ instruction_32b_t decode_32b_A6_230_STRD_imm(unsigned int PC, unsigned int instr
     
     instruction_32b_t in;
 
-    in.opcode = t32_STRD;
-    int imm8  = (instruction_word >> 0) & 0xFF;
+    in.opcode      = t32_STRD;
+    in.meta_opcode = meta_t32_imm;
+    int imm8       = (instruction_word >> 0) & 0xFF;
 
-
-    in.P   = (instruction_word >> (15 + 9)) & 0x01;
-    in.U   = (instruction_word >> (15 + 8)) & 0x01;
-    in.W   = (instruction_word >> (15 + 6)) & 0x01;
-    in.Rn  = (instruction_word >>(15 +1)) & 0x0F;
-    in.Rt  = (instruction_word >> 12) & 0x0F;
-    in.Rt2 = (instruction_word >> 8) & 0x0F;
-    in.u32 = imm8 << 2;
+    in.P           = (instruction_word >> (15 + 9)) & 0x01;
+    in.U           = (instruction_word >> (15 + 8)) & 0x01;
+    in.W           = (instruction_word >> (15 + 6)) & 0x01;
+    in.Rn          = (instruction_word >>(15 +1)) & 0x0F;
+    in.Rt          = (instruction_word >> 12) & 0x0F;
+    in.Rt2         = (instruction_word >> 8) & 0x0F;
+    in.u32         = imm8 << 2;
 
     return in;
 }
@@ -1442,10 +1714,10 @@ instruction_32b_t decode_32b_A6_260_TST_imm(unsigned int PC, unsigned int instru
 
 instruction_32b_t decode_32b_A6_268_USAT(unsigned int PC, unsigned int instruction_word){
     
-    THROW_UNDEFINED_T32(__FUNCTION__);
+    THROW_UNDEFINED_T32(USAT);
 }
 
-instruction_32b_t decode_32b_A6_264_UBFX(        unsigned int PC, unsigned int instruction_word){
+instruction_32b_t decode_32b_A6_264_UBFX(unsigned int PC, unsigned int instruction_word){
     
-    THROW_UNDEFINED_T32(__FUNCTION__);
+    THROW_UNDEFINED_T32(UBFX);
 }

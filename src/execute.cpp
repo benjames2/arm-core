@@ -4,6 +4,9 @@
 #include <inc/decode_structure.h>
 #include <inc/execute.h>
 #include <inc/asm_math_interface.h>
+#include <inc/range.h>
+#include <inc/exceptions.h>
+#include <inc/stack_operations.h>
 
 // comment to avoid lots of information
 //#define EXECUTE_DEBUG
@@ -12,6 +15,8 @@ static armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& 
 static armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst);
 
 armv7_m3 execute(armv7_m3& cpu, memory_t& memory, decoded_instruction_t& inst) {
+
+    cpu.set_stack_mode(armv7_m3::stack_mode_undefined);
 
     switch(inst.type) {
         case decoded_instruction_t::t16:
@@ -31,6 +36,8 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
     auto new_cpu = cpu;
 
+    new_cpu.cpu_id++;
+
     switch(inst.opcode) {
         case i_ADC  :// **DONE** add with carry
             {
@@ -46,7 +53,12 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 auto msg = gp_operation(&results, Rd, Rs, CarryBit, x86_asm_ADC);
 
                 new_cpu.set_register_i32(inst.Rd, results.i32);
+
+                //set flas
+                new_cpu.set_CPSR_N(results.get_x86_flag_Sign());
+                new_cpu.set_CPSR_Z(results.get_x86_flag_Zero());
                 new_cpu.set_CPSR_C(results.get_x86_flag_Carry());
+                new_cpu.set_CPSR_V(results.get_x86_flag_Ov());
 
                 // maintain cycle count and advance IP as needed
                 new_cpu.cycle_count++;
@@ -123,6 +135,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 if(inst.Rd != 15) new_cpu.PC() += 2;
                 else              new_cpu.cycle_count++;
 
+
                 return new_cpu;
             }
             else if(inst.meta_opcode == meta_RC) { // (3) Rd = Rd + u32
@@ -144,6 +157,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 if(inst.Rd != 15) new_cpu.PC() += 2;
                 else              new_cpu.cycle_count++;
 
+                
                 return new_cpu;
             }
             else if(inst.meta_opcode == meta_RC_pc) { // (12) Rd = PC + i32
@@ -179,7 +193,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 new_cpu.cycle_count++;
                 if(inst.Rd != 15) new_cpu.PC() += 2;
                 else              new_cpu.cycle_count++;
-
+                
                 return new_cpu;
             }
             else if(inst.meta_opcode == meta_C_sp) { // (13) SP += +/-imm
@@ -195,7 +209,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                 new_cpu.cycle_count++;
                 new_cpu.PC() += 2;
-
+                
                 return new_cpu;
             }
             else {
@@ -222,8 +236,58 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                 return new_cpu;
             }
-        case i_ASR  :// arithmetic shift right
-            throw std::runtime_error("execute_t16 : opcode not implemented");
+        case i_ASR  :// **DONE** arithmetic shift right
+            {
+                if(inst.meta_opcode == meta_RRC){
+
+                    auto Rs     = new_cpu.get_register(inst.Rs).i32;
+                    auto offset = inst.u32;
+
+                    //operation
+                    auto result = Rs >> offset;
+                    new_cpu.set_register_u32(inst.Rd, result);
+
+                    //Flags update
+                    new_cpu.set_CPSR_N(result & (1 << 31));
+                    new_cpu.set_CPSR_Z(result == 0);
+                    new_cpu.set_CPSR_C(false);
+
+                    //Cycle count and PC update
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15)
+                        new_cpu.PC() += 2;
+                    else
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+
+                }
+                else if(inst.meta_opcode == meta_RR){
+                
+                    auto Rd = new_cpu.get_register(inst.Rd).i32;
+                    auto Rs = new_cpu.get_register(inst.Rs).i32;
+
+                    //operation
+                    auto result = Rd >> Rs;
+                    new_cpu.set_register_u32(inst.Rd, result);
+
+                    //Flags update
+                    new_cpu.set_CPSR_N(result & (1 << 31));
+                    new_cpu.set_CPSR_Z(result == 0);
+                    new_cpu.set_CPSR_C(false);
+
+                    //Cycle count and PC update
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15)
+                        new_cpu.PC() += 2;
+                    else
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t16(i_ASR) : invalid meta opcode");
+            }
         case i_B    :// **DONE** unconditional branch
             {
 
@@ -245,7 +309,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                 return new_cpu;
             }
-        case i_Bxx  :// conditional branch
+        case i_Bxx  :// **DONE** conditional branch
             {
                 switch(inst.condition_code){
                     case 0: //BEQ: Branch if Z set
@@ -257,7 +321,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                             auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
 
                             //Set PC and cycle count
-                            if(new_cpu.get_CPSR_Z() == true){
+                            if(new_cpu.get_CPSR_Z()){
                                 new_cpu.PC() = result.i32;
                                 new_cpu.cycle_count += 2;
                             }
@@ -277,7 +341,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                             auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
 
                             //Set PC and cycle count
-                            if(new_cpu.get_CPSR_Z() == false){
+                            if(!new_cpu.get_CPSR_Z()){
                                 new_cpu.PC() = result.i32;
                                 new_cpu.cycle_count += 2;
                             }
@@ -297,7 +361,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                             auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
 
                             //Set PC and cycle count
-                            if(new_cpu.get_CPSR_C() == true){
+                            if(new_cpu.get_CPSR_C()){
                                 new_cpu.PC() = result.i32;
                                 new_cpu.cycle_count += 2;
                             }
@@ -317,7 +381,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                             auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
 
                             //Set PC and cycle count
-                            if(new_cpu.get_CPSR_C() == false){
+                            if(!new_cpu.get_CPSR_C()){
                                 new_cpu.PC() = result.i32;
                                 new_cpu.cycle_count += 2;
                             }
@@ -337,7 +401,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                             auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
 
                             //Set PC and cycle count
-                            if(new_cpu.get_CPSR_N() == true){
+                            if(new_cpu.get_CPSR_N()){
                                 new_cpu.PC() = result.i32;
                                 new_cpu.cycle_count += 2;
                             }
@@ -357,7 +421,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                             auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
 
                             //Set PC and cycle count
-                            if(new_cpu.get_CPSR_N() == false){
+                            if(!new_cpu.get_CPSR_N()){
                                 new_cpu.PC() = result.i32;
                                 new_cpu.cycle_count += 2;
                             }
@@ -377,7 +441,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                             auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
 
                             //Set PC and cycle count
-                            if(new_cpu.get_CPSR_V() == true){
+                            if(new_cpu.get_CPSR_V()){
                                 new_cpu.PC() = result.i32;
                                 new_cpu.cycle_count += 2;
                             }
@@ -397,7 +461,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                             auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
 
                             //Set PC and cycle count
-                            if(new_cpu.get_CPSR_V() == false){
+                            if(!new_cpu.get_CPSR_V()){
                                 new_cpu.PC() = result.i32;
                                 new_cpu.cycle_count += 2;
                             }
@@ -417,7 +481,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                             auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
 
                             //Set PC and cycle count
-                            if((new_cpu.get_CPSR_C() == true) && (new_cpu.get_CPSR_Z() == false)){
+                            if((new_cpu.get_CPSR_C()) && (!new_cpu.get_CPSR_Z())){
                                 new_cpu.PC() = result.i32;
                                 new_cpu.cycle_count += 2;
                             }
@@ -437,7 +501,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                             auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
 
                             //Set PC and cycle count
-                            if((new_cpu.get_CPSR_C() == false) || (new_cpu.get_CPSR_Z() == true)){
+                            if((new_cpu.get_CPSR_C() == false) || (new_cpu.get_CPSR_Z())){
                                 new_cpu.PC() = result.i32;
                                 new_cpu.cycle_count += 2;
                             }
@@ -457,7 +521,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                             auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
 
                             //Set PC and cycle count
-                            if(((new_cpu.get_CPSR_N() == true) && (new_cpu.get_CPSR_V() == true)) ||
+                            if(((new_cpu.get_CPSR_N() == true)  && (new_cpu.get_CPSR_V() == true)) ||
                                ((new_cpu.get_CPSR_N() == false) && (new_cpu.get_CPSR_V() == false))){
 
                                 new_cpu.PC() = result.i32;
@@ -524,9 +588,9 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                             auto msg = gp_operation(&result, PC, inst.i32, 0, x86_asm_ADD);
 
                             //Set PC and cycle count
-                            if( (new_cpu.get_CPSR_Z() == true) ||
-                                ((new_cpu.get_CPSR_N() == true) && (new_cpu.get_CPSR_V() == false)) ||
-                                ((new_cpu.get_CPSR_N() == false) && (new_cpu.get_CPSR_V() == true)))    {
+                            if( (new_cpu.get_CPSR_Z()) ||
+                                ((new_cpu.get_CPSR_N()) && (new_cpu.get_CPSR_V() == false)) ||
+                                ((new_cpu.get_CPSR_N() == false) && (new_cpu.get_CPSR_V())))    {
 
                                 new_cpu.PC() = result.i32;
                                 new_cpu.cycle_count += 2;
@@ -542,10 +606,10 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                         std::runtime_error("execute_t16 (Bxx) : condition code is undefined and should not be used");
                 }
             }
-        case i_BIC  :// bit clear
+        case i_BIC  :// **DONE** bit clear
             {
-                auto Rd = new_cpu.get_register(inst.Rd).i32;
-                auto Rs = new_cpu.get_register(inst.Rs).i32;
+                auto Rd = new_cpu.get_register(inst.Rd).u32;
+                auto Rs = new_cpu.get_register(inst.Rs).u32;
 
                 //Operation
                 auto result = Rd & (~Rs);
@@ -564,7 +628,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                 return new_cpu;  
             }
-        case i_BL   :// branch and link
+        case i_BL   :// **DONE** branch and link
             {
                 if(inst.meta_opcode == meta_R){
                     auto Rs = new_cpu.get_register(inst.Rs).u32;
@@ -579,9 +643,49 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 else
                     throw std::runtime_error("execute_t16(i_BL) : Invalid meta opcode ");
             }
-        case i_BX   :// branch and exchange
-            throw std::runtime_error("execute_t16 : opcode not implemented");
-        case i_CMN  :// compare negative
+        case i_BX   :// **DONE** branch and exchange
+            {
+                auto Rs = new_cpu.get_register(inst.Rs).u32;
+
+                //operation
+                new_cpu.PC() = Rs;
+
+                //Set cycle count
+                new_cpu.cycle_count += 2;
+
+                return new_cpu;
+            }
+        case i_CBNZ: 
+            {
+                auto pc = new_cpu.PC();
+                pc += 4; // prefetch operation
+
+                //operation
+                results_t result;
+                auto msg = gp_operation(&result, pc, inst.u32, 0, x86_asm_ADD);
+                new_cpu.PC() = result.u32;
+
+                //Set cycle count
+                new_cpu.cycle_count += 3;
+
+                return new_cpu;
+            }
+        case i_CBZ: 
+            {
+                auto pc = new_cpu.PC();
+                pc += 4; // prefetch operation
+
+                //operation
+                results_t result;
+                auto msg = gp_operation(&result, pc, inst.u32, 0, x86_asm_ADD);
+                new_cpu.PC() = result.u32;
+
+                //Set cycle count
+                new_cpu.cycle_count += 3;
+
+                return new_cpu;
+            }
+        case i_CMN  :// **DONE** compare negative
             {
                 results_t result;
 
@@ -604,7 +708,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                 return new_cpu;
             }
-        case i_CMP  :// compare
+        case i_CMP  :// **DONE** compare
             {
                 if(inst.meta_opcode == meta_RC){
 
@@ -676,16 +780,38 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                 return new_cpu;
             }
-        case i_LDMIA:// load multiple
-            throw std::runtime_error("execute_t16 : opcode not implemented");
-        case i_LDR  :// **IN PROGRESS** load word
+        case i_LDMIA:// **DONE** load multiple
+            {
+                int  numregs   = 0;
+                auto base_addr = new_cpu.get_register_u32(inst.Rb);
+
+                //operation
+                for(int i : range(0, 8)){
+                    if(inst.Rlist & (1 << i)){
+                        new_cpu.set_register_u32(i, memory.load_u32(base_addr));
+                        base_addr += 4;
+                        numregs++;
+                    }
+                }
+                new_cpu.set_register_u32(inst.Rb, base_addr);
+
+                //upate PC and cycle count
+                new_cpu.PC() += 2;
+                new_cpu.cycle_count = (numregs + 1);
+
+                return new_cpu; 
+            }
+            //throw std::runtime_error("execute_t16 : opcode not implemented");
+        case i_LDR  :// **DONE** load word
             if(inst.meta_opcode == meta_RC_pc) { // (6) Rd = word mem[PC + uimm]
 
                 uint32_t pc = new_cpu.PC();
-                pc += 4; // prefetch operation
+                pc += 2;                     // prefetch operation
+                if(pc & (1 << 1)) pc += 2;   // bit [1] of PC is forced to be zero to ensure it is word-aligned
+                
                 uint32_t uimm = inst.u32;
 
-                auto addr = pc + uimm;
+                auto addr = pc + uimm; std::cout << "LDR addr: 0x" << std::hex << addr << " "; 
                 auto bytes = memory.load_u32(addr);
                 new_cpu.set_register_u32(inst.Rd, bytes);
 
@@ -727,25 +853,246 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                 return new_cpu;
             }
-            //else if(inst.meta_opcode == meta_RC_sp) { // (11) Rd = 
+            else if(inst.meta_opcode == meta_RC_sp) { // (11) Rd = word mem[R13 + uimm]
 
-                
+                auto sp = new_cpu.SP();
+                uint32_t uimm = inst.u32;
 
-            //}
+                //operation
+                auto addr = sp + uimm;
+                auto bytes = memory.load_u32(addr);
+                new_cpu.set_register_u32(inst.Rd, bytes);
+
+                // maintain cycle count and advance IP as needed
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
             else {
                 // ##6(RC_pc), may need to do some PC bit adjustment on this one 
-                // ##7(RRR), 
-                // ##9(RRC),
-                // 11(RC_sp) 
-                throw std::runtime_error("execute_t16(i_LDR) : meta opcode not implemented");
+                throw std::runtime_error("execute_t16(i_LDR) : invalid meta opcode ");
             }
-        case i_LDRB :// load byte
-        case i_LDRH :// load halfword
-        case i_LSL  :// logical shift left
-        case i_LDSB :// load sign-extended byte
-        case i_LDSH :// load sign-extended halfword
-        case i_LSR  :// logical shift right
-        case i_MOV  :// move register
+        case i_LDRB :// **DONE** load byte 
+            {
+                if(inst.meta_opcode == meta_RRR){
+
+                    auto Rb   = new_cpu.get_register(inst.Rb).u32;
+                    auto Ro   = new_cpu.get_register(inst.Ro).u32;
+                    auto addr = Rb + Ro;
+
+                    //Operation
+                    auto bytes = memory.load_u8(addr);
+                    new_cpu.set_register_u32(inst.Rd, bytes);//it is automatically zero extended to 32-bits
+
+                    // maintain cycle count and advance IP as needed
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) new_cpu.PC() += 2;
+                    else              new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else if(inst.meta_opcode == meta_RRC){
+                    
+                    auto Rb       = new_cpu.get_register(inst.Rb).u32;
+                    auto offset   = inst.u32;
+                    auto addr = Rb + offset;
+
+                    //Operation
+                    auto bytes = memory.load_u8(addr);
+                    new_cpu.set_register_u32(inst.Rd, bytes);
+
+                    // maintain cycle count and advance IP as needed
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) new_cpu.PC() += 2;
+                    else              new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t16(i_LDRB) : invalid meta opcode ");
+            }
+        case i_LDRH :// **DONE** load halfword
+            {
+                if(inst.meta_opcode == meta_RRR){
+
+                    auto Rb   = new_cpu.get_register(inst.Rb).u32;
+                    auto Ro   = new_cpu.get_register(inst.Ro).u32;
+                    auto addr = Rb + Ro;
+
+                    //Operation
+                    auto bytes = memory.load_u16(addr);
+                    new_cpu.set_register_u32(inst.Rd, bytes);//it is automatically zero extended to 32-bits
+
+                    // maintain cycle count and advance IP as needed
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) new_cpu.PC() += 2;
+                    else              new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else if(inst.meta_opcode == meta_RRC){
+                    
+                    auto Rb       = new_cpu.get_register(inst.Rb).u32;
+                    auto offset   = inst.u32;
+                    auto addr     = Rb + offset;
+
+                    //Operation
+                    auto bytes = memory.load_u16(addr);
+                    new_cpu.set_register_u32(inst.Rd, bytes);
+
+                    // maintain cycle count and advance IP as needed
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15) new_cpu.PC() += 2;
+                    else              new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t16(i_LDRH) : invalid meta opcode ");
+            }
+        case i_LSL  :// **DONE** logical shift left
+            {
+                if(inst.meta_opcode == meta_RRC){
+
+                    auto imm5 = inst.u32;
+                    auto Rs   = new_cpu.get_register_u32(inst.Rs);
+
+                    //Operation
+                    auto result = Rs << imm5;
+                    new_cpu.set_register_u32(inst.Rd, result);
+
+                    //Update flags
+                    new_cpu.set_CPSR_N(result & (1 << 31));
+                    new_cpu.set_CPSR_Z(result == 0);
+                    new_cpu.set_CPSR_C(false);
+
+                    //maintain cycle count and PC
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15)
+                        new_cpu.PC() += 2;
+                    else
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else if(inst.meta_opcode == meta_RR){
+
+                    auto Rd = new_cpu.get_register_i32(inst.Rd);
+                    auto Rs = new_cpu.get_register_u32(inst.Rs);
+
+                    //Operation
+                    auto result = Rd << Rs;
+                    new_cpu.set_register_u32(inst.Rd, result);
+
+                    //Update flags
+                    new_cpu.set_CPSR_N(result & (1 << 31));
+                    new_cpu.set_CPSR_Z(result == 0);
+                    new_cpu.set_CPSR_C(false);
+
+                    //maintain cycle count and PC
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15)
+                        new_cpu.PC() += 2;
+                    else
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t16(i_LSL) : invalid meta opcode ");
+            }
+        case i_LDSB :// **DONE** load sign-extended byte
+            {
+                auto Ro = new_cpu.get_register_i32(inst.Ro);
+                auto Rb = new_cpu.get_register_i32(inst.Rb);
+                auto addr = Ro + Rb;
+
+                //operation
+                auto result = memory.load_u8(addr);
+                if(result >> 7) result = result | 0xFFFFFF00;
+                else            result = result & 0x000000FF;
+                new_cpu.set_register_i32(inst.Rd, result);
+
+                // maintain cycle count and advance IP as needed
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
+        case i_LDSH :// **DONE** load sign-extended halfword
+            {
+                auto Ro = new_cpu.get_register_i32(inst.Ro);
+                auto Rb = new_cpu.get_register_i32(inst.Rb);
+                auto addr = Ro + Rb;
+
+                //operation
+                auto result = memory.load_u16(addr);
+                if(result >> 15) result = result | 0xFFFFFF00;
+                else            result = result & 0x000000FF;
+                new_cpu.set_register_i32(inst.Rd, result);
+
+                // maintain cycle count and advance IP as needed
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
+        case i_LSR  :// **DONE** logical shift right
+            {
+                if(inst.meta_opcode == meta_RRC){
+
+                    auto imm5 = inst.u32;
+                    auto Rs   = new_cpu.get_register_u32(inst.Rs);
+
+                    //Operation
+                    auto result = Rs >> imm5;
+                    new_cpu.set_register_u32(inst.Rd, result);
+
+                    //Update flags
+                    new_cpu.set_CPSR_N(result & (1 << 31));
+                    new_cpu.set_CPSR_Z(result == 0);
+                    new_cpu.set_CPSR_C(false);
+
+                    //maintain cycle count and PC
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15)
+                        new_cpu.PC() += 2;
+                    else
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else if(inst.meta_opcode == meta_RR){
+
+                    auto Rd = new_cpu.get_register_i32(inst.Rd);
+                    auto Rs = new_cpu.get_register_u32(inst.Rs);
+
+                    //Operation
+                    auto result = Rd >> Rs;
+                    new_cpu.set_register_u32(inst.Rd, result);
+
+                    //Update flags
+                    new_cpu.set_CPSR_N(result & (1 << 31));
+                    new_cpu.set_CPSR_Z(result == 0);
+                    new_cpu.set_CPSR_C(false);
+
+                    //maintain cycle count and PC
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15)
+                        new_cpu.PC() += 2;
+                    else
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t16(i_LSR) : invalid meta opcode ");
+            }
+        case i_MOV  :// **DONE** move register
             {
                 if(inst.meta_opcode == meta_RC){
 
@@ -764,7 +1111,6 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                     else              new_cpu.cycle_count++;
 
                     return new_cpu;
-
                 }
                 else if(inst.meta_opcode == meta_RR){
 
@@ -787,10 +1133,76 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 else 
                     throw std::runtime_error("execute_t16(i_MOV) : Invalid meta opcode ");
             }
-        case i_MUL  :// multiply
-        case i_MVN  :// move negative register
-        case i_NEG  :// negate
-            throw std::runtime_error("execute_t16 : opcode not implemented");
+        case i_MUL  :// **DONE** multiply
+            {
+                auto Rd = new_cpu.get_register_i32(inst.Rd);
+                auto Rs = new_cpu.get_register_i32(inst.Rs);
+
+                //operation
+                auto result = Rs * Rd;
+                new_cpu.set_register_i32(inst.Rd, result);
+
+                //flags update
+                new_cpu.set_CPSR_N(result & (1 << 31));
+                new_cpu.set_CPSR_Z(result == 0);
+
+                //Set PC and cycle count
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
+        case i_MVN  :// **DONE** move negative register
+            {
+                auto Rs = new_cpu.get_register_i32(inst.Rs);
+
+                //operation
+                auto result = ~Rs;
+                new_cpu.set_register_i32(inst.Rd, result);
+
+                //flags update
+                new_cpu.set_CPSR_N(result & (1 << 31));
+                new_cpu.set_CPSR_Z(result == 0);
+                new_cpu.set_CPSR_C(false);
+
+                //Set PC and cycle count
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
+        case i_NOP  :// **DONE**
+            {
+                //update PC and cycle count
+                new_cpu.PC() +=2;
+                new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
+        case i_NEG  :// **DONE** negate
+            {
+                results_t result;
+                auto Rs = new_cpu.get_register_i32(inst.Rs);
+
+                //operation
+                auto msg = gp_operation(&result, 0, Rs, 0, x86_asm_SUB);
+                new_cpu.set_register_i32(inst.Rd, result.i32);
+
+                //flags update
+                new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
+
+                //Set PC and cycle count
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
         case i_ORR  :// **DONE** bitwise OR
             {
                 auto Rd = new_cpu.get_register(inst.Rd).u32;
@@ -811,12 +1223,114 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                 return new_cpu;
             }
-        case i_POP  :// pop registers
-        case i_PUSH :// push registers
+        case i_POP  :// **DONE** pop registers
+            {
+                new_cpu.set_stack_mode(armv7_m3::stack_mode_FullDescending);
+
+                address_t sp = new_cpu.SP();
+                int numregs = 0;
+
+                // pop PC if needed
+                if(inst.meta_opcode == meta_C_pc) {
+                    sp = pop_word(new_cpu, memory, sp, 15);
+                    new_cpu.cycle_count++;
+                }
+                else if(inst.meta_opcode != meta_C)
+                    throw ExecuteError("execute(i_POP), invalid meta opcode");
+
+                // pop appropriate GP registers
+                for(int i : range(7, -1)) {
+                    if(inst.Rlist & (1 << i)) {
+                        sp = pop_word(new_cpu, memory, sp, i);
+                        numregs++;
+                    }
+                }
+
+                if(inst.meta_opcode != meta_C_pc)
+                    new_cpu.PC() += 2;
+
+                new_cpu.SP() = sp;
+                new_cpu.cycle_count += (numregs + 1);
+
+                return new_cpu;
+            }
+        case i_PUSH :// **DONE** push registers
+            {
+                new_cpu.set_stack_mode(armv7_m3::stack_mode_FullDescending);
+
+                address_t sp = new_cpu.SP();
+                int numregs = 0;
+
+                // push appropriate GP registers onto stack
+                for(int i : range(0, 8)) {
+                    if(inst.Rlist & (1 << i)) {
+                        sp = push_word(new_cpu, memory, sp, new_cpu.get_register_u32(i));
+                        numregs++;
+                    }
+                }
+
+                // push LR if needed
+                if(inst.meta_opcode == meta_C_lr)
+                    sp = push_word(new_cpu, memory, sp, new_cpu.LR());
+                else if(inst.meta_opcode != meta_C)
+                    throw ExecuteError("execute(i_PUSH), invalid meta opcode");
+
+                new_cpu.SP() = sp;
+                new_cpu.PC() += 2;
+                new_cpu.cycle_count += (numregs + 1);
+
+                return new_cpu;
+            }
         case i_ROR  :// rotate right
-        case i_SBC  :// subtract with carry
-        case i_STMIA:// store multiple
-        case i_STR  :// store word
+            throw std::runtime_error("execute_t16(ROR) : opcode not implemented");
+        case i_SBC  ://**DONE** subtract with carry
+            {
+                auto Rd      = new_cpu.get_register_i32(inst.Rd);
+                auto Rs      = new_cpu.get_register_i32(inst.Rs);
+                int CarryBit = new_cpu.get_CPSR_C();
+
+                results_t result;
+                
+                //operation
+                auto msg = gp_operation(&result, Rd, Rs, CarryBit, x86_asm_SBB);
+                new_cpu.set_register_i32(inst.Rd, result.i32);
+
+                //set flas
+                new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
+
+                //maintain cycle count and advance IP as needed
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) new_cpu.PC() += 2;
+                else              new_cpu.cycle_count++;
+
+                return new_cpu;
+            }
+        case i_STMIA:// **DONE** store multiple
+            {
+                int numregs    = 0;
+                auto base_addr = new_cpu.get_register_u32(inst.Rb);
+
+                //operation
+                for(int i : range(0, 8)){
+                    if(inst.Rlist & (1 << i)){
+                        memory.store_u32(base_addr, new_cpu.get_register_u32(i));
+                        base_addr +=4;
+                        numregs++;
+                    }
+                }
+                new_cpu.set_register_u32(inst.Rb, base_addr);
+
+                //update cycle count and PC
+                new_cpu.PC() += 2;
+                new_cpu.cycle_count += (numregs + 1);
+
+                return new_cpu;
+
+            }
+        case i_STR  :// **DONE** store word
             {
                 if(inst.meta_opcode == meta_RRC){
 
@@ -831,15 +1345,11 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                     //Operation
                     memory.store_u32(address.u32, Rd); //should this be address.i32 + 4 ?
 
-                    //Set PC and cycle count
-                    new_cpu.cycle_count += 4;
-                    if(inst.Rd != 15) 
-                        new_cpu.PC() += 2;
-                    else        
-                        new_cpu.cycle_count++;
+                     //update PC and cycle count
+                    new_cpu.PC()        += 2;
+                    new_cpu.cycle_count += 2;//could be one
 
                     return new_cpu;
-
                 }
                 else if(inst.meta_opcode == meta_RC_sp){
 
@@ -854,12 +1364,9 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                     //Operation
                     memory.store_u32(address.u32, Rd); //should this be address.i32 + 4 ?
 
-                    //Set PC and cycle count
-                    new_cpu.cycle_count += 4;
-                    if(inst.Rd != 15) 
-                        new_cpu.PC() += 2;
-                    else        
-                        new_cpu.cycle_count++;
+                     //update PC and cycle count
+                    new_cpu.PC()        += 2;
+                    new_cpu.cycle_count += 2;//could be one
 
                     return new_cpu;
                 }
@@ -876,25 +1383,183 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                     //Operation
                     memory.store_u32(address.i32, Rd); //should this be address.i32 + 4 ?
 
-                    //Set PC and cycle count
-                    new_cpu.cycle_count += 4;
-                    if(inst.Rd != 15) 
-                        new_cpu.PC() += 2;
-                    else        
-                        new_cpu.cycle_count++;
+                     //update PC and cycle count
+                    new_cpu.PC()        += 2;
+                    new_cpu.cycle_count += 2;//could be one
 
                     return new_cpu;
-
                 }
                 else 
                     throw std::runtime_error("execute_t16(i_STR) : Invalid meta opcode ");
             }
-        case i_STRB :// store byte
-        case i_STRH :// store halfword
+        case i_STRB ://**DONE** store byte
+            {
+                if(inst.meta_opcode == meta_RRC){
+                    
+                    auto imm32 = inst.u32;
+                    auto Rb    = new_cpu.get_register_u32(inst.Rb);
+                    auto Rd    = new_cpu.get_register_u32(inst.Rd);
+                    
+                    auto addr    = Rb + imm32;
+                    auto Rd_byte = Rd & 0xFF;
+
+                    //Operation
+                    memory.store_u8(addr, Rd_byte);
+
+                    //update PC and cycle count
+                    new_cpu.PC()        += 2;
+                    new_cpu.cycle_count += 2;//could be one
+
+                    return new_cpu;
+                }
+                else if(inst.meta_opcode = meta_RRR){
+
+                    auto Rb    = new_cpu.get_register_u32(inst.Rb);
+                    auto Ro    = new_cpu.get_register_u32(inst.Ro);
+                    auto Rd    = new_cpu.get_register_u32(inst.Rd);
+                    
+                    auto addr    = Rb + Ro;
+                    auto Rd_byte = Rd & 0xFF;
+
+                    //Operation
+                    memory.store_u8(addr, Rd_byte);
+
+                    //update PC and cycle count
+                    new_cpu.PC()        += 2;
+                    new_cpu.cycle_count += 2;//could be one
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t16(i_STRB) : Invalid meta opcode ");
+            }
+        case i_STRH :// **DONE** store halfword
+            {
+                if(inst.meta_opcode == meta_RRC){
+                    
+                    auto imm32 = inst.u32;
+                    auto Rb    = new_cpu.get_register_u32(inst.Rb);
+                    auto Rd    = new_cpu.get_register_u32(inst.Rd);
+                    
+                    auto addr    = Rb + imm32;
+                    auto Rd_byte = Rd & 0xFFFF;
+
+                    //Operation
+                    memory.store_u16(addr, Rd_byte);
+
+                    //update PC and cycle count
+                    new_cpu.PC()        += 2;
+                    new_cpu.cycle_count += 2;//could be one
+
+                    return new_cpu;
+                }
+                else if(inst.meta_opcode = meta_RRR){
+
+                    auto Rb    = new_cpu.get_register_u32(inst.Rb);
+                    auto Ro    = new_cpu.get_register_u32(inst.Ro);
+                    auto Rd    = new_cpu.get_register_u32(inst.Rd);
+                    
+                    auto addr    = Rb + Ro;
+                    auto Rd_byte = Rd & 0xFFFF;
+
+                    //Operation
+                    memory.store_u16(addr, Rd_byte);
+
+                    //update PC and cycle count
+                    new_cpu.PC()        += 2;
+                    new_cpu.cycle_count += 2;//could be one
+
+                    return new_cpu;
+                }
+                else
+                    throw std::runtime_error("execute_t16(i_STRH) : Invalid meta opcode ");
+            }
         case i_SWI  :// software interrupt
-        case i_SUB  :// subtract
+        case i_SUB  :// **DONE** subtract
+            {
+                if(inst.meta_opcode == meta_RRR){
+
+                    results_t result;
+
+                    auto Rs = new_cpu.get_register_u32(inst.Rs);
+                    auto Rn = new_cpu.get_register_u32(inst.Rn);
+
+                    //operation
+                    auto msg = gp_operation(&result, Rs, Rn, 0, x86_asm_SUB);
+                    new_cpu.set_register_u32(inst.Rd, result.i32);
+
+                    //update flags
+                    new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                    new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                    new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                    new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
+
+                    //update PC and cycle count
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15)
+                        new_cpu.PC() += 2;
+                    else
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else if(inst.meta_opcode == meta_RRC){
+
+                    results_t result;
+
+                    auto imm3 = inst.u32;
+                    auto Rs   = new_cpu.get_register_u32(inst.Rs);
+
+                    //operation
+                    auto msg = gp_operation(&result, Rs, imm3, 0, x86_asm_SUB);
+                    new_cpu.set_register_u32(inst.Rd, result.i32);
+
+                    //update flags
+                    new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                    new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                    new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                    new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
+
+                    //update PC and cycle count
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15)
+                        new_cpu.PC() += 2;
+                    else
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else if(inst.meta_opcode == meta_RC){
+
+                    results_t result;
+
+                    auto imm8 = inst.u32;
+                    auto Rd   = new_cpu.get_register_u32(inst.Rd);
+
+                    //operation
+                    auto msg = gp_operation(&result, Rd, imm8, 0, x86_asm_SUB);
+                    new_cpu.set_register_u32(inst.Rd, result.i32);
+
+                    //update flags
+                    new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                    new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                    new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                    new_cpu.set_CPSR_V(result.get_x86_flag_Ov());
+
+                    //update PC and cycle count
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15)
+                        new_cpu.PC() += 2;
+                    else
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
+                }
+                else 
+                    throw std::runtime_error("execute_t16(i_SUB) : Invalid meta opcode ");
+            }
         case i_TST  :// test bits
-            throw std::runtime_error("execute_t16 : opcode not implemented");
+            throw std::runtime_error("execute_t16(STRB, STRH, SWI, SUB, TST) : opcode not implemented");
         default:
             throw std::runtime_error("execute_t16 : invalid opcode");
     }
@@ -904,6 +1569,8 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
     
     auto new_cpu = cpu;
+
+    new_cpu.cpu_id++;
 
     switch (inst.opcode){
 
@@ -970,6 +1637,8 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
                                     new_cpu.PC() += 4;
                                 else
                                     new_cpu.cycle_count++;
+
+                                
 
                                 return new_cpu;
                             }
@@ -1081,6 +1750,8 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
                     else        
                         new_cpu.cycle_count++;
 
+                    
+
                     return new_cpu;
                 }
                 else
@@ -1110,6 +1781,8 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
                         new_cpu.PC() += 4;
                     else        
                         new_cpu.cycle_count++;
+
+                    
 
                     return new_cpu;
                 }
@@ -1146,6 +1819,8 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
                     else        
                         new_cpu.cycle_count++;
 
+                    
+
                     return new_cpu;
                 }
                 else
@@ -1162,37 +1837,62 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
         case t32_LDMEA:
             throw std::runtime_error("execute_t32 : opcode not implemented"); 
         case t32_LDR:
-            {
-                if(inst.meta_opcode == meta_t32_imm){
-                    switch(inst.encoding){
-                        case instruction_32b_t::encoding_T3:
-                            {
-                                auto imm = inst.i32;
-                                auto pc  = new_cpu.PC();
-                                pc += 4;
+            if(inst.meta_opcode == meta_t32_imm){
+                switch(inst.encoding){
+                    case instruction_32b_t::encoding_T3:
+                        {
+                            auto imm = inst.i32;
+                            auto pc  = new_cpu.PC();
+                            pc += 4;
 
-                                auto addr  = pc + imm;
-                                auto bytes = memory.load_u32(addr);
+                            auto addr  = pc + imm;
+                            auto bytes = memory.load_u32(addr);
 
-                                new_cpu.set_register_i32(inst.Rd, bytes);
+                            new_cpu.set_register_i32(inst.Rd, bytes);
 
-                                //Set PC and count cycle
+                            //Set PC and count cycle
+                            new_cpu.cycle_count++;
+                            if(inst.Rd != 15)
+                                new_cpu.PC() += 4;
+                            else
                                 new_cpu.cycle_count++;
-                                if(inst.Rd != 15)
-                                    new_cpu.PC() += 4;
-                                else
-                                    new_cpu.cycle_count++;
 
-                                return new_cpu;
-                            }
-                        default:
-                            throw std::runtime_error("execute_t32 : invalid encoding for LDR instruction");
-                    }
+                            return new_cpu;
+                        }
+                    default:
+                        throw std::runtime_error("execute_t32 : invalid encoding for LDR instruction");
+                }
+            }
+            else
+                throw std::runtime_error("execute_t32 : invalid meta_opcode for LDR instruction");
+        case t32_LDRB:
+            {
+                if(inst.meta_opcode == meta_t32_reg){
+                    
+                    auto Rn      = new_cpu.get_register_u32(inst.Rn);
+                    auto Rm      = new_cpu.get_register_u32(inst.Rm);
+                    auto shift_l = inst.u32;
+
+                    Rm = Rm << shift_l;
+
+                    auto addr = Rn + Rm;
+
+                    //operation
+                    auto byte = memory.load_u8(addr);
+                    new_cpu.set_register_u32(inst.Rt, byte);
+
+                    //Set PC and count cycle
+                    new_cpu.cycle_count++;
+                    if(inst.Rd != 15)
+                        new_cpu.PC() += 4;
+                    else
+                        new_cpu.cycle_count++;
+
+                    return new_cpu;
                 }
                 else
-                    throw std::runtime_error("execute_t32 : invalid meta_opcode for LDR instruction");
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for LDRB instruction");
             } 
-        case t32_LDRB: 
         case t32_LDRBT: 
         case t32_LDRD: 
         case t32_LDREX: 
@@ -1215,38 +1915,36 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
         case t32_MLS   :
             throw std::runtime_error("execute_t32 : opcode not implemented");
         case t32_MOV   :
-            {
-                if(inst.meta_opcode == meta_t32_imm){
-                    switch(inst.encoding){
-                        case instruction_32b_t::encoding_T2:
-                            {
-                                auto result = inst.i32;
+            if(inst.meta_opcode == meta_t32_imm){
+                switch(inst.encoding){
+                    case instruction_32b_t::encoding_T2:
+                        {
+                            auto result = inst.i32;
 
-                                new_cpu.set_register_i32(inst.Rd, result);
+                            new_cpu.set_register_i32(inst.Rd, result);
 
-                                //Set Flags
-                                if(inst.S){
-                                    new_cpu.set_CPSR_N(result & (1 << 31));
-                                    new_cpu.set_APSR_Z(result == 0);
-                                    new_cpu.set_CPSR_C(false);
-                                }
-
-                                //not sure about this
-                                new_cpu.cycle_count++;
-                                if(inst.Rd != 15) 
-                                    new_cpu.PC() += 4;
-                                else        
-                                    new_cpu.cycle_count++;
-
-                                return new_cpu;
+                            //Set Flags
+                            if(inst.S){
+                                new_cpu.set_CPSR_N(result & (1 << 31));
+                                new_cpu.set_APSR_Z(result == 0);
+                                new_cpu.set_CPSR_C(false);
                             }
-                        default:
-                            throw std::runtime_error("execute_t32 : invalid encoding for MOV instruction");
-                    }
+
+                            //not sure about this
+                            new_cpu.cycle_count++;
+                            if(inst.Rd != 15) 
+                                new_cpu.PC() += 4;
+                            else        
+                                new_cpu.cycle_count++;
+
+                            return new_cpu;
+                        }
+                    default:
+                        throw std::runtime_error("execute_t32 : invalid encoding for MOV instruction");
                 }
-                else
-                    throw std::runtime_error("execute_t32 : invalid meta_opcode for BIC instruction");
             }
+            else
+                throw std::runtime_error("execute_t32 : invalid meta_opcode for BIC instruction");
         case t32_MOVT  :
         case t32_MRC   :
         case t32_MRC2  :
@@ -1261,35 +1959,32 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
         case t32_ORN   :
             throw std::runtime_error("execute_t32 : opcode not implemented");
         case t32_ORR:
-            {
-                if(inst.meta_opcode == meta_t32_imm){
+            if(inst.meta_opcode == meta_t32_imm){
 
-                    auto Rn  = new_cpu.get_register(inst.Rn).i32;
-                    auto imm = inst.i32;
-                    auto result = Rn | imm;
+                auto Rn  = new_cpu.get_register(inst.Rn).u32;
+                auto imm = inst.u32;
+                auto result = Rn | imm;
 
-                    new_cpu.set_register_i32(inst.Rd, result);
-                    
-                    //Set Flags
-                    if(inst.S){
-                        new_cpu.set_CPSR_N(result & (1 << 31));
-                        new_cpu.set_CPSR_Z(result == 0);
-                        new_cpu.set_CPSR_C(false);
-                    }
-                    
-                    //not sure about this
-                    new_cpu.cycle_count++;
-                    if(inst.Rd != 15) 
-                        new_cpu.PC() += 4;
-                    else        
-                        new_cpu.cycle_count++;
-
-                    return new_cpu;
+                new_cpu.set_register_u32(inst.Rd, result);
+                
+                //Set Flags
+                if(inst.S){
+                    new_cpu.set_CPSR_N(result & (1 << 31));
+                    new_cpu.set_CPSR_Z(result == 0);
+                    new_cpu.set_CPSR_C(false);
                 }
+                
+                //not sure about this
+                new_cpu.cycle_count++;
+                if(inst.Rd != 15) 
+                    new_cpu.PC() += 4;
+                else        
+                    new_cpu.cycle_count++;
 
-                else
-                    throw std::runtime_error("execute_t32 : invalid meta_opcode for ORR instruction");                
+                return new_cpu;
             }
+            else
+                throw std::runtime_error("execute_t32 : invalid meta_opcode for ORR instruction");                
         case t32_PLD   :
         case t32_PLI   :
         case t32_POP   :
@@ -1315,7 +2010,40 @@ armv7_m3 execute_t32(armv7_m3& cpu, memory_t& memory, instruction_32b_t& inst) {
         case t32_STMEA :
         case t32_STMDB :
         case t32_STMFD :
+            throw std::runtime_error("execute_t32 : opcode not implemented");
         case t32_STR   :
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+
+                    switch(inst.encoding){
+                        case instruction_32b_t::encoding_T3:
+                            {
+                                auto imm32 = inst.u32;
+                                auto Rn    = new_cpu.get_register_u32(inst.Rn);
+                                auto Rt    = new_cpu.get_register_u32(inst.Rt);
+
+                                auto addr  = Rn + imm32;
+
+                                //operation
+                                memory.store_u32(addr, Rt);
+
+                                //update PC and cycle count
+                                new_cpu.PC()        += 4;
+                                new_cpu.cycle_count += 2;//could be one
+
+                                return new_cpu;
+
+                            }
+                        default:
+                            throw std::runtime_error("execute_t32 : invalid encoding for STR instruction");
+                    }
+                }
+                else if(inst.meta_opcode == meta_t32_reg){
+                    throw std::runtime_error("execute_t32 : meta_t32_reg not implemeented for STR instruction");
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for STR instruction");
+            }
         case t32_STRB  :
         case t32_STRBT :
         case t32_STRD  :

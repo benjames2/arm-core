@@ -1,7 +1,7 @@
 #include <inc/decode_structure.h>
 #include <sstream>
 
-#define THROW_INVALID_METACODE(opcode) throw std::runtime_error("opcode(" #opcode ") : invalid meta opcode")
+#define THROW_INVALID_METACODE(opcode) throw std::runtime_error("opcode(" #opcode ") : invalid meta opcode " + std::to_string(in.meta_opcode))
 #define THROW_INVALID_METACODE_32B(opcode) throw std::runtime_error("opcode(" #opcode ") : invalid meta opcode for 32-bit instruction")
 #define THROW_INVALID_ENCODING(instruction) throw std::runtime_error("Invalid encoding for : " #instruction " instruction")
 #define THROW_UNDEFINED(instruction) throw std::runtime_error ("Operator overload undefined for " #instruction)
@@ -75,22 +75,22 @@ std::ostream& operator<<(std::ostream& os, const instruction_16b_t& in) {
         case i_Bxx   : // conditional branch
             // Bxx   = 16* 
             switch(in.condition_code) {
-                case 0:  os << "Beq "; break;
-                case 1:  os << "Bne "; break;
-                case 2:  os << "Bcs "; break;
-                case 3:  os << "Bcc "; break;
-                case 4:  os << "Bmi "; break;
-                case 5:  os << "Bpl "; break;
-                case 6:  os << "Bvs "; break;
-                case 7:  os << "Bvc "; break;
-                case 8:  os << "Bhi "; break;
-                case 9:  os << "Bls "; break;
-                case 10: os << "Bge "; break;
-                case 11: os << "Blt "; break;
-                case 12: os << "Bgt "; break;
-                case 13: os << "Ble "; break;
+                case 0:  os << "BEQ "; break;
+                case 1:  os << "BNE "; break;
+                case 2:  os << "BCS "; break;
+                case 3:  os << "BCC "; break;
+                case 4:  os << "BMI "; break;
+                case 5:  os << "BPL "; break;
+                case 6:  os << "BVS "; break;
+                case 7:  os << "BVC "; break;
+                case 8:  os << "BHI "; break;
+                case 9:  os << "BLS "; break;
+                case 10: os << "BGE "; break;
+                case 11: os << "BLT "; break;
+                case 12: os << "BGT "; break;
+                case 13: os << "BLE "; break;
                 default:
-                    throw std::runtime_error("opcode(Bxx) : invalid condition code");
+                    throw std::runtime_error("opcode(Bxx) : invalid condition code: " + std::to_string(in.condition_code));
             }
             os << "#" << in.i_immediate;
             break;
@@ -119,6 +119,14 @@ std::ostream& operator<<(std::ostream& os, const instruction_16b_t& in) {
         case i_BX    : // branch and exchange
             //BX    = 5*
             os << "BX r" << in.Rs;
+            break;
+
+        case i_CBNZ:
+            os << "CBNZ r" << in.Rn << " #" << in.u32;
+            break;
+
+        case i_CBZ:
+            os << "CBZ r" << in.Rn << " #" << in.u32;
             break;
             
         case i_CMN   : // compare negative
@@ -247,6 +255,10 @@ std::ostream& operator<<(std::ostream& os, const instruction_16b_t& in) {
             //NEG   = 4*
             os << "NEG r" << in.Rd << ", r" << in.Rs;
             break;
+
+        case i_NOP   : //nop
+            os << "NOP";
+            break;
         
         case i_ORR   : // bitwise OR
             //ORR   = 4
@@ -262,12 +274,11 @@ std::ostream& operator<<(std::ostream& os, const instruction_16b_t& in) {
                     os << "r" << i << " ";
             }
 
-            switch(in.i_immediate){
-                case meta_C:                        break; // do nothing for this case
+            switch(in.meta_opcode){
+                case meta_C:                 break; // <-- do nothing for this case
                 case meta_C_pc: os << "PC "; break;
                 default:
                     THROW_INVALID_METACODE(POP);
-                    //throw std::runtime_error("opcode(POP) : invalid meta opcode");
             }
 
             os << "}";
@@ -282,9 +293,9 @@ std::ostream& operator<<(std::ostream& os, const instruction_16b_t& in) {
                     os << "r" << i << " ";
             }
 
-            switch(in.i_immediate){
-                case meta_C:                 break; // do nothing for this case
-                case meta_C_pc: os << "LR "; break;
+            switch(in.meta_opcode){
+                case meta_C:                 break; // <-- do nothing for this case
+                case meta_C_lr: os << "LR "; break;
                 default:
                     THROW_INVALID_METACODE(PUSH);
             }
@@ -401,6 +412,9 @@ std::ostream& operator<<(std::ostream& os, const instruction_32b_t& in){
             }
             break;
 
+        case t32_ADR:
+            THROW_UNDEFINED(ADR);
+
         case t32_ADD:
             switch(in.meta_opcode){
                 case meta_t32_imm:
@@ -433,6 +447,18 @@ std::ostream& operator<<(std::ostream& os, const instruction_32b_t& in){
             }
             break;
 
+        case t32_ASR:
+            THROW_UNDEFINED(ASR);
+
+        case t32_B:
+            THROW_UNDEFINED(B);
+
+        case t32_BFC:
+            THROW_UNDEFINED(t32_BFC);
+
+        case t32_BFI:
+            THROW_UNDEFINED(BFI);
+
         case t32_BIC:
             switch(in.meta_opcode){
                 case meta_t32_imm:
@@ -445,6 +471,36 @@ std::ostream& operator<<(std::ostream& os, const instruction_32b_t& in){
                     THROW_INVALID_METACODE_32B(BIC);
             }
             break;
+
+        case t32_BKPT:
+            THROW_UNDEFINED(BKPT);
+
+        case t32_BL:
+            THROW_UNDEFINED(BL);
+
+        case t32_BLX:
+            THROW_UNDEFINED(BLX);
+
+        case t32_BX:
+            THROW_UNDEFINED(BX);
+
+        case t32_CBNZ:
+            THROW_UNDEFINED(CBNZ);
+
+        case t32_CBZ:
+            THROW_UNDEFINED(CBZ);
+
+        case t32_CDP:
+            THROW_UNDEFINED(CDP);
+
+        case t32_CDP2:
+            THROW_UNDEFINED(CDP2);
+
+        case t32_CLREX:
+            THROW_UNDEFINED(CLREX);
+
+        case t32_CLZ:
+            THROW_UNDEFINED(CLZ);
 
         case t32_CMN:
             switch(in.meta_opcode){
@@ -466,6 +522,21 @@ std::ostream& operator<<(std::ostream& os, const instruction_32b_t& in){
             }
             break;
 
+        case t32_CPS:
+            THROW_UNDEFINED(CPS);
+
+        case t32_CPY:
+            THROW_UNDEFINED(CPY);
+
+        case t32_DBG:
+            THROW_UNDEFINED(DBG);
+
+        case t32_DMB:
+            THROW_UNDEFINED(DMB);
+
+        case t32_DSB:
+            THROW_UNDEFINED(DSB);
+
         case t32_EOR:
             switch(in.meta_opcode){
                 case meta_t32_imm:
@@ -479,8 +550,21 @@ std::ostream& operator<<(std::ostream& os, const instruction_32b_t& in){
             }
             break;
 
+        case t32_ISB:
+            THROW_UNDEFINED(ISB);
+
+        case t32_IT:
+            THROW_UNDEFINED(IT);
+
+        case t32_LDC:
+            THROW_UNDEFINED(LDC);
+
+        case t32_LDC2:
+            THROW_UNDEFINED(LDC2);
+
         case t32_LDM:
             THROW_UNDEFINED(LDM);
+
         case t32_LDR:
             switch(in.meta_opcode){
                 case meta_t32_imm:
@@ -510,6 +594,16 @@ std::ostream& operator<<(std::ostream& os, const instruction_32b_t& in){
                     break;
                 default:
                     THROW_INVALID_METACODE_32B(LDR);
+            }
+            break;
+
+        case t32_LDRB:
+            switch(in.meta_opcode){
+                case meta_t32_reg:
+                    os << "LDRB_REG r" << in.Rt << ", [r" << in.Rn << ", r" << in.Rm << ", LSL #" << in.u32 << "]";
+                    break;
+                default:
+                    THROW_INVALID_METACODE_32B(LDRB);
             }
             break;
 
@@ -579,8 +673,36 @@ std::ostream& operator<<(std::ostream& os, const instruction_32b_t& in){
             THROW_UNDEFINED(STM);
         case t32_STMDB:
             THROW_UNDEFINED(STMDB);
+
         case t32_STR:
-            THROW_UNDEFINED(STR);
+            switch(in.meta_opcode){
+                case meta_t32_imm:
+                    switch(in.encoding){
+                        case instruction_32b_t::encoding_T3:
+                            os << "STR r" << in.Rt << ", [r" << in.Rn << ", #" << in.u32 << "]";
+                            break;
+                        case instruction_32b_t::encoding_T4:
+                            os << "STR";
+                            if(in.P)
+                                os << "p";
+                            if(in.  U)
+                                os << "u";
+                            if(in.W)
+                                os << "w";
+                            os << " r" << in.Rt << ", [r" << in.Rn << ", #" << in.i32 << "]";
+                            break;
+                        default: 
+                            THROW_INVALID_ENCODING(STR);
+                    }
+                    break;
+                case meta_t32_reg:
+                    os << "STR r" << in.Rt << ", [r" << in.Rn << ", r" << in.Rm << ", LSL #" << in.u32 << "]";
+                    break;
+                default:
+                    THROW_INVALID_METACODE_32B(STR);
+            }
+            break;
+
         case t32_STRB:
             THROW_UNDEFINED(STRB);
         case t32_STRD:
@@ -606,4 +728,5 @@ std::ostream& operator<<(std::ostream& os, const instruction_32b_t& in){
         default:
             std::runtime_error("Undefined 32-bit instruction format");
     }
+    return os;
 }
