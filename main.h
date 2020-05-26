@@ -9,7 +9,9 @@
 #include <inc/core.h>
 #include <inc/memory_pool.h>
 
-void load_nvic(std::string filename, armv7_m3& cpu) {
+void load_nvic_file(std::string filename, armv7_m3& cpu) {
+
+    std::cout << "Loading '" << filename << "'..." << std::flush;
 
     std::ifstream is(filename);
     is >> std::hex;
@@ -28,6 +30,8 @@ void load_nvic(std::string filename, armv7_m3& cpu) {
                 "load_nvic : invalid register reference 'r" + 
                 std::to_string(regnum) + "'");
     }
+
+    std::cout << "DONE" << std::flush;
 }
 
 void load_memory_file(const std::string filename, memory_t& mempool) {

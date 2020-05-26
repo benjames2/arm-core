@@ -120,6 +120,14 @@ std::ostream& operator<<(std::ostream& os, const instruction_16b_t& in) {
             //BX    = 5*
             os << "BX r" << in.Rs;
             break;
+
+        case i_CBNZ:
+            os << "CBNZ r" << in.Rn << " #" << in.u32;
+            break;
+
+        case i_CBZ:
+            os << "CBZ r" << in.Rn << " #" << in.u32;
+            break;
             
         case i_CMN   : // compare negative
             //CMN   = 4

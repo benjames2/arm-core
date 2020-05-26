@@ -72,11 +72,28 @@ instruction_t decode_16bit_instruction(unsigned int PC, unsigned int instruction
                     return decode_format_14(PC, instruction_word);
 
                 flag = (instruction_word >> 0) & 0x1FFF;
-                    if(flag == 0x1F00){
-                        instruction_t inst;
-                        inst.opcode = i_NOP;
-                        return inst;
-                    }
+                if(flag == 0x1F00){
+                    instruction_t inst;
+                    inst.opcode = i_NOP;
+                    return inst;
+                }
+
+                flag = (instruction_word >> 8) & 0x1F;
+                if((flag & 0b10101) == 0b10001){
+                    instruction_t inst;
+
+                    int i    = (instruction_word >> 9)  & 0x01;
+                    int op   = (instruction_word >> 11) & 0x01;
+                    int imm5 = (instruction_word >> 3)  & 0x1F;
+
+                    inst.Rn  = (instruction_word >> 0)  & 0x07;
+                    inst.u32 = (i << 6) | (imm5 << 1);
+
+                    if(op) inst.opcode = i_CBNZ;
+                    else   inst.opcode = i_CBZ;
+
+                    return inst;
+                }
 
                 throw std::runtime_error(
                     "decode_instruction (superfamily: " + 
