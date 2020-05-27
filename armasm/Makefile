@@ -31,7 +31,7 @@ all: ${progs}
 #    (objcopy) main.elf -> main.bin
 #
 ${progs}: %/main.bin: %/main.s
-	${AS} -mlittle-endian -march=armv7 -mthumb -o $*/main.o $< 
+	${AS} -ggdb -mlittle-endian -march=armv7 -mthumb -o $*/main.o $< 
 	${LD} -T linkage.lds -o $*/main.elf $*/main.o
 	${OBJCOPY} -S -O binary $*/main.elf $@
 
