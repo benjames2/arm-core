@@ -135,12 +135,6 @@ main:
              @ according to the 32-bit manual, a 16-bit form 
              @ of this instruction does not exist
 
-@.align 2
-extra:
-    @mov r0, $mydata
-    @ldr r0, =mydata
-    @ldr r1, [r0]
-
 endprog: @ leave this label at the end of the .text section
 .align 10
 
