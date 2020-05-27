@@ -36,7 +36,9 @@ int main(int argc, char* argv[]) {
     load_nvic_file("test/input_ext/nvic.txt", armcpu);
     cout << armcpu << endl;
 
-
+    cout << "=============================================\n";
+    cout << " files loading complete";
+    cout << "\n=============================================\n\n";
 
 ///*
     int count = 1;
@@ -69,15 +71,17 @@ int main(int argc, char* argv[]) {
     cout << "\n=============================================\n\n";
 
 ///*
-    for(int i = 0; i < 30; i++) {
+    for(int i = 0; i < 30; ++i) {
 
         auto inst_data   = fetch(mem, armcpu.PC(), true);
         auto decode_data = decode(inst_data, armcpu.PC());
         auto newcpu      = execute(armcpu, mem, decode_data);
     
-        armcpu = newcpu;
         cout << decode_data << endl;
-        cout << newcpu << endl;
+        print_cpu_diff(armcpu, newcpu, cout);
+        armcpu = newcpu;
+        
+       // cout << newcpu << endl;
     }
 //*/
 
@@ -100,11 +104,11 @@ int main(int argc, char* argv[]) {
         if(inst_data.type == fetched_instruction_t::t32) 
             addr+=2;
     }
-
+//*/
     cout << "\n\n==========================================\n";
     cout << "  execute complete";
     cout << "\n==========================================\n\n";
-//*/
+
     return 0;
 }
 

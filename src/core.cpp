@@ -98,6 +98,9 @@ bool armv7_m3::get_CPSR_T( void) { return ((this->CPSR >> 5) & 0x01); }
 void armv7_m3::set_CPSR(uint32_t cpsr) { this->CPSR = cpsr; }
 void armv7_m3::set_APSR(uint32_t apsr) { this->APSR = apsr; }
 
+uint32_t armv7_m3::get_CPSR(void) { return this->CPSR; }
+uint32_t armv7_m3::get_APSR(void) { return this->APSR; }
+
 int  armv7_m3::get_stack_mode(void)              { return this->stack_mode; }
 void armv7_m3::set_stack_mode(const int newmode) { this->stack_mode = newmode; }
 
@@ -118,7 +121,7 @@ std::ostream& operator<<(std::ostream& os, armv7_m3& cpu) {
     os << std::dec;
     os << "\n  cpu state " << cpu.cpu_id << "\n";
 
-    for(int i = 0; i < cpu.reg.size(); i++){
+    for(int i = 0; i < cpu.reg.size(); ++i){
 
         os << "R" << std::dec << i; 
         if(i < 10)
@@ -135,7 +138,7 @@ std::ostream& operator<<(std::ostream& os, armv7_m3& cpu) {
         }
     }
 
-    os << "xPSR   :  0x" << padhexnumber(cpu.CPSR) << "\n";
+    os << "xPSR   :  0x" << padhexnumber(cpu.get_CPSR()) << "\n";
 
     os << "N    Z    C    V   Q\n";
     os << 
@@ -148,4 +151,70 @@ std::ostream& operator<<(std::ostream& os, armv7_m3& cpu) {
     os << "Cycle  : " << std::dec << cpu.get_cycle_count() << std::endl;
 
     return os;
+}
+void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os){
+
+    auto padhexnumber = [](const unsigned int number) {
+        std::stringstream ss;
+        ss << std::hex << number;
+        
+        auto s = ss.str(); 
+
+        while (s.size() < 8)
+            s = "0" + s;
+
+        return s;
+    };
+
+    os << std::dec;
+    os << "\n  cpu state " << new_cpu.cpu_id << "\n";
+
+    for(int i = 0; i < new_cpu.reg.size(); ++i){
+
+        if(i < 10){
+            if(old_cpu.get_register_i32(i) != new_cpu.get_register_i32(i)){
+                os << "R" << std::dec << i;
+                os << std::hex << "     :  Ox" << padhexnumber(new_cpu.get_register_i32(i)) << std::endl;
+            }
+        }
+        else{
+            if(i < 13){
+                if(old_cpu.get_register_i32(i) != new_cpu.get_register_i32(i)){
+                    os << "R" << std::dec << i;
+                    os << std::hex << "     :  Ox" << padhexnumber(new_cpu.get_register_i32(i)) << "\n";
+                }
+            }
+            if(i == 13){
+                if(old_cpu.get_register_i32(i) != new_cpu.get_register_i32(i)){
+                    os << "R" << std::dec << i;
+                    os << std::hex << "(SP):  Ox" << padhexnumber(new_cpu.get_register_i32(i)) << "\n";
+                }
+            }
+            if(i == 14){
+                if(old_cpu.get_register_i32(i) != new_cpu.get_register_i32(i)){
+                    os << "R" << std::dec << i << "";
+                    os << std::hex << "(LR):  Ox" << padhexnumber(new_cpu.get_register_i32(i)) << "\n";
+                }
+            }
+            if(i == 15){
+                if(old_cpu.get_register_i32(i) != new_cpu.get_register_i32(i)){
+                    os << "R" << std::dec << i;
+                    os << std::hex << "(PC):  Ox" << padhexnumber(new_cpu.get_register_i32(i)) << "\n";
+                }
+            }
+        }
+        
+    }
+
+    if(old_cpu.get_CPSR() != new_cpu.get_CPSR()){
+        os << "xPSR   :  0x" << padhexnumber(new_cpu.get_CPSR()) << "\n";
+        os << "N    Z    C    V   Q\n";
+        os << 
+            new_cpu.get_CPSR_N() << "    " <<
+            new_cpu.get_CPSR_Z() << "    " <<
+            new_cpu.get_CPSR_C() << "    " <<
+            new_cpu.get_CPSR_V() << "   " <<
+            new_cpu.get_CPSR_Q() << "\n";
+        }
+    os << std::endl;
 }
