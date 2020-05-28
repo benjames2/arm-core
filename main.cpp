@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <inc/core.h>
 #include <inc/memory_pool.h>
 #include <inc/decode_structure.h>
@@ -52,7 +53,7 @@ int main(int argc, char* argv[]) {
         
         try {
             auto dec_inst = decode(inst_data, addr);
-            cout << count << "- ";
+            cout << setw(2) << count << "- ";
             cout << dec_inst << endl;
             count++;
         }
@@ -78,10 +79,9 @@ int main(int argc, char* argv[]) {
         auto newcpu      = execute(armcpu, mem, decode_data);
     
         cout << decode_data << endl;
-        print_cpu_diff(armcpu, newcpu, cout);
+        //print_cpu_diff(armcpu, newcpu, cout);
         armcpu = newcpu;
-        
-       // cout << newcpu << endl;
+        cout << newcpu << endl;
     }
 //*/
 

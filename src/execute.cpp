@@ -716,9 +716,12 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                     auto Rd     = new_cpu.get_register(inst.Rd).i32;
                     auto offset = inst.i_immediate;
+
+                    std::cout << "\nRd : " << std::hex << Rd << std::endl;
+                    std::cout << "Offset : " << std::hex << offset << std::endl;
                     
                     //Operation
-                    auto msg = gp_operation(&result, Rd, offset, 0, x86_asm_SBB); 
+                    auto msg = gp_operation(&result, Rd, offset, 0, x86_asm_SUB);  
 
                     //Set Flags
                     new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
