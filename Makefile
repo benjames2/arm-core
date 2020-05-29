@@ -24,10 +24,15 @@ ASMOBJ= ${OBJ}/byte_swap.o
 ASMMATHOBJ= ${OBJ}/math.o # <-- this one is awkward
 
 ALLOBJ=${CPPOBJ} ${ASMOBJ} ${ASMMATHOBJ}
+ALLOBJLUA=${CPPOBJ}
 
 all: main
 
-lua: 
+# the lua wrapper requires all of the object files but not the final executable
+lua: luaprep ${ALLOBJ} ${INC}/static_asserts.h
+
+luaprep:
+	$(eval FLAGS += -fPIC -shared)
 
 # count the number of lines of code in the project
 count:

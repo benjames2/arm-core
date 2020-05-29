@@ -10,6 +10,8 @@ armv7_m3::armv7_m3(void) {
     this->cycle_count = 0;
     this->stack_mode  = armv7_m3::stack_mode_undefined;
     this->cpu_id      = 0;
+
+    //std::cout << "ctor : armv7_m3" << std::endl;
 }
 
 uint64_t armv7_m3::get_cycle_count(void){

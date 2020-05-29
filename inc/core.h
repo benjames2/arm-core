@@ -17,9 +17,6 @@ public:
     const static int stack_mode_EmptyAscending  = 2;
     const static int stack_mode_EmptyDescending = 3;
 
-//private:
-public:
-
     std::array<register_t, 16> reg;
 
     union {
@@ -30,8 +27,6 @@ public:
     int stack_mode;
     uint64_t cycle_count;
     int64_t  cpu_id;
-
-public:
 
     armv7_m3(void);
 
