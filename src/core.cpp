@@ -11,6 +11,8 @@ armv7_m3::armv7_m3(void) {
     this->stack_mode  = armv7_m3::stack_mode_undefined;
     this->cpu_id      = 0;
 
+    this->CPSR = 0;
+
     //std::cout << "ctor : armv7_m3" << std::endl;
 }
 
@@ -102,6 +104,63 @@ void armv7_m3::set_APSR(uint32_t apsr) { this->APSR = apsr; }
 
 int  armv7_m3::get_stack_mode(void)              { return this->stack_mode; }
 void armv7_m3::set_stack_mode(const int newmode) { this->stack_mode = newmode; }
+
+std::string armv7_m3::serialize(void) {
+
+    std::stringstream ss;
+
+    // serialize register values first
+    for(int i = 0; i < 16; i++) {
+        uint32_t r = this->get_register_u32(i);
+
+        char buf[9];
+        buf[8] = '\0';
+
+        for(int i = 0; i < 8; i++) {
+            buf[7-i] = "0123456789ABCDEF"[ (r >> (i * 4)) & 0x0F ];
+        }
+
+        ss << buf << ' ';
+    }
+
+    ss << (int)this->get_APSR_N() << ' ';
+    ss << (int)this->get_APSR_Z() << ' ';
+    ss << (int)this->get_APSR_C() << ' ';
+    ss << (int)this->get_APSR_V() << ' ';
+    ss << (int)this->get_APSR_Q() << ' ';
+
+    return ss.str();
+}
+
+armv7_m3 armv7_m3::deserialize(std::string str) {
+    armv7_m3 cpu;
+
+    std::stringstream ss(str);
+    ss >> std::hex;
+
+    for(int i = 0; i < 16; i++) {
+        uint32_t u32;
+        ss >> u32;
+
+        cpu.set_register_u32(i, u32);
+    }
+
+    ss >> std::dec;
+
+    int f;
+    ss >> f; cpu.set_APSR_N(f);
+    ss >> f; cpu.set_APSR_Z(f);
+    ss >> f; cpu.set_APSR_C(f);
+    ss >> f; cpu.set_APSR_V(f);
+    ss >> f; cpu.set_APSR_Q(f);
+
+    return cpu;
+}
+
+void armv7_m3::deserialize(std::string str, armv7_m3* cpuptr) {
+    auto cpu = armv7_m3::deserialize(str);
+    *cpuptr = cpu;
+}
 
 std::ostream& operator<<(std::ostream& os, armv7_m3& cpu) {
 

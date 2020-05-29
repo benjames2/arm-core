@@ -95,6 +95,11 @@ public:
     bool get_CPSR_T( void); // THUMB execution state bit. for us, we'll always be in THUMB state
     int  get_CPSR_M( void); // Mode field (4:0)
 
+    // serialize for easy file storage. returns ascii string
+    std::string serialize(void);
+    static armv7_m3 deserialize(std::string str);
+    static void deserialize(std::string str, armv7_m3*);
+
     friend std::ostream& operator<<(std::ostream& os, armv7_m3& cpu);
     
 };

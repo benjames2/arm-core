@@ -8,6 +8,8 @@ extern "C" { // Lua is strictly a C library and does not contain this by default
 
 static int new_obj(lua_State* L) {
 
+    
+
 }
 
 static int delete_obj(lua_State* L) {

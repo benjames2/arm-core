@@ -8,7 +8,7 @@ CPU = {
     SP = 13,
 }
 
-CPU.new = function()
+CPU.new = function(initcallback)
     local self = {}
     --self.__index = self
 
@@ -26,7 +26,9 @@ CPU.new = function()
                 return armcore.to_string(obj.cpu)
             end,
 
-            __index = function(obj, key) -- fetch the correct register value, error checking is done in the C++ implementation
+            __index = function(obj, key) -- fetch the correct register value, error checking is done in the C++ 
+                                         -- implementation and may throw an uncaught exception which will crash 
+                                         -- the entire program
                 return armcore.get_register_u32(obj.cpu, key)
             end,
 
@@ -68,10 +70,23 @@ CPU.new = function()
     function self.get_LR() return armcore.get_register_u32(self.cpu, CPU.LR) end
     function self.get_SP() return armcore.get_register_u32(self.cpu, CPU.SP) end
 
-    
+    -- generate ASCII string suitable for file storage
+    function self.serialize() return armcore.serialize(self.cpu) end
+
+    -- optionally pass an initialization function to CPU.new
+    if initcallback ~= nil then
+        initcallback(self)        
+    end
 
     return self;
 end
 
+CPU.deserialize = function(s)
+    local self = CPU.new()
+
+    -- the existing cpu object is simply modified by the deserialize function
+    armcore.deserialize(s, self.cpu)
+    return self
+end
 
 
