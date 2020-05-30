@@ -28,7 +28,7 @@ end
 
 -- just testing the garbage collector and making sure my __gc metamethod works
 --[[do
-    for i=0,10000 do
+    for i=0,1000000 do
         local studidcpu = CPU.new()
         --studidcpu = nil
         --collectgarbage()
@@ -54,9 +54,9 @@ function run()
 
     -- it is trivial to create N separate cpu instances
     local cputable = {}
-    for i=1,5 do
-        table.insert(cputable, CPU.new(rng_reg))
-        print(cputable[i])
+    for i=1,15 do
+        table.insert(cputable, CPU.new( function(cpu) cpu.set_register_u32(15, 10000) end ))
+        --print(cputable[i])
     end
 
     local serialized = {}
@@ -68,10 +68,16 @@ end
 
 cpulist, cpuser = run()
 
+file = io.open('serialized.txt', 'w') -- clear existing file
+
 print('list of serialized CPU states')
 for k,v in pairs(cpuser) do
     print((k-1) .. ': ' .. v)
+
+    -- print serialized cpu states to file
+    file:write(v .. '\n')
 end
+file:close()
 
 -- deserialize all of these cpu states
 newcpulist = {}
@@ -89,4 +95,6 @@ cpu_1 = newcpulist[1]
 for i=0,15 do
     print(cpu_0.get_register_u32(i) - cpu_1.get_register_u32(i))
 end
+
+print(newcpulist)
 

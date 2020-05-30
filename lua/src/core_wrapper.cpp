@@ -19,8 +19,6 @@ static int new_obj(lua_State* L) {
     luaL_getmetatable(L, "armcore.metatable");
     lua_setmetatable(L, -2); // set metatable for constructed userdata object
 
-    newarmptr->set_APSR_N(true);
-
     //std::cout << "C -> constructing armv7_m3 object\n";
     total_objects++;
 
@@ -63,7 +61,6 @@ static int to_string(lua_State* L) {
     lua_pushlstring(L, str.c_str(), str.size());
     return 1;
 }
-
 
 static int serialize(lua_State* L) {
 
