@@ -1,13 +1,10 @@
 #include <lua5.3/lua.hpp>
-
 #include <sstream>
-
-// arm-core library
 #include <inc/core.h>
 
 extern "C" { // Lua is strictly a C library and does not contain this by default
 
-int total_objects = 0;
+static int total_objects = 0;
 
 static int new_obj(lua_State* L) {
     
@@ -120,6 +117,11 @@ static int set_register_u32(lua_State* L) {
     return 0;
 }
 
+static int get_num_objects(lua_State* L) {
+    lua_pushnumber(L, total_objects);
+    return 1;
+}
+
 const struct luaL_Reg regarray[] = {
     { "new",           new_obj     },
     { "delete",        delete_obj  },
@@ -131,6 +133,7 @@ const struct luaL_Reg regarray[] = {
     { "get_register_i32", get_register_i32 },
     { "set_register_u32", set_register_u32 },
     { "set_register_i32", set_register_i32 },
+    { "debugNumObjects",  get_num_objects },
     { NULL, NULL } // <-- last entry must be {NULL, NULL}
 };
 

@@ -1,6 +1,6 @@
 
 -- wrap raw c functions in Lua object syntax
-armcore = require("core_wrapper");
+local armcore = require("core_wrapper");
 
 CPU = {
     PC = 15,
@@ -89,4 +89,6 @@ CPU.deserialize = function(s)
     return self
 end
 
-
+CPU.debugNumObjects = function()
+    return armcore.debugNumObjects()
+end

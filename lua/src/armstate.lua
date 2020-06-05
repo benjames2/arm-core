@@ -4,7 +4,6 @@ require("core")  -- CPU object
 require("memory") -- MEMORY object
 
 STATE = {}
-
 STATE.new = function() {
 
     local self = {}
@@ -17,11 +16,14 @@ STATE.new = function() {
     return self
 }
 
+STATE_TABLE = {}
+STATE_TABLE.new = function() {
+
+}
+
 state_table = {}
 for i=0,15 do
-    
     state_table:insert(i, STATE.new())
-
 end
 
 

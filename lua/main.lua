@@ -1,20 +1,10 @@
 
 -- specify that lua should look in the src directory as well as the default path
 package.cpath = package.cpath .. ';./src/?.so'
+package.path = package.path .. ';./src/?.lua'
 
-require("src.core");   -- exposes armv7_m3 C++ object
---require("src.memory"); -- exposes memory_t C++ object
-
---[[
-    CPU.new            : creates new armv7_m3 object from scratch. registers are initialized as expected
-    CPU.deserialize    : creates new armv7_m3 object from string-representation of cpu state
-    <cpuobj>.serialize : creates string-representation that can be used with CPU.deserialize to prefectly 
-                         reconstruct cpu state. any cpu object can be serialized
-
-    because the (de)serialization methods use the C++ (de)serialization methods directly, results can be 
-    freely passed between C++ and Lua. same protocol is used
-
---]]
+require("core")
+require("memory")
 
 math.randomseed(os.time())
 
@@ -55,7 +45,7 @@ function run()
     -- it is trivial to create N separate cpu instances
     local cputable = {}
     for i=1,15 do
-        table.insert(cputable, CPU.new( function(cpu) cpu.set_register_u32(15, 10000) end ))
+        table.insert(cputable, CPU.new( rng_reg ))
         --print(cputable[i])
     end
 
@@ -97,4 +87,20 @@ for i=0,15 do
 end
 
 print(newcpulist)
+
+do
+    local memobj = MEMORY.new(MEMORY.little_endian)
+
+    for addr=0,100 do
+        memobj.store_u8(addr, math.random(0, 256))
+    end
+
+    print(string.format("Memory : \n%s", tostring(memobj)))
+
+end
+
+print(string.format("CPU objects : %d", CPU.debugNumObjects()))
+collectgarbage()
+print(string.format("MEMORY objects : %d", MEMORY.debugNumObjects()))
+print(string.format("CPU objects : %d", CPU.debugNumObjects()))
 
