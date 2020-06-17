@@ -1,10 +1,12 @@
 
 -- specify that lua should look in the src directory as well as the default path
 package.cpath = package.cpath .. ';./src/?.so'
-package.path = package.path .. ';./src/?.lua'
+--package.path = package.path .. ';./src/?.lua'
 
 require("core")
 require("memory")
+require("armstate")
+require("loop")
 
 math.randomseed(os.time())
 
@@ -69,6 +71,8 @@ for k,v in pairs(cpuser) do
 end
 file:close()
 
+collectgarbage("count")
+
 -- deserialize all of these cpu states
 newcpulist = {}
 for k,v in pairs(cpuser) do
@@ -88,19 +92,37 @@ end
 
 print(newcpulist)
 
-do
+-- spawn a bunch of memory_t objects
+for i=0,100 do
+    --print("Lua memory usage : " .. tostring(collectgarbage("count")) .. " kB")
     local memobj = MEMORY.new(MEMORY.little_endian)
 
-    for addr=0,100 do
-        memobj.store_u8(addr, math.random(0, 256))
-    end
+    if i == 100 then
 
-    print(string.format("Memory : \n%s", tostring(memobj)))
+        for j=0,100 do
+            memobj.store_u8(j, math.random(1, 255))
+        end
+
+        print(tostring(memobj))
+
+        for j=0,9 do
+            print(string.format("0x%08d : %02x ", j, memobj.load_u8(j)))
+        end
+        print() -- newline
+
+    end
 
 end
 
-print(string.format("CPU objects : %d", CPU.debugNumObjects()))
-collectgarbage()
+--print("Lua memory usage : " .. tostring(collectgarbage("count")) .. " kB")
+print(string.format("CPU objects    : %d", CPU.debugNumObjects()))
 print(string.format("MEMORY objects : %d", MEMORY.debugNumObjects()))
-print(string.format("CPU objects : %d", CPU.debugNumObjects()))
+
+print("collecting garbage...")
+collectgarbage()
+collectgarbage()
+
+--print("Lua memory usage : " .. tostring(collectgarbage("count")) .. " kB")
+print(string.format("CPU objects    : %d", CPU.debugNumObjects()))
+print(string.format("MEMORY objects : %d", MEMORY.debugNumObjects()))
 

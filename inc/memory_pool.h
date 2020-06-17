@@ -55,9 +55,13 @@ public:
     static const int big_endian = 1;
 
     memory_t(const int endianness);
+    memory_t(const memory_t&);
 
     size_t debug_num_pages(void);
     void debug_clear_pages(void);
+
+    auto begin(void) -> std::map<int, memory_page_t>::iterator;
+    auto end(void) -> std::map<int, memory_page_t>::iterator;
 
     // get a specific byte from memory. can request data from
     // anywhere in the 32-bit memory space

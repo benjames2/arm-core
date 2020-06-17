@@ -13,12 +13,22 @@ static int new_obj(lua_State* L) {
         new( // placement new
             static_cast<armv7_m3*>(armptr)) armv7_m3; 
 
-    luaL_getmetatable(L, "armcore.metatable");
-    lua_setmetatable(L, -2); // set metatable for constructed userdata object
-
     //std::cout << "C -> constructing armv7_m3 object\n";
     total_objects++;
 
+    return 1;
+}
+
+// copy the contents of an existing object into another (this creates another instance 
+// which will be garbage collected at some point)
+static int copy_obj(lua_State* L) {
+    auto* cpu = (armv7_m3*)lua_touserdata(L, 1);
+
+    void* vptr = lua_newuserdata(L, sizeof(armv7_m3));
+    armv7_m3* newcpu = 
+        new(static_cast<armv7_m3*>(vptr)) armv7_m3(*cpu);    
+
+    total_objects++;
     return 1;
 }
 
@@ -125,6 +135,7 @@ static int get_num_objects(lua_State* L) {
 const struct luaL_Reg regarray[] = {
     { "new",           new_obj     },
     { "delete",        delete_obj  },
+    { "copy",          copy_obj },
     { "to_string",     to_string   },
     { "serialize",     serialize   },
     { "deserialize",   deserialize },
@@ -139,9 +150,6 @@ const struct luaL_Reg regarray[] = {
 
 // initialization function must be luaopen_<name of .so>
 int luaopen_core_wrapper(lua_State* L) {
-    // create new metatable to be used for future armv7_m3 objects
-    luaL_newmetatable(L, "armcore.metatable");
-
     luaL_newlib(L, regarray);
     return 1;
 }

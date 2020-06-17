@@ -17,10 +17,15 @@ static int new_obj(lua_State* L) {
     else if(d > -0.1 && d < 0.1)
         memory_t* memptr = new(static_cast<memory_t*>(vptr)) memory_t(memory_t::little_endian);
 
-    // for the memory_t ptrs above, it doesnt matter if they go out of scope because Lua hasnt lost track of the memory
+    // for the memory_t ptrs above, it doesnt matter if they go out of 
+    // scope because Lua hasnt lost track of the memory
 
     total_objects++;
     return 1;
+}
+
+static int copy_obj(lua_State* L) {
+    
 }
 
 static int delete_obj(lua_State* L) {

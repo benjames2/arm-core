@@ -16,6 +16,17 @@ armv7_m3::armv7_m3(void) {
     //std::cout << "ctor : armv7_m3" << std::endl;
 }
 
+armv7_m3::armv7_m3(const armv7_m3& cpu) {
+
+    this->reg = cpu.reg;
+
+    this->APSR = cpu.APSR;
+    this->stack_mode = cpu.stack_mode;
+    this->cycle_count = cpu.cycle_count;
+    this->cpu_id = cpu.cpu_id;
+
+}
+
 uint64_t armv7_m3::get_cycle_count(void){
     return this->cycle_count;
 }

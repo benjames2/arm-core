@@ -5,6 +5,13 @@ memory_t::memory_t(const int endianness) {
 }
 
 // ==================================================================
+// iterators
+// ==================================================================
+
+auto memory_t::begin(void) -> std::map<int, memory_page_t>::iterator { return this->mem_lut.begin(); }
+auto memory_t::end(void) -> std::map<int, memory_page_t>::iterator { return this->mem_lut.end(); }
+
+// ==================================================================
 // load functions
 // ==================================================================
 

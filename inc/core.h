@@ -29,6 +29,7 @@ public:
     int64_t  cpu_id;
 
     armv7_m3(void);
+    armv7_m3(const armv7_m3&);
 
     int get_stack_mode(void);
     void set_stack_mode(const int newmode);
