@@ -26,6 +26,14 @@ static int new_obj(lua_State* L) {
 
 static int copy_obj(lua_State* L) {
     
+    auto* memptr = static_cast<memory_t*>(lua_touserdata(L, 1));
+    auto* newmem = static_cast<memory_t*>(lua_newuserdata(L, sizeof(memory_t)));
+
+    // in-place copy construct
+    newmem = new(newmem) memory_t(*memptr);
+
+    total_objects++;
+    return 1;
 }
 
 static int delete_obj(lua_State* L) {

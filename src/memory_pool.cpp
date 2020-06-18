@@ -4,12 +4,36 @@ memory_t::memory_t(const int endianness) {
     this->endianness = endianness;
 }
 
+memory_t::memory_t(const memory_t& m) {
+    
+    auto iter = m.cbegin();
+    while(iter != m.cend()) {
+
+        auto pg_num = iter->first;
+        auto& data = iter->second;
+
+        this->mem_lut.insert({ pg_num, data });
+
+        iter++;
+    }
+
+    this->endianness = m.get_endianness();
+}
+
 // ==================================================================
 // iterators
 // ==================================================================
 
 auto memory_t::begin(void) -> std::map<int, memory_page_t>::iterator { return this->mem_lut.begin(); }
 auto memory_t::end(void) -> std::map<int, memory_page_t>::iterator { return this->mem_lut.end(); }
+auto memory_t::cbegin(void) const noexcept -> std::map<int, memory_page_t>::const_iterator { return this->mem_lut.cbegin(); }
+auto memory_t::cend(void) const noexcept -> std::map<int, memory_page_t>::const_iterator { return this->mem_lut.cend(); }
+
+// ==================================================================
+// access
+// ==================================================================
+
+int memory_t::get_endianness(void) const { return this->endianness; }
 
 // ==================================================================
 // load functions

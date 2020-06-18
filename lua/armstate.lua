@@ -4,7 +4,7 @@ require("core")   -- CPU object
 require("memory") -- MEMORY object
 
 STATE = {}
-STATE.new = function(cpuobj, memobj)
+STATE.new = function()
 
     local self = {}
 
@@ -18,6 +18,7 @@ STATE.new = function(cpuobj, memobj)
     return self
 end
 
+-- returns a deep copy of the given STATE object
 STATE.copy = function(state)
 
     local self = {}
@@ -27,3 +28,4 @@ STATE.copy = function(state)
 
     return self;
 end
+

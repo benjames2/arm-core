@@ -81,7 +81,7 @@ static int serialize(lua_State* L) {
 static int deserialize(lua_State* L) {
 
     const char* cptr = luaL_checkstring(L, 1);
-    auto* armcore = (armv7_m3*)lua_touserdata(L, 2);
+    auto* armcore = static_cast<armv7_m3*>(lua_touserdata(L, 2));
 
     // deserialize into proper memory location for new cpu object
     armv7_m3::deserialize(cptr, armcore);    

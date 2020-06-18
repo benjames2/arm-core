@@ -10,8 +10,8 @@ extern "C" { // Lua is strictly a C library and does not contain this by default
 
 static int step_execute(lua_State* L) {
 
-    auto* cpu = (armv7_m3*)lua_touserdata(L, 1);
-    auto* mem = (memory_t*)lua_touserdata(L, 2);
+    auto* cpu = static_cast<armv7_m3*>(lua_touserdata(L, 1));
+    auto* mem = static_cast<memory_t*>(lua_touserdata(L, 2));
 
     auto inst_data   = fetch(*mem, cpu->PC(), true);
     auto decode_data = decode(inst_data, cpu->PC());
@@ -31,3 +31,5 @@ int luaopen_execution_loop_wrapper(lua_State* L) {
 }
 
 }
+
+
