@@ -27,23 +27,31 @@ void import_bin(void);
 
 int main(int argc, char* argv[]) {
 
+    if(argc < 2){
+        cout << "Usage: " << argv[0] << " <folderpath_missing/>" << endl << flush;
+		return 1;
+    }
+    string folderpath(argv[1]); 
+
     armv7_m3 armcpu;
     memory_t mem(memory_t::little_endian);
+    address_t end_addr = 0;
 
-    for(auto cptr : { "test/input_ext/assembly-code.txt", "test/input_ext/memory.txt" }) {
-        load_memory_file(cptr, mem);
+    for(auto cptr : { folderpath + "/assembly-code.txt", folderpath + "/memory.txt" }) {
+        load_memory_file(cptr, mem, end_addr);
         std::cout << mem << std::endl;
     }
-    load_nvic_file("test/input_ext/nvic.txt", armcpu);
+    load_nvic_file( folderpath + "/nvic.txt", armcpu);
     cout << armcpu << endl;
+
 
     cout << "=============================================\n";
     cout << " files loading complete";
-    cout << "\n=============================================\n\n";
+    cout << "\n=============================================\n";
 
 ///*
     int count = 1;
-    for(address_t addr = 0x00000238; addr <= 0x0000027C;) {
+    for(address_t addr = armcpu.get_PC(); addr <= 0x000002d4;) {
 
        // if(addr > 0x00000256 && addr < 0x00000270 ){
        //     addr += 2; continue;
@@ -79,9 +87,9 @@ int main(int argc, char* argv[]) {
         auto newcpu      = execute(armcpu, mem, decode_data);
     
         cout << decode_data << endl;
-        //print_cpu_diff(armcpu, newcpu, cout);
+        print_cpu_diff(armcpu, newcpu, cout);
         armcpu = newcpu;
-        cout << newcpu << endl;
+        //cout << newcpu << endl;
     }
 //*/
 
@@ -105,7 +113,7 @@ int main(int argc, char* argv[]) {
             addr+=2;
     }
 //*/
-    cout << "\n\n==========================================\n";
+    cout << "==========================================\n";
     cout << "  execute complete";
     cout << "\n==========================================\n\n";
 

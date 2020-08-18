@@ -149,7 +149,7 @@ std::ostream& operator<<(std::ostream& os, armv7_m3& cpu) {
         cpu.get_CPSR_V() << std::setw(4) <<
         cpu.get_CPSR_Q() << "\n";
         
-    os << "Cycle  : " << std::dec << cpu.get_cycle_count() << std::endl;
+    os << "Cycle  :" << std::dec << std::setw(3) << cpu.get_cycle_count() << std::endl;
 
     return os;
 }
@@ -169,7 +169,7 @@ void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os){
     };
 
     os << std::dec;
-    os << "\n  cpu state " << new_cpu.cpu_id << "\n";
+    os << "  cpu state " << new_cpu.cpu_id << "\n";
 
     for(int i = 0; i < new_cpu.reg.size(); ++i){
 
@@ -218,5 +218,6 @@ void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os){
             new_cpu.get_CPSR_V() << std::setw(4) <<
             new_cpu.get_CPSR_Q() << "\n";
         }
-    os << std::endl;
+    
+    os << "Cycle  :" << std::dec << std::setw(3) << new_cpu.get_cycle_count() << "\n\n" << std::endl;
 }
