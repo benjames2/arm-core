@@ -39,6 +39,8 @@ void load_memory_file(const std::string filename, memory_t& mempool, address_t& 
 
     std::cout << "Loading '" << filename << "'..." << std::flush;
 
+    static short int count = 0;
+
     std::ifstream is(filename);
     std::string str;
 
@@ -68,7 +70,9 @@ void load_memory_file(const std::string filename, memory_t& mempool, address_t& 
 
     }
 
-    if (filename == "test/input_ext/assembly-code.txt")
+    count++;
+
+    if (count == 1)
         end_address = addr;
 
     std::cout << "DONE\n" << std::flush;

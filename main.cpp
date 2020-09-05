@@ -35,12 +35,15 @@ int main(int argc, char* argv[]) {
 
     armv7_m3 armcpu;
     memory_t mem(memory_t::little_endian);
-    address_t end_addr = 0;
+    address_t last_asm_addr = 0;
 
     for(auto cptr : { folderpath + "/assembly-code.txt", folderpath + "/memory.txt" }) {
-        load_memory_file(cptr, mem, end_addr);
+        load_memory_file(cptr, mem, last_asm_addr);
         std::cout << mem << std::endl;
     }
+
+    cout << "end_addr:" << hex << last_asm_addr << endl;
+
     load_nvic_file( folderpath + "/nvic.txt", armcpu);
     cout << armcpu << endl;
 
@@ -51,7 +54,7 @@ int main(int argc, char* argv[]) {
 
 ///*
     int count = 1;
-    for(address_t addr = armcpu.get_PC(); addr <= 0x000002d4;) {
+    for(address_t addr = armcpu.get_PC(); addr <= last_asm_addr;) {
 
        // if(addr > 0x00000256 && addr < 0x00000270 ){
        //     addr += 2; continue;
@@ -80,7 +83,7 @@ int main(int argc, char* argv[]) {
     cout << "\n=============================================\n\n";
 
 ///*
-    for(int i = 0; i < 40; ++i) {
+    for(int i = 0; i < 60; ++i) {
 
         auto inst_data   = fetch(mem, armcpu.PC(), true);
         auto decode_data = decode(inst_data, armcpu.PC());
