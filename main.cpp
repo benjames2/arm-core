@@ -80,7 +80,7 @@ int main(int argc, char* argv[]) {
     cout << "\n=============================================\n\n";
 
 ///*
-    for(int i = 0; i < 30; ++i) {
+    for(int i = 0; i < 40; ++i) {
 
         auto inst_data   = fetch(mem, armcpu.PC(), true);
         auto decode_data = decode(inst_data, armcpu.PC());
