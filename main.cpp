@@ -42,8 +42,6 @@ int main(int argc, char* argv[]) {
         std::cout << mem << std::endl;
     }
 
-    cout << "end_addr:" << hex << last_asm_addr << endl;
-
     load_nvic_file( folderpath + "/nvic.txt", armcpu);
     cout << armcpu << endl;
 
@@ -122,6 +120,21 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void test_all_decode_fns(void) {
     test_decode_fns("test/instruction_test/testfile.branch.txt");
