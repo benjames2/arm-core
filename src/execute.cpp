@@ -33,7 +33,6 @@ armv7_m3 execute(armv7_m3& cpu, memory_t& memory, decoded_instruction_t& inst) {
 
 armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
     // first things first, switch by opcode
-
     auto new_cpu = cpu;
 
     new_cpu.cpu_id++;
@@ -714,16 +713,19 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
 
                     results_t result;
 
-                    auto Rd     = new_cpu.get_register(inst.Rd).i32;
-                    auto offset = inst.i_immediate;
+                    auto Rd     = new_cpu.get_register_u32(inst.Rd);
+                    auto offset = inst.u_immediate;
+
+                    std::cout << "\nr0 : " << std::hex << Rd << std::endl;
+                    std::cout << "Offset : " << std::hex << offset << std::endl;
                     
                     //Operation
-                    auto msg = gp_operation(&result, Rd, offset, 0, x86_asm_SBB); 
+                    auto msg = gp_operation(&result, Rd, offset, 0, x86_asm_SUB);  
 
                     //Set Flags
-                    new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                    new_cpu.set_CPSR_N(result.get_x86_flag_Sign()); 
                     new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
-                    new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                    new_cpu.set_CPSR_C(!result.get_x86_flag_Carry()); 
                     new_cpu.set_APSR_V(result.get_x86_flag_Ov());
 
                     //Set PC and cycle count
@@ -741,13 +743,16 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                     auto Rd = new_cpu.get_register(inst.Rd).i32;
                     auto Rs = new_cpu.get_register(inst.Rs).i32;
 
+                    std::cout << "\nr0 : " << std::hex << Rd << std::endl;
+                    std::cout << "r1: " << std::hex << Rs << std::endl;
+
                     //Operation
-                    auto msg = gp_operation(&result, Rd, Rs, 0, x86_asm_SBB);
+                    auto msg = gp_operation(&result, Rd, Rs, 0, x86_asm_SUB);
 
                     //Set Flags
                     new_cpu.set_CPSR_N(result.get_x86_flag_Sign());
                     new_cpu.set_CPSR_Z(result.get_x86_flag_Zero());
-                    new_cpu.set_CPSR_C(result.get_x86_flag_Carry());
+                    new_cpu.set_CPSR_C(!result.get_x86_flag_Carry()); //the carry flag behaves diferently in armV7. it is then inverted
                     new_cpu.set_APSR_V(result.get_x86_flag_Ov());
 
                     //Set PC and cycle count
@@ -811,7 +816,7 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                 
                 uint32_t uimm = inst.u32;
 
-                auto addr = pc + uimm; std::cout << "LDR addr: 0x" << std::hex << addr << " "; 
+                auto addr = pc + uimm;
                 auto bytes = memory.load_u32(addr);
                 new_cpu.set_register_u32(inst.Rd, bytes);
 
@@ -1100,10 +1105,10 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                     
                     new_cpu.set_register_i32(inst.Rd, imm);
 
-                    //Set Flags
-                    new_cpu.set_CPSR_N(imm & (1 << 31));
-                    new_cpu.set_CPSR_Z(imm == 0);
-                    new_cpu.set_CPSR_C(false);
+                    //Set Flags: According to ARM7-TDMI Manual, MOV instruction does not update the flags
+                    //new_cpu.set_CPSR_N(imm & (1 << 31));
+                    //new_cpu.set_CPSR_Z(imm == 0);
+                    //new_cpu.set_CPSR_C(false);
 
                     //Set PC and cycle count
                     new_cpu.cycle_count++;
@@ -1118,10 +1123,10 @@ armv7_m3 execute_t16(armv7_m3& cpu, memory_t& memory, instruction_16b_t& inst) {
                     
                     new_cpu.set_register_i32(inst.Rd, Hs);
 
-                    //Set Flags
-                    new_cpu.set_CPSR_N(Hs & (1 << 31));
-                    new_cpu.set_CPSR_Z(Hs == 0);
-                    new_cpu.set_CPSR_C(false);
+                    //Set Flags: According to ARM7-TDMI Manual, MOV instruction does not update the flags
+                    //new_cpu.set_CPSR_N(Hs & (1 << 31));
+                    //new_cpu.set_CPSR_Z(Hs == 0);
+                    //new_cpu.set_CPSR_C(false);
 
                     //Set PC and cycle count
                     new_cpu.cycle_count++;

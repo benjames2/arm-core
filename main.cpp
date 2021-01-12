@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <inc/core.h>
 #include <inc/memory_pool.h>
 #include <inc/decode_structure.h>
@@ -26,21 +27,31 @@ void import_bin(void);
 
 int main(int argc, char* argv[]) {
 
+    if(argc < 2){
+        cout << "Usage: " << argv[0] << " <folderpath_missing/>" << endl << flush;
+		return 1;
+    }
+    string folderpath(argv[1]); 
+
     armv7_m3 armcpu;
     memory_t mem(memory_t::little_endian);
+    address_t end_addr = 0;
 
-    for(auto cptr : { "test/input_ext/assembly-code.txt", "test/input_ext/memory.txt" }) {
-        load_memory_file(cptr, mem);
+    for(auto cptr : { folderpath + "/assembly-code.txt", folderpath + "/memory.txt" }) {
+        load_memory_file(cptr, mem, end_addr);
         std::cout << mem << std::endl;
     }
-    load_nvic_file("test/input_ext/nvic.txt", armcpu);
+    load_nvic_file( folderpath + "/nvic.txt", armcpu);
     cout << armcpu << endl;
 
 
+    cout << "=============================================\n";
+    cout << " files loading complete";
+    cout << "\n=============================================\n";
 
 ///*
     int count = 1;
-    for(address_t addr = 0x00000238; addr <= 0x0000027C;) {
+    for(address_t addr = armcpu.get_PC(); addr <= 0x000002d4;) {
 
        // if(addr > 0x00000256 && addr < 0x00000270 ){
        //     addr += 2; continue;
@@ -50,7 +61,7 @@ int main(int argc, char* argv[]) {
         
         try {
             auto dec_inst = decode(inst_data, addr);
-            cout << count << "- ";
+            cout << setw(2) << count << "- ";
             cout << dec_inst << endl;
             count++;
         }
@@ -69,15 +80,16 @@ int main(int argc, char* argv[]) {
     cout << "\n=============================================\n\n";
 
 ///*
-    for(int i = 0; i < 30; i++) {
+    for(int i = 0; i < 40; ++i) {
 
         auto inst_data   = fetch(mem, armcpu.PC(), true);
         auto decode_data = decode(inst_data, armcpu.PC());
         auto newcpu      = execute(armcpu, mem, decode_data);
     
-        armcpu = newcpu;
         cout << decode_data << endl;
-        cout << newcpu << endl;
+        print_cpu_diff(armcpu, newcpu, cout);
+        armcpu = newcpu;
+        //cout << newcpu << endl;
     }
 //*/
 
@@ -100,11 +112,11 @@ int main(int argc, char* argv[]) {
         if(inst_data.type == fetched_instruction_t::t32) 
             addr+=2;
     }
-
-    cout << "\n\n==========================================\n";
+//*/
+    cout << "==========================================\n";
     cout << "  execute complete";
     cout << "\n==========================================\n\n";
-//*/
+
     return 0;
 }
 
