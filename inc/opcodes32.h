@@ -4,7 +4,7 @@
 
 /*
     comments after each opcode indicate which page of the 
-    32-bit isntruction manual info about it can be found. 
+    32-bit instruction manual info about it can be found. 
     this information is written differently to the 16-bit 
     Thumb set. the meta opcodes used here are also different 
     from the ones used for Thumb16
