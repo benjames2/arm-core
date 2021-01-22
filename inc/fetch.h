@@ -3,6 +3,7 @@
 #include <cstddef>
 
 #include "memory_pool.h"
+#include "armstate.h"
 
 struct fetched_instruction_t {
     int type;
@@ -13,4 +14,4 @@ struct fetched_instruction_t {
     static const int t32 = 1;
 };
 
-fetched_instruction_t fetch(memory_t& memory, uint32_t PC, const bool should_print = false);
+fetched_instruction_t fetch(memory_t& memory, address32_t address, const bool should_print = false);

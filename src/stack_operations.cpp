@@ -3,7 +3,7 @@
 #include <inc/memory_pool.h>
 #include <inc/exceptions.h>
 
-address_t push_word(armv7_m3& cpu, memory_t& memory, address_t addr, uint32_t word) {
+address32_t push_word(armv7_m3& cpu, memory_t& memory, address32_t addr, uint32_t word) {
     
     switch(cpu.get_stack_mode()) {
         case armv7_m3::stack_mode_FullAscending:
@@ -28,7 +28,7 @@ address_t push_word(armv7_m3& cpu, memory_t& memory, address_t addr, uint32_t wo
     return addr;
 }
 
-address_t push_word(armv7_m3& cpu, memory_t& memory, address_t addr, int32_t word) {
+address32_t push_word(armv7_m3& cpu, memory_t& memory, address32_t addr, int32_t word) {
     
      switch(cpu.get_stack_mode()) {
         case armv7_m3::stack_mode_FullAscending:
@@ -53,7 +53,7 @@ address_t push_word(armv7_m3& cpu, memory_t& memory, address_t addr, int32_t wor
     return addr;
 }
 
-address_t pop_word(armv7_m3& cpu, memory_t& memory, address_t addr, int regn) {
+address32_t pop_word(armv7_m3& cpu, memory_t& memory, address32_t addr, int regn) {
     
     uint32_t val = 0;
 

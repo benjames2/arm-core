@@ -6,7 +6,7 @@
 #include <iostream>
 #include <cstddef>
 
-typedef uint32_t   address_t;
+typedef uint32_t   address32_t;
 typedef uint64_t   address64_t;
 
 typedef uint8_t    half_word_t;
@@ -61,30 +61,30 @@ public:
 
     // get a specific byte from memory. can request data from
     // anywhere in the 32-bit memory space
-    uint8_t  load_u8(address_t address);
-    uint16_t load_u16(address_t address);
-    uint32_t load_u32(address_t address);
-    uint64_t load_u64(address_t address);
+    uint8_t  load_u8(address32_t address);
+    uint16_t load_u16(address32_t address);
+    uint32_t load_u32(address32_t address);
+    uint64_t load_u64(address32_t address);
 
     // load signed data
-    int8_t  load_i8(address_t address);
-    int16_t load_i16(address_t address);
-    int32_t load_i32(address_t address);
-    int64_t load_i64(address_t address);
+    int8_t  load_i8(address32_t address);
+    int16_t load_i16(address32_t address);
+    int32_t load_i32(address32_t address);
+    int64_t load_i64(address32_t address);
 
     // store data anywhere in the address space.
     // storing zeros does not actually increase the
     // amount of memory used by memory_t
-    void store_u8(address_t address,  uint8_t data);
-    void store_u16(address_t address, uint16_t data);
-    void store_u32(address_t address, uint32_t data);
-    void store_u64(address_t address, uint64_t data);
+    void store_u8(address32_t address,  uint8_t data);
+    void store_u16(address32_t address, uint16_t data);
+    void store_u32(address32_t address, uint32_t data);
+    void store_u64(address32_t address, uint64_t data);
 
     // store signed data
-    void store_i8(address_t address,  int8_t data);
-    void store_i16(address_t address, int16_t data);
-    void store_i32(address_t address, int32_t data);
-    void store_i64(address_t address, int64_t data);
+    void store_i8(address32_t address,  int8_t data);
+    void store_i16(address32_t address, int16_t data);
+    void store_i32(address32_t address, int32_t data);
+    void store_i64(address32_t address, int64_t data);
 
     friend std::ostream& operator<<(std::ostream& os, memory_t& mem);
 

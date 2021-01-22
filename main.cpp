@@ -14,6 +14,7 @@
 #include <inc/test.h>
 #include <inc/exceptions.h>
 #include <inc/range.h>
+#include <inc/armstate.h>
 
 #include "main.h"
 
@@ -33,17 +34,16 @@ int main(int argc, char* argv[]) {
     }
     string folderpath(argv[1]); 
 
-    armv7_m3 armcpu;
-    memory_t mem(memory_t::little_endian);
-    address_t last_asm_addr = 0;
+    armstate_t armstate(memory_t::little_endian);
+    address32_t last_asm_addr = 0;
 
     for(auto cptr : { folderpath + "/assembly-code.txt", folderpath + "/memory.txt" }) {
-        load_memory_file(cptr, mem, last_asm_addr);
-        std::cout << mem << std::endl;
+        load_memory_file(cptr, armstate.memory, last_asm_addr);
+        std::cout << armstate.memory << std::endl;
     }
 
-    load_nvic_file( folderpath + "/nvic.txt", armcpu);
-    cout << armcpu << endl;
+    load_nvic_file( folderpath + "/nvic.txt", armstate.cpu);
+    cout << armstate.cpu << endl;
 
 
     cout << "=============================================\n";
@@ -52,13 +52,13 @@ int main(int argc, char* argv[]) {
 
 ///*
     int count = 1;
-    for(address_t addr = armcpu.get_PC(); addr <= last_asm_addr;) {
+    for(address32_t addr = armstate.cpu.get_PC(); addr <= last_asm_addr;) {
 
        // if(addr > 0x00000256 && addr < 0x00000270 ){
        //     addr += 2; continue;
        // }
 
-        auto inst_data   = fetch(mem, addr, true);
+        auto inst_data   = fetch(armstate.memory, addr, true);
         
         try {
             auto dec_inst = decode(inst_data, addr);
@@ -83,13 +83,13 @@ int main(int argc, char* argv[]) {
 ///*
     for(int i = 0; i < 60; ++i) {
 
-        auto inst_data   = fetch(mem, armcpu.PC(), true);
-        auto decode_data = decode(inst_data, armcpu.PC());
-        auto newcpu      = execute(armcpu, mem, decode_data);
+        auto inst_data    = fetch(armstate.memory, armstate.cpu.PC(), true);
+        auto decode_data  = decode(inst_data, armstate.cpu.PC());
+        auto new_armstate = execute(armstate, decode_data);
     
         cout << decode_data << endl;
-        print_cpu_diff(armcpu, newcpu, cout);
-        armcpu = newcpu;
+        print_cpu_diff(armstate.cpu, new_armstate.cpu, cout);
+        armstate = new_armstate;
         //cout << newcpu << endl;
     }
 //*/
@@ -123,8 +123,6 @@ int main(int argc, char* argv[]) {
 
 
 
-
-
 void test_all_decode_fns(void) {
     test_decode_fns("test/instruction_test/testfile.branch.txt");
     test_decode_fns("test/instruction_test/testfile.bottom.txt");
@@ -136,6 +134,7 @@ void test_all_decode_fns(void) {
 void import_bin(void){
 
     memory_t mem(memory_t::little_endian);
+ 
 
     auto sz = import_bin_file("armasm/fullthumb16/main.bin", mem, 0x00000000);
     cout << mem << endl;

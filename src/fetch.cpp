@@ -3,13 +3,14 @@
 #include <inc/fetch.h>
 #include <inc/memory_pool.h>
 
-fetched_instruction_t fetch(memory_t& memory, uint32_t PC, const bool should_print) {
+
+fetched_instruction_t fetch(memory_t& memory, address32_t address, const bool should_print) {
 
     // contains which encoding is used
     fetched_instruction_t fi;
 
     // memory_t object handles all endianness issues
-    uint32_t first_halfword = memory.load_u16(PC);
+    uint32_t first_halfword = memory.load_u16(address);
 
     auto pad_hex_number = [](uint32_t addr) -> std::string {
         std::stringstream ss;
@@ -32,10 +33,10 @@ fetched_instruction_t fetch(memory_t& memory, uint32_t PC, const bool should_pri
             {
                 if(should_print)
                     std::cout 
-                        << "[0x" << std::hex << pad_hex_number(PC) 
+                        << "[0x" << std::hex << pad_hex_number(address) 
                         << std::dec << " 32-bit] " << std::flush;
 
-                uint32_t second_halfword = memory.load_u16(PC+2);
+                uint32_t second_halfword = memory.load_u16(address +2);
 
                 fi.in   = (first_halfword << 16) | second_halfword;
                 fi.type = fetched_instruction_t::t32;
@@ -45,7 +46,7 @@ fetched_instruction_t fetch(memory_t& memory, uint32_t PC, const bool should_pri
             // 16-bit THUMB, first halfword is entire instruction
             if(should_print)
                 std::cout 
-                    << "[0x" << std::hex << pad_hex_number(PC) 
+                    << "[0x" << std::hex << pad_hex_number(address) 
                     << std::dec << " 16-bit] " << std::flush;
 
             fi.in   = first_halfword;

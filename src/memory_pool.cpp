@@ -23,7 +23,7 @@ uint8_t memory_t::load_u8(uint32_t address) {
     }
 }
 
-uint16_t memory_t::load_u16(address_t address) {
+uint16_t memory_t::load_u16(address32_t address) {
     uint16_t data, dl, dh;
 
     dl = this->load_u8(address);
@@ -37,7 +37,7 @@ uint16_t memory_t::load_u16(address_t address) {
         return data;
 }
 
-uint32_t memory_t::load_u32(address_t address) {
+uint32_t memory_t::load_u32(address32_t address) {
     uint32_t data, d0, d1, d2, d3;
 
     d0 = this->load_u8(address + 0);
@@ -54,7 +54,7 @@ uint32_t memory_t::load_u32(address_t address) {
 
 }
 
-uint64_t memory_t::load_u64(address_t address) {
+uint64_t memory_t::load_u64(address32_t address) {
     uint64_t data, d0, d1, d2, d3, d4, d5, d6, d7;
 
     d0 = this->load_u8(address + 0);
@@ -77,7 +77,7 @@ uint64_t memory_t::load_u64(address_t address) {
 }
 
 // load signed data
-int8_t memory_t::load_i8(address_t address) {
+int8_t memory_t::load_i8(address32_t address) {
     union {
         int8_t i8;
         uint8_t u8;
@@ -87,7 +87,7 @@ int8_t memory_t::load_i8(address_t address) {
     return i8;
 }
 
-int16_t memory_t::load_i16(address_t address) {
+int16_t memory_t::load_i16(address32_t address) {
     union {
         int16_t i16;
         uint16_t u16;
@@ -97,7 +97,7 @@ int16_t memory_t::load_i16(address_t address) {
     return i16;
 }
 
-int32_t memory_t::load_i32(address_t address) {
+int32_t memory_t::load_i32(address32_t address) {
     union {
         int32_t  i32;
         uint32_t u32;
@@ -107,7 +107,7 @@ int32_t memory_t::load_i32(address_t address) {
     return i32;
 }
 
-int64_t memory_t::load_i64(address_t address) {
+int64_t memory_t::load_i64(address32_t address) {
     union {
         int64_t  i64;
         uint64_t u64;
@@ -121,7 +121,7 @@ int64_t memory_t::load_i64(address_t address) {
 // store functions
 // ==================================================================
 
-void memory_t::store_u8(address_t address, uint8_t byte) {
+void memory_t::store_u8(address32_t address, uint8_t byte) {
     uint32_t page = address >> 8;
     auto iter = this->mem_lut.find(page);
 
@@ -151,7 +151,7 @@ void memory_t::store_u8(address_t address, uint8_t byte) {
     }
 }
 
-void memory_t::store_u16(address_t address, uint16_t data) {
+void memory_t::store_u16(address32_t address, uint16_t data) {
 
     if(this->endianness == this->big_endian)
         data = byte_swap_16(data);
@@ -161,7 +161,7 @@ void memory_t::store_u16(address_t address, uint16_t data) {
 
 }
 
-void memory_t::store_u32(address_t address, uint32_t data) {
+void memory_t::store_u32(address32_t address, uint32_t data) {
     if(this->endianness == this->big_endian)
         data = byte_swap_32(data);
 
@@ -172,7 +172,7 @@ void memory_t::store_u32(address_t address, uint32_t data) {
 
 }
 
-void memory_t::store_u64(address_t address, uint64_t data) {
+void memory_t::store_u64(address32_t address, uint64_t data) {
     if(this->endianness == this->big_endian)
         data = byte_swap_64(data);
 
@@ -188,7 +188,7 @@ void memory_t::store_u64(address_t address, uint64_t data) {
 }
 
 // store signed data
-void memory_t::store_i8(address_t address,  int8_t data) {
+void memory_t::store_i8(address32_t address,  int8_t data) {
     union {
         int8_t i8;
         uint8_t u8;
@@ -198,7 +198,7 @@ void memory_t::store_i8(address_t address,  int8_t data) {
     this->store_u8(address, u8);
 }
 
-void memory_t::store_i16(address_t address, int16_t data) {
+void memory_t::store_i16(address32_t address, int16_t data) {
     union {
         int16_t i16;
         uint16_t u16;
@@ -208,7 +208,7 @@ void memory_t::store_i16(address_t address, int16_t data) {
     this->store_u16(address, u16);
 }
 
-void memory_t::store_i32(address_t address, int32_t data) {
+void memory_t::store_i32(address32_t address, int32_t data) {
     union {
         int32_t  i32;
         uint32_t u32;
@@ -218,7 +218,7 @@ void memory_t::store_i32(address_t address, int32_t data) {
     this->store_u32(address, u32);
 }
 
-void memory_t::store_i64(address_t address, int64_t data) {
+void memory_t::store_i64(address32_t address, int64_t data) {
     union {
         int64_t i64;
         uint64_t u64;
@@ -247,7 +247,7 @@ std::ostream& operator<<(std::ostream& os, memory_t& mem) {
         return false;
     };
 
-    auto base_address = [](address_t addr) -> std::string {
+    auto base_address = [](address32_t addr) -> std::string {
         std::string s = "0x";
         for(int i = 7; i >= 0; i--) {
             s.push_back("0123456789ABCDEF"[(addr >> (i*4)) & 0x0F]);

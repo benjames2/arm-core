@@ -8,4 +8,4 @@
 #include "memory_pool.h"
 #include "decode_structure.h"
 
-armv7_m3 execute(armv7_m3& cpu, memory_t& memory, decoded_instruction_t& inst);
+armstate_t execute(armstate_t& armstate, decoded_instruction_t& inst);
