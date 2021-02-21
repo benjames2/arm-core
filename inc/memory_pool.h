@@ -25,31 +25,23 @@ extern "C" {
     uint16_t byte_swap_16(uint16_t b);
 }
 
+
+struct memory_page_t {
+    
+    std::array<uint8_t, 256> bytes;
+
+    int sz; // number of non-zero entries. used to
+            // determine when pages should be removed
+
+    memory_page_t(void);
+
+    friend bool operator==(const memory_page_t& lhs, const memory_page_t& rhs);
+
+};
+
 class memory_t {
 private:
 
-    struct memory_page_t {
-        
-        std::array<uint8_t, 256> bytes;
-
-        int sz; // number of non-zero entries. used to
-                // determine when pages should be removed
-
-        memory_page_t(void) {
-
-            this->sz = 0;
-            for(int i = 0; i < 256; i++)
-                this->bytes[i] = 0x00; // may want to just count the number of non-zero entries
-        }
-
-        friend bool operator==(memory_page_t const& page1, memory_page_t const& page2 ){
-            for (int i = 0; i < 256; ++i){
-                if (page1.bytes[i] != page2.bytes[i])
-                    return false;
-                return true;
-            }
-        }
-    };
 
     // every entry : { 24-bit page number, 256 byte chunk }
     std::map<int, memory_page_t> mem_lut;
@@ -94,8 +86,11 @@ public:
     void store_i32(address32_t address, int32_t data);
     void store_i64(address32_t address, int64_t data);
 
+    auto begin() -> std::map<int, memory_page_t>::iterator;
+    auto end() -> std::map<int, memory_page_t>::iterator;
+
     friend std::ostream& operator<<(std::ostream& os, memory_t& mem);
-    friend bool operator==(memory_t const& mem1, memory_t const& mem2);
+    friend bool operator==(memory_t& mem1, memory_t& mem2);
 };
 
 #endif // memory_pool

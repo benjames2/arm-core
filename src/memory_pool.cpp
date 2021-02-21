@@ -1,5 +1,17 @@
 #include <inc/memory_pool.h>
 
+
+memory_page_t::memory_page_t(void) {
+
+    this->sz = 0;
+    for(int i = 0; i < 256; i++)
+        this->bytes[i] = 0x00; // may want to just count the number of non-zero entries
+}
+
+bool operator==(const memory_page_t& lhs, const memory_page_t& rhs) {
+    return lhs.bytes == rhs.bytes;
+}
+
 memory_t::memory_t(const int endianness) {
     this->endianness = endianness;
 }
@@ -128,7 +140,7 @@ void memory_t::store_u8(address32_t address, uint8_t byte) {
     if(iter == this->mem_lut.end()) {
         if(byte) {
             // create a new page
-            memory_t::memory_page_t pg;
+            memory_page_t pg;
             pg.bytes[address & 0xFF] = byte;
             pg.sz++;
             this->mem_lut.insert({ page, pg });
@@ -280,23 +292,27 @@ std::ostream& operator<<(std::ostream& os, memory_t& mem) {
     return os;
 }
 
-bool operator==(memory_t const& mem1, memory_t const& mem2){
+auto memory_t::begin() -> std::map<int, memory_page_t>::iterator {
+    return this->mem_lut.begin();
+}
 
-    auto checkchunk = [](uint8_t* begin, uint8_t* end) -> bool{
-        while (begin != end){
-            if(*begin)
-                return true;
-            begin ++;
-        }
-        return false;
-    };
+auto memory_t::end() -> std::map<int, memory_page_t>::iterator {
+    return this->mem_lut.end();
+}
 
-    if (mem1.endianness != mem2.endianness) //This is not technically true. Two memories can be equal even when the endianness is different
-        return false;                       //Needs more code to do that. Keeping it simple for now
+bool operator==(memory_t& lhs, memory_t& rhs){
 
-    if (mem1.mem_lut != mem2.mem_lut)
-        return false;
+    auto lhs_iter = lhs.begin();
+    auto rhs_iter = rhs.begin();
+
+    while(lhs_iter != lhs.end() && rhs_iter != rhs.end()) {
+
+        if((*lhs_iter) != (*rhs_iter))
+            return false;
+
+        lhs_iter++;
+        rhs_iter++;
+    }
 
     return true;
-
 }

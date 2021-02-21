@@ -62,7 +62,7 @@ int main(int argc, char* argv[]) {
     cout << hex << mem1.load_u16(0x0) << endl;
 
     mem2.store_i8(0x1, 0xde);
-    mem2.store_i32(0xf, 0x0);
+    mem2.store_i32(0xf, 0xbeef);
     cout << mem2 << endl;
     cout << hex << mem2.load_u16(0x0) << endl;
 
@@ -72,6 +72,7 @@ int main(int argc, char* argv[]) {
     {
         cout << "The memories are not equal" << endl;
     }
+    
     
 
     cout << "=============================================\n";
