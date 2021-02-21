@@ -101,6 +101,7 @@ public:
     int  get_CPSR_M( void); // Mode field (4:0)
 
     friend std::ostream& operator<<(std::ostream& os, armv7_m3& cpu);
+    friend bool operator==(armv7_m3 const& armcore_w, armv7_m3 const& armcore_v);
     
 };
 

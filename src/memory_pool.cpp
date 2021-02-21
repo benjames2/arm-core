@@ -279,3 +279,24 @@ std::ostream& operator<<(std::ostream& os, memory_t& mem) {
 
     return os;
 }
+
+bool operator==(memory_t const& mem1, memory_t const& mem2){
+
+    auto checkchunk = [](uint8_t* begin, uint8_t* end) -> bool{
+        while (begin != end){
+            if(*begin)
+                return true;
+            begin ++;
+        }
+        return false;
+    };
+
+    if (mem1.endianness != mem2.endianness) //This is not technically true. Two memories can be equal even when the endianness is different
+        return false;                       //Needs more code to do that. Keeping it simple for now
+
+    if (mem1.mem_lut != mem2.mem_lut)
+        return false;
+
+    return true;
+
+}

@@ -41,6 +41,14 @@ private:
             for(int i = 0; i < 256; i++)
                 this->bytes[i] = 0x00; // may want to just count the number of non-zero entries
         }
+
+        friend bool operator==(memory_page_t const& page1, memory_page_t const& page2 ){
+            for (int i = 0; i < 256; ++i){
+                if (page1.bytes[i] != page2.bytes[i])
+                    return false;
+                return true;
+            }
+        }
     };
 
     // every entry : { 24-bit page number, 256 byte chunk }
@@ -87,7 +95,7 @@ public:
     void store_i64(address32_t address, int64_t data);
 
     friend std::ostream& operator<<(std::ostream& os, memory_t& mem);
-
+    friend bool operator==(memory_t const& mem1, memory_t const& mem2);
 };
 
 #endif // memory_pool

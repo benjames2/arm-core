@@ -221,3 +221,20 @@ void print_cpu_diff(armv7_m3 const& old_cpu, armv7_m3 const& new_cpu, std::ostre
     
     os << "Cycle  :" << std::dec << std::setw(3) << new_cpu.get_cycle_count() << "\n\n" << std::endl;
 }
+
+bool operator==(armv7_m3 const& armcore_w, armv7_m3 const& armcore_v){
+
+    if (armcore_w.get_cycle_count() != armcore_v.get_cycle_count())
+        return false;
+
+    if (armcore_w.get_CPSR() != armcore_v.get_CPSR())
+        return false;
+
+    for(int i = 0; i < armcore_w.reg.size(); ++i){
+        if (armcore_w.get_register_i32(i) != armcore_v.get_register_i32(i))
+            return false;
+    }
+
+    return true;
+
+}
