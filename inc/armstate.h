@@ -14,6 +14,6 @@ public:
 
     armstate_t(const int mem_endianness);
 
-    friend std::ostream operator<<(std::ostream& os, armstate_t const& armstate);
-    friend bool operator==(armstate_t const& armstate_w, armstate_t const& armstate_v);
+    friend std::ostream& operator<<(std::ostream& os, armstate_t& armstate);
+    friend bool operator==(armstate_t& armstate_lhs, armstate_t& armstate_rhs);
 };

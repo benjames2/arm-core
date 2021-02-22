@@ -105,7 +105,7 @@ uint32_t armv7_m3::get_APSR(void) { return this->APSR; }
 int  armv7_m3::get_stack_mode(void)              { return this->stack_mode; }
 void armv7_m3::set_stack_mode(const int newmode) { this->stack_mode = newmode; }
 
-std::ostream& operator<<(std::ostream& os, armv7_m3& cpu) {
+std::ostream& operator<<(std::ostream& os, armv7_m3 const& cpu) {
 
     auto padhexnumber = [](const unsigned int number) {
         std::stringstream ss;
@@ -237,4 +237,8 @@ bool operator==(armv7_m3 const& armcore_w, armv7_m3 const& armcore_v){
 
     return true;
 
+}
+
+bool operator!=(armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs){
+    return !(armcore_lhs == armcore_rhs);
 }

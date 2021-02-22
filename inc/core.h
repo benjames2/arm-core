@@ -100,8 +100,9 @@ public:
     bool get_CPSR_T( void); // THUMB execution state bit. for us, we'll always be in THUMB state
     int  get_CPSR_M( void); // Mode field (4:0)
 
-    friend std::ostream& operator<<(std::ostream& os, armv7_m3& cpu);
-    friend bool operator==(armv7_m3 const& armcore_w, armv7_m3 const& armcore_v);
+    friend std::ostream& operator<<(std::ostream& os, armv7_m3 const& cpu);
+    friend bool operator==(armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs);
+    friend bool operator!=(armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs);
     
 };
 

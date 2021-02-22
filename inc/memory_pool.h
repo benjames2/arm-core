@@ -5,6 +5,7 @@
 #include <array>
 #include <iostream>
 #include <cstddef>
+#include <sstream>
 
 typedef uint32_t   address32_t;
 typedef uint64_t   address64_t;
@@ -41,7 +42,6 @@ struct memory_page_t {
 
 class memory_t {
 private:
-
 
     // every entry : { 24-bit page number, 256 byte chunk }
     std::map<int, memory_page_t> mem_lut;
@@ -90,7 +90,8 @@ public:
     auto end() -> std::map<int, memory_page_t>::iterator;
 
     friend std::ostream& operator<<(std::ostream& os, memory_t& mem);
-    friend bool operator==(memory_t& mem1, memory_t& mem2);
+    friend bool operator==(memory_t& memory_lhs, memory_t& memory_rhs);
+    friend bool operator!=(memory_t& memory_lhs, memory_t& memory_rhs);
 };
 
 #endif // memory_pool

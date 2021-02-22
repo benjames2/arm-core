@@ -316,3 +316,7 @@ bool operator==(memory_t& lhs, memory_t& rhs){
 
     return true;
 }
+
+bool operator!=(memory_t& memory_lhs, memory_t& memory_rhs){
+    return !(memory_lhs == memory_rhs);
+}
