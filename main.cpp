@@ -39,18 +39,18 @@ int main(int argc, char* argv[]) {
 
     for(auto cptr : { folderpath + "/assembly-code.txt", folderpath + "/memory.txt" }) {
         load_memory_file(cptr, armstate.memory, last_asm_addr);
-        std::cout << armstate.memory << std::endl;
+        //std::cout << armstate.memory << std::endl;
     }
 
     load_nvic_file( folderpath + "/nvic.txt", armstate.cpu);
-    cout << armstate.cpu << endl;
+    //cout << armstate.cpu << endl;
 
 
     cout << "=============================================\n";
     cout << " files loading complete";
     cout << "\n=============================================\n";
 
-///*
+/*
     int count = 1;
     for(address32_t addr = armstate.cpu.get_PC(); addr <= last_asm_addr;) {
 
@@ -75,7 +75,10 @@ int main(int argc, char* argv[]) {
             addr += 2;
     }
 //*/
+    armstate_t w(memory_t::little_endian);
+    armstate_t v(memory_t::little_endian);
 
+    
     cout << "=============================================\n";
     cout << "  disassembly complete";
     cout << "\n=============================================\n\n";
