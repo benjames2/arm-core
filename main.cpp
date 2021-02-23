@@ -43,42 +43,12 @@ int main(int argc, char* argv[]) {
     }
 
     load_nvic_file( folderpath + "/nvic.txt", armstate.cpu);
-    cout << armstate.cpu << endl;
 
-    armv7_m3 w;
-    w.set_APSR_C(1);
-    armv7_m3 v;
-    v.set_APSR_C(1);
-    if (w == v)
-        cout << "They are equal" << endl;
-    else 
-        cout << "They are not equal" << endl;
-
-    memory_t mem2(memory_t::little_endian);
-    memory_t mem1(memory_t::little_endian);
-    mem1.store_i8(0x1, 0xde);
-    mem1.store_i16(0xf, 0xbeef);
-    cout << mem1 << endl;
-    cout << hex << mem1.load_u16(0x0) << endl;
-
-    mem2.store_i8(0x1, 0xde);
-    mem2.store_i32(0x10, 0x0000beef);
-    cout << mem2 << endl;
-    cout << hex << mem2.load_u16(0x0) << endl;
-
-    if (mem1 == mem2)
-        cout << "The memories are equal" << endl;
-    else
-    {
-        cout << "The memories are not equal" << endl;
-    }
-    
-
-    cout << "=============================================\n";
+    cout << "\n=============================================\n";
     cout << " files loading complete";
     cout << "\n=============================================\n";
 
-/*
+///*
     int count = 1;
     for(address32_t addr = armstate.cpu.get_PC(); addr <= last_asm_addr;) {
 
@@ -108,8 +78,8 @@ int main(int argc, char* argv[]) {
     cout << "  disassembly complete";
     cout << "\n=============================================\n\n";
 
-/*
-    for(int i = 0; i < 60; ++i) {
+///*
+    for(int i = 0; i < 5; ++i) {
 
         auto inst_data    = fetch(armstate.memory, armstate.cpu.PC(), true);
         auto decode_data  = decode(inst_data, armstate.cpu.PC());
@@ -118,6 +88,7 @@ int main(int argc, char* argv[]) {
         cout << decode_data << endl;
         print_cpu_diff(armstate.cpu, new_armstate.cpu, cout);
         armstate = new_armstate;
+        //cout << new_armstate << endl;
         //cout << newcpu << endl;
     }
 //*/
