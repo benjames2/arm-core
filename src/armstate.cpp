@@ -5,7 +5,7 @@ armstate_t::armstate_t(const int mem_endianness) : memory{mem_endianness}
     
 }
 
-std::ostream& operator<<(std::ostream& os, armstate_t & armstate){
+std::ostream& operator<<(std::ostream& os, armstate_t& armstate){
 
     os << armstate.cpu << armstate.memory << std::flush;
 
