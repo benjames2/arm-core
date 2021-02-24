@@ -3,14 +3,16 @@
 #include "armstate.h"
 
 
-struct armstate_pair{
+struct armstate_pair_t{
 
-    armstate_t& armstate_w;
-    armstate_t& armstate_v;
+    armstate_t armstate_w;
+    armstate_t armstate_v;
+
+    friend bool operator==(armstate_pair_t& pair_lhs, armstate_pair_t& pair_rhs);
 };
 
-std::vector<armstate_pair> RC;
+std::vector<armstate_pair_t> RC;
 
-bool ref_map(armstate_t& armstate_w, armstate_t& armstate_v);
-void successor(std::vector<armstate_pair>& RC, armstate_t& armstate_w);
+bool refinement_map(armstate_t& armstate_w, armstate_t& armstate_v);
+void successor(std::vector<armstate_pair_t>& RC, armstate_t& armstate_w);
 void symsimulation(armstate_t w0);

@@ -23,3 +23,6 @@ bool operator==(armstate_t& armstate_lhs, armstate_t& armstate_rhs){
     return true;
 }
 
+bool operator!=(armstate_t& armstate_lhs, armstate_t& armstate_rhs){
+    return !(armstate_lhs == armstate_rhs);
+}
