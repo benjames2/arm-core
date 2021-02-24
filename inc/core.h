@@ -103,6 +103,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, armv7_m3 const& cpu);
     friend bool operator==(armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs);
     friend bool operator!=(armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs);
+    friend bool operator<(armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs);
     
 };
 

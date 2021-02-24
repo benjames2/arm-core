@@ -23,7 +23,7 @@ bool operator==(armstate_t& armstate_lhs, armstate_t& armstate_rhs){
     return true;
 }
 
-/*
-    this is only for a test
-*/
+bool operator<(armstate_t& armstate_lhs, armstate_t& armstate_rhs){
 
+    return (armstate_lhs.cpu < armstate_rhs.cpu);
+}

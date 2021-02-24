@@ -242,3 +242,7 @@ bool operator==(armv7_m3 const& armcore_w, armv7_m3 const& armcore_v){
 bool operator!=(armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs){
     return !(armcore_lhs == armcore_rhs);
 }
+
+bool operator<(armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs){
+    return (armcore_lhs.cpu_id < armcore_rhs.cpu_id);
+}
