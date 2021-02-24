@@ -1,5 +1,17 @@
 #include <inc/memory_pool.h>
 
+
+memory_page_t::memory_page_t(void) {
+
+    this->sz = 0;
+    for(int i = 0; i < 256; i++)
+        this->bytes[i] = 0x00; // may want to just count the number of non-zero entries
+}
+
+bool operator==(const memory_page_t& lhs, const memory_page_t& rhs) {
+    return lhs.bytes == rhs.bytes;
+}
+
 memory_t::memory_t(const int endianness) {
     this->endianness = endianness;
 }
@@ -128,7 +140,7 @@ void memory_t::store_u8(address32_t address, uint8_t byte) {
     if(iter == this->mem_lut.end()) {
         if(byte) {
             // create a new page
-            memory_t::memory_page_t pg;
+            memory_page_t pg;
             pg.bytes[address & 0xFF] = byte;
             pg.sz++;
             this->mem_lut.insert({ page, pg });
@@ -278,4 +290,33 @@ std::ostream& operator<<(std::ostream& os, memory_t& mem) {
     }
 
     return os;
+}
+
+auto memory_t::begin() -> std::map<int, memory_page_t>::iterator {
+    return this->mem_lut.begin();
+}
+
+auto memory_t::end() -> std::map<int, memory_page_t>::iterator {
+    return this->mem_lut.end();
+}
+
+bool operator==(memory_t& lhs, memory_t& rhs){
+
+    auto lhs_iter = lhs.begin();
+    auto rhs_iter = rhs.begin();
+
+    while(lhs_iter != lhs.end() && rhs_iter != rhs.end()) {
+
+        if((*lhs_iter) != (*rhs_iter))
+            return false;
+
+        lhs_iter++;
+        rhs_iter++;
+    }
+
+    return true;
+}
+
+bool operator!=(memory_t& memory_lhs, memory_t& memory_rhs){
+    return !(memory_lhs == memory_rhs);
 }

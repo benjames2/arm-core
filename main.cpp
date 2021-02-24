@@ -43,10 +43,8 @@ int main(int argc, char* argv[]) {
     }
 
     load_nvic_file( folderpath + "/nvic.txt", armstate.cpu);
-    //cout << armstate.cpu << endl;
 
-
-    cout << "=============================================\n";
+    cout << "\n=============================================\n";
     cout << " files loading complete";
     cout << "\n=============================================\n";
 
@@ -84,7 +82,7 @@ int main(int argc, char* argv[]) {
     cout << "\n=============================================\n\n";
 
 ///*
-    for(int i = 0; i < 60; ++i) {
+    for(int i = 0; i < 5; ++i) {
 
         auto inst_data    = fetch(armstate.memory, armstate.cpu.PC(), true);
         auto decode_data  = decode(inst_data, armstate.cpu.PC());
@@ -93,6 +91,7 @@ int main(int argc, char* argv[]) {
         cout << decode_data << endl;
         print_cpu_diff(armstate.cpu, new_armstate.cpu, cout);
         armstate = new_armstate;
+        //cout << new_armstate << endl;
         //cout << newcpu << endl;
     }
 //*/

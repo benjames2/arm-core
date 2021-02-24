@@ -37,7 +37,7 @@ public:
 
     int get_stack_mode(void);
     void set_stack_mode(const int newmode);
-    uint64_t get_cycle_count(void);
+    uint64_t get_cycle_count(void) const;
 
     uint32_t& PC(void);
     uint32_t& SP(void);
@@ -45,8 +45,8 @@ public:
 
     // register data fetching methods
     uint32_t   get_register_u32(int reg);
-    int32_t    get_register_i32(int reg);
-    register_t get_register(    int reg);
+    int32_t    get_register_i32(int reg) const;
+    register_t get_register(    int reg) const;
 
     void set_register_i32(int reg, int32_t value);
     void set_register_u32(int reg, uint32_t value);
@@ -72,16 +72,16 @@ public:
     void set_APSR_V(bool b); // set oVerflow flag
     void set_APSR_Q(bool b); // set saturate flag
 
-    uint32_t get_CPSR(void);
+    uint32_t get_CPSR(void) const;
     void set_CPSR(uint32_t cpsr);
     void set_APSR(uint32_t apsr);
 
     // ALU flags are exactly the same as for the APSR
-    bool get_CPSR_N(void); // get Negative flag
-    bool get_CPSR_Z(void); // get Zero flag
-    bool get_CPSR_C(void); // get Carry flag
-    bool get_CPSR_V(void); // get oVerflow flag
-    bool get_CPSR_Q(void); // get saturate flag
+    bool get_CPSR_N(void) const; // get Negative flag
+    bool get_CPSR_Z(void) const; // get Zero flag
+    bool get_CPSR_C(void) const; // get Carry flag
+    bool get_CPSR_V(void) const; // get oVerflow flag
+    bool get_CPSR_Q(void) const; // get saturate flag
 
     void set_CPSR_N(bool b); // set Negative flag
     void set_CPSR_Z(bool b); // set Zero flag
@@ -100,8 +100,10 @@ public:
     bool get_CPSR_T( void); // THUMB execution state bit. for us, we'll always be in THUMB state
     int  get_CPSR_M( void); // Mode field (4:0)
 
-    friend std::ostream& operator<<(std::ostream& os, armv7_m3& cpu);
+    friend std::ostream& operator<<(std::ostream& os, armv7_m3 const& cpu);
+    friend bool operator==(armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs);
+    friend bool operator!=(armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs);
     
 };
 
-void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os);
+void print_cpu_diff(armv7_m3 const& old_cpu, armv7_m3 const& new_cpu, std::ostream& os);

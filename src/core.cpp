@@ -13,12 +13,12 @@ armv7_m3::armv7_m3(void) {
     this->cpu_id      = 0;
 }
 
-uint64_t armv7_m3::get_cycle_count(void){
+uint64_t armv7_m3::get_cycle_count(void) const{
     return this->cycle_count;
 }
 
 // register access
-armv7_m3::register_t armv7_m3::get_register(int reg) {
+armv7_m3::register_t armv7_m3::get_register(int reg) const {
     if(reg > 15 || reg < 0)
         throw std::runtime_error("armv7_m3::get_register : invalid register access. valid accesses are r(0-15)");
     return this->reg[reg]; 
@@ -28,7 +28,7 @@ uint32_t armv7_m3::get_register_u32(int reg) {
     return this->get_register(reg).u32;
 }
 
-int32_t armv7_m3::get_register_i32(int reg) {
+int32_t armv7_m3::get_register_i32(int reg) const {
     return this->get_register(reg).i32;
 }
 
@@ -72,11 +72,11 @@ void armv7_m3::set_APSR_C(bool b) { if(b) this->APSR |= (1 << 29); else this->AP
 void armv7_m3::set_APSR_V(bool b) { if(b) this->APSR |= (1 << 28); else this->APSR &= ~(1 << 28); }
 void armv7_m3::set_APSR_Q(bool b) { if(b) this->APSR |= (1 << 27); else this->APSR &= ~(1 << 27); }
 
-bool armv7_m3::get_CPSR_N(void) { return (this->CPSR & (1 << 31)) ? 1 : 0; }
-bool armv7_m3::get_CPSR_Z(void) { return (this->CPSR & (1 << 30)) ? 1 : 0; }
-bool armv7_m3::get_CPSR_C(void) { return (this->CPSR & (1 << 29)) ? 1 : 0; }
-bool armv7_m3::get_CPSR_V(void) { return (this->CPSR & (1 << 28)) ? 1 : 0; }
-bool armv7_m3::get_CPSR_Q(void) { return (this->CPSR & (1 << 27)) ? 1 : 0; }
+bool armv7_m3::get_CPSR_N(void) const { return (this->CPSR & (1 << 31)) ? 1 : 0; }
+bool armv7_m3::get_CPSR_Z(void) const { return (this->CPSR & (1 << 30)) ? 1 : 0; }
+bool armv7_m3::get_CPSR_C(void) const { return (this->CPSR & (1 << 29)) ? 1 : 0; }
+bool armv7_m3::get_CPSR_V(void) const { return (this->CPSR & (1 << 28)) ? 1 : 0; }
+bool armv7_m3::get_CPSR_Q(void) const { return (this->CPSR & (1 << 27)) ? 1 : 0; }
 
 void armv7_m3::set_CPSR_N(bool b) { if(b) this->CPSR |= (1 << 31); else this->CPSR &= ~(1 << 31); }
 void armv7_m3::set_CPSR_Z(bool b) { if(b) this->CPSR |= (1 << 30); else this->CPSR &= ~(1 << 30); }
@@ -99,13 +99,13 @@ bool armv7_m3::get_CPSR_T( void) { return ((this->CPSR >> 5) & 0x01); }
 void armv7_m3::set_CPSR(uint32_t cpsr) { this->CPSR = cpsr; }
 void armv7_m3::set_APSR(uint32_t apsr) { this->APSR = apsr; }
 
-uint32_t armv7_m3::get_CPSR(void) { return this->CPSR; }
+uint32_t armv7_m3::get_CPSR(void) const { return this->CPSR; }
 uint32_t armv7_m3::get_APSR(void) { return this->APSR; }
 
 int  armv7_m3::get_stack_mode(void)              { return this->stack_mode; }
 void armv7_m3::set_stack_mode(const int newmode) { this->stack_mode = newmode; }
 
-std::ostream& operator<<(std::ostream& os, armv7_m3& cpu) {
+std::ostream& operator<<(std::ostream& os, armv7_m3 const& cpu) {
 
     auto padhexnumber = [](const unsigned int number) {
         std::stringstream ss;
@@ -154,7 +154,7 @@ std::ostream& operator<<(std::ostream& os, armv7_m3& cpu) {
     return os;
 }
 
-void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os){
+void print_cpu_diff(armv7_m3 const& old_cpu, armv7_m3 const& new_cpu, std::ostream& os){
 
     auto padhexnumber = [](const unsigned int number) {
         std::stringstream ss;
@@ -220,4 +220,25 @@ void print_cpu_diff(armv7_m3& old_cpu, armv7_m3& new_cpu, std::ostream& os){
         }
     
     os << "Cycle  :" << std::dec << std::setw(3) << new_cpu.get_cycle_count() << "\n\n" << std::endl;
+}
+
+bool operator==(armv7_m3 const& armcore_w, armv7_m3 const& armcore_v){
+
+    if (armcore_w.get_cycle_count() != armcore_v.get_cycle_count())
+        return false;
+
+    if (armcore_w.get_CPSR() != armcore_v.get_CPSR())
+        return false;
+
+    for(int i = 0; i < armcore_w.reg.size(); ++i){
+        if (armcore_w.get_register_i32(i) != armcore_v.get_register_i32(i))
+            return false;
+    }
+
+    return true;
+
+}
+
+bool operator!=(armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs){
+    return !(armcore_lhs == armcore_rhs);
 }
