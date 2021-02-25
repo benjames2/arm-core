@@ -15,6 +15,7 @@
 #include <inc/exceptions.h>
 #include <inc/range.h>
 #include <inc/armstate.h>
+#include <inc/simulation.h>
 
 #include "main.h"
 
@@ -43,6 +44,8 @@ int main(int argc, char* argv[]) {
     }
 
     load_nvic_file( folderpath + "/nvic.txt", armstate.cpu);
+
+    auto w0 = armstate;
 
     cout << "\n=============================================\n";
     cout << " files loading complete";
@@ -73,10 +76,7 @@ int main(int argc, char* argv[]) {
             addr += 2;
     }
 //*/
-    armstate_t w(memory_t::little_endian);
-    armstate_t v(memory_t::little_endian);
 
-    
     cout << "=============================================\n";
     cout << "  disassembly complete";
     cout << "\n=============================================\n\n";
@@ -96,6 +96,7 @@ int main(int argc, char* argv[]) {
     }
 //*/
 
+   
  /*   
     for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
 
@@ -118,6 +119,17 @@ int main(int argc, char* argv[]) {
 //*/
     cout << "==========================================\n";
     cout << "  execute complete";
+    cout << "\n==========================================\n\n";
+
+
+    cout << "==========================================\n";
+    cout << "  simulation starting";
+    cout << "\n==========================================\n\n";
+
+    symsimulation(w0);
+
+    cout << "==========================================\n";
+    cout << "  simulation ended";
     cout << "\n==========================================\n\n";
 
     return 0;

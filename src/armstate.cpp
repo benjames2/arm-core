@@ -26,3 +26,8 @@ bool operator==(armstate_t& armstate_lhs, armstate_t& armstate_rhs){
 bool operator!=(armstate_t& armstate_lhs, armstate_t& armstate_rhs){
     return !(armstate_lhs == armstate_rhs);
 }
+
+bool operator<(armstate_t& armstate_lhs, armstate_t& armstate_rhs){
+
+    return (armstate_lhs.cpu < armstate_rhs.cpu);
+}

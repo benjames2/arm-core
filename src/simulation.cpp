@@ -5,19 +5,39 @@
 
 void symsimulation(armstate_t w0){
 
-bool skip_simulation = false;
-bool path_complete   = false;
-int  ss_length = 0;
 
-std::vector<armstate_pair_t> RU, RI;
-std::vector<armstate_t> I{w0};
-auto w_abs = w0;
+
+    bool skip_simulation = false;
+    bool path_complete   = false;
+    int  ss_length = 0;
+
+    std::set<armstate_pair_t> RU;
+    std::vector<armstate_pair_t> RI;
+    std::vector<armstate_t> I{w0};
+
+    auto w_abs = w0;                                     //Initialize w_abs to w0, 
+    auto w = w0;                                         //Initialize w to w0
+    auto v = w0;                                         //v is supposed to be initialized to null but it should not matter
+
 
     if(!skip_simulation){
         std::vector<armstate_pair_t> RC;
-        successor(RC, w0);
+        successor(RC, w0);                          //RC ← simulate-object-code(w, object-code);
         auto wv_pair = RC.back();
+        std::cout << "Printing the pairs\n" << wv_pair << std::endl;               
+        w = wv_pair.armstate_w;                     //Choose any <w, v>, ∈ RC; last pair element is chosen in RC
+        std::cout << "Printing state w\n" << w << std::endl; 
+        v = wv_pair.armstate_v;
+        std::cout << "Printing state v\n" << v << std::endl; 
+        RC.pop_back();                              //last element removed
+        if(!RC.empty()){
+            for (const auto& pair_wv : RC){         // RU is a set, each pair will be distinct. The pairs in RC gets added to RU
+                RU.insert(pair_wv);                 // If a pair in RC is alreay present in RU, it does not get added to RU because RU is a set
+            }
+        }
     }
+
+
 
 }
 
@@ -40,6 +60,15 @@ bool operator==(armstate_pair_t& lhs_pair, armstate_pair_t& rhs_pair){
     return true;
 }
 
+bool operator<(const armstate_pair_t& lhs_pair, const armstate_pair_t& rhs_pair){
+
+    if(lhs_pair.armstate_w.cpu.cpu_id != rhs_pair.armstate_w.cpu.cpu_id)
+        return (lhs_pair.armstate_w.cpu.cpu_id < rhs_pair.armstate_w.cpu.cpu_id);
+    else
+        return (lhs_pair.armstate_v.cpu.cpu_id < rhs_pair.armstate_v.cpu.cpu_id);
+    
+}
+
 void successor(std::vector<armstate_pair_t>& RC, armstate_t& armstate_w){
 
     auto inst_data   = fetch(armstate_w.memory, armstate_w.cpu.PC());
@@ -50,3 +79,32 @@ void successor(std::vector<armstate_pair_t>& RC, armstate_t& armstate_w){
 
     RC.push_back(WV);
 }
+
+std::ostream& operator<<(std::ostream& os, armstate_pair_t& armstate_pair){
+
+    os << "ARMSTATE W " << "\n" << armstate_pair.armstate_w << "\n";
+
+    os << "ARMSTATE V " << "\n" << armstate_pair.armstate_v << std::flush;
+
+    return os;
+}
+/*
+void get_union(std::vector<armstate_pair_t>& RU, std::vector<armstate_pair_t>& RC){
+
+    //Using a set will dictate the order in which the state pairs are stored in RU
+    std::set<armstate_pair_t> union_set;
+
+    for (const auto& pair_wv : RC){
+        union_set.insert(pair_wv);
+    }
+
+    for(const auto& pair_wv : RU){
+        union_set.insert(pair_wv);
+    }
+
+    //for (auto iter = RU.begin(); iter != RU.end(); ++iter){
+
+    //}
+
+}
+*/

@@ -19,7 +19,7 @@ CPPOBJ= \
  ${OBJ}/stack_operations.o \
  ${OBJ}/exceptions.o \
  ${OBJ}/armstate.o \
- ${OBJ}/simulation.o 
+${OBJ}/simulation.o
 
 # defined in x86_64 Assembly
 ASMOBJ= ${OBJ}/byte_swap.o
