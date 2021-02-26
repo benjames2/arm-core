@@ -46,6 +46,8 @@ int main(int argc, char* argv[]) {
     load_nvic_file( folderpath + "/nvic.txt", armstate.cpu);
 
     auto w0 = armstate;
+    
+    std::array<armstate_t, 5> w = {w0, w0, w0, w0, w0};
 
     cout << "\n=============================================\n";
     cout << " files loading complete";
@@ -91,12 +93,12 @@ int main(int argc, char* argv[]) {
         cout << decode_data << endl;
         print_cpu_diff(armstate.cpu, new_armstate.cpu, cout);
         armstate = new_armstate;
+        w[i] = new_armstate;
         //cout << new_armstate << endl;
         //cout << newcpu << endl;
     }
 //*/
 
-   
  /*   
     for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
 
@@ -126,7 +128,7 @@ int main(int argc, char* argv[]) {
     cout << "  simulation starting";
     cout << "\n==========================================\n\n";
 
-    symsimulation(w0);
+    auto sym_pair = symsimulation(w[0]);
 
     cout << "==========================================\n";
     cout << "  simulation ended";

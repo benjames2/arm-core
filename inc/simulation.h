@@ -18,4 +18,4 @@ struct armstate_pair_t{
 bool refinement_map(armstate_t& armstate_w, armstate_t& armstate_v);
 void successor(std::vector<armstate_pair_t>& RC, armstate_t& armstate_w);
 void symsimulation(armstate_t w0);
-void get_union(std::vector<armstate_pair_t>& RU, std::vector<armstate_pair_t>& RC);
+//void get_union(std::vector<armstate_pair_t>& RU, std::vector<armstate_pair_t>& RC);  //do not need anymore. Using a set for RU takes care of this

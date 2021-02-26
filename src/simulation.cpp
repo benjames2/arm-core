@@ -5,7 +5,13 @@
 
 void symsimulation(armstate_t w0){
 
-
+    auto check_belonging = [](std::vector<armstate_t>& I, armstate_t& armstate_v) ->bool{
+        for(auto& armstate : I){
+            if (armstate == armstate_v)
+                return true;
+        }
+        return false;
+    };
 
     bool skip_simulation = false;
     bool path_complete   = false;
@@ -19,25 +25,29 @@ void symsimulation(armstate_t w0){
     auto w = w0;                                         //Initialize w to w0
     auto v = w0;                                         //v is supposed to be initialized to null but it should not matter
 
-
+    //First if tested
+    std::vector<armstate_pair_t> RC;
     if(!skip_simulation){
-        std::vector<armstate_pair_t> RC;
-        successor(RC, w0);                          //RC ← simulate-object-code(w, object-code);
-        auto wv_pair = RC.back();
-        std::cout << "Printing the pairs\n" << wv_pair << std::endl;               
-        w = wv_pair.armstate_w;                     //Choose any <w, v>, ∈ RC; last pair element is chosen in RC
-        std::cout << "Printing state w\n" << w << std::endl; 
+        successor(RC, w0);                                                //RC ← simulate-object-code(w, object-code);
+        auto wv_pair = RC.back();              
+        w = wv_pair.armstate_w;                                           //Choose any <w, v>, ∈ RC; last pair element is chosen in RC
         v = wv_pair.armstate_v;
-        std::cout << "Printing state v\n" << v << std::endl; 
-        RC.pop_back();                              //last element removed
+        RC.pop_back();                                                    //last element removed
         if(!RC.empty()){
-            for (const auto& pair_wv : RC){         // RU is a set, each pair will be distinct. The pairs in RC gets added to RU
-                RU.insert(pair_wv);                 // If a pair in RC is alreay present in RU, it does not get added to RU because RU is a set
+            for (const auto& pair_wv : RC){                                // RU is a set, each pair will be distinct. The pairs in RC gets added to RU
+                RU.insert(pair_wv);                                        // If a pair in RC is alreay present in RU, it does not get added to RU because RU is a set
             }
         }
     }
 
+    // Second if
+    if(check_belonging(I, v))                        // if v ∈ I then path-complete ← T RU E;
+        path_complete = true;
 
+    //Third if
+    if(RC.empty() && refinement_map(w, v)){
+
+    }
 
 }
 
@@ -82,9 +92,9 @@ void successor(std::vector<armstate_pair_t>& RC, armstate_t& armstate_w){
 
 std::ostream& operator<<(std::ostream& os, armstate_pair_t& armstate_pair){
 
-    os << "ARMSTATE W " << "\n" << armstate_pair.armstate_w << "\n";
+    os << "ARMSTATE W " << armstate_pair.armstate_w << "\n";
 
-    os << "ARMSTATE V " << "\n" << armstate_pair.armstate_v << std::flush;
+    os << "ARMSTATE V " << armstate_pair.armstate_v << std::flush;
 
     return os;
 }
