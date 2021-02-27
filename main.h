@@ -32,7 +32,7 @@ void load_nvic_file(std::string filename, armv7_m3& cpu) {
                 std::to_string(regnum) + "'");
     }
 
-    std::cout << "DONE" << std::flush;
+    std::cout << "DONE\n" << std::flush;
 }
 
 void load_memory_file(const std::string filename, memory_t& mempool, address32_t& end_address) {
@@ -76,4 +76,20 @@ void load_memory_file(const std::string filename, memory_t& mempool, address32_t
         end_address = addr;
 
     std::cout << "DONE\n" << std::flush;
+}
+
+void load_nas_file(const std::string filename, std::vector<address32_t>& nas){
+
+    std::cout << "Loading '" << filename << "'..." <<std::flush;
+
+    std::ifstream is(filename);
+    is >> std::hex;
+
+    address32_t pc_addr;
+    while(is >> pc_addr){
+       nas.push_back(pc_addr);
+    }
+
+    std::cout << "DONE\n" << std::flush;
+
 }

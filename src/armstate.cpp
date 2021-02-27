@@ -1,9 +1,8 @@
 #include <inc/armstate.h>
 
-armstate_t::armstate_t(const int mem_endianness) : memory{mem_endianness}
-{
-    
-}
+armstate_t::armstate_t(const int mem_endianness) : memory{mem_endianness}{}
+
+armstate_t::armstate_t(void) : memory{memory_t::little_endian}{}
 
 std::ostream& operator<<(std::ostream& os, armstate_t& armstate){
 

@@ -3,7 +3,7 @@
 #include <inc/execute.h>
 #include <inc/decode.h>
 
-void symsimulation(armstate_t w0){
+void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array){
 
     auto check_belonging = [](std::vector<armstate_t>& I, armstate_t& armstate_v) ->bool{
         for(auto& armstate : I){
@@ -13,42 +13,104 @@ void symsimulation(armstate_t w0){
         return false;
     };
 
+    auto belong_to_nas = [&nas_array](armstate_t& armstate_v) -> bool{
+        for(const auto& pc_addr : nas_array){
+            if(armstate_v.cpu.get_PC() == pc_addr)
+                return true;
+        }
+        return false;        
+    };
+
     bool skip_simulation = false;
     bool path_complete   = false;
-    int  ss_length = 0;
+    uint32_t  ss_length  = 0;
 
     std::set<armstate_pair_t> RU;
-    std::vector<armstate_pair_t> RI;
+    std::vector<abs_segment_t> RI;
     std::vector<armstate_t> I{w0};
 
     auto w_abs = w0;                                     //Initialize w_abs to w0, 
     auto w = w0;                                         //Initialize w to w0
     auto v = w0;                                         //v is supposed to be initialized to null but it should not matter
 
-    //First if tested
-    std::vector<armstate_pair_t> RC;
-    if(!skip_simulation){
-        successor(RC, w0);                                                //RC ← simulate-object-code(w, object-code);
-        auto wv_pair = RC.back();              
-        w = wv_pair.armstate_w;                                           //Choose any <w, v>, ∈ RC; last pair element is chosen in RC
-        v = wv_pair.armstate_v;
-        RC.pop_back();                                                    //last element removed
-        if(!RC.empty()){
-            for (const auto& pair_wv : RC){                                // RU is a set, each pair will be distinct. The pairs in RC gets added to RU
-                RU.insert(pair_wv);                                        // If a pair in RC is alreay present in RU, it does not get added to RU because RU is a set
+    do
+    {
+        do
+        {
+            //First if tested
+            std::vector<armstate_pair_t> RC;
+            if(!skip_simulation){
+                successor(RC, w);                               //RC ← simulate-object-code(w, object-code);
+                auto wv_pair = RC.back();              
+                w = wv_pair.armstate_w;                          //Choose any <w, v>, ∈ RC; last pair element is chosen in RC
+                v = wv_pair.armstate_v;
+                RC.pop_back();                                   //last element removed
+                if(!RC.empty()){
+                    for (const auto& pair_wv : RC){              // RU is a set, each pair will be distinct. The pairs in RC gets added to RU
+                        RU.insert(pair_wv);                      // If a pair in RC is alreay present in RU, it does not get added to RU because RU is a set
+                    }
+                }
             }
+
+            // Second if
+            if(check_belonging(I, v))                        // if v ∈ I then path-complete ← T RU E;
+                path_complete = true;
+
+            //Third if
+            if(RC.empty() && refinement_map(w, v) && (!belong_to_nas(v)))
+                ss_length++;
+
+            else{
+
+                if(!refinement_map(w,v)){
+                    abs_segment_t segment = {{w,v},0};  //Double check this. is it the right way to initialze the segment?
+                    RI.push_back(segment);
+                    I.push_back(v);                     //Maybe "I" should be a set as well
+                }
+
+                if(refinement_map(w,v) && belong_to_nas(v)){
+                    ss_length++;
+                    I.push_back(v);
+                    abs_segment_t segment = {{w_abs, v}, ss_length};
+                    RI.push_back(segment);
+                }
+                else{
+                    abs_segment_t segment = {{w_abs, w}, ss_length};
+                    RI.push_back(segment);
+                }
+
+                if(RC.empty()){
+                    w_abs = v;
+                    ss_length = 0;
+                }
+                else{
+                    w_abs = w;
+                    ss_length = 1;
+                }
+            }
+
+            w = v;
+
+            if(skip_simulation) skip_simulation = false;
+
+        } while (!path_complete);
+
+        abs_segment_t segment = {{w_abs, v}, ss_length};
+        RI.push_back(segment);
+
+        if(!RU.empty()){
+            auto iterator = RU.begin();                           //choosing the first element in RU
+            auto wv_pair = *iterator;
+            w = wv_pair.armstate_w;
+            v = wv_pair.armstate_v;
+            RU.erase(iterator);
+
+            w_abs = w;
+            ss_length = 0;
+            path_complete = false;
+            skip_simulation = true;
         }
-    }
-
-    // Second if
-    if(check_belonging(I, v))                        // if v ∈ I then path-complete ← T RU E;
-        path_complete = true;
-
-    //Third if
-    if(RC.empty() && refinement_map(w, v)){
-
-    }
-
+    } while (!(path_complete && RU.empty()));
 }
 
 

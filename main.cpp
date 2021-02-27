@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
     }
     string folderpath(argv[1]); 
 
-    armstate_t armstate(memory_t::little_endian);
+    armstate_t armstate;
     address32_t last_asm_addr = 0;
 
     for(auto cptr : { folderpath + "/assembly-code.txt", folderpath + "/memory.txt" }) {
@@ -44,6 +44,16 @@ int main(int argc, char* argv[]) {
     }
 
     load_nvic_file( folderpath + "/nvic.txt", armstate.cpu);
+
+    vector<address32_t> nas_array;
+    load_nas_file(folderpath + "/nas.txt", nas_array);
+
+    cout << "Here" << endl;
+    for(const auto& pc_addr : nas_array){
+        
+        cout << hex << pc_addr << endl;
+
+    }
 
     auto w0 = armstate;
     
@@ -128,11 +138,17 @@ int main(int argc, char* argv[]) {
     cout << "  simulation starting";
     cout << "\n==========================================\n\n";
 
-    auto sym_pair = symsimulation(w[0]);
+    symsimulation(w0, nas_array);
 
     cout << "==========================================\n";
     cout << "  simulation ended";
     cout << "\n==========================================\n\n";
+
+    for(const auto& pc_addr : nas_array){
+        
+        cout << hex << pc_addr << endl;
+
+    }
 
     return 0;
 }
