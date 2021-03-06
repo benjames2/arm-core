@@ -48,7 +48,6 @@ int main(int argc, char* argv[]) {
     vector<address32_t> nas_array;
     load_nas_file(folderpath + "/nas.txt", nas_array);
 
-    cout << "Here" << endl;
     for(const auto& pc_addr : nas_array){
         
         cout << hex << pc_addr << endl;
@@ -57,7 +56,7 @@ int main(int argc, char* argv[]) {
 
     auto w0 = armstate;
     
-    std::array<armstate_t, 5> w = {w0, w0, w0, w0, w0};
+    //std::array<armstate_t, 5> w = {w0, w0, w0, w0, w0};
 
     cout << "\n=============================================\n";
     cout << " files loading complete";
@@ -94,7 +93,7 @@ int main(int argc, char* argv[]) {
     cout << "\n=============================================\n\n";
 
 ///*
-    for(int i = 0; i < 5; ++i) {
+    for(int i = 0; i < 110; ++i) {
 
         auto inst_data    = fetch(armstate.memory, armstate.cpu.PC(), true);
         auto decode_data  = decode(inst_data, armstate.cpu.PC());
@@ -102,8 +101,9 @@ int main(int argc, char* argv[]) {
     
         cout << decode_data << endl;
         print_cpu_diff(armstate.cpu, new_armstate.cpu, cout);
+        cout << hex << ref_map(new_armstate) << endl;
         armstate = new_armstate;
-        w[i] = new_armstate;
+        //w[i] = new_armstate;
         //cout << new_armstate << endl;
         //cout << newcpu << endl;
     }
@@ -138,7 +138,7 @@ int main(int argc, char* argv[]) {
     cout << "  simulation starting";
     cout << "\n==========================================\n\n";
 
-    symsimulation(w0, nas_array);
+    //symsimulation(w0, nas_array);
 
     cout << "==========================================\n";
     cout << "  simulation ended";

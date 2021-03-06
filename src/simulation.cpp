@@ -118,8 +118,17 @@ bool refinement_map(armstate_t& armstate_w, armstate_t& armstate_v){
 
     address32_t addr = 0x2009C034;
 
-    return armstate_w.memory.load_u8(addr) == armstate_v.memory.load_u8(addr);
+    uint32_t motor_state_w = armstate_w.memory.load_u32(addr);
+    uint32_t motor_state_v = armstate_v.memory.load_u32(addr);
 
+    return motor_state_w == motor_state_v;
+
+}
+
+uint32_t ref_map(armstate_t& armstate){
+
+    uint32_t motor_state = (armstate.memory.load_u32(0x2009c034) >> 28) & 0xF;
+    return motor_state;
 }
 
 
@@ -154,9 +163,9 @@ void successor(std::vector<armstate_pair_t>& RC, armstate_t& armstate_w){
 
 std::ostream& operator<<(std::ostream& os, armstate_pair_t& armstate_pair){
 
-    os << "ARMSTATE W " << armstate_pair.armstate_w << "\n";
+    os << " ARMSTATE W " << armstate_pair.armstate_w << "\n";
 
-    os << "ARMSTATE V " << armstate_pair.armstate_v << std::flush;
+    os << " ARMSTATE V " << armstate_pair.armstate_v << std::flush;
 
     return os;
 }

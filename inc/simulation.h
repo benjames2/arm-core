@@ -23,6 +23,7 @@ struct abs_segment_t{
 };
 
 bool refinement_map(armstate_t& armstate_w, armstate_t& armstate_v);
+uint32_t ref_map(armstate_t& armstate);
 void successor(std::vector<armstate_pair_t>& RC, armstate_t& armstate_w);
 void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array);
 //void get_union(std::vector<armstate_pair_t>& RU, std::vector<armstate_pair_t>& RC);  //do not need anymore. Using a set for RU takes care of this
