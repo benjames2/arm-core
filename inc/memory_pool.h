@@ -92,6 +92,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, memory_t& mem);
     friend bool operator==(memory_t& memory_lhs, memory_t& memory_rhs);
     friend bool operator!=(memory_t& memory_lhs, memory_t& memory_rhs);
+
 };
 
 #endif // memory_pool

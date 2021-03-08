@@ -1353,6 +1353,8 @@ armstate_t execute_t16(armstate_t& armstate, instruction_16b_t& inst) {
                     //Operation
                     new_armstate.memory.store_u32(address.u32, Rd); //should this be address.i32 + 4 ?
 
+                   // std::cout << "\nAddress used for stooring: " << std::hex << address.u32 << " value stored " << Rd << std::endl;
+
                      //update PC and cycle count
                     new_armstate.cpu.PC()        += 2;
                     new_armstate.cpu.cycle_count += 2;//could be one

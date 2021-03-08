@@ -33,6 +33,7 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array){
     auto w = w0;                                         //Initialize w to w0
     auto v = w0;                                         //v is supposed to be initialized to null but it should not matter
 
+    static int first_loop, second_loop = 0;
     do
     {
         do
@@ -93,6 +94,11 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array){
 
             if(skip_simulation) skip_simulation = false;
 
+            first_loop++;
+            std::cout << "First Loop iteration: " << first_loop << std::endl;
+            if(first_loop == 5)
+                throw std::runtime_error("Inside loop over");
+
         } while (!path_complete);
 
         abs_segment_t segment = {{w_abs, v}, ss_length};
@@ -110,7 +116,11 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array){
             path_complete = false;
             skip_simulation = true;
         }
+
+        ++second_loop;
+        std::cout << "Second Loop iteration: " << second_loop << std::endl;
     } while (!(path_complete && RU.empty()));
+
 }
 
 
@@ -125,9 +135,9 @@ bool refinement_map(armstate_t& armstate_w, armstate_t& armstate_v){
 
 }
 
-uint32_t ref_map(armstate_t& armstate){
+uint8_t ref_map(armstate_t& armstate){
 
-    uint32_t motor_state = (armstate.memory.load_u32(0x2009c034) >> 28) & 0xF;
+    uint8_t motor_state = (armstate.memory.load_u8(0x2009c034)) & 0x0F;
     return motor_state;
 }
 
