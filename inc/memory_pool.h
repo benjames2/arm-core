@@ -56,6 +56,8 @@ public:
 
     memory_t(const int endianness);
 
+    const int get_endianness(void);
+
     size_t debug_num_pages(void);
     void debug_clear_pages(void);
 
@@ -94,5 +96,7 @@ public:
     friend bool operator!=(memory_t& memory_lhs, memory_t& memory_rhs);
 
 };
+
+void print_diff(memory_t& memory_lhs, memory_t& memory_rhs);
 
 #endif // memory_pool

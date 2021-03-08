@@ -1,5 +1,95 @@
+#include <iostream>
 #include <inc/memory_pool.h>
 
+// print 16-byte chunk
+static void print_memory_chunk(address32_t addr, uint8_t* data) {
+
+    std::ostream& os = std::cout;
+
+    auto base_address = [](address32_t addr) -> std::string {
+        std::string s = "0x";
+        for(int i = 7; i >= 0; i--) {
+            s.push_back("0123456789ABCDEF"[(addr >> (i*4)) & 0x0F]);
+        }
+        return s;
+    };
+
+    for(int j = 0; j < 16; j++) {
+        os << ' ';
+        os << "0123456789ABCDEF"[data[j] >> 4];
+        os << "0123456789ABCDEF"[data[j] & 0x0F];
+    }
+
+}
+
+// print 256 byte page
+static void print_memory_page(address32_t page_addr, memory_page_t& mp) {
+
+    std::ostream& os = std::cout;
+    
+    auto check_chunk = [](uint8_t* begin, uint8_t* end) -> bool {
+        while(begin != end) {
+            if(*begin)
+                return true;
+            begin++;
+        }
+        return false;
+    };
+
+    for(int i = 0; i < 256; i += 16) {
+        if(check_chunk(mp.bytes.data() + i, mp.bytes.data() + i + 16)) {
+
+            print_memory_chunk( page_addr + i, mp.bytes.data() + i );
+            os << std::endl;
+
+        }
+    }
+
+}
+
+//
+// NOTE: minimum non-zero set can cause issues here
+//
+void print_diff(memory_t& memory_lhs, memory_t& memory_rhs) {
+
+    auto lhs_iter = memory_lhs.begin();
+    auto rhs_iter = memory_rhs.begin();
+
+    while( lhs_iter != memory_lhs.end() && rhs_iter != memory_rhs.end() ) {
+
+        if(lhs_iter->first < rhs_iter->first) {
+            print_memory_page( lhs_iter->first << 8, lhs_iter->second );
+            lhs_iter++;
+        }
+        else if(rhs_iter->first < lhs_iter->first) {
+            print_memory_page( rhs_iter->first << 8, rhs_iter->second );
+            rhs_iter++;
+        }
+        else {
+
+            memory_page_t& lhs_mp = lhs_iter->second;
+            memory_page_t& rhs_mp = rhs_iter->second;
+
+            for(int i = 0; i < 256; i += 16) {
+                for(int j = 0; j < 16; j++) {
+
+                    if(lhs_mp.bytes[i + j] != rhs_mp.bytes[i + j]) {
+                        print_memory_chunk((rhs_iter->first << 8) | i, rhs_mp.bytes.data() + i);
+                        break;
+                    }
+        
+                }
+            }
+
+            lhs_iter++;
+            rhs_iter++;
+        }
+
+        std::cout << " >>\n";
+
+    }
+
+}
 
 memory_page_t::memory_page_t(void) {
 
@@ -14,6 +104,10 @@ bool operator==(const memory_page_t& lhs, const memory_page_t& rhs) {
 
 memory_t::memory_t(const int endianness) {
     this->endianness = endianness;
+}
+
+const int memory_t::get_endianness(void) {
+    return this->endianness;
 }
 
 // ==================================================================
