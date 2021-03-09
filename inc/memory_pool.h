@@ -97,6 +97,6 @@ public:
 
 };
 
-void print_memory_diff(memory_t& memory_lhs, memory_t& memory_rhs);
+void print_memory_diff(memory_t& memory_lhs, memory_t& memory_rhs, std::ostream& os);
 
 #endif // memory_pool

@@ -67,13 +67,13 @@ int main(int argc, char* argv[]) {
     memory_t mem1(memory_t::little_endian);
     mem1.store_u32(0x0, 0x10);
     memory_t mem2(memory_t::little_endian);
-    mem2.store_u32(0x0, 0x0);
+    mem2.store_u32(0x0, 0x1);
     //mem2.store_u32(0x16, 0xbeee);
     //mem2.store_u32(0x22, 0xdeed);
 
     cout << mem1 << endl;
     cout << mem2 << endl;
-    print_memory_diff(mem1, mem2);
+    print_memory_diff(mem1, mem2, cout);
     
     //std::array<armstate_t, 5> w = {w0, w0, w0, w0, w0};
 

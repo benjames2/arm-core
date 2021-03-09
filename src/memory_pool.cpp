@@ -298,9 +298,9 @@ std::ostream& operator<<(std::ostream& os, memory_t& mem) {
 }
 
 // print 16-byte chunk
-static void print_memory_chunk(address32_t addr, uint8_t* data) {
+static void print_memory_chunk(address32_t addr, uint8_t* data, std::ostream& os) {
 
-    std::ostream& os = std::cout;
+    //std::ostream& os = std::cout;
 
     auto base_address = [](address32_t addr) -> std::string {
         std::string s = "0x";
@@ -323,9 +323,9 @@ static void print_memory_chunk(address32_t addr, uint8_t* data) {
 }
 
 // print 256 byte page
-static void print_memory_page(address32_t page_addr, memory_page_t& mp) {
+static void print_memory_page(address32_t page_addr, memory_page_t& mp, std::ostream& os) {
 
-    std::ostream& os = std::cout;
+    //std::ostream& os = std::cout;
     
     auto check_chunk = [](uint8_t* begin, uint8_t* end) -> bool {
         while(begin != end) {
@@ -339,7 +339,7 @@ static void print_memory_page(address32_t page_addr, memory_page_t& mp) {
     for(int i = 0; i < 256; i += 16) {
         if(check_chunk(mp.bytes.data() + i, mp.bytes.data() + i + 16)) {
 
-            print_memory_chunk( page_addr + i, mp.bytes.data() + i );
+            print_memory_chunk( page_addr + i, mp.bytes.data() + i, os);
             os << std::endl;
 
         }
@@ -356,7 +356,7 @@ static void print_memory_page(address32_t page_addr, memory_page_t& mp) {
     mem2.store_u32(0x0, 0x0);
     print_diff(mem1, mem2);
 */
-void print_memory_diff(memory_t& memory_lhs, memory_t& memory_rhs) {
+void print_memory_diff(memory_t& memory_lhs, memory_t& memory_rhs, std::ostream& os) {
 
     auto lhs_iter = memory_lhs.begin();
     auto rhs_iter = memory_rhs.begin();
@@ -364,11 +364,11 @@ void print_memory_diff(memory_t& memory_lhs, memory_t& memory_rhs) {
     while( lhs_iter != memory_lhs.end() && rhs_iter != memory_rhs.end() ) {
 
         if(lhs_iter->first < rhs_iter->first) {
-            print_memory_page( lhs_iter->first << 8, lhs_iter->second );
+            print_memory_page( lhs_iter->first << 8, lhs_iter->second, os );
             lhs_iter++;
         }
         else if(rhs_iter->first < lhs_iter->first) {
-            print_memory_page( rhs_iter->first << 8, rhs_iter->second );
+            print_memory_page( rhs_iter->first << 8, rhs_iter->second, os );
             rhs_iter++;
         }
         else {
@@ -380,7 +380,7 @@ void print_memory_diff(memory_t& memory_lhs, memory_t& memory_rhs) {
                 for(int j = 0; j < 16; j++) {
 
                     if(lhs_mp.bytes[i + j] != rhs_mp.bytes[i + j]) {
-                        print_memory_chunk((rhs_iter->first << 8) | i, rhs_mp.bytes.data() + i);
+                        print_memory_chunk((rhs_iter->first << 8) | i, rhs_mp.bytes.data() + i, os);
                         break;
                     }
         
@@ -391,7 +391,8 @@ void print_memory_diff(memory_t& memory_lhs, memory_t& memory_rhs) {
             rhs_iter++;
         }
 
-        std::cout << " >>\n";
+        //std::cout << " >>\n";
+        os << " >>\n";
 
     }
 

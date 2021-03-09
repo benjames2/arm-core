@@ -17,3 +17,5 @@ struct  armstate_t
     friend bool operator!=(armstate_t& armstate_lhs, armstate_t& armstate_rhs);
     friend bool operator<(armstate_t& armstate_lhs, armstate_t& armstate_rhs);
 };
+
+void print_armstate_diff(armstate_t& armstate_lhs, armstate_t& armstate_rhs, std::ostream& os);

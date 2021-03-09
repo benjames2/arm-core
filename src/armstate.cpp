@@ -30,3 +30,10 @@ bool operator<(armstate_t& armstate_lhs, armstate_t& armstate_rhs){
 
     return (armstate_lhs.cpu < armstate_rhs.cpu);
 }
+
+void print_armstate_diff(armstate_t& armstate_lhs, armstate_t& armstate_rhs, std::ostream& os){
+
+    print_cpu_diff(armstate_lhs.cpu, armstate_rhs.cpu, os);
+    print_memory_diff(armstate_lhs.memory, armstate_rhs.memory, os);
+    os << std::flush;
+}
