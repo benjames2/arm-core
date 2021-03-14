@@ -30,7 +30,7 @@ void import_bin(void);
 std::string to_hex(uint8_t addr) {
     std::string s = "0x";
     for(int i = 1; i >= 0; i--) {
-        s.push_back("0123456789ABCDEF"[(addr >> (i*4)) & 0x0F]);
+        s.push_back("0123456789ABCDEF"[(addr >> (i*4)) & 0xF]);
     }
     return s;
 }
@@ -51,18 +51,25 @@ int main(int argc, char* argv[]) {
         //std::cout << armstate.memory << std::endl;
     }
 
-    load_nvic_file( folderpath + "/nvic.txt", armstate.cpu);
+    load_nvic_file(folderpath + "/nvic.txt", armstate.cpu);
+    //cout << armstate << endl;
 
     vector<address32_t> nas_array;
     load_nas_file(folderpath + "/nas.txt", nas_array);
 
+    auto w0 = armstate;
+
+    auto w1 = armstate;
+    auto w2 = armstate;
+
+/*
     for(const auto& pc_addr : nas_array){
         
         cout << hex << pc_addr << endl;
 
     }
 
-    auto w0 = armstate;
+    
 
     memory_t mem1(memory_t::little_endian);
     mem1.store_u32(0x0, 0x10);
@@ -76,7 +83,7 @@ int main(int argc, char* argv[]) {
     print_memory_diff(mem1, mem2, cout);
     
     //std::array<armstate_t, 5> w = {w0, w0, w0, w0, w0};
-
+*/
     cout << "\n=============================================\n";
     cout << " files loading complete";
     cout << "\n=============================================\n";
@@ -112,18 +119,22 @@ int main(int argc, char* argv[]) {
     cout << "\n=============================================\n\n";
 
 ///*
-    for(int i = 0; i < 2; ++i) {
+    for(int i = 0; i < 140; ++i) {
 
         auto inst_data    = fetch(armstate.memory, armstate.cpu.PC(), true);
         auto decode_data  = decode(inst_data, armstate.cpu.PC());
         auto new_armstate = execute(armstate, decode_data);
     
         cout << decode_data << endl;
-        print_cpu_diff(armstate.cpu, new_armstate.cpu, cout);
+        print_armstate_diff(armstate, new_armstate, cout);
         cout << to_hex(ref_map(new_armstate)) << endl;
-        cout << new_armstate.memory << endl;
+       // cout << new_armstate.memory << endl;
         armstate = new_armstate;
         //w[i] = new_armstate;
+        if (i == 131)
+            w1 = new_armstate;
+        if (i == 34)
+            w2 = new_armstate;
         //cout << new_armstate << endl;
         //cout << newcpu << endl;
     }
@@ -158,18 +169,23 @@ int main(int argc, char* argv[]) {
     cout << "  simulation starting";
     cout << "\n==========================================\n\n";
 
-    //symsimulation(w0, nas_array);
+    try
+    {
+        symsimulation(w0, nas_array);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    
+    
 
     cout << "==========================================\n";
     cout << "  simulation ended";
     cout << "\n==========================================\n\n";
 
-    for(const auto& pc_addr : nas_array){
-        
-        cout << hex << pc_addr << endl;
-
-    }
-
+   // cout << w0 << endl << w1 << endl;
+   // print_armstate_diff(w0, w1, cout);
     return 0;
 }
 

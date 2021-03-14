@@ -26,7 +26,7 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array){
     uint32_t  ss_length  = 0;
 
     std::set<armstate_pair_t> RU;
-    std::vector<abs_segment_t> RI;
+    std::vector<abstracted_segment_t> RI;
     std::vector<armstate_t> I{w0};
 
     auto w_abs = w0;                                     //Initialize w_abs to w0, 
@@ -64,7 +64,7 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array){
             else{
 
                 if(!refinement_map(w,v)){
-                    abs_segment_t segment = {{w,v},0};  //Double check this. is it the right way to initialze the segment?
+                    abstracted_segment_t segment = {{w,v},0};  //Double check this. is it the right way to initialze the segment?
                     RI.push_back(segment);
                     I.push_back(v);                     //Maybe "I" should be a set as well
                 }
@@ -72,11 +72,11 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array){
                 if(refinement_map(w,v) && belong_to_nas(v)){
                     ss_length++;
                     I.push_back(v);
-                    abs_segment_t segment = {{w_abs, v}, ss_length};
+                    abstracted_segment_t segment = {{w_abs, v}, ss_length};
                     RI.push_back(segment);
                 }
                 else{
-                    abs_segment_t segment = {{w_abs, w}, ss_length};
+                    abstracted_segment_t segment = {{w_abs, w}, ss_length};
                     RI.push_back(segment);
                 }
 
@@ -94,14 +94,23 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array){
 
             if(skip_simulation) skip_simulation = false;
 
+            symulation_variables_t var = {
+                skip_simulation, path_complete, w_abs, w, v,ss_length, RC, RU, I, RI
+            };
+
             first_loop++;
+            std::cout << std::dec;
             std::cout << "First Loop iteration: " << first_loop << std::endl;
-            if(first_loop == 5)
+            std::cout << var << std::endl;
+            if(first_loop == 140){
                 throw std::runtime_error("Inside loop over");
+            }
+
+                
 
         } while (!path_complete);
 
-        abs_segment_t segment = {{w_abs, v}, ss_length};
+        abstracted_segment_t segment = {{w_abs, v}, ss_length};
         RI.push_back(segment);
 
         if(!RU.empty()){
@@ -137,7 +146,7 @@ bool refinement_map(armstate_t& armstate_w, armstate_t& armstate_v){
 
 uint8_t ref_map(armstate_t& armstate){
 
-    uint8_t motor_state = (armstate.memory.load_u8(0x2009c034)) & 0x0F;
+    uint8_t motor_state = (armstate.memory.load_u8(0x2009c034 + 3)) & 0xF0;
     return motor_state;
 }
 
@@ -179,6 +188,50 @@ std::ostream& operator<<(std::ostream& os, armstate_pair_t& armstate_pair){
 
     return os;
 }
+
+ std::ostream& operator<<(std::ostream& os, symulation_variables_t& variable){
+
+    os << "SKIP_SIMULATION: " << variable.skip_simulation << std::endl;
+    os << "PATH_COMPLETE: "   << variable.path_complete   << std::endl;
+
+    os << "W_abs: " << std::hex << variable.w_abs.cpu.get_PC() << std::endl;
+    os << "W: "     << std::hex << variable.w.cpu.get_PC()     << std::endl;
+    os << "V: "     << std::hex << variable.v.cpu.get_PC()     << std::endl;
+
+    os << std::dec;
+    os << "SS-Length: " << variable.ss_length << std::endl;
+
+    os << "Content of RC" << std::endl;
+    for(auto& pair : variable.RC){
+        os << "State W: " << std::hex << pair.armstate_w.cpu.get_PC() << "  "; 
+        os << "State V: " << std::hex << pair.armstate_v.cpu.get_PC() << "  "; 
+        os << std::endl;
+    }
+
+    os << "Content of RU" << std::endl;
+    for(auto& pair : variable.RU){
+        os << "State W: " << std::hex << pair.armstate_w.cpu.get_PC() << "  "; 
+        os << "State V: " << std::hex << pair.armstate_v.cpu.get_PC() << "  "; 
+        os << std::endl;
+    }
+
+    os << "States stored in I" << std::endl;
+    for(auto& state : variable.I){
+        os << "State W: " << std::hex << state.cpu.get_PC()<< "  ";  
+        os << std::endl;
+    }
+
+    os << "Abstracted Segment" << std::endl;
+    for(auto& segment : variable.RI){
+        os << "Segment: <" << std::hex << segment.state_pair.armstate_w.cpu.get_PC() << ", ";
+        os << segment.state_pair.armstate_v.cpu.get_PC() << ", ";
+        os << std::dec << segment.stuttering_length << ">";
+        os << std::endl;
+    }
+
+    os << std::flush;
+    return os;
+ }
 /*
 void get_union(std::vector<armstate_pair_t>& RU, std::vector<armstate_pair_t>& RC){
 

@@ -52,7 +52,7 @@ public:
     void set_register_u32(int reg, uint32_t value);
 
     // get specific registers
-    uint32_t get_PC( void);
+    uint32_t get_PC( void) const;
     uint32_t get_MSP(void);
     uint32_t get_PSP(void);
     uint32_t get_SP( void);

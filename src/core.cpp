@@ -54,7 +54,7 @@ uint32_t& armv7_m3::PC(void) { return this->reg[15].u32; }
 uint32_t& armv7_m3::LR(void) { return this->reg[14].u32; }
 uint32_t& armv7_m3::SP(void) { return this->reg[13].u32; }
 
-uint32_t armv7_m3::get_PC( void) { return this->reg[15].u32; }
+uint32_t armv7_m3::get_PC( void) const{ return this->reg[15].u32; }
 uint32_t armv7_m3::get_MSP(void) { return this->reg[13].u32; }
 uint32_t armv7_m3::get_PSP(void) { return this->reg[13].u32; }
 uint32_t armv7_m3::get_SP( void) { return this->reg[13].u32; }
@@ -219,13 +219,14 @@ void print_cpu_diff(armv7_m3 const& old_cpu, armv7_m3 const& new_cpu, std::ostre
             new_cpu.get_CPSR_Q() << "\n";
         }
     
-    os << "Cycle  :" << std::dec << std::setw(3) << new_cpu.get_cycle_count() << "\n\n" << std::endl;
+    os << "Cycle  :" << std::dec << std::setw(3) << new_cpu.get_cycle_count() << std::endl;
 }
 
 bool operator==(armv7_m3 const& armcore_w, armv7_m3 const& armcore_v){
 
-    if (armcore_w.get_cycle_count() != armcore_v.get_cycle_count())
-        return false;
+    //This is omittted for the mmoment. Will need to be taken into consideration later
+    //if (armcore_w.get_cycle_count() != armcore_v.get_cycle_count())
+    //    return false;
 
     if (armcore_w.get_CPSR() != armcore_v.get_CPSR())
         return false;
