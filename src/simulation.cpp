@@ -54,7 +54,7 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array){
             }
 
             // Second if
-            if(check_belonging(I, v))                        // if v ∈ I then path-complete ← T RU E;
+            if(check_belonging(I, v))                             // if v ∈ I then path-complete ← T RUE;
                 path_complete = true;
 
             //Third if
@@ -64,9 +64,9 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array){
             else{
 
                 if(!refinement_map(w,v)){
-                    abstracted_segment_t segment = {{w,v},0};  //Double check this. is it the right way to initialze the segment?
+                    abstracted_segment_t segment = {{w,v},0};  
                     RI.push_back(segment);
-                    I.push_back(v);                     //Maybe "I" should be a set as well
+                    I.push_back(v);                                 //Maybe "I" should be a set as well. probably nots
                 }
 
                 if(refinement_map(w,v) && belong_to_nas(v)){
@@ -93,7 +93,7 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array){
             w = v;
 
             if(skip_simulation) skip_simulation = false;
-
+/*
             symulation_variables_t var = {
                 skip_simulation, path_complete, w_abs, w, v,ss_length, RC, RU, I, RI
             };
@@ -105,7 +105,7 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array){
             if(first_loop == 140){
                 throw std::runtime_error("Inside loop over");
             }
-
+*/
                 
 
         } while (!path_complete);
@@ -128,6 +128,11 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array){
 
         ++second_loop;
         std::cout << "Second Loop iteration: " << second_loop << std::endl;
+        std::vector<armstate_pair_t> RC;
+        symulation_variables_t var = {
+                skip_simulation, path_complete, w_abs, w, v,ss_length, RC, RU, I, RI
+            };
+        std::cout << var << std::endl;
     } while (!(path_complete && RU.empty()));
 
 }

@@ -26,14 +26,8 @@ using namespace std;
 
 void test_all_decode_fns(void);
 void import_bin(void);
+std::string to_hex(uint8_t addr);
 
-std::string to_hex(uint8_t addr) {
-    std::string s = "0x";
-    for(int i = 1; i >= 0; i--) {
-        s.push_back("0123456789ABCDEF"[(addr >> (i*4)) & 0xF]);
-    }
-    return s;
-}
 
 int main(int argc, char* argv[]) {
 
@@ -62,28 +56,7 @@ int main(int argc, char* argv[]) {
     auto w1 = armstate;
     auto w2 = armstate;
 
-/*
-    for(const auto& pc_addr : nas_array){
-        
-        cout << hex << pc_addr << endl;
 
-    }
-
-    
-
-    memory_t mem1(memory_t::little_endian);
-    mem1.store_u32(0x0, 0x10);
-    memory_t mem2(memory_t::little_endian);
-    mem2.store_u32(0x0, 0x1);
-    //mem2.store_u32(0x16, 0xbeee);
-    //mem2.store_u32(0x22, 0xdeed);
-
-    cout << mem1 << endl;
-    cout << mem2 << endl;
-    print_memory_diff(mem1, mem2, cout);
-    
-    //std::array<armstate_t, 5> w = {w0, w0, w0, w0, w0};
-*/
     cout << "\n=============================================\n";
     cout << " files loading complete";
     cout << "\n=============================================\n";
@@ -119,7 +92,7 @@ int main(int argc, char* argv[]) {
     cout << "\n=============================================\n\n";
 
 ///*
-    for(int i = 0; i < 140; ++i) {
+    for(int i = 0; i < 1; ++i) {
 
         auto inst_data    = fetch(armstate.memory, armstate.cpu.PC(), true);
         auto decode_data  = decode(inst_data, armstate.cpu.PC());
@@ -131,10 +104,6 @@ int main(int argc, char* argv[]) {
        // cout << new_armstate.memory << endl;
         armstate = new_armstate;
         //w[i] = new_armstate;
-        if (i == 131)
-            w1 = new_armstate;
-        if (i == 34)
-            w2 = new_armstate;
         //cout << new_armstate << endl;
         //cout << newcpu << endl;
     }
@@ -177,19 +146,13 @@ int main(int argc, char* argv[]) {
     {
         std::cerr << e.what() << '\n';
     }
-    
-    
 
     cout << "==========================================\n";
     cout << "  simulation ended";
     cout << "\n==========================================\n\n";
 
-   // cout << w0 << endl << w1 << endl;
-   // print_armstate_diff(w0, w1, cout);
     return 0;
 }
-
-
 
 
 void test_all_decode_fns(void) {
@@ -223,4 +186,12 @@ void import_bin(void){
         if(inst_data.type == fetched_instruction_t::t32)
             addr += 2;
     }
+}
+
+std::string to_hex(uint8_t addr) {
+    std::string s = "0x";
+    for(int i = 1; i >= 0; i--) {
+        s.push_back("0123456789ABCDEF"[(addr >> (i*4)) & 0xF]);
+    }
+    return s;
 }

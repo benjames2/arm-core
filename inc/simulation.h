@@ -24,8 +24,8 @@ struct abstracted_segment_t{
 
 struct symulation_variables_t {
 
-    bool skip_simulation;
-    bool path_complete;
+    bool& skip_simulation;
+    bool& path_complete;
     armstate_t& w_abs;
     armstate_t& w;
     armstate_t& v;
