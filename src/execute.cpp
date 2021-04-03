@@ -1240,7 +1240,7 @@ armstate_t execute_t16(armstate_t& armstate, instruction_16b_t& inst) {
 
                 // pop PC if needed
                 if(inst.meta_opcode == meta_C_pc) {
-                    sp = pop_word(new_armstate.cpu, new_armstate.memory, sp, 15);
+                    sp = pop_word(new_armstate, sp, 15);
                     new_armstate.cpu.cycle_count++;
                 }
                 else if(inst.meta_opcode != meta_C)
@@ -1249,7 +1249,7 @@ armstate_t execute_t16(armstate_t& armstate, instruction_16b_t& inst) {
                 // pop appropriate GP registers
                 for(int i : range(7, -1)) {
                     if(inst.Rlist & (1 << i)) {
-                        sp = pop_word(new_armstate.cpu, new_armstate.memory, sp, i);
+                        sp = pop_word(new_armstate, sp, i);
                         numregs++;
                     }
                 }
@@ -1272,14 +1272,14 @@ armstate_t execute_t16(armstate_t& armstate, instruction_16b_t& inst) {
                 // push appropriate GP registers onto stack
                 for(int i : range(0, 8)) {
                     if(inst.Rlist & (1 << i)) {
-                        sp = push_word(new_armstate.cpu, new_armstate.memory, sp, new_armstate.cpu.get_register_u32(i));
+                        sp = push_word(new_armstate, sp, new_armstate.cpu.get_register_u32(i));
                         numregs++;
                     }
                 }
 
                 // push LR if needed
                 if(inst.meta_opcode == meta_C_lr)
-                    sp = push_word(new_armstate.cpu, new_armstate.memory, sp, new_armstate.cpu.LR());
+                    sp = push_word(new_armstate, sp, new_armstate.cpu.LR());
                 else if(inst.meta_opcode != meta_C)
                     throw ExecuteError("execute(i_PUSH), invalid meta opcode");
 

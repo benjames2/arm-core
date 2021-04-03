@@ -1,5 +1,9 @@
 #include <inc/armstate.h>
 
+
+uint8_t armstate_t::RIT   = 0;
+uint8_t armstate_t::EINT0 = 0;
+
 armstate_t::armstate_t(const int mem_endianness) : memory{mem_endianness}{}
 
 armstate_t::armstate_t(void) : memory{memory_t::little_endian}{}

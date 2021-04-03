@@ -1,3 +1,4 @@
+#pragma once
 #include <inc/armstate.h>
 
 struct special_register_t {
@@ -13,7 +14,6 @@ struct special_register_t {
     const static unsigned int RICOUNTER    = 0x400B000C;
     const static unsigned int NVIC_ENABLE0 = 0xE000E100;
 };
-
 
 
 static void rit_enable(armstate_t& armstate);
