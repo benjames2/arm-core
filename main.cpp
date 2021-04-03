@@ -46,6 +46,15 @@ int main(int argc, char* argv[]) {
 
     vector<address32_t> nas_array;
     load_nas_file(folderpath + "/nas.txt", nas_array);
+    
+
+    map<uint32_t, address32_t> vector_table;
+    load_vector_table_file(folderpath + "/vector_table.txt", vector_table);
+
+    for (auto it = vector_table.begin(); it != vector_table.end(); ++it){
+        cout << it->first << "  " << it->second << endl;
+    }
+
     auto w0 = armstate;
 
     cout << "\n=============================================\n";

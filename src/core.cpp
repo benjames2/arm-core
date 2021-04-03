@@ -100,7 +100,7 @@ void armv7_m3::set_CPSR(uint32_t cpsr) { this->CPSR = cpsr; }
 void armv7_m3::set_APSR(uint32_t apsr) { this->APSR = apsr; }
 
 uint32_t armv7_m3::get_CPSR(void) const { return this->CPSR; }
-uint32_t armv7_m3::get_APSR(void) { return this->APSR; }
+uint32_t armv7_m3::get_APSR(void) const { return this->APSR; }
 
 int  armv7_m3::get_stack_mode(void)              { return this->stack_mode; }
 void armv7_m3::set_stack_mode(const int newmode) { this->stack_mode = newmode; }

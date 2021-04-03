@@ -35,6 +35,27 @@ void load_nvic_file(std::string filename, armv7_m3& cpu) {
     std::cout << "DONE\n" << std::flush;
 }
 
+void load_vector_table_file(const std::string filename, std::map<uint32_t, address32_t>& vector_table){
+
+    std::cout << "Loading '" << filename << "'..." << std::flush;
+
+    std::ifstream is(filename);
+    is >> std::hex;
+
+    int exc_number;
+    while(is >> exc_number){
+        address32_t addr;
+        is >> addr;
+
+        if(exc_number < 16 && exc_number > 50)
+            throw std::runtime_error("Invalid exception number");
+        else
+            vector_table.insert(std::pair<uint32_t, address32_t>(exc_number, addr));
+    }
+
+    std::cout << "DONE\n" << std::flush; 
+}
+
 void load_memory_file(const std::string filename, memory_t& mempool, address32_t& end_address) {
 
     std::cout << "Loading '" << filename << "'..." << std::flush;

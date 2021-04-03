@@ -58,7 +58,7 @@ public:
     uint32_t get_SP( void);
     uint32_t get_LR( void);
 
-    uint32_t get_APSR(void); // return the entire flags register
+    uint32_t  get_APSR(void) const; // return the entire flags register
 
     bool get_APSR_N(void); // get Negative flag
     bool get_APSR_Z(void); // get Zero flag
@@ -73,6 +73,7 @@ public:
     void set_APSR_Q(bool b); // set saturate flag
 
     uint32_t get_CPSR(void) const;
+   
     void set_CPSR(uint32_t cpsr);
     void set_APSR(uint32_t apsr);
 
@@ -100,10 +101,10 @@ public:
     bool get_CPSR_T( void); // THUMB execution state bit. for us, we'll always be in THUMB state
     int  get_CPSR_M( void); // Mode field (4:0)
 
-    friend std::ostream& operator<<(std::ostream& os, armv7_m3 const& cpu);
+    friend std::ostream& operator<<(std::ostream& os,   armv7_m3 const& cpu);
     friend bool operator==(armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs);
     friend bool operator!=(armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs);
-    friend bool operator<(armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs);
+    friend bool operator<(armv7_m3  const& armcore_lhs, armv7_m3 const& armcore_rhs);
 };
 
 void print_cpu_diff(armv7_m3 const& old_cpu, armv7_m3 const& new_cpu, std::ostream& os);
