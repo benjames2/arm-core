@@ -9,6 +9,10 @@ struct  armstate_t
     armv7_m3 cpu;
     memory_t memory;
 
+    //Interrupt enable variable
+    static short int RIT;
+    static short int EINT0;
+
     armstate_t(const int mem_endianness);
     armstate_t(void);
 

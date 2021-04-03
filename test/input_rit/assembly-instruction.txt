@@ -1,0 +1,125 @@
+    22:         // clear the interrupt flag 
+0x00000220 480E      LDR      r0,[pc,#56]  ; @0x0000025C
+0x00000222 490F      LDR      r1,[pc,#60]  ; @0x00000260
+0x00000224 6809      LDR      r1,[r1,#0x00]
+0x00000226 F8101021  LDRB     r1,[r0,r1,LSL #2]
+0x0000022A 2001      MOVS     r0,#0x01
+0x0000022C 4088      LSLS     r0,r0,r1
+0x0000022E 490D      LDR      r1,[pc,#52]  ; @0x00000264
+0x00000230 6348      STR      r0,[r1,#0x34]
+    23:         LPC_RIT->RICTRL |= 1; 
+    24:          
+    25:         // step i in the order 0 -> 1 -> 2 -> 3 -> 0 ->... 
+0x00000232 480D      LDR      r0,[pc,#52]  ; @0x00000268
+0x00000234 7A00      LDRB     r0,[r0,#0x08]
+0x00000236 F0400001  ORR      r0,r0,#0x01
+0x0000023A 490B      LDR      r1,[pc,#44]  ; @0x00000268
+0x0000023C 7208      STRB     r0,[r1,#0x08]
+    26:         if(i==3)i=0; 
+    27:  
+0x0000023E 4808      LDR      r0,[pc,#32]  ; @0x00000260
+0x00000240 6800      LDR      r0,[r0,#0x00]
+0x00000242 2803      CMP      r0,#0x03
+0x00000244 D103      BNE      0x0000024E
+0x00000246 2000      MOVS     r0,#0x00
+0x00000248 4905      LDR      r1,[pc,#20]  ; @0x00000260
+0x0000024A 6008      STR      r0,[r1,#0x00]
+0x0000024C E004      B        0x00000258
+    28:         else i++; 
+    29:  
+0x0000024E 4804      LDR      r0,[pc,#16]  ; @0x00000260
+0x00000250 6800      LDR      r0,[r0,#0x00]
+0x00000252 1C40      ADDS     r0,r0,#1
+0x00000254 4902      LDR      r1,[pc,#8]  ; @0x00000260
+0x00000256 6008      STR      r0,[r1,#0x00]
+    30: } 
+    31:  
+    32:  
+    33:  
+    34: int main () { 
+0x00000258 4770      BX       lr
+0x0000025A 0000      DCW      0x0000
+0x0000025C 0004      DCW      0x0004
+0x0000025E 1000      DCW      0x1000
+0x00000260 0000      DCW      0x0000
+0x00000262 1000      DCW      0x1000
+0x00000264 C000      DCW      0xC000
+0x00000266 2009      DCW      0x2009
+0x00000268 0000      DCW      0x0000
+0x0000026A 400B      DCW      0x400B
+    35:         SystemInit(); 
+    36:  
+    37: /*********************************************************************************************************************** 
+    38: Setup the Repititive Interrupt Timer for the stepper motor 
+    39: ************************************************************************************************************************/ 
+    40:  
+0x0000026C F000F848  BL.W     SystemInit (0x00000300)
+    41:         LPC_GPIO1->FIODIR |= (0xF0000000); 
+    42:          
+    43:         // clear the bits 31 to 28      
+    44:  
+0x00000270 4815      LDR      r0,[pc,#84]  ; @0x000002C8
+0x00000272 6A00      LDR      r0,[r0,#0x20]
+0x00000274 F0404070  ORR      r0,r0,#0xF0000000
+0x00000278 4913      LDR      r1,[pc,#76]  ; @0x000002C8
+0x0000027A 6208      STR      r0,[r1,#0x20]
+    45:         LPC_GPIO1->FIOPIN &= ~(0xF0000000); 
+    46:          
+    47:         /* enable RIT in PCON register */ 
+0x0000027C 4608      MOV      r0,r1
+0x0000027E 6B40      LDR      r0,[r0,#0x34]
+0x00000280 F0204070  BIC      r0,r0,#0xF0000000
+0x00000284 6348      STR      r0,[r1,#0x34]
+    48:          LPC_SC->PCONP |= ENABLE_PCRIT;  
+    49:  
+    50:         // clear the CTRL register // 
+0x00000286 4811      LDR      r0,[pc,#68]  ; @0x000002CC
+0x00000288 6800      LDR      r0,[r0,#0x00]
+0x0000028A F4403080  ORR      r0,r0,#0x10000
+0x0000028E 490F      LDR      r1,[pc,#60]  ; @0x000002CC
+0x00000290 39C4      SUBS     r1,r1,#0xC4
+0x00000292 F8C100C4  STR      r0,[r1,#0xC4]
+    51:         LPC_RIT->RICTRL = 0; 
+    52:          
+    53:         // set the compare value // 
+0x00000296 2000      MOVS     r0,#0x00
+0x00000298 490D      LDR      r1,[pc,#52]  ; @0x000002D0
+0x0000029A 7208      STRB     r0,[r1,#0x08]
+    54:         LPC_RIT->RICOMPVAL = 100; // 12 steps per second = 30 degree //originally 1500000 
+    55:  
+    56:         // clear the counter register // 
+0x0000029C 2064      MOVS     r0,#0x64
+0x0000029E 6008      STR      r0,[r1,#0x00]
+    57:         LPC_RIT->RICOUNTER = 0; 
+    58:  
+    59:          
+    60:         // set the CTRL register // 
+0x000002A0 2000      MOVS     r0,#0x00
+0x000002A2 60C8      STR      r0,[r1,#0x0C]
+    61:          LPC_RIT->RICTRL = RITENCLR| RITENBR| RITEN; 
+    62:  
+    63:         // enable the RIT interrupts 
+0x000002A4 200E      MOVS     r0,#0x0E
+0x000002A6 7208      STRB     r0,[r1,#0x08]
+    64:         NVIC_EnableIRQ(RIT_IRQn); 
+    65:  
+    66:         // loop forever 
+0x000002A8 201D      MOVS     r0,#0x1D
+  1498:   if ((int32_t)(IRQn) >= 0) 
+  1499:   { 
+0x000002AA 2800      CMP      r0,#0x00
+0x000002AC DB09      BLT      0x000002C2
+  1500:     NVIC->ISER[(((uint32_t)(int32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL)); 
+  1501:   } 
+0x000002AE F000021F  AND      r2,r0,#0x1F
+0x000002B2 2101      MOVS     r1,#0x01
+0x000002B4 4091      LSLS     r1,r1,r2
+0x000002B6 0942      LSRS     r2,r0,#5
+0x000002B8 0092      LSLS     r2,r2,#2
+0x000002BA F10222E0  ADD      r2,r2,#0xE000E000
+0x000002BE F8C21100  STR      r1,[r2,#0x100]
+  1502: } 
+0x000002C2 BF00      NOP      
+    67:         while(1) { 
+0x000002C4 BF00      NOP      
+0x000002C6 E7FE      B        0x000002C6

@@ -24,10 +24,6 @@ using namespace std;
 // leave this include where it is
 #include <inc/static_asserts.h>
 
-void test_all_decode_fns(void);
-void import_bin(void);
-std::string to_hex(uint8_t addr);
-
 
 int main(int argc, char* argv[]) {
 
@@ -50,49 +46,21 @@ int main(int argc, char* argv[]) {
 
     vector<address32_t> nas_array;
     load_nas_file(folderpath + "/nas.txt", nas_array);
-
     auto w0 = armstate;
-
-    auto w1 = armstate;
-    auto w2 = armstate;
-
 
     cout << "\n=============================================\n";
     cout << " files loading complete";
     cout << "\n=============================================\n";
 
-/*
-    int count = 1;
-    for(address32_t addr = armstate.cpu.get_PC(); addr <= last_asm_addr;) {
-
-       // if(addr > 0x00000256 && addr < 0x00000270 ){
-       //     addr += 2; continue;
-       // }
-
-        auto inst_data   = fetch(armstate.memory, addr, true);
-        
-        try {
-            auto dec_inst = decode(inst_data, addr);
-            cout << setw(2) << count << "- ";
-            cout << dec_inst << endl;
-            count++;
-        }
-        catch(runtime_error& ex){
-            cout << ex.what() << endl;
-        }
-
-        addr += 2;
-        if(inst_data.type == fetched_instruction_t::t32)
-            addr += 2;
-    }
-//*/
+    print_disassembly(0x00000220, 0x00000256, armstate.memory);
+    print_disassembly(armstate.cpu.get_PC(), last_asm_addr, armstate.memory);
 
     cout << "=============================================\n";
     cout << "  disassembly complete";
     cout << "\n=============================================\n\n";
 
 ///*
-    for(int i = 0; i < 1; ++i) {
+    for(int i = 0; i < 10; ++i) {
 
         auto inst_data    = fetch(armstate.memory, armstate.cpu.PC(), true);
         auto decode_data  = decode(inst_data, armstate.cpu.PC());
@@ -100,35 +68,10 @@ int main(int argc, char* argv[]) {
     
         cout << decode_data << endl;
         print_armstate_diff(armstate, new_armstate, cout);
-        cout << to_hex(ref_map(new_armstate)) << endl;
-       // cout << new_armstate.memory << endl;
         armstate = new_armstate;
-        //w[i] = new_armstate;
-        //cout << new_armstate << endl;
-        //cout << newcpu << endl;
     }
 //*/
 
- /*   
-    for(address_t addr = 0x00000224; addr <= 0x000002d4;) {
-
-        //if(addr > 0x00000256 && addr < 0x00000270 ){
-        //    addr += 2; continue;
-        //}
-
-        auto inst_data   = fetch(mem, addr);
-        auto decode_data = decode(inst_data, addr);
-        cout << decode_data;
-        auto newcpu      = execute(armcpu, mem, decode_data);
-
-        //std::cout << "Before" << armcpu << endl;
-        std::cout << newcpu << endl;
-
-        addr +=2;
-        if(inst_data.type == fetched_instruction_t::t32) 
-            addr+=2;
-    }
-//*/
     cout << "==========================================\n";
     cout << "  execute complete";
     cout << "\n==========================================\n\n";
@@ -138,6 +81,8 @@ int main(int argc, char* argv[]) {
     cout << "  simulation starting";
     cout << "\n==========================================\n\n";
 
+
+ /*
     try
     {
         symsimulation(w0, nas_array);
@@ -146,52 +91,10 @@ int main(int argc, char* argv[]) {
     {
         std::cerr << e.what() << '\n';
     }
-
+//*/
     cout << "==========================================\n";
     cout << "  simulation ended";
     cout << "\n==========================================\n\n";
 
     return 0;
-}
-
-
-void test_all_decode_fns(void) {
-    test_decode_fns("test/instruction_test/testfile.branch.txt");
-    test_decode_fns("test/instruction_test/testfile.bottom.txt");
-    test_decode_fns("test/instruction_test/testfile.txt");
-    test_32b_decode("test/instruction_test/testfile32b.txt");
-    std::cout << "INSTRUCTION TESTS PASSED\n\n" << std::flush;
-}
-
-void import_bin(void){
-
-    memory_t mem(memory_t::little_endian);
- 
-
-    auto sz = import_bin_file("armasm/fullthumb16/main.bin", mem, 0x00000000);
-    cout << mem << endl;
-    cout << "size of instruction stream: " << sz << " bytes\n";
-    for(size_t addr = 0; addr < sz;) {
-        auto inst_data = fetch(mem, addr, true);
-
-        try {
-            auto decode_data = decode(inst_data, addr);
-            cout << decode_data << endl;
-        }
-        catch(exception& up) {
-            cout << up.what() << endl;
-        }
-        
-        addr += 2;
-        if(inst_data.type == fetched_instruction_t::t32)
-            addr += 2;
-    }
-}
-
-std::string to_hex(uint8_t addr) {
-    std::string s = "0x";
-    for(int i = 1; i >= 0; i--) {
-        s.push_back("0123456789ABCDEF"[(addr >> (i*4)) & 0xF]);
-    }
-    return s;
 }

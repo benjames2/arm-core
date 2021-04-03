@@ -93,3 +93,66 @@ void load_nas_file(const std::string filename, std::vector<address32_t>& nas){
     std::cout << "DONE\n" << std::flush;
 
 }
+
+void import_bin(void){
+
+    memory_t mem(memory_t::little_endian);
+ 
+
+    auto sz = import_bin_file("armasm/fullthumb16/main.bin", mem, 0x00000000);
+    std::cout << mem << std::endl;
+    std::cout << "size of instruction stream: " << sz << " bytes\n";
+    for(size_t addr = 0; addr < sz;) {
+        auto inst_data = fetch(mem, addr, true);
+
+        try {
+            auto decode_data = decode(inst_data, addr);
+            std::cout << decode_data << std::endl;
+        }
+        catch(std::exception& up) {
+            std::cout << up.what() << std::endl;
+        }
+        
+        addr += 2;
+        if(inst_data.type == fetched_instruction_t::t32)
+            addr += 2;
+    }
+}
+
+std::string to_hex(uint8_t addr) {
+    std::string s = "0x";
+    for(int i = 1; i >= 0; i--) {
+        s.push_back("0123456789ABCDEF"[(addr >> (i*4)) & 0xF]);
+    }
+    return s;
+}
+
+void test_all_decode_fns(void) {
+    test_decode_fns("test/instruction_test/testfile.branch.txt");
+    test_decode_fns("test/instruction_test/testfile.bottom.txt");
+    test_decode_fns("test/instruction_test/testfile.txt");
+    test_32b_decode("test/instruction_test/testfile32b.txt");
+    std::cout << "INSTRUCTION TESTS PASSED\n\n" << std::flush;
+}
+
+void print_disassembly( const address32_t& start_addr, const address32_t& end_addr, memory_t& mem){
+    int count = 1;
+    for(address32_t addr = start_addr; addr <= end_addr;) {
+
+        auto inst_data   = fetch(mem, addr, true);
+        
+        try {
+            auto dec_inst = decode(inst_data, addr);
+            std::cout << std::setw(2) << count << "- ";
+            std::cout << dec_inst << std::endl;
+            count++;
+        }
+        catch(std::runtime_error& ex){
+            std::cout << ex.what() << std::endl;
+        }
+
+        addr += 2;
+        if(inst_data.type == fetched_instruction_t::t32)
+            addr += 2;
+    }
+}
