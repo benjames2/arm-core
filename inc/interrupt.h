@@ -37,10 +37,13 @@ enum interrupt_id {
 uint32_t get_exception_number(interrupt_id id);
 static void enable_rit(armstate_t& armstate);
 static bool rit_enabled();
+void reset_rit_counter(armstate_t& armstate);
 void rit_procedure(armstate_t& armstate);
 bool rit_triggered(armstate_t& armstate);
-armstate_t rit_handler(armstate_t& armstate);
+armstate_t rit_handler(armstate_t& armstate, std::map<uint32_t, address32_t>& vector_table);
 
 static bool eint0_enabled(armstate_t& armstate);
 
-armstate_t call_isr(armstate_t& armstate_t, interrupt_id id);
+armstate_t call_isr(armstate_t& armstate, interrupt_id id, std::map<uint32_t, address32_t>& vector_table);
+armstate_t exit_isr(armstate_t& armstate);
+armstate_t interrupt_handler(armstate_t& armstate, std::map<uint32_t, address32_t>& vector_table);

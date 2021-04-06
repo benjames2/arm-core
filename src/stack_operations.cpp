@@ -79,7 +79,11 @@ address32_t pop_word(armstate_t& armstate, address32_t addr, int regn) {
             throw StackError("when calling pop_word(), invalid stack mode");
     }
 
-    armstate.cpu.set_register_u32(regn, val);
+    if (regn == 16)
+        armstate.cpu.set_CPSR(val);
+    else
+        armstate.cpu.set_register_u32(regn, val);
+    
     return addr;
 }
 

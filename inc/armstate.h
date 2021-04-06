@@ -10,8 +10,8 @@ struct  armstate_t
     memory_t memory;
 
     //Interrupt enable variable
-    static uint8_t RIT;
-    static uint8_t EINT0;
+    static uint32_t RIT;
+    static uint32_t EINT0;
 
     armstate_t(const int mem_endianness);
     armstate_t(void);

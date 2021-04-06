@@ -16,6 +16,7 @@
 #include <inc/range.h>
 #include <inc/armstate.h>
 #include <inc/simulation.h>
+#include <inc/interrupt.h>
 
 #include "main.h"
 
@@ -61,7 +62,7 @@ int main(int argc, char* argv[]) {
     cout << " files loading complete";
     cout << "\n=============================================\n";
 
-    print_disassembly(0x00000220, 0x00000256, armstate.memory);
+    print_disassembly(0x00000220, 0x00000258, armstate.memory);
     print_disassembly(armstate.cpu.get_PC(), last_asm_addr, armstate.memory);
 
     cout << "=============================================\n";
@@ -69,12 +70,13 @@ int main(int argc, char* argv[]) {
     cout << "\n=============================================\n\n";
 
 ///*
-    for(int i = 0; i < 10; ++i) {
+    for(int i = 0; i < 20; ++i) {
 
         auto inst_data    = fetch(armstate.memory, armstate.cpu.PC(), true);
         auto decode_data  = decode(inst_data, armstate.cpu.PC());
         auto new_armstate = execute(armstate, decode_data);
-    
+       // new_armstate      = interrupt_handler(new_armstate, vector_table);
+
         cout << decode_data << endl;
         print_armstate_diff(armstate, new_armstate, cout);
         armstate = new_armstate;
