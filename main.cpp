@@ -69,13 +69,13 @@ int main(int argc, char* argv[]) {
     cout << "  disassembly complete";
     cout << "\n=============================================\n\n";
 
-///*
-    for(int i = 0; i < 20; ++i) {
+/*
+    for(int i = 0; i < 100; ++i) {
 
         auto inst_data    = fetch(armstate.memory, armstate.cpu.PC(), true);
         auto decode_data  = decode(inst_data, armstate.cpu.PC());
         auto new_armstate = execute(armstate, decode_data);
-       // new_armstate      = interrupt_handler(new_armstate, vector_table);
+        new_armstate      = interrupt_handler(new_armstate, vector_table);
 
         cout << decode_data << endl;
         print_armstate_diff(armstate, new_armstate, cout);
@@ -93,10 +93,10 @@ int main(int argc, char* argv[]) {
     cout << "\n==========================================\n\n";
 
 
- /*
+ ///*
     try
     {
-        symsimulation(w0, nas_array);
+        symsimulation(w0, nas_array, vector_table);
     }
     catch(const std::exception& e)
     {

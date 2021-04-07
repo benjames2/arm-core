@@ -2,8 +2,9 @@
 #include <inc/fetch.h>
 #include <inc/execute.h>
 #include <inc/decode.h>
+#include <inc/interrupt.h>
 
-void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array){
+void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array, std::map<uint32_t, address32_t>& vector_table){
 
     auto check_belonging = [](std::vector<armstate_t>& I, armstate_t& armstate_v) ->bool{
         for(auto& armstate : I){
@@ -41,7 +42,7 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array){
             //First if tested
             std::vector<armstate_pair_t> RC;
             if(!skip_simulation){
-                successor(RC, w);                               //RC ← simulate-object-code(w, object-code);
+                successor(RC, w, vector_table);                               //RC ← simulate-object-code(w, object-code);
                 auto wv_pair = RC.back();              
                 w = wv_pair.armstate_w;                          //Choose any <w, v>, ∈ RC; last pair element is chosen in RC
                 v = wv_pair.armstate_v;
@@ -174,11 +175,12 @@ bool operator<(const armstate_pair_t& lhs_pair, const armstate_pair_t& rhs_pair)
     
 }
 
-void successor(std::vector<armstate_pair_t>& RC, armstate_t& armstate_w){
+void successor(std::vector<armstate_pair_t>& RC, armstate_t& armstate_w, std::map<uint32_t, address32_t>& vector_table){
 
     auto inst_data   = fetch(armstate_w.memory, armstate_w.cpu.PC());
     auto decode_data = decode(inst_data, armstate_w.cpu.PC()); 
     auto armstate_v  = execute(armstate_w, decode_data);
+    armstate_v       = interrupt_handler(armstate_v, vector_table);
 
     armstate_pair_t WV = {armstate_w, armstate_v};
 

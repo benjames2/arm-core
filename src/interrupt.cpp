@@ -48,7 +48,7 @@ uint32_t get_exception_number(interrupt_id id){
 
 void enable_rit(armstate_t& armstate){
 
-    const uint32_t rit_enable_value = 0x2000000;
+    const uint32_t rit_enable_value = 0x20000000;
     if(armstate.memory.load_u32(special_register_t::NVIC_ENABLE0) == rit_enable_value)
         armstate_t::RIT = 1;
 }
@@ -94,6 +94,7 @@ armstate_t rit_handler (armstate_t& armstate, std::map<uint32_t, address32_t>& v
 
 armstate_t call_isr(armstate_t& armstate, interrupt_id exc_id,  std::map<uint32_t, address32_t>& vector_table){
 
+    std::cout << "\ncalling isr " << std::endl;
     auto new_armstate = armstate;
     new_armstate.cpu.set_stack_mode(armv7_m3::stack_mode_FullDescending);
     auto stack_pointer = armstate.cpu.SP();
@@ -140,6 +141,7 @@ armstate_t exit_isr(armstate_t& armstate){
     const uint32_t EXC_RETURN = 0xFFFFFFF9;
 
     if(new_armstate.cpu.PC() == EXC_RETURN){
+        std::cout << "exiting isr " << std::endl;
         auto stack_pointer = new_armstate.cpu.SP();
         for(int regnum = 0; regnum < 17; regnum++){
             if ((regnum >= 4 && regnum <= 11) || regnum == 13)

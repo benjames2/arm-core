@@ -1,5 +1,5 @@
 #include <inc/armstate.h>
-
+#include <inc/interrupt.h>
 
 uint32_t armstate_t::RIT   = 0;   //using uint8_t for some reason prints junk values
 uint32_t armstate_t::EINT0 = 0;
@@ -43,6 +43,7 @@ void print_armstate_diff(armstate_t& armstate_lhs, armstate_t& armstate_rhs, std
     print_cpu_diff(armstate_lhs.cpu, armstate_rhs.cpu, os);
     os << "RIT   ENABLED: " << armstate_t::RIT     << std::endl;
     os << "EINT0 ENABLED: " << armstate_t::EINT0   << std::endl;
+    os << "RIT   COUNTER: " << armstate_rhs.memory.load_u32(special_register_t::RICOUNTER)   << std::endl;
     print_memory_diff(armstate_lhs.memory, armstate_rhs.memory, os);
     os << std::flush;
 }

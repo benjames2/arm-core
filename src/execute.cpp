@@ -1501,7 +1501,7 @@ armstate_t execute_t16(armstate_t& armstate, instruction_16b_t& inst) {
                     //update flags
                     new_armstate.cpu.set_CPSR_N(result.get_x86_flag_Sign());
                     new_armstate.cpu.set_CPSR_Z(result.get_x86_flag_Zero());
-                    new_armstate.cpu.set_CPSR_C(!result.get_x86_flag_Carry());
+                    new_armstate.cpu.set_CPSR_C(!result.get_x86_flag_Carry());//the carry flag behaves diferently in armV7. it is then inverted
                     new_armstate.cpu.set_CPSR_V(result.get_x86_flag_Ov());
 
                     //update PC and cycle count
@@ -1514,7 +1514,7 @@ armstate_t execute_t16(armstate_t& armstate, instruction_16b_t& inst) {
                     return new_armstate;
                 }
                 else if(inst.meta_opcode == meta_RRC){
-                   // std::cout << "SUB RRC" << std::endl;
+                   
                     results_t result;
 
                     auto imm3 = inst.u32;
