@@ -55,6 +55,7 @@ public:
     static const int big_endian = 1;
 
     memory_t(const int endianness);
+    memory_t(const memory_t& rhs);
 
     const int get_endianness(void);
 

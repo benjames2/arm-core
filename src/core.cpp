@@ -1,6 +1,7 @@
 #include <inc/core.h>
 #include <sstream>
 #include <iomanip>
+#include <cstring>
 
 armv7_m3::armv7_m3(void) {
     // initialize all registers to zero. the PC will 
@@ -11,6 +12,10 @@ armv7_m3::armv7_m3(void) {
     this->cycle_count = 0;
     this->stack_mode  = armv7_m3::stack_mode_undefined;
     this->cpu_id      = 0;
+}
+
+armv7_m3::armv7_m3(const armv7_m3& rhs){
+    std::memcpy(this, &rhs, sizeof(armv7_m3));
 }
 
 uint64_t armv7_m3::get_cycle_count(void) const{
@@ -154,6 +159,67 @@ std::ostream& operator<<(std::ostream& os, armv7_m3 const& cpu) {
     return os;
 }
 
+void print_cpu_pair(armv7_m3 const& cpu_lhs, armv7_m3 const& cpu_rhs, std::ostream& os){
+
+     auto padhexnumber = [](const unsigned int number) {
+        std::stringstream ss;
+        ss << std::hex << number;
+        
+        auto s = ss.str(); 
+
+        while (s.size() < 8)
+            s = "0" + s;
+
+        return s;
+    };
+
+    os << std::dec;
+    os << "\n  cpu state " << cpu_lhs.cpu_id << std::setw(28) << "cpu state "<< cpu_rhs.cpu_id << "\n";
+
+    for(int i = 0; i < cpu_lhs.reg.size(); ++i){
+
+        os << "R" << std::dec << i; 
+        if(i < 10)
+            os << std::hex << std::setw(6) << ":" << std::setw(4) << "Ox" << padhexnumber(cpu_lhs.get_register_i32(i)) << std::setw(10) << "R" << std::dec << i
+               << std::hex << std::setw(6) << ":" << std::setw(4) << "Ox" << padhexnumber(cpu_rhs.get_register_i32(i)) << "\n";
+        else{
+            if(i < 13) 
+                os << std::hex << std::setw(5) << ":" << std::setw(4) << "Ox"  << padhexnumber(cpu_lhs.get_register_i32(i)) << std::setw(10) << "R" << std::dec << i
+                   << std::hex << std::setw(5) << ":" << std::setw(4) << "Ox"  << padhexnumber(cpu_rhs.get_register_i32(i))<< "\n";
+            if(i == 13)
+                os << std::hex << "(SP):" << std::setw(4) << "Ox" << padhexnumber(cpu_lhs.get_register_i32(i)) << std::setw(10) << "R" << std::dec << i
+                   << std::hex << "(SP):" << std::setw(4) << "Ox" << padhexnumber(cpu_rhs.get_register_i32(i))<< "\n";
+            if(i == 14)
+                os << std::hex << "(LR):" << std::setw(4) << "Ox" << padhexnumber(cpu_lhs.get_register_i32(i)) << std::setw(10) << "R" << std::dec << i
+                   << std::hex << "(LR):" << std::setw(4) << "Ox" << padhexnumber(cpu_rhs.get_register_i32(i))<< "\n";
+            if(i == 15)
+                os << std::hex << "(PC):" << std::setw(4) << "Ox" << padhexnumber(cpu_lhs.get_register_i32(i)) << std::setw(10) << "R" << std::dec << i
+                   << std::hex << "(PC):" << std::setw(4) << "Ox" << padhexnumber(cpu_rhs.get_register_i32(i))<< "\n";
+        }
+    }
+
+    os << "xPSR" << std::setw(4) <<  ":" << std::setw(4) << "Ox" << padhexnumber(cpu_lhs.get_CPSR()) << std::setw(13)
+       << "xPSR" << std::setw(4) <<  ":" << std::setw(4) << "Ox" << padhexnumber(cpu_rhs.get_CPSR())<< "\n";
+
+    os << "N    Z    C    V   Q" << std::setw(29) << "N    Z    C    V   Q" << "\n";
+
+    os << 
+        cpu_lhs.get_CPSR_N() << std::setw(5)  <<
+        cpu_lhs.get_CPSR_Z() << std::setw(5)  <<
+        cpu_lhs.get_CPSR_C() << std::setw(5)  <<
+        cpu_lhs.get_CPSR_V() << std::setw(4)  <<
+        cpu_lhs.get_CPSR_Q() << std::setw(10) <<
+
+        cpu_rhs.get_CPSR_N() << std::setw(5) <<
+        cpu_rhs.get_CPSR_Z() << std::setw(5) <<
+        cpu_rhs.get_CPSR_C() << std::setw(5) <<
+        cpu_rhs.get_CPSR_V() << std::setw(4) <<
+        cpu_rhs.get_CPSR_Q() << "\n";
+
+    os << "Cycle  :" << std::dec << std::setw(3) << cpu_lhs.get_cycle_count() << std::setw(26) << "Cycle  :" << std::setw(3) << cpu_rhs.get_cycle_count() << std::endl;
+    
+}
+
 void print_cpu_diff(armv7_m3 const& old_cpu, armv7_m3 const& new_cpu, std::ostream& os){
 
     auto padhexnumber = [](const unsigned int number) {
@@ -183,7 +249,7 @@ void print_cpu_diff(armv7_m3 const& old_cpu, armv7_m3 const& new_cpu, std::ostre
             if(i < 13){
                 if(old_cpu.get_register_i32(i) != new_cpu.get_register_i32(i)){
                     os << "R" << std::dec << i;
-                    os << std::hex << std::setw(6) << ":" << "  Ox" << padhexnumber(new_cpu.get_register_i32(i)) << "\n";
+                    os << std::hex << std::setw(5) << ":" << std::setw(4) << "Ox" << padhexnumber(new_cpu.get_register_i32(i)) << "\n";
                 }
             }
             if(i == 13){
@@ -217,10 +283,99 @@ void print_cpu_diff(armv7_m3 const& old_cpu, armv7_m3 const& new_cpu, std::ostre
             new_cpu.get_CPSR_C() << std::setw(5) <<
             new_cpu.get_CPSR_V() << std::setw(4) <<
             new_cpu.get_CPSR_Q() << "\n";
-        }
+    }
     
     os << "Cycle  :" << std::dec << std::setw(3) << new_cpu.get_cycle_count() << std::endl;
 }
+
+void print_cpu_pair_diff(armv7_m3 const& cpu_lhs, armv7_m3 const& cpu_rhs, std::ostream& os){
+
+    auto padhexnumber = [](const unsigned int number) {
+        std::stringstream ss;
+        ss << std::hex << number;
+        
+        auto s = ss.str(); 
+
+        while (s.size() < 8)
+            s = "0" + s;
+
+        return s;
+    };
+
+    os << std::dec;
+    os << "\n  cpu state " << cpu_lhs.cpu_id << std::setw(28) << "cpu state "<< cpu_rhs.cpu_id << "\n";
+
+    for(int i = 0; i < cpu_lhs.reg.size(); ++i){
+
+        if(i < 10){
+            if(cpu_lhs.get_register_i32(i) != cpu_rhs.get_register_i32(i)){
+                os << "R" << std::dec << i;
+                os << std::hex << std::setw(6) << ":" << std::setw(4) << "Ox" << padhexnumber(cpu_lhs.get_register_i32(i)) 
+                   << std::setw(10) << "R" << std::dec << i
+                   << std::hex << std::setw(6) << ":" << std::setw(4) << "Ox" << padhexnumber(cpu_rhs.get_register_i32(i)) << std::endl;
+            }
+        }
+        else{
+            if(i < 13){
+                if(cpu_lhs.get_register_i32(i) != cpu_rhs.get_register_i32(i)){
+                    os << "R" << std::dec << i;
+                    os << std::hex << std::setw(5) << ":" << std::setw(4) << "Ox" << padhexnumber(cpu_lhs.get_register_i32(i)) 
+                       << std::setw(10) << "R" << std::dec << i
+                       << std::hex << std::setw(5) << ":" << std::setw(4) << "  Ox" << padhexnumber(cpu_rhs.get_register_i32(i)) << std::endl;
+                }
+            }
+            if(i == 13){
+                if(cpu_lhs.get_register_i32(i) != cpu_rhs.get_register_i32(i)){
+                    os << "R" << std::dec << i;
+                    os << std::hex << "(SP):  Ox" << padhexnumber(cpu_lhs.get_register_i32(i)) 
+                       << std::setw(10) << "R" << std::dec << i
+                       << std::hex << "(SP):  Ox" << padhexnumber(cpu_rhs.get_register_i32(i))  << std::endl;
+                }
+            }
+
+            if(i == 14){
+                if(cpu_lhs.get_register_i32(i) != cpu_rhs.get_register_i32(i)){
+                    os << "R" << std::dec << i;
+                    os << std::hex << "(LR):  Ox" << padhexnumber(cpu_lhs.get_register_i32(i)) 
+                       << std::setw(10) << "R" << std::dec << i
+                       << std::hex << "(LR):  Ox" << padhexnumber(cpu_rhs.get_register_i32(i))  << std::endl;
+                }
+            }
+
+            if(i == 15){
+                if(cpu_lhs.get_register_i32(i) != cpu_rhs.get_register_i32(i)){
+                    os << "R" << std::dec << i;
+                    os << std::hex << "(PC):  Ox" << padhexnumber(cpu_lhs.get_register_i32(i)) 
+                       << std::setw(10) << "R" << std::dec << i
+                       << std::hex << "(PC):  Ox" << padhexnumber(cpu_rhs.get_register_i32(i))  << std::endl;
+                }
+            }
+        }
+    }
+
+    if(cpu_lhs.get_CPSR() != cpu_rhs.get_CPSR()){
+        os << "xPSR" << std::setw(4) <<  ":" << std::setw(4) << "Ox" << padhexnumber(cpu_lhs.get_CPSR()) << std::setw(13)
+           << "xPSR" << std::setw(4) <<  ":" << std::setw(4) << "Ox" << padhexnumber(cpu_rhs.get_CPSR())<< "\n";
+
+        os << "N    Z    C    V   Q" << std::setw(29) << "N    Z    C    V   Q" << "\n";
+
+        os << 
+            cpu_lhs.get_CPSR_N() << std::setw(5)  <<
+            cpu_lhs.get_CPSR_Z() << std::setw(5)  <<
+            cpu_lhs.get_CPSR_C() << std::setw(5)  <<
+            cpu_lhs.get_CPSR_V() << std::setw(4)  <<
+            cpu_lhs.get_CPSR_Q() << std::setw(10) <<
+
+            cpu_rhs.get_CPSR_N() << std::setw(5) <<
+            cpu_rhs.get_CPSR_Z() << std::setw(5) <<
+            cpu_rhs.get_CPSR_C() << std::setw(5) <<
+            cpu_rhs.get_CPSR_V() << std::setw(4) <<
+            cpu_rhs.get_CPSR_Q() << "\n";
+    }
+
+    os << "Cycle  :" << std::dec << std::setw(3) << cpu_lhs.get_cycle_count() << std::setw(26) << "Cycle  :" << std::setw(3) << cpu_rhs.get_cycle_count() << std::endl;
+}
+
 
 bool operator==(armv7_m3 const& armcore_w, armv7_m3 const& armcore_v){
 

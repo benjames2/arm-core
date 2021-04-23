@@ -34,6 +34,7 @@ public:
 public:
 
     armv7_m3(void);
+    armv7_m3(const armv7_m3& rhs);
 
     int get_stack_mode(void);
     void set_stack_mode(const int newmode);
@@ -102,9 +103,12 @@ public:
     int  get_CPSR_M( void); // Mode field (4:0)
 
     friend std::ostream& operator<<(std::ostream& os,   armv7_m3 const& cpu);
+
     friend bool operator==(armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs);
     friend bool operator!=(armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs);
-    friend bool operator<(armv7_m3  const& armcore_lhs, armv7_m3 const& armcore_rhs);
+    friend bool operator<( armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs);
 };
 
-void print_cpu_diff(armv7_m3 const& old_cpu, armv7_m3 const& new_cpu, std::ostream& os);
+void print_cpu_diff(     armv7_m3 const& old_cpu, armv7_m3 const& new_cpu, std::ostream& os);
+void print_cpu_pair(     armv7_m3 const& cpu_lhs, armv7_m3 const& cpu_rhs, std::ostream& os);
+void print_cpu_pair_diff(armv7_m3 const& cpu_lhs, armv7_m3 const& cpu_rhs, std::ostream& os);

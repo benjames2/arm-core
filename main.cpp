@@ -62,15 +62,18 @@ int main(int argc, char* argv[]) {
     cout << " files loading complete";
     cout << "\n=============================================\n";
 
-    print_disassembly(0x00000220, 0x00000258, armstate.memory);
-    print_disassembly(armstate.cpu.get_PC(), last_asm_addr, armstate.memory);
+    //print_disassembly(0x00000220, 0x00000258, armstate.memory); //printing rit isr
+    //print_disassembly(0x00000220, 0x0000022A, armstate.memory);
+    //print_disassembly(armstate.cpu.get_PC(), last_asm_addr, armstate.memory);
 
     cout << "=============================================\n";
     cout << "  disassembly complete";
     cout << "\n=============================================\n\n";
 
-/*
-    for(int i = 0; i < 100; ++i) {
+    cout << w0 << endl;
+
+///*
+    for(int i = 0; i < 60; ++i) {
 
         auto inst_data    = fetch(armstate.memory, armstate.cpu.PC(), true);
         auto decode_data  = decode(inst_data, armstate.cpu.PC());
@@ -93,7 +96,7 @@ int main(int argc, char* argv[]) {
     cout << "\n==========================================\n\n";
 
 
- ///*
+ /*
     try
     {
         symsimulation(w0, nas_array, vector_table);

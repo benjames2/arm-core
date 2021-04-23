@@ -2,7 +2,7 @@ OBJ=./obj
 SRC=./src
 INC=./inc
 
-FLAGS=-std=c++11 -no-pie -march=native -O3 -I.
+FLAGS=-std=c++11 -no-pie -march=native -O0 -I.
 
 # defined in C++
 CPPOBJ= \

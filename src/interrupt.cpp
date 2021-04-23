@@ -2,6 +2,7 @@
 #include <map>
 
 
+uint32_t special_flag_t::ISR_FLAG = 0;
 
 uint32_t get_exception_number(interrupt_id id){
 
@@ -46,15 +47,24 @@ uint32_t get_exception_number(interrupt_id id){
         return iter->second;
 }
 
-void enable_rit(armstate_t& armstate){
+void enable_interrupt(armstate_t& armstate){
 
-    const uint32_t rit_enable_value = 0x20000000;
-    if(armstate.memory.load_u32(special_register_t::NVIC_ENABLE0) == rit_enable_value)
-        armstate_t::RIT = 1;
+    //const uint32_t rit_enable_value = 0x20000000;
+    const uint32_t rit_enable_bit = 29;
+    if(armstate.memory.load_u32(special_register_t::NVIC_ENABLE0) & (1 << rit_enable_bit))
+        armstate_t::RIT = true;
+
+    const uint32_t eint0_enable_bit = 18;
+    if(armstate.memory.load_u32(special_register_t::NVIC_ENABLE0) & (1 << eint0_enable_bit))
+        armstate_t::EINT0 = true;
 }
 
 bool rit_enabled(){
     return armstate_t::RIT;
+}
+
+bool eint0_enabled(){
+    return armstate_t::EINT0;
 }
 
 void reset_rit_counter(armstate_t& armstate){
@@ -80,7 +90,7 @@ bool rit_triggered(armstate_t& armstate){
 
 armstate_t rit_handler (armstate_t& armstate, std::map<uint32_t, address32_t>& vector_table){
     auto new_armstate = armstate;
-    enable_rit(new_armstate);
+    enable_interrupt(new_armstate);
 
     if (rit_enabled()){
         rit_procedure(new_armstate);
@@ -92,10 +102,32 @@ armstate_t rit_handler (armstate_t& armstate, std::map<uint32_t, address32_t>& v
     return new_armstate;
 }
 
+std::vector<armstate_t> eint0_handler(armstate_t& armstate, std::map<uint32_t, address32_t>& vector_table){
+
+    std::vector<armstate_t> successor_states = {armstate};
+    //std::cout << "vector size before push " << successor_states.size() << std::endl ;
+ 
+    auto new_armstate = armstate;
+
+    if(!armstate_t::EINT0)
+        enable_interrupt(new_armstate);
+
+    if(eint0_enabled()){
+        if(!new_armstate.isr_flagged()){
+            //We asssume interrupt is always triggered when enabled 
+            new_armstate = call_isr(new_armstate, interrupt_id::EINT0, vector_table);
+            successor_states.push_back(new_armstate);
+        }
+    }
+    return successor_states;
+}
+
 armstate_t call_isr(armstate_t& armstate, interrupt_id exc_id,  std::map<uint32_t, address32_t>& vector_table){
 
-    std::cout << "\ncalling isr " << std::endl;
+    std::cout << "\ncalling isr " << std::endl; 
     auto new_armstate = armstate;
+    new_armstate.set_isr_flag();
+    std::cout << "ISR " << new_armstate.isr_flagged() << std::endl;
     new_armstate.cpu.set_stack_mode(armv7_m3::stack_mode_FullDescending);
     auto stack_pointer = armstate.cpu.SP();
 
@@ -130,18 +162,19 @@ armstate_t call_isr(armstate_t& armstate, interrupt_id exc_id,  std::map<uint32_
     new_armstate.cpu.set_register_u32(14, EXC_RETURN);
     new_armstate.cpu.set_register_u32(15, isr_addr);
     new_armstate.cpu.set_CPSR(cpsr);
-
+    std::cout << "ISR call end " << new_armstate.isr_flagged() << std::endl;
     return new_armstate;
 }
 
-armstate_t exit_isr(armstate_t& armstate){
+armstate_t exit_isr(const armstate_t& armstate){
 
     auto new_armstate = armstate;
-    new_armstate.cpu.set_stack_mode(armv7_m3::stack_mode_FullDescending);
+    
     const uint32_t EXC_RETURN = 0xFFFFFFF9;
 
     if(new_armstate.cpu.PC() == EXC_RETURN){
         std::cout << "exiting isr " << std::endl;
+        new_armstate.cpu.set_stack_mode(armv7_m3::stack_mode_FullDescending);
         auto stack_pointer = new_armstate.cpu.SP();
         for(int regnum = 0; regnum < 17; regnum++){
             if ((regnum >= 4 && regnum <= 11) || regnum == 13)
@@ -150,14 +183,25 @@ armstate_t exit_isr(armstate_t& armstate){
         }
 
         new_armstate.cpu.set_register_u32(13, stack_pointer);
+        special_flag_t::ISR_FLAG = 0;
+        new_armstate.clear_isr_flag();
     }
-
+    
     return new_armstate;
 }
 
 armstate_t interrupt_handler(armstate_t& armstate, std::map<uint32_t, address32_t>& vector_table){
-    auto new_armstate = rit_handler(armstate, vector_table);
-    new_armstate      = exit_isr(new_armstate);
+    //auto new_armstate = armstate;
+    std::cout << " before eint0 handler" << std::endl;
+    auto successor_states = eint0_handler(armstate, vector_table);
+    std::cout << " after  eint0 handler" << std::endl;
 
+    std::cout << "vector size " << successor_states.size() << std::endl;
+    //if(successor_states.size() == 2){
+      //  print_cpu_pair_diff(successor_states.front().cpu, successor_states.back().cpu, std::cout);
+    //}
+    //new_armstate      = rit_handler(armstate, vector_table);
+    
+    auto  new_armstate  = exit_isr(successor_states.front());
     return new_armstate;
 }

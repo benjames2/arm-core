@@ -1,6 +1,7 @@
 #pragma once
 #include <inc/armstate.h>
 #include <inc/stack_operations.h>
+#include <vector>
 
 struct special_register_t {
 
@@ -14,6 +15,10 @@ struct special_register_t {
     const static unsigned int RICTRL       = 0x400B0008;
     const static unsigned int RICOUNTER    = 0x400B000C;
     const static unsigned int NVIC_ENABLE0 = 0xE000E100;
+};
+
+struct special_flag_t{
+    static uint32_t ISR_FLAG;
 };
 
 enum interrupt_id {
@@ -35,15 +40,19 @@ enum interrupt_id {
 };
 
 uint32_t get_exception_number(interrupt_id id);
-static void enable_rit(armstate_t& armstate);
+void enable_interrupt(armstate_t& armstate);
 static bool rit_enabled();
+static bool eint0_enabled();
+
+void rit_procedure    (armstate_t& armstate);
+bool rit_triggered    (armstate_t& armstate);
 void reset_rit_counter(armstate_t& armstate);
-void rit_procedure(armstate_t& armstate);
-bool rit_triggered(armstate_t& armstate);
 armstate_t rit_handler(armstate_t& armstate, std::map<uint32_t, address32_t>& vector_table);
 
-static bool eint0_enabled(armstate_t& armstate);
+
+std::vector<armstate_t> eint0_handler(armstate_t& armstate, std::map<uint32_t, address32_t>& vector_table);
+
 
 armstate_t call_isr(armstate_t& armstate, interrupt_id id, std::map<uint32_t, address32_t>& vector_table);
-armstate_t exit_isr(armstate_t& armstate);
+armstate_t exit_isr(const armstate_t& armstate);
 armstate_t interrupt_handler(armstate_t& armstate, std::map<uint32_t, address32_t>& vector_table);

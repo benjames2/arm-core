@@ -1,3 +1,15 @@
+    16:     LPC_SC->EXTINT = (1<<SBIT_EINT0);  /* Clear Interrupt Flag */ 
+0x00000220 2001      MOVS     r0,#0x01
+0x00000222 4902      LDR      r1,[pc,#8]  ; @0x0000022C
+0x00000224 6008      STR      r0,[r1,#0x00]
+    17:                 var = 1; 
+0x00000226 4902      LDR      r1,[pc,#8]  ; @0x00000230
+0x00000228 6008      STR      r0,[r1,#0x00]
+    18: } 
+    19:  
+    20: int main () { 
+    21:  
+0x0000022A 4770      BX       lr
 0x00000238 2001      MOVS     r0,#0x01
 0x0000023A 4911      LDR      r1,[pc,#68]  ; @0x00000280 @prefectch is pc + 2;
 0x0000023C 6008      STR      r0,[r1,#0x00]

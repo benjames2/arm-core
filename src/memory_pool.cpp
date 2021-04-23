@@ -17,6 +17,11 @@ memory_t::memory_t(const int endianness) {
     this->endianness = endianness;
 }
 
+memory_t::memory_t(const memory_t& rhs){
+    this->mem_lut = rhs.mem_lut;
+    this->endianness = rhs.endianness;
+}
+
 const int memory_t::get_endianness(void) {
     return this->endianness;
 }
