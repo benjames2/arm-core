@@ -48,968 +48,6 @@ ISR FLAG     : 0
 0x00000290 :  40 04 00 00 00 00 00 10 04 00 00 00 08 01 00 00
 0x000002A0 :  44 04 00 00 04 00 00 10 64 02 00 00 24 01 00 00
 
-[0x00000238 16-bit] MOV r0, #1
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 1
-R0     :  Ox00000001
-R15(PC):  Ox0000023a
-xPSR   :  0x01000000
-N    Z    C    V   Q
-0    0    0    0   0
-Cycle  :  1
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x0000023a 16-bit] LDR r1, [PC, #68]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 2
-R1     :  Ox400fc140
-R15(PC):  Ox0000023c
-Cycle  :  2
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x0000023c 16-bit] STR r0, [r1, #0]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 3
-R15(PC):  Ox0000023e
-Cycle  :  4
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x0000023e 16-bit] LSL r0, r0, #20
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 4
-R0     :  Ox00100000
-R15(PC):  Ox00000240
-Cycle  :  5
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x00000240 16-bit] LDR r1, [PC, #64]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 5
-R1     :  Ox4002c000
-R15(PC):  Ox00000242
-Cycle  :  6
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x00000242 16-bit] STR r0, [r1, #16]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 6
-R15(PC):  Ox00000244
-Cycle  :  8
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
-0x4002C010 :  00 00 10 00 00 00 00 00 00 00 00 00 00 00 00 00
-
- >>
-
-[0x00000244 16-bit] MOV r0, #1
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 7
-R0     :  Ox00000001
-R15(PC):  Ox00000246
-Cycle  :  9
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x00000246 16-bit] LDR r1, [PC, #64]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 8
-R1     :  Ox400fc000
-R15(PC):  Ox00000248
-Cycle  : 10
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x00000248 32-bit] STR r0, [r1, #328]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 9
-R15(PC):  Ox0000024c
-Cycle  : 12
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
-0x400FC140 :  01 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00
- >>
-
-[0x0000024c 16-bit] LDR r1, [PC, #48]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 10
-R1     :  Ox400fc140
-R15(PC):  Ox0000024e
-Cycle  : 13
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x0000024e 16-bit] ADD r1, #12
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 11
-R1     :  Ox400fc14c
-R15(PC):  Ox00000250
-Cycle  : 14
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x00000250 16-bit] STR r0, [r1, #0]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 12
-R15(PC):  Ox00000252
-Cycle  : 16
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
-0x400FC140 :  01 00 00 00 00 00 00 00 01 00 00 00 01 00 00 00
- >>
-
-[0x00000252 16-bit] MOV r0, #18
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 13
-R0     :  Ox00000012
-R15(PC):  Ox00000254
-Cycle  : 17
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x00000254 16-bit] CMP r0, #0
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 14
-R15(PC):  Ox00000256
-xPSR   :  0x21000000
-N    Z    C    V   Q
-0    0    1    0   0
-Cycle  : 18
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x00000256 16-bit] BLT #18
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 15
-R15(PC):  Ox00000258
-Cycle  : 19
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x00000258 32-bit] AND r2, r0, #31
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 16
-R2     :  Ox00000012
-R15(PC):  Ox0000025c
-Cycle  : 20
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x0000025c 16-bit] MOV r1, #1
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 17
-R1     :  Ox00000001
-R15(PC):  Ox0000025e
-Cycle  : 21
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x0000025e 16-bit] LSL r1, r2
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 18
-R1     :  Ox00040000
-R15(PC):  Ox00000260
-xPSR   :  0x01000000
-N    Z    C    V   Q
-0    0    0    0   0
-Cycle  : 22
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x00000260 16-bit] LSR r2, r0, #5
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 19
-R2     :  Ox00000000
-R15(PC):  Ox00000262
-xPSR   :  0x61000000
-N    Z    C    V   Q
-0    1    1    0   0
-Cycle  : 23
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x00000262 16-bit] LSL r2, r2, #2
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 20
-R15(PC):  Ox00000264
-xPSR   :  0x41000000
-N    Z    C    V   Q
-0    1    0    0   0
-Cycle  : 24
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x00000264 32-bit] ADD r2, r2, #-536813568
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 21
-R2     :  Oxe000e000
-R15(PC):  Ox00000268
-Cycle  : 25
-RIT   ENABLED: 0
-EINT0 ENABLED: 0
-RIT   COUNTER: 0
-ISR FLAG     : 0
- >>
-
-[0x00000268 32-bit] STR r1, [r2, #256]
- before eint0 handler
-
-calling isr 
-ISR 1
-ISR call end 1
- after  eint0 handler
-vector size 2
-Calling exit isr on exernal path
-
-  cpu state 22                  cpu state 22
-R0     :  Ox00000012         R0     :  Ox00000012
-R1     :  Ox00040000         R1     :  Ox00040000
-R2     :  Oxe000e000         R2     :  Oxe000e000
-R3     :  Ox10000068         R3     :  Ox10000068
-R4     :  Ox00000000         R4     :  Ox00000000
-R5     :  Ox10000004         R5     :  Ox10000004
-R6     :  Ox00000000         R6     :  Ox00000000
-R7     :  Ox00000000         R7     :  Ox00000000
-R8     :  Ox00000000         R8     :  Ox00000000
-R9     :  Ox00000000         R9     :  Ox00000000
-R10    :  Ox00000280         R10    :  Ox00000280
-R11    :  Ox00000000         R11    :  Ox00000000
-R12    :  Ox10000044         R12    :  Ox10000044
-R13(SP):  Ox10000268         R13(SP):  Ox10000248
-R14(LR):  Ox00000239         R14(LR):  Oxfffffff9
-R15(PC):  Ox0000026c         R15(PC):  Ox00000220
-xPSR   :  Ox41000000         xPSR   :  Ox41000022
-N    Z    C    V   Q         N    Z    C    V   Q
-0    1    0    0   0         0    1    0    0   0
-Cycle  : 27                  Cycle  : 27
-[0x00000220 16-bit] MOV r0, #1
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 23
-R0     :  Ox00000001
-R15(PC):  Ox00000222
-xPSR   :  0x01000022
-N    Z    C    V   Q
-0    0    0    0   0
-Cycle  : 28
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000222 16-bit] LDR r1, [PC, #8]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 24
-R1     :  Ox400fc140
-R15(PC):  Ox00000224
-Cycle  : 29
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000224 16-bit] STR r0, [r1, #0]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 25
-R15(PC):  Ox00000226
-Cycle  : 31
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000226 16-bit] LDR r1, [PC, #8]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 26
-R1     :  Ox10000000
-R15(PC):  Ox00000228
-Cycle  : 32
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000228 16-bit] STR r0, [r1, #0]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 27
-R15(PC):  Ox0000022a
-Cycle  : 34
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
-0x10000000 :  01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-
- >>
-
-[0x0000022a 16-bit] BX r14
- before eint0 handler
- after  eint0 handler
-vector size 1
-exiting isr 
-  cpu state 28
-R15(PC):  Oxfffffff9
-Cycle  : 36
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x0000026c 16-bit] NOP
- before eint0 handler
-
-calling isr 
-ISR 1
-ISR call end 1
- after  eint0 handler
-vector size 2
-Calling exit isr on exernal path
-
-  cpu state 29                  cpu state 29
-R0     :  Ox00000012         R0     :  Ox00000012
-R1     :  Ox00040000         R1     :  Ox00040000
-R2     :  Oxe000e000         R2     :  Oxe000e000
-R3     :  Ox10000068         R3     :  Ox10000068
-R4     :  Ox00000000         R4     :  Ox00000000
-R5     :  Ox10000004         R5     :  Ox10000004
-R6     :  Ox00000000         R6     :  Ox00000000
-R7     :  Ox00000000         R7     :  Ox00000000
-R8     :  Ox00000000         R8     :  Ox00000000
-R9     :  Ox00000000         R9     :  Ox00000000
-R10    :  Ox00000280         R10    :  Ox00000280
-R11    :  Ox00000000         R11    :  Ox00000000
-R12    :  Ox10000044         R12    :  Ox10000044
-R13(SP):  Ox10000268         R13(SP):  Ox10000248
-R14(LR):  Ox00000239         R14(LR):  Oxfffffff9
-R15(PC):  Ox0000026e         R15(PC):  Ox00000220
-xPSR   :  Ox41000000         xPSR   :  Ox41000022
-N    Z    C    V   Q         N    Z    C    V   Q
-0    1    0    0   0         0    1    0    0   0
-Cycle  : 37                  Cycle  : 37
-[0x00000220 16-bit] MOV r0, #1
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 30
-R0     :  Ox00000001
-R15(PC):  Ox00000222
-xPSR   :  0x01000022
-N    Z    C    V   Q
-0    0    0    0   0
-Cycle  : 38
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000222 16-bit] LDR r1, [PC, #8]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 31
-R1     :  Ox400fc140
-R15(PC):  Ox00000224
-Cycle  : 39
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000224 16-bit] STR r0, [r1, #0]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 32
-R15(PC):  Ox00000226
-Cycle  : 41
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000226 16-bit] LDR r1, [PC, #8]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 33
-R1     :  Ox10000000
-R15(PC):  Ox00000228
-Cycle  : 42
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000228 16-bit] STR r0, [r1, #0]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 34
-R15(PC):  Ox0000022a
-Cycle  : 44
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x0000022a 16-bit] BX r14
- before eint0 handler
- after  eint0 handler
-vector size 1
-exiting isr 
-  cpu state 35
-R15(PC):  Oxfffffff9
-Cycle  : 46
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x0000026e 16-bit] B #10
- before eint0 handler
-
-calling isr 
-ISR 1
-ISR call end 1
- after  eint0 handler
-vector size 2
-Calling exit isr on exernal path
-
-  cpu state 36                  cpu state 36
-R0     :  Ox00000012         R0     :  Ox00000012
-R1     :  Ox00040000         R1     :  Ox00040000
-R2     :  Oxe000e000         R2     :  Oxe000e000
-R3     :  Ox10000068         R3     :  Ox10000068
-R4     :  Ox00000000         R4     :  Ox00000000
-R5     :  Ox10000004         R5     :  Ox10000004
-R6     :  Ox00000000         R6     :  Ox00000000
-R7     :  Ox00000000         R7     :  Ox00000000
-R8     :  Ox00000000         R8     :  Ox00000000
-R9     :  Ox00000000         R9     :  Ox00000000
-R10    :  Ox00000280         R10    :  Ox00000280
-R11    :  Ox00000000         R11    :  Ox00000000
-R12    :  Ox10000044         R12    :  Ox10000044
-R13(SP):  Ox10000268         R13(SP):  Ox10000248
-R14(LR):  Ox00000239         R14(LR):  Oxfffffff9
-R15(PC):  Ox0000027c         R15(PC):  Ox00000220
-xPSR   :  Ox41000000         xPSR   :  Ox41000022
-N    Z    C    V   Q         N    Z    C    V   Q
-0    1    0    0   0         0    1    0    0   0
-Cycle  : 48                  Cycle  : 48
-[0x00000220 16-bit] MOV r0, #1
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 37
-R0     :  Ox00000001
-R15(PC):  Ox00000222
-xPSR   :  0x01000022
-N    Z    C    V   Q
-0    0    0    0   0
-Cycle  : 49
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000222 16-bit] LDR r1, [PC, #8]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 38
-R1     :  Ox400fc140
-R15(PC):  Ox00000224
-Cycle  : 50
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000224 16-bit] STR r0, [r1, #0]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 39
-R15(PC):  Ox00000226
-Cycle  : 52
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000226 16-bit] LDR r1, [PC, #8]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 40
-R1     :  Ox10000000
-R15(PC):  Ox00000228
-Cycle  : 53
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000228 16-bit] STR r0, [r1, #0]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 41
-R15(PC):  Ox0000022a
-Cycle  : 55
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x0000022a 16-bit] BX r14
- before eint0 handler
- after  eint0 handler
-vector size 1
-exiting isr 
-  cpu state 42
-R15(PC):  Oxfffffff9
-Cycle  : 57
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x0000027c 16-bit] B #-16
- before eint0 handler
-
-calling isr 
-ISR 1
-ISR call end 1
- after  eint0 handler
-vector size 2
-Calling exit isr on exernal path
-
-  cpu state 43                  cpu state 43
-R0     :  Ox00000012         R0     :  Ox00000012
-R1     :  Ox00040000         R1     :  Ox00040000
-R2     :  Oxe000e000         R2     :  Oxe000e000
-R3     :  Ox10000068         R3     :  Ox10000068
-R4     :  Ox00000000         R4     :  Ox00000000
-R5     :  Ox10000004         R5     :  Ox10000004
-R6     :  Ox00000000         R6     :  Ox00000000
-R7     :  Ox00000000         R7     :  Ox00000000
-R8     :  Ox00000000         R8     :  Ox00000000
-R9     :  Ox00000000         R9     :  Ox00000000
-R10    :  Ox00000280         R10    :  Ox00000280
-R11    :  Ox00000000         R11    :  Ox00000000
-R12    :  Ox10000044         R12    :  Ox10000044
-R13(SP):  Ox10000268         R13(SP):  Ox10000248
-R14(LR):  Ox00000239         R14(LR):  Oxfffffff9
-R15(PC):  Ox00000270         R15(PC):  Ox00000220
-xPSR   :  Ox41000000         xPSR   :  Ox41000022
-N    Z    C    V   Q         N    Z    C    V   Q
-0    1    0    0   0         0    1    0    0   0
-Cycle  : 59                  Cycle  : 59
-[0x00000220 16-bit] MOV r0, #1
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 44
-R0     :  Ox00000001
-R15(PC):  Ox00000222
-xPSR   :  0x01000022
-N    Z    C    V   Q
-0    0    0    0   0
-Cycle  : 60
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000222 16-bit] LDR r1, [PC, #8]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 45
-R1     :  Ox400fc140
-R15(PC):  Ox00000224
-Cycle  : 61
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000224 16-bit] STR r0, [r1, #0]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 46
-R15(PC):  Ox00000226
-Cycle  : 63
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000226 16-bit] LDR r1, [PC, #8]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 47
-R1     :  Ox10000000
-R15(PC):  Ox00000228
-Cycle  : 64
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000228 16-bit] STR r0, [r1, #0]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 48
-R15(PC):  Ox0000022a
-Cycle  : 66
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x0000022a 16-bit] BX r14
- before eint0 handler
- after  eint0 handler
-vector size 1
-exiting isr 
-  cpu state 49
-R15(PC):  Oxfffffff9
-Cycle  : 68
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000270 16-bit] LDR r0, [PC, #24]
- before eint0 handler
-
-calling isr 
-ISR 1
-ISR call end 1
- after  eint0 handler
-vector size 2
-Calling exit isr on exernal path
-
-  cpu state 50                  cpu state 50
-R0     :  Ox10000000         R0     :  Ox10000000
-R1     :  Ox00040000         R1     :  Ox00040000
-R2     :  Oxe000e000         R2     :  Oxe000e000
-R3     :  Ox10000068         R3     :  Ox10000068
-R4     :  Ox00000000         R4     :  Ox00000000
-R5     :  Ox10000004         R5     :  Ox10000004
-R6     :  Ox00000000         R6     :  Ox00000000
-R7     :  Ox00000000         R7     :  Ox00000000
-R8     :  Ox00000000         R8     :  Ox00000000
-R9     :  Ox00000000         R9     :  Ox00000000
-R10    :  Ox00000280         R10    :  Ox00000280
-R11    :  Ox00000000         R11    :  Ox00000000
-R12    :  Ox10000044         R12    :  Ox10000044
-R13(SP):  Ox10000268         R13(SP):  Ox10000248
-R14(LR):  Ox00000239         R14(LR):  Oxfffffff9
-R15(PC):  Ox00000272         R15(PC):  Ox00000220
-xPSR   :  Ox41000000         xPSR   :  Ox41000022
-N    Z    C    V   Q         N    Z    C    V   Q
-0    1    0    0   0         0    1    0    0   0
-Cycle  : 69                  Cycle  : 69
-[0x00000220 16-bit] MOV r0, #1
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 51
-R0     :  Ox00000001
-R15(PC):  Ox00000222
-xPSR   :  0x01000022
-N    Z    C    V   Q
-0    0    0    0   0
-Cycle  : 70
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000222 16-bit] LDR r1, [PC, #8]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 52
-R1     :  Ox400fc140
-R15(PC):  Ox00000224
-Cycle  : 71
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000224 16-bit] STR r0, [r1, #0]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 53
-R15(PC):  Ox00000226
-Cycle  : 73
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000226 16-bit] LDR r1, [PC, #8]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 54
-R1     :  Ox10000000
-R15(PC):  Ox00000228
-Cycle  : 74
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000228 16-bit] STR r0, [r1, #0]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 55
-R15(PC):  Ox0000022a
-Cycle  : 76
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x0000022a 16-bit] BX r14
- before eint0 handler
- after  eint0 handler
-vector size 1
-exiting isr 
-  cpu state 56
-R15(PC):  Oxfffffff9
-Cycle  : 78
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000272 16-bit] LDR r0, [r0, #0]
- before eint0 handler
-
-calling isr 
-ISR 1
-ISR call end 1
- after  eint0 handler
-vector size 2
-Calling exit isr on exernal path
-
-  cpu state 57                  cpu state 57
-R0     :  Ox00000001         R0     :  Ox00000001
-R1     :  Ox00040000         R1     :  Ox00040000
-R2     :  Oxe000e000         R2     :  Oxe000e000
-R3     :  Ox10000068         R3     :  Ox10000068
-R4     :  Ox00000000         R4     :  Ox00000000
-R5     :  Ox10000004         R5     :  Ox10000004
-R6     :  Ox00000000         R6     :  Ox00000000
-R7     :  Ox00000000         R7     :  Ox00000000
-R8     :  Ox00000000         R8     :  Ox00000000
-R9     :  Ox00000000         R9     :  Ox00000000
-R10    :  Ox00000280         R10    :  Ox00000280
-R11    :  Ox00000000         R11    :  Ox00000000
-R12    :  Ox10000044         R12    :  Ox10000044
-R13(SP):  Ox10000268         R13(SP):  Ox10000248
-R14(LR):  Ox00000239         R14(LR):  Oxfffffff9
-R15(PC):  Ox00000274         R15(PC):  Ox00000220
-xPSR   :  Ox41000000         xPSR   :  Ox41000022
-N    Z    C    V   Q         N    Z    C    V   Q
-0    1    0    0   0         0    1    0    0   0
-Cycle  : 79                  Cycle  : 79
-[0x00000220 16-bit] MOV r0, #1
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 58
-R15(PC):  Ox00000222
-xPSR   :  0x01000022
-N    Z    C    V   Q
-0    0    0    0   0
-Cycle  : 80
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000222 16-bit] LDR r1, [PC, #8]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 59
-R1     :  Ox400fc140
-R15(PC):  Ox00000224
-Cycle  : 81
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
-[0x00000224 16-bit] STR r0, [r1, #0]
- before eint0 handler
- after  eint0 handler
-vector size 1
-  cpu state 60
-R15(PC):  Ox00000226
-Cycle  : 83
-RIT   ENABLED: 0
-EINT0 ENABLED: 1
-RIT   COUNTER: 0
-ISR FLAG     : 1
- >>
-
 ==========================================
   execute complete
 ==========================================
@@ -1017,6 +55,4849 @@ ISR FLAG     : 1
 ==========================================
   simulation starting
 ==========================================
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 1
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 23a
+V: 23a
+SS-Length: 1
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 2
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 23c
+V: 23c
+SS-Length: 2
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 3
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 23e
+V: 23e
+SS-Length: 3
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 4
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 240
+V: 240
+SS-Length: 4
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 5
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 242
+V: 242
+SS-Length: 5
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 6
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 244
+V: 244
+SS-Length: 6
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 7
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 246
+V: 246
+SS-Length: 7
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 8
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 248
+V: 248
+SS-Length: 8
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 9
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 24c
+V: 24c
+SS-Length: 9
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 10
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 24e
+V: 24e
+SS-Length: 10
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 11
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 250
+V: 250
+SS-Length: 11
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 12
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 252
+V: 252
+SS-Length: 12
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 13
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 254
+V: 254
+SS-Length: 13
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 14
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 256
+V: 256
+SS-Length: 14
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 15
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 258
+V: 258
+SS-Length: 15
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 16
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 25c
+V: 25c
+SS-Length: 16
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 17
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 25e
+V: 25e
+SS-Length: 17
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 18
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 260
+V: 260
+SS-Length: 18
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 19
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 262
+V: 262
+SS-Length: 19
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 20
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 264
+V: 264
+SS-Length: 20
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 21
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 238
+W: 268
+V: 268
+SS-Length: 21
+Content of RC
+Content of RU
+States stored in I
+State W: 238  
+Abstracted Segment
+
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+First Loop iteration: 22
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 268
+W: 220
+V: 220
+SS-Length: 1
+Content of RC
+State W: 268  State V: 26c  
+Content of RU
+State W: 268  State V: 26c  
+States stored in I
+State W: 238  
+Abstracted Segment
+Segment: <238, 268, 21>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 23
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 268
+W: 222
+V: 222
+SS-Length: 2
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+States stored in I
+State W: 238  
+Abstracted Segment
+Segment: <238, 268, 21>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 24
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 268
+W: 224
+V: 224
+SS-Length: 3
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+States stored in I
+State W: 238  
+Abstracted Segment
+Segment: <238, 268, 21>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 25
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 268
+W: 226
+V: 226
+SS-Length: 4
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+States stored in I
+State W: 238  
+Abstracted Segment
+Segment: <238, 268, 21>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 26
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 268
+W: 228
+V: 228
+SS-Length: 5
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+States stored in I
+State W: 238  
+Abstracted Segment
+Segment: <238, 268, 21>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 27
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 22a
+W: 22a
+V: 22a
+SS-Length: 0
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+First Loop iteration: 28
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 22a
+W: 26c
+V: 26c
+SS-Length: 1
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+First Loop iteration: 29
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 26c
+W: 220
+V: 220
+SS-Length: 1
+Content of RC
+State W: 26c  State V: 26e  
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 30
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 26c
+W: 222
+V: 222
+SS-Length: 2
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 31
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 26c
+W: 224
+V: 224
+SS-Length: 3
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 32
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 26c
+W: 226
+V: 226
+SS-Length: 4
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 33
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 26c
+W: 228
+V: 228
+SS-Length: 5
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 34
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 26c
+W: 22a
+V: 22a
+SS-Length: 6
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+First Loop iteration: 35
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 26c
+W: 26e
+V: 26e
+SS-Length: 7
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+First Loop iteration: 36
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 26e
+W: 220
+V: 220
+SS-Length: 1
+Content of RC
+State W: 26e  State V: 27c  
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 37
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 26e
+W: 222
+V: 222
+SS-Length: 2
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 38
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 26e
+W: 224
+V: 224
+SS-Length: 3
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 39
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 26e
+W: 226
+V: 226
+SS-Length: 4
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 40
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 26e
+W: 228
+V: 228
+SS-Length: 5
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 41
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 26e
+W: 22a
+V: 22a
+SS-Length: 6
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+First Loop iteration: 42
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 26e
+W: 27c
+V: 27c
+SS-Length: 7
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+First Loop iteration: 43
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 220
+V: 220
+SS-Length: 1
+Content of RC
+State W: 27c  State V: 270  
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 44
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 222
+V: 222
+SS-Length: 2
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 45
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 224
+V: 224
+SS-Length: 3
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 46
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 226
+V: 226
+SS-Length: 4
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 47
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 228
+V: 228
+SS-Length: 5
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 48
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 22a
+V: 22a
+SS-Length: 6
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+First Loop iteration: 49
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 270
+V: 270
+SS-Length: 7
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+First Loop iteration: 50
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 220
+V: 220
+SS-Length: 1
+Content of RC
+State W: 270  State V: 272  
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 51
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 222
+V: 222
+SS-Length: 2
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 52
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 224
+V: 224
+SS-Length: 3
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 53
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 226
+V: 226
+SS-Length: 4
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 54
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 228
+V: 228
+SS-Length: 5
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 55
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 22a
+V: 22a
+SS-Length: 6
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+First Loop iteration: 56
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 272
+V: 272
+SS-Length: 7
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+First Loop iteration: 57
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 220
+V: 220
+SS-Length: 1
+Content of RC
+State W: 272  State V: 274  
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 58
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 222
+V: 222
+SS-Length: 2
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 59
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 224
+V: 224
+SS-Length: 3
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 60
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 226
+V: 226
+SS-Length: 4
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 61
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 228
+V: 228
+SS-Length: 5
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 62
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 22a
+V: 22a
+SS-Length: 6
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+First Loop iteration: 63
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 274
+V: 274
+SS-Length: 7
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+First Loop iteration: 64
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 220
+V: 220
+SS-Length: 1
+Content of RC
+State W: 274  State V: 27c  
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 65
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 222
+V: 222
+SS-Length: 2
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 66
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 224
+V: 224
+SS-Length: 3
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 67
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 226
+V: 226
+SS-Length: 4
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 68
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 228
+V: 228
+SS-Length: 5
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 69
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 22a
+V: 22a
+SS-Length: 6
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+First Loop iteration: 70
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 27c
+V: 27c
+SS-Length: 7
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+First Loop iteration: 71
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 220
+V: 220
+SS-Length: 1
+Content of RC
+State W: 27c  State V: 270  
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 72
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 222
+V: 222
+SS-Length: 2
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 73
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 224
+V: 224
+SS-Length: 3
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 74
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 226
+V: 226
+SS-Length: 4
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 75
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 228
+V: 228
+SS-Length: 5
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 76
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 22a
+V: 22a
+SS-Length: 6
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+First Loop iteration: 77
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 270
+V: 270
+SS-Length: 7
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+First Loop iteration: 78
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 220
+V: 220
+SS-Length: 1
+Content of RC
+State W: 270  State V: 272  
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 79
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 222
+V: 222
+SS-Length: 2
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 80
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 224
+V: 224
+SS-Length: 3
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 81
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 226
+V: 226
+SS-Length: 4
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 82
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 228
+V: 228
+SS-Length: 5
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 83
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 22a
+V: 22a
+SS-Length: 6
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+First Loop iteration: 84
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 272
+V: 272
+SS-Length: 7
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+First Loop iteration: 85
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 220
+V: 220
+SS-Length: 1
+Content of RC
+State W: 272  State V: 274  
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 86
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 222
+V: 222
+SS-Length: 2
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 87
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 224
+V: 224
+SS-Length: 3
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 88
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 226
+V: 226
+SS-Length: 4
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 89
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 228
+V: 228
+SS-Length: 5
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 90
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 22a
+V: 22a
+SS-Length: 6
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+First Loop iteration: 91
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 274
+V: 274
+SS-Length: 7
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+First Loop iteration: 92
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 220
+V: 220
+SS-Length: 1
+Content of RC
+State W: 274  State V: 27c  
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 93
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 222
+V: 222
+SS-Length: 2
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 94
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 224
+V: 224
+SS-Length: 3
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 95
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 226
+V: 226
+SS-Length: 4
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 96
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 228
+V: 228
+SS-Length: 5
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 97
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 22a
+V: 22a
+SS-Length: 6
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+First Loop iteration: 98
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 27c
+V: 27c
+SS-Length: 7
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+First Loop iteration: 99
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 220
+V: 220
+SS-Length: 1
+Content of RC
+State W: 27c  State V: 270  
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 100
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 222
+V: 222
+SS-Length: 2
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 101
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 224
+V: 224
+SS-Length: 3
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 102
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 226
+V: 226
+SS-Length: 4
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 103
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 228
+V: 228
+SS-Length: 5
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 104
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 22a
+V: 22a
+SS-Length: 6
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+First Loop iteration: 105
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 270
+V: 270
+SS-Length: 7
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+First Loop iteration: 106
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 220
+V: 220
+SS-Length: 1
+Content of RC
+State W: 270  State V: 272  
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 107
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 222
+V: 222
+SS-Length: 2
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 108
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 224
+V: 224
+SS-Length: 3
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 109
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 226
+V: 226
+SS-Length: 4
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 110
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 228
+V: 228
+SS-Length: 5
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 111
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 22a
+V: 22a
+SS-Length: 6
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+First Loop iteration: 112
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 272
+V: 272
+SS-Length: 7
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+First Loop iteration: 113
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 220
+V: 220
+SS-Length: 1
+Content of RC
+State W: 272  State V: 274  
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 114
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 222
+V: 222
+SS-Length: 2
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 115
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 224
+V: 224
+SS-Length: 3
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 116
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 226
+V: 226
+SS-Length: 4
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 117
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 228
+V: 228
+SS-Length: 5
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 118
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 22a
+V: 22a
+SS-Length: 6
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+First Loop iteration: 119
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 272
+W: 274
+V: 274
+SS-Length: 7
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+First Loop iteration: 120
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 220
+V: 220
+SS-Length: 1
+Content of RC
+State W: 274  State V: 27c  
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 121
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 222
+V: 222
+SS-Length: 2
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 122
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 224
+V: 224
+SS-Length: 3
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 123
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 226
+V: 226
+SS-Length: 4
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 124
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 228
+V: 228
+SS-Length: 5
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 125
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 22a
+V: 22a
+SS-Length: 6
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+First Loop iteration: 126
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 274
+W: 27c
+V: 27c
+SS-Length: 7
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+First Loop iteration: 127
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 220
+V: 220
+SS-Length: 1
+Content of RC
+State W: 27c  State V: 270  
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 128
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 222
+V: 222
+SS-Length: 2
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 129
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 224
+V: 224
+SS-Length: 3
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 130
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 226
+V: 226
+SS-Length: 4
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 131
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 228
+V: 228
+SS-Length: 5
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 132
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 22a
+V: 22a
+SS-Length: 6
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+First Loop iteration: 133
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 27c
+W: 270
+V: 270
+SS-Length: 7
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+First Loop iteration: 134
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 220
+V: 220
+SS-Length: 1
+Content of RC
+State W: 270  State V: 272  
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 135
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 222
+V: 222
+SS-Length: 2
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 136
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 224
+V: 224
+SS-Length: 3
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 137
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 226
+V: 226
+SS-Length: 4
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 138
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 228
+V: 228
+SS-Length: 5
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+First Loop iteration: 139
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 22a
+V: 22a
+SS-Length: 6
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+First Loop iteration: 140
+SKIP_SIMULATION: 0
+PATH_COMPLETE: 0
+W_abs: 270
+W: 272
+V: 272
+SS-Length: 7
+Content of RC
+Content of RU
+State W: 268  State V: 26c  
+State W: 26c  State V: 26e  
+State W: 26e  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+State W: 272  State V: 274  
+State W: 274  State V: 27c  
+State W: 27c  State V: 270  
+State W: 270  State V: 272  
+States stored in I
+State W: 238  
+State W: 22a  
+Abstracted Segment
+Segment: <238, 268, 21>
+Segment: <228, 22a, 0>
+Segment: <268, 228, 5>
+Segment: <22a, 26c, 1>
+Segment: <26c, 26e, 7>
+Segment: <26e, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
+Segment: <270, 272, 7>
+Segment: <272, 274, 7>
+Segment: <274, 27c, 7>
+Segment: <27c, 270, 7>
 
 ==========================================
   simulation ended
