@@ -1,0 +1,1024 @@
+Loading 'test/input_ext//assembly-code.txt'...DONE
+Loading 'test/input_ext//memory.txt'...DONE
+Loading 'test/input_ext//nvic.txt'...DONE
+Loading 'test/input_ext//nas.txt'...DONE
+Loading 'test/input_ext//vector_table.txt'...DONE
+34  544
+
+=============================================
+ files loading complete
+=============================================
+=============================================
+  disassembly complete
+=============================================
+
+
+  cpu state 0
+R0     :  Ox0000407a
+R1     :  Ox400fc000
+R2     :  Ox10000068
+R3     :  Ox10000068
+R4     :  Ox00000000
+R5     :  Ox10000004
+R6     :  Ox00000000
+R7     :  Ox00000000
+R8     :  Ox00000000
+R9     :  Ox00000000
+R10    :  Ox00000280
+R11    :  Ox00000000
+R12    :  Ox10000044
+R13(SP):  Ox10000268
+R14(LR):  Ox00000239
+R15(PC):  Ox00000238
+xPSR   :  Ox41000000
+N    Z    C    V   Q
+0    1    0    0   0
+Cycle  :  0
+
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+ISR FLAG     : 0
+0x00000220 :  01 20 02 49 08 60 02 49 08 60 70 47 40 C1 0F 40
+0x00000230 :  00 00 00 10 00 00 00 00 01 20 11 49 08 60 00 05
+0x00000240 :  10 49 08 61 01 20 10 49 C1 F8 48 01 0C 49 0C 31
+0x00000250 :  08 60 12 20 00 28 09 DB 00 F0 1F 02 01 21 91 40
+0x00000260 :  42 09 92 00 02 F1 E0 22 C2 F8 00 11 00 BF 05 E0
+0x00000270 :  06 48 00 68 10 B1 00 20 04 49 08 60 F8 E7 00 00
+0x00000280 :  40 C1 0F 40 00 C0 02 40 00 C0 0F 40 00 00 00 10
+0x00000290 :  40 04 00 00 00 00 00 10 04 00 00 00 08 01 00 00
+0x000002A0 :  44 04 00 00 04 00 00 10 64 02 00 00 24 01 00 00
+
+[0x00000238 16-bit] MOV r0, #1
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 1
+R0     :  Ox00000001
+R15(PC):  Ox0000023a
+xPSR   :  0x01000000
+N    Z    C    V   Q
+0    0    0    0   0
+Cycle  :  1
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x0000023a 16-bit] LDR r1, [PC, #68]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 2
+R1     :  Ox400fc140
+R15(PC):  Ox0000023c
+Cycle  :  2
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x0000023c 16-bit] STR r0, [r1, #0]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 3
+R15(PC):  Ox0000023e
+Cycle  :  4
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x0000023e 16-bit] LSL r0, r0, #20
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 4
+R0     :  Ox00100000
+R15(PC):  Ox00000240
+Cycle  :  5
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x00000240 16-bit] LDR r1, [PC, #64]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 5
+R1     :  Ox4002c000
+R15(PC):  Ox00000242
+Cycle  :  6
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x00000242 16-bit] STR r0, [r1, #16]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 6
+R15(PC):  Ox00000244
+Cycle  :  8
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+0x4002C010 :  00 00 10 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ >>
+
+[0x00000244 16-bit] MOV r0, #1
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 7
+R0     :  Ox00000001
+R15(PC):  Ox00000246
+Cycle  :  9
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x00000246 16-bit] LDR r1, [PC, #64]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 8
+R1     :  Ox400fc000
+R15(PC):  Ox00000248
+Cycle  : 10
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x00000248 32-bit] STR r0, [r1, #328]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 9
+R15(PC):  Ox0000024c
+Cycle  : 12
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+0x400FC140 :  01 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00
+ >>
+
+[0x0000024c 16-bit] LDR r1, [PC, #48]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 10
+R1     :  Ox400fc140
+R15(PC):  Ox0000024e
+Cycle  : 13
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x0000024e 16-bit] ADD r1, #12
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 11
+R1     :  Ox400fc14c
+R15(PC):  Ox00000250
+Cycle  : 14
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x00000250 16-bit] STR r0, [r1, #0]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 12
+R15(PC):  Ox00000252
+Cycle  : 16
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+0x400FC140 :  01 00 00 00 00 00 00 00 01 00 00 00 01 00 00 00
+ >>
+
+[0x00000252 16-bit] MOV r0, #18
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 13
+R0     :  Ox00000012
+R15(PC):  Ox00000254
+Cycle  : 17
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x00000254 16-bit] CMP r0, #0
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 14
+R15(PC):  Ox00000256
+xPSR   :  0x21000000
+N    Z    C    V   Q
+0    0    1    0   0
+Cycle  : 18
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x00000256 16-bit] BLT #18
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 15
+R15(PC):  Ox00000258
+Cycle  : 19
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x00000258 32-bit] AND r2, r0, #31
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 16
+R2     :  Ox00000012
+R15(PC):  Ox0000025c
+Cycle  : 20
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x0000025c 16-bit] MOV r1, #1
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 17
+R1     :  Ox00000001
+R15(PC):  Ox0000025e
+Cycle  : 21
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x0000025e 16-bit] LSL r1, r2
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 18
+R1     :  Ox00040000
+R15(PC):  Ox00000260
+xPSR   :  0x01000000
+N    Z    C    V   Q
+0    0    0    0   0
+Cycle  : 22
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x00000260 16-bit] LSR r2, r0, #5
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 19
+R2     :  Ox00000000
+R15(PC):  Ox00000262
+xPSR   :  0x61000000
+N    Z    C    V   Q
+0    1    1    0   0
+Cycle  : 23
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x00000262 16-bit] LSL r2, r2, #2
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 20
+R15(PC):  Ox00000264
+xPSR   :  0x41000000
+N    Z    C    V   Q
+0    1    0    0   0
+Cycle  : 24
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x00000264 32-bit] ADD r2, r2, #-536813568
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 21
+R2     :  Oxe000e000
+R15(PC):  Ox00000268
+Cycle  : 25
+RIT   ENABLED: 0
+EINT0 ENABLED: 0
+RIT   COUNTER: 0
+ISR FLAG     : 0
+ >>
+
+[0x00000268 32-bit] STR r1, [r2, #256]
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+
+  cpu state 22                  cpu state 22
+R0     :  Ox00000012         R0     :  Ox00000012
+R1     :  Ox00040000         R1     :  Ox00040000
+R2     :  Oxe000e000         R2     :  Oxe000e000
+R3     :  Ox10000068         R3     :  Ox10000068
+R4     :  Ox00000000         R4     :  Ox00000000
+R5     :  Ox10000004         R5     :  Ox10000004
+R6     :  Ox00000000         R6     :  Ox00000000
+R7     :  Ox00000000         R7     :  Ox00000000
+R8     :  Ox00000000         R8     :  Ox00000000
+R9     :  Ox00000000         R9     :  Ox00000000
+R10    :  Ox00000280         R10    :  Ox00000280
+R11    :  Ox00000000         R11    :  Ox00000000
+R12    :  Ox10000044         R12    :  Ox10000044
+R13(SP):  Ox10000268         R13(SP):  Ox10000248
+R14(LR):  Ox00000239         R14(LR):  Oxfffffff9
+R15(PC):  Ox0000026c         R15(PC):  Ox00000220
+xPSR   :  Ox41000000         xPSR   :  Ox41000022
+N    Z    C    V   Q         N    Z    C    V   Q
+0    1    0    0   0         0    1    0    0   0
+Cycle  : 27                  Cycle  : 27
+[0x00000220 16-bit] MOV r0, #1
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 23
+R0     :  Ox00000001
+R15(PC):  Ox00000222
+xPSR   :  0x01000022
+N    Z    C    V   Q
+0    0    0    0   0
+Cycle  : 28
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000222 16-bit] LDR r1, [PC, #8]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 24
+R1     :  Ox400fc140
+R15(PC):  Ox00000224
+Cycle  : 29
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000224 16-bit] STR r0, [r1, #0]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 25
+R15(PC):  Ox00000226
+Cycle  : 31
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000226 16-bit] LDR r1, [PC, #8]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 26
+R1     :  Ox10000000
+R15(PC):  Ox00000228
+Cycle  : 32
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000228 16-bit] STR r0, [r1, #0]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 27
+R15(PC):  Ox0000022a
+Cycle  : 34
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+0x10000000 :  01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ >>
+
+[0x0000022a 16-bit] BX r14
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+  cpu state 28
+R15(PC):  Oxfffffff9
+Cycle  : 36
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x0000026c 16-bit] NOP
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+
+  cpu state 29                  cpu state 29
+R0     :  Ox00000012         R0     :  Ox00000012
+R1     :  Ox00040000         R1     :  Ox00040000
+R2     :  Oxe000e000         R2     :  Oxe000e000
+R3     :  Ox10000068         R3     :  Ox10000068
+R4     :  Ox00000000         R4     :  Ox00000000
+R5     :  Ox10000004         R5     :  Ox10000004
+R6     :  Ox00000000         R6     :  Ox00000000
+R7     :  Ox00000000         R7     :  Ox00000000
+R8     :  Ox00000000         R8     :  Ox00000000
+R9     :  Ox00000000         R9     :  Ox00000000
+R10    :  Ox00000280         R10    :  Ox00000280
+R11    :  Ox00000000         R11    :  Ox00000000
+R12    :  Ox10000044         R12    :  Ox10000044
+R13(SP):  Ox10000268         R13(SP):  Ox10000248
+R14(LR):  Ox00000239         R14(LR):  Oxfffffff9
+R15(PC):  Ox0000026e         R15(PC):  Ox00000220
+xPSR   :  Ox41000000         xPSR   :  Ox41000022
+N    Z    C    V   Q         N    Z    C    V   Q
+0    1    0    0   0         0    1    0    0   0
+Cycle  : 37                  Cycle  : 37
+[0x00000220 16-bit] MOV r0, #1
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 30
+R0     :  Ox00000001
+R15(PC):  Ox00000222
+xPSR   :  0x01000022
+N    Z    C    V   Q
+0    0    0    0   0
+Cycle  : 38
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000222 16-bit] LDR r1, [PC, #8]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 31
+R1     :  Ox400fc140
+R15(PC):  Ox00000224
+Cycle  : 39
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000224 16-bit] STR r0, [r1, #0]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 32
+R15(PC):  Ox00000226
+Cycle  : 41
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000226 16-bit] LDR r1, [PC, #8]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 33
+R1     :  Ox10000000
+R15(PC):  Ox00000228
+Cycle  : 42
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000228 16-bit] STR r0, [r1, #0]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 34
+R15(PC):  Ox0000022a
+Cycle  : 44
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x0000022a 16-bit] BX r14
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+  cpu state 35
+R15(PC):  Oxfffffff9
+Cycle  : 46
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x0000026e 16-bit] B #10
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+
+  cpu state 36                  cpu state 36
+R0     :  Ox00000012         R0     :  Ox00000012
+R1     :  Ox00040000         R1     :  Ox00040000
+R2     :  Oxe000e000         R2     :  Oxe000e000
+R3     :  Ox10000068         R3     :  Ox10000068
+R4     :  Ox00000000         R4     :  Ox00000000
+R5     :  Ox10000004         R5     :  Ox10000004
+R6     :  Ox00000000         R6     :  Ox00000000
+R7     :  Ox00000000         R7     :  Ox00000000
+R8     :  Ox00000000         R8     :  Ox00000000
+R9     :  Ox00000000         R9     :  Ox00000000
+R10    :  Ox00000280         R10    :  Ox00000280
+R11    :  Ox00000000         R11    :  Ox00000000
+R12    :  Ox10000044         R12    :  Ox10000044
+R13(SP):  Ox10000268         R13(SP):  Ox10000248
+R14(LR):  Ox00000239         R14(LR):  Oxfffffff9
+R15(PC):  Ox0000027c         R15(PC):  Ox00000220
+xPSR   :  Ox41000000         xPSR   :  Ox41000022
+N    Z    C    V   Q         N    Z    C    V   Q
+0    1    0    0   0         0    1    0    0   0
+Cycle  : 48                  Cycle  : 48
+[0x00000220 16-bit] MOV r0, #1
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 37
+R0     :  Ox00000001
+R15(PC):  Ox00000222
+xPSR   :  0x01000022
+N    Z    C    V   Q
+0    0    0    0   0
+Cycle  : 49
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000222 16-bit] LDR r1, [PC, #8]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 38
+R1     :  Ox400fc140
+R15(PC):  Ox00000224
+Cycle  : 50
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000224 16-bit] STR r0, [r1, #0]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 39
+R15(PC):  Ox00000226
+Cycle  : 52
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000226 16-bit] LDR r1, [PC, #8]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 40
+R1     :  Ox10000000
+R15(PC):  Ox00000228
+Cycle  : 53
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000228 16-bit] STR r0, [r1, #0]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 41
+R15(PC):  Ox0000022a
+Cycle  : 55
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x0000022a 16-bit] BX r14
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+  cpu state 42
+R15(PC):  Oxfffffff9
+Cycle  : 57
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x0000027c 16-bit] B #-16
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+
+  cpu state 43                  cpu state 43
+R0     :  Ox00000012         R0     :  Ox00000012
+R1     :  Ox00040000         R1     :  Ox00040000
+R2     :  Oxe000e000         R2     :  Oxe000e000
+R3     :  Ox10000068         R3     :  Ox10000068
+R4     :  Ox00000000         R4     :  Ox00000000
+R5     :  Ox10000004         R5     :  Ox10000004
+R6     :  Ox00000000         R6     :  Ox00000000
+R7     :  Ox00000000         R7     :  Ox00000000
+R8     :  Ox00000000         R8     :  Ox00000000
+R9     :  Ox00000000         R9     :  Ox00000000
+R10    :  Ox00000280         R10    :  Ox00000280
+R11    :  Ox00000000         R11    :  Ox00000000
+R12    :  Ox10000044         R12    :  Ox10000044
+R13(SP):  Ox10000268         R13(SP):  Ox10000248
+R14(LR):  Ox00000239         R14(LR):  Oxfffffff9
+R15(PC):  Ox00000270         R15(PC):  Ox00000220
+xPSR   :  Ox41000000         xPSR   :  Ox41000022
+N    Z    C    V   Q         N    Z    C    V   Q
+0    1    0    0   0         0    1    0    0   0
+Cycle  : 59                  Cycle  : 59
+[0x00000220 16-bit] MOV r0, #1
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 44
+R0     :  Ox00000001
+R15(PC):  Ox00000222
+xPSR   :  0x01000022
+N    Z    C    V   Q
+0    0    0    0   0
+Cycle  : 60
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000222 16-bit] LDR r1, [PC, #8]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 45
+R1     :  Ox400fc140
+R15(PC):  Ox00000224
+Cycle  : 61
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000224 16-bit] STR r0, [r1, #0]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 46
+R15(PC):  Ox00000226
+Cycle  : 63
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000226 16-bit] LDR r1, [PC, #8]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 47
+R1     :  Ox10000000
+R15(PC):  Ox00000228
+Cycle  : 64
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000228 16-bit] STR r0, [r1, #0]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 48
+R15(PC):  Ox0000022a
+Cycle  : 66
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x0000022a 16-bit] BX r14
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+  cpu state 49
+R15(PC):  Oxfffffff9
+Cycle  : 68
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000270 16-bit] LDR r0, [PC, #24]
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+
+  cpu state 50                  cpu state 50
+R0     :  Ox10000000         R0     :  Ox10000000
+R1     :  Ox00040000         R1     :  Ox00040000
+R2     :  Oxe000e000         R2     :  Oxe000e000
+R3     :  Ox10000068         R3     :  Ox10000068
+R4     :  Ox00000000         R4     :  Ox00000000
+R5     :  Ox10000004         R5     :  Ox10000004
+R6     :  Ox00000000         R6     :  Ox00000000
+R7     :  Ox00000000         R7     :  Ox00000000
+R8     :  Ox00000000         R8     :  Ox00000000
+R9     :  Ox00000000         R9     :  Ox00000000
+R10    :  Ox00000280         R10    :  Ox00000280
+R11    :  Ox00000000         R11    :  Ox00000000
+R12    :  Ox10000044         R12    :  Ox10000044
+R13(SP):  Ox10000268         R13(SP):  Ox10000248
+R14(LR):  Ox00000239         R14(LR):  Oxfffffff9
+R15(PC):  Ox00000272         R15(PC):  Ox00000220
+xPSR   :  Ox41000000         xPSR   :  Ox41000022
+N    Z    C    V   Q         N    Z    C    V   Q
+0    1    0    0   0         0    1    0    0   0
+Cycle  : 69                  Cycle  : 69
+[0x00000220 16-bit] MOV r0, #1
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 51
+R0     :  Ox00000001
+R15(PC):  Ox00000222
+xPSR   :  0x01000022
+N    Z    C    V   Q
+0    0    0    0   0
+Cycle  : 70
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000222 16-bit] LDR r1, [PC, #8]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 52
+R1     :  Ox400fc140
+R15(PC):  Ox00000224
+Cycle  : 71
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000224 16-bit] STR r0, [r1, #0]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 53
+R15(PC):  Ox00000226
+Cycle  : 73
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000226 16-bit] LDR r1, [PC, #8]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 54
+R1     :  Ox10000000
+R15(PC):  Ox00000228
+Cycle  : 74
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000228 16-bit] STR r0, [r1, #0]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 55
+R15(PC):  Ox0000022a
+Cycle  : 76
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x0000022a 16-bit] BX r14
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+exiting isr 
+  cpu state 56
+R15(PC):  Oxfffffff9
+Cycle  : 78
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000272 16-bit] LDR r0, [r0, #0]
+ before eint0 handler
+
+calling isr 
+ISR 1
+ISR call end 1
+ after  eint0 handler
+vector size 2
+Calling exit isr on exernal path
+
+  cpu state 57                  cpu state 57
+R0     :  Ox00000001         R0     :  Ox00000001
+R1     :  Ox00040000         R1     :  Ox00040000
+R2     :  Oxe000e000         R2     :  Oxe000e000
+R3     :  Ox10000068         R3     :  Ox10000068
+R4     :  Ox00000000         R4     :  Ox00000000
+R5     :  Ox10000004         R5     :  Ox10000004
+R6     :  Ox00000000         R6     :  Ox00000000
+R7     :  Ox00000000         R7     :  Ox00000000
+R8     :  Ox00000000         R8     :  Ox00000000
+R9     :  Ox00000000         R9     :  Ox00000000
+R10    :  Ox00000280         R10    :  Ox00000280
+R11    :  Ox00000000         R11    :  Ox00000000
+R12    :  Ox10000044         R12    :  Ox10000044
+R13(SP):  Ox10000268         R13(SP):  Ox10000248
+R14(LR):  Ox00000239         R14(LR):  Oxfffffff9
+R15(PC):  Ox00000274         R15(PC):  Ox00000220
+xPSR   :  Ox41000000         xPSR   :  Ox41000022
+N    Z    C    V   Q         N    Z    C    V   Q
+0    1    0    0   0         0    1    0    0   0
+Cycle  : 79                  Cycle  : 79
+[0x00000220 16-bit] MOV r0, #1
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 58
+R15(PC):  Ox00000222
+xPSR   :  0x01000022
+N    Z    C    V   Q
+0    0    0    0   0
+Cycle  : 80
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000222 16-bit] LDR r1, [PC, #8]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 59
+R1     :  Ox400fc140
+R15(PC):  Ox00000224
+Cycle  : 81
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+[0x00000224 16-bit] STR r0, [r1, #0]
+ before eint0 handler
+ after  eint0 handler
+vector size 1
+  cpu state 60
+R15(PC):  Ox00000226
+Cycle  : 83
+RIT   ENABLED: 0
+EINT0 ENABLED: 1
+RIT   COUNTER: 0
+ISR FLAG     : 1
+ >>
+
+==========================================
+  execute complete
+==========================================
+
+==========================================
+  simulation starting
+==========================================
+
+==========================================
+  simulation ended
+==========================================
+

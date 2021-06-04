@@ -109,6 +109,7 @@ public:
     friend bool operator<( armv7_m3 const& armcore_lhs, armv7_m3 const& armcore_rhs);
 };
 
+//Given an old cpu and a new cpu, print_cpu_diff only prints what differs from both cpu and keeping the new cpu value when there is a diference 
 void print_cpu_diff(     armv7_m3 const& old_cpu, armv7_m3 const& new_cpu, std::ostream& os);
 void print_cpu_pair(     armv7_m3 const& cpu_lhs, armv7_m3 const& cpu_rhs, std::ostream& os);
 void print_cpu_pair_diff(armv7_m3 const& cpu_lhs, armv7_m3 const& cpu_rhs, std::ostream& os);

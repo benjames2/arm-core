@@ -11,7 +11,7 @@ armstate_t::armstate_t(void) : memory{memory_t::little_endian}{ this->ISR_FLAG =
 armstate_t::armstate_t(const armstate_t& armstate) : memory(armstate.memory){
     this->cpu = armstate.cpu;
     this->ISR_FLAG = armstate.ISR_FLAG;
-    std::cout << "Armstate constructor" << std::endl;
+    //std::cout << "Armstate constructor" << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& os, armstate_t& armstate){

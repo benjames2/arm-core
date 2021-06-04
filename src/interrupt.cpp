@@ -1,8 +1,7 @@
 #include <inc/interrupt.h>
+#include <inc/stack_operations.h>
 #include <map>
 
-
-uint32_t special_flag_t::ISR_FLAG = 0;
 
 uint32_t get_exception_number(interrupt_id id){
 
@@ -88,7 +87,7 @@ bool rit_triggered(armstate_t& armstate){
      
 }
 
-armstate_t rit_handler (armstate_t& armstate, std::map<uint32_t, address32_t>& vector_table){
+armstate_t rit_handler (const armstate_t& armstate, std::map<uint32_t, address32_t>& vector_table){
     auto new_armstate = armstate;
     enable_interrupt(new_armstate);
 
@@ -102,7 +101,7 @@ armstate_t rit_handler (armstate_t& armstate, std::map<uint32_t, address32_t>& v
     return new_armstate;
 }
 
-std::vector<armstate_t> eint0_handler(armstate_t& armstate, std::map<uint32_t, address32_t>& vector_table){
+std::vector<armstate_t> eint0_handler(const armstate_t& armstate, std::map<uint32_t, address32_t>& vector_table){
 
     std::vector<armstate_t> successor_states = {armstate};
     //std::cout << "vector size before push " << successor_states.size() << std::endl ;
@@ -183,17 +182,17 @@ armstate_t exit_isr(const armstate_t& armstate){
         }
 
         new_armstate.cpu.set_register_u32(13, stack_pointer);
-        special_flag_t::ISR_FLAG = 0;
+        
         new_armstate.clear_isr_flag();
     }
     
     return new_armstate;
 }
 
-armstate_t interrupt_handler(armstate_t& armstate, std::map<uint32_t, address32_t>& vector_table){
+std::vector<armstate_t> interrupt_handler(armstate_t& armstate, std::map<uint32_t, address32_t>& vector_table){
     //auto new_armstate = armstate;
     std::cout << " before eint0 handler" << std::endl;
-    auto successor_states = eint0_handler(armstate, vector_table);
+    std::vector<armstate_t> successor_states = eint0_handler(armstate, vector_table);
     std::cout << " after  eint0 handler" << std::endl;
 
     std::cout << "vector size " << successor_states.size() << std::endl;
@@ -201,7 +200,12 @@ armstate_t interrupt_handler(armstate_t& armstate, std::map<uint32_t, address32_
       //  print_cpu_pair_diff(successor_states.front().cpu, successor_states.back().cpu, std::cout);
     //}
     //new_armstate      = rit_handler(armstate, vector_table);
-    
-    auto  new_armstate  = exit_isr(successor_states.front());
-    return new_armstate;
+    //std::cout << "Here";
+    successor_states.front()  = exit_isr(successor_states.front());
+    if(successor_states.size() == 2){
+        successor_states.back() = exit_isr(successor_states.back());
+        std::cout << "Calling exit isr on exernal path" << std::endl;
+    }
+    //std::cout << "not Here";
+    return successor_states;
 }

@@ -42,7 +42,7 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array, std::map<
             //First if tested
             std::vector<armstate_pair_t> RC;
             if(!skip_simulation){
-                successor(RC, w, vector_table);                               //RC ← simulate-object-code(w, object-code);
+                successor(RC, w, vector_table);                  //RC ← simulate-object-code(w, object-code);
                 auto wv_pair = RC.back();              
                 w = wv_pair.armstate_w;                          //Choose any <w, v>, ∈ RC; last pair element is chosen in RC
                 v = wv_pair.armstate_v;
@@ -94,7 +94,7 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array, std::map<
             w = v;
 
             if(skip_simulation) skip_simulation = false;
-/*
+///*
             symulation_variables_t var = {
                 skip_simulation, path_complete, w_abs, w, v,ss_length, RC, RU, I, RI
             };
@@ -106,7 +106,7 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array, std::map<
             if(first_loop == 140){
                 throw std::runtime_error("Inside loop over");
             }
-*/
+//*/
                 
 
         } while (!path_complete);
@@ -141,7 +141,8 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array, std::map<
 
 bool refinement_map(armstate_t& armstate_w, armstate_t& armstate_v){
 
-    address32_t addr = 0x2009C034;
+    //address32_t addr = 0x2009C034; //stepper motor
+    address32_t addr = 0x10000000;   //external interrupt benchmark
 
     uint32_t motor_state_w = armstate_w.memory.load_u32(addr);
     uint32_t motor_state_v = armstate_v.memory.load_u32(addr);
@@ -149,6 +150,7 @@ bool refinement_map(armstate_t& armstate_w, armstate_t& armstate_v){
     return motor_state_w == motor_state_v;
 
 }
+
 
 uint8_t ref_map(armstate_t& armstate){
 
@@ -180,11 +182,23 @@ void successor(std::vector<armstate_pair_t>& RC, armstate_t& armstate_w, std::ma
     auto inst_data   = fetch(armstate_w.memory, armstate_w.cpu.PC());
     auto decode_data = decode(inst_data, armstate_w.cpu.PC()); 
     auto armstate_v  = execute(armstate_w, decode_data);
-    armstate_v       = interrupt_handler(armstate_v, vector_table);
+    auto states      = interrupt_handler(armstate_v, vector_table);
 
-    armstate_pair_t WV = {armstate_w, armstate_v};
-
-    RC.push_back(WV);
+    if (states.size() == 1){
+        armstate_pair_t WV = {armstate_w, states.front()};
+        RC.push_back(WV);
+    }
+    else if(states.size() == 2){
+        armstate_pair_t WV1 = {armstate_w, states.front()};
+        armstate_pair_t WV2 = {armstate_w, states.back()};
+        RC.push_back(WV1);
+        RC.push_back(WV2);
+    }
+    else
+    {
+        throw std::runtime_error("In symulation: size of state is incoherent");
+    }
+   
 }
 
 std::ostream& operator<<(std::ostream& os, armstate_pair_t& armstate_pair){
@@ -239,23 +253,3 @@ std::ostream& operator<<(std::ostream& os, armstate_pair_t& armstate_pair){
     os << std::flush;
     return os;
  }
-/*
-void get_union(std::vector<armstate_pair_t>& RU, std::vector<armstate_pair_t>& RC){
-
-    //Using a set will dictate the order in which the state pairs are stored in RU
-    std::set<armstate_pair_t> union_set;
-
-    for (const auto& pair_wv : RC){
-        union_set.insert(pair_wv);
-    }
-
-    for(const auto& pair_wv : RU){
-        union_set.insert(pair_wv);
-    }
-
-    //for (auto iter = RU.begin(); iter != RU.end(); ++iter){
-
-    //}
-
-}
-*/

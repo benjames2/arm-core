@@ -25,7 +25,7 @@ using namespace std;
 // leave this include where it is
 #include <inc/static_asserts.h>
 
-
+armstate_t execute_armstate(armstate_t& armstate);
 int main(int argc, char* argv[]) {
 
     if(argc < 2){
@@ -72,17 +72,51 @@ int main(int argc, char* argv[]) {
 
     cout << w0 << endl;
 
-///*
-    for(int i = 0; i < 60; ++i) {
+/*
+    for(int i = 0; i < 40; ++i) {
 
-        auto inst_data    = fetch(armstate.memory, armstate.cpu.PC(), true);
-        auto decode_data  = decode(inst_data, armstate.cpu.PC());
-        auto new_armstate = execute(armstate, decode_data);
-        new_armstate      = interrupt_handler(new_armstate, vector_table);
+        auto inst_data        = fetch(armstate.memory, armstate.cpu.PC(), true);
+        auto decode_data      = decode(inst_data, armstate.cpu.PC());
+        auto new_armstate     = execute(armstate, decode_data);
+        vector<armstate_t> successor_states = interrupt_handler(new_armstate, vector_table);
 
         cout << decode_data << endl;
-        print_armstate_diff(armstate, new_armstate, cout);
-        armstate = new_armstate;
+        if(successor_states.size() == 1)
+            print_armstate_diff(armstate, successor_states.front(), cout);
+        else if(successor_states.size() == 2)
+        {
+            print_cpu_pair(successor_states.front().cpu, successor_states.back().cpu, cout);
+        }
+        else
+        {
+            throw runtime_error("Successor states is wrong");
+        }
+        
+        
+        armstate = successor_states.front();
+    }
+//*/
+/*
+    for(int i = 0; i < 60; ++i){
+        
+        auto new_armstate = execute_armstate(armstate);
+        auto states       = interrupt_handler(new_armstate, vector_table);
+
+        if(states.size() == 1){
+            print_armstate_diff(armstate, new_armstate, cout);
+            armstate = states.front();
+        }
+        else if (states.size() == 2){
+            print_cpu_pair(states.front().cpu, states.back().cpu, cout);
+            armstate = states.back();
+        }
+        else{
+            throw std::runtime_error("size of states is problematic");
+        }
+        
+        
+        //armstate = states.front();
+        //cout << states.front();
     }
 //*/
 
@@ -96,7 +130,7 @@ int main(int argc, char* argv[]) {
     cout << "\n==========================================\n\n";
 
 
- /*
+ ///*
     try
     {
         symsimulation(w0, nas_array, vector_table);
@@ -111,4 +145,14 @@ int main(int argc, char* argv[]) {
     cout << "\n==========================================\n\n";
 
     return 0;
+}
+
+armstate_t execute_armstate(armstate_t& armstate){
+
+    auto inst_data    = fetch(armstate.memory, armstate.cpu.PC(), true);
+    auto decode_data  = decode(inst_data, armstate.cpu.PC());
+    auto new_armstate = execute(armstate, decode_data);
+    cout << decode_data << endl;
+
+    return new_armstate;
 }
