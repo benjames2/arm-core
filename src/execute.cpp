@@ -2005,7 +2005,38 @@ armstate_t execute_t32(armstate_t& armstate, instruction_32b_t& inst) {
         case t32_REVSH :
         case t32_ROR   :
         case t32_RRX   :
+            throw std::runtime_error("execute_t32 : opcode not implemented");
         case t32_RSB   :
+            {
+                if(inst.meta_opcode == meta_t32_imm){
+
+                    auto Rn    = new_armstate.cpu.get_register_u32(inst.Rn);
+                    auto imm32 = inst.u32;
+
+                    results_t result;
+                
+                    //operation
+                    auto msg = gp_operation(&result, imm32, Rn, 0, x86_asm_SUB);
+                    new_armstate.cpu.set_register_u32(inst.Rd, result.i32);
+
+                    //update flags
+                    new_armstate.cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                    new_armstate.cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                    new_armstate.cpu.set_CPSR_C(!result.get_x86_flag_Carry());//the carry flag behaves diferently in armV7. it is then inverted
+                    new_armstate.cpu.set_CPSR_V(result.get_x86_flag_Ov());
+
+                    //update PC and cycle count
+                    new_armstate.cpu.cycle_count++;
+                    if(inst.Rd != 15)
+                        new_armstate.cpu.PC() += 4;
+                    else
+                        new_armstate.cpu.cycle_count++;
+
+                    return new_armstate;
+                }
+                else
+                    throw std::runtime_error("execute_t32 : invalid meta_opcode for ORR instruction");
+            }
         case t32_SBC   :
         case t32_SBFX  :
         case t32_SDIV  :
