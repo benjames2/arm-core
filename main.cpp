@@ -39,11 +39,11 @@ int main(int argc, char* argv[]) {
 
     for(auto cptr : { folderpath + "/assembly-code.txt", folderpath + "/memory.txt" }) {
         load_memory_file(cptr, armstate.memory, last_asm_addr);
-        //std::cout << armstate.memory << std::endl;
+        std::cout << armstate.memory << std::endl;
     }
 
     load_nvic_file(folderpath + "/nvic.txt", armstate.cpu);
-    //cout << armstate << endl;
+    cout << armstate << endl;
 
     vector<address32_t> nas_array;
     load_nas_file(folderpath + "/nas.txt", nas_array);
@@ -63,8 +63,8 @@ int main(int argc, char* argv[]) {
     cout << "\n=============================================\n";
 
     //print_disassembly(0x00000220, 0x00000258, armstate.memory); //printing rit isr
-    //print_disassembly(0x00000220, 0x0000022A, armstate.memory);
-    //print_disassembly(armstate.cpu.get_PC(), last_asm_addr, armstate.memory);
+    print_disassembly(0x00000220, 0x00000232, armstate.memory);
+    print_disassembly(armstate.cpu.get_PC(), last_asm_addr, armstate.memory);
 
     cout << "=============================================\n";
     cout << "  disassembly complete";
@@ -97,7 +97,7 @@ int main(int argc, char* argv[]) {
     }
 //*/
 /*
-    for(int i = 0; i < 60; ++i){
+    for(int i = 0; i < 9; ++i){
         
         auto new_armstate = execute_armstate(armstate);
         auto states       = interrupt_handler(new_armstate, vector_table);
@@ -130,7 +130,7 @@ int main(int argc, char* argv[]) {
     cout << "\n==========================================\n\n";
 
 
- ///*
+ /*
     try
     {
         symsimulation(w0, nas_array, vector_table);

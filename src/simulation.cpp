@@ -103,9 +103,9 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array, std::map<
             std::cout << std::dec;
             std::cout << "First Loop iteration: " << first_loop << std::endl;
             std::cout << var << std::endl;
-            if(first_loop == 140){
-                throw std::runtime_error("Inside loop over");
-            }
+            //if(first_loop == 140){
+             //   throw std::runtime_error("Inside loop over");
+           // }
 //*/
                 
 
@@ -141,8 +141,8 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array, std::map<
 
 bool refinement_map(armstate_t& armstate_w, armstate_t& armstate_v){
 
-    //address32_t addr = 0x2009C034; //stepper motor
-    address32_t addr = 0x10000000;   //external interrupt benchmark
+    address32_t addr = 0x2009C034; //stepper motor
+    //address32_t addr = 0x10000000;   //external interrupt benchmark
 
     uint32_t motor_state_w = armstate_w.memory.load_u32(addr);
     uint32_t motor_state_v = armstate_v.memory.load_u32(addr);
@@ -215,37 +215,37 @@ std::ostream& operator<<(std::ostream& os, armstate_pair_t& armstate_pair){
     os << "SKIP_SIMULATION: " << variable.skip_simulation << std::endl;
     os << "PATH_COMPLETE: "   << variable.path_complete   << std::endl;
 
-    os << "W_abs: " << std::hex << variable.w_abs.cpu.get_PC() << std::endl;
-    os << "W: "     << std::hex << variable.w.cpu.get_PC()     << std::endl;
-    os << "V: "     << std::hex << variable.v.cpu.get_PC()     << std::endl;
+    os << "W_abs: " << std::hex << variable.w_abs.cpu.cpu_id << std::endl;
+    os << "W: "     << std::hex << variable.w.cpu.cpu_id     << std::endl;
+    os << "V: "     << std::hex << variable.v.cpu.cpu_id     << std::endl;
 
     os << std::dec;
     os << "SS-Length: " << variable.ss_length << std::endl;
 
     os << "Content of RC" << std::endl;
     for(auto& pair : variable.RC){
-        os << "State W: " << std::hex << pair.armstate_w.cpu.get_PC() << "  "; 
-        os << "State V: " << std::hex << pair.armstate_v.cpu.get_PC() << "  "; 
+        os << "State W: " << std::hex << pair.armstate_w.cpu.cpu_id << "  "; 
+        os << "State V: " << std::hex << pair.armstate_v.cpu.cpu_id << "  "; 
         os << std::endl;
     }
 
     os << "Content of RU" << std::endl;
     for(auto& pair : variable.RU){
-        os << "State W: " << std::hex << pair.armstate_w.cpu.get_PC() << "  "; 
-        os << "State V: " << std::hex << pair.armstate_v.cpu.get_PC() << "  "; 
+        os << "State W: " << std::hex << pair.armstate_w.cpu.cpu_id << "  "; 
+        os << "State V: " << std::hex << pair.armstate_v.cpu.cpu_id << "  "; 
         os << std::endl;
     }
 
     os << "States stored in I" << std::endl;
     for(auto& state : variable.I){
-        os << "State W: " << std::hex << state.cpu.get_PC()<< "  ";  
+        os << "State W: " << std::dec << state.cpu.cpu_id<< "  ";  
         os << std::endl;
     }
 
     os << "Abstracted Segment" << std::endl;
     for(auto& segment : variable.RI){
-        os << "Segment: <" << std::hex << segment.state_pair.armstate_w.cpu.get_PC() << ", ";
-        os << segment.state_pair.armstate_v.cpu.get_PC() << ", ";
+        os << "Segment: <" << std::dec << segment.state_pair.armstate_w.cpu.cpu_id << ", ";
+        os << segment.state_pair.armstate_v.cpu.cpu_id << ", ";
         os << std::dec << segment.stuttering_length << ">";
         os << std::endl;
     }

@@ -161,7 +161,7 @@ armstate_t call_isr(armstate_t& armstate, interrupt_id exc_id,  std::map<uint32_
     new_armstate.cpu.set_register_u32(14, EXC_RETURN);
     new_armstate.cpu.set_register_u32(15, isr_addr);
     new_armstate.cpu.set_CPSR(cpsr);
-    std::cout << "ISR call end " << new_armstate.isr_flagged() << std::endl;
+    //std::cout << "ISR call end " << new_armstate.isr_flagged() << std::endl;
     return new_armstate;
 }
 
@@ -206,6 +206,5 @@ std::vector<armstate_t> interrupt_handler(armstate_t& armstate, std::map<uint32_
         successor_states.back() = exit_isr(successor_states.back());
         std::cout << "Calling exit isr on exernal path" << std::endl;
     }
-    //std::cout << "not Here";
     return successor_states;
 }

@@ -666,7 +666,14 @@ std::ostream& operator<<(std::ostream& os, const instruction_32b_t& in){
         case t32_PUSH:
             THROW_UNDEFINED(PUSH);
         case t32_RSB:
-            THROW_UNDEFINED(RSB);
+            switch (in.meta_opcode){
+                case meta_t32_imm:
+                    os << "RSB r" << in.Rd << ", r" << in.Rn << ", #" << in.u32;
+                break;
+                default:
+                    THROW_INVALID_METACODE_32B(RSB);
+            }
+            break;
         case t32_SBC:
             THROW_UNDEFINED(SBC);
         case t32_STM:

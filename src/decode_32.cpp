@@ -1384,6 +1384,7 @@ instruction_32b_t decode_32b_A6_198_RSB_imm(unsigned int PC, unsigned int instru
 
     in.S  = (instruction_word >> (15 + 5)) & 0x01;
     in.Rd = (instruction_word >> 8) & 0x0F;
+    in.Rn = (instruction_word >> (15 + 1)) & 0x0F;
 
     int i    = (instruction_word >> (15 + 11)) & 0x01;
     int imm3 = (instruction_word >> 12) & 0x07;
