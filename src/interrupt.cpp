@@ -104,7 +104,6 @@ armstate_t rit_handler (const armstate_t& armstate, std::map<uint32_t, address32
 std::vector<armstate_t> eint0_handler(const armstate_t& armstate, std::map<uint32_t, address32_t>& vector_table){
 
     std::vector<armstate_t> successor_states = {armstate};
-    //std::cout << "vector size before push " << successor_states.size() << std::endl ;
  
     auto new_armstate = armstate;
 
@@ -123,10 +122,8 @@ std::vector<armstate_t> eint0_handler(const armstate_t& armstate, std::map<uint3
 
 armstate_t call_isr(armstate_t& armstate, interrupt_id exc_id,  std::map<uint32_t, address32_t>& vector_table){
 
-    std::cout << "\ncalling isr " << std::endl; 
     auto new_armstate = armstate;
     new_armstate.set_isr_flag();
-    std::cout << "ISR " << new_armstate.isr_flagged() << std::endl;
     new_armstate.cpu.set_stack_mode(armv7_m3::stack_mode_FullDescending);
     auto stack_pointer = armstate.cpu.SP();
 
@@ -190,21 +187,13 @@ armstate_t exit_isr(const armstate_t& armstate){
 }
 
 std::vector<armstate_t> interrupt_handler(armstate_t& armstate, std::map<uint32_t, address32_t>& vector_table){
-    //auto new_armstate = armstate;
-    std::cout << " before eint0 handler" << std::endl;
-    std::vector<armstate_t> successor_states = eint0_handler(armstate, vector_table);
-    std::cout << " after  eint0 handler" << std::endl;
 
-    std::cout << "vector size " << successor_states.size() << std::endl;
-    //if(successor_states.size() == 2){
-      //  print_cpu_pair_diff(successor_states.front().cpu, successor_states.back().cpu, std::cout);
-    //}
+    std::vector<armstate_t> successor_states = eint0_handler(armstate, vector_table);
     //new_armstate      = rit_handler(armstate, vector_table);
-    //std::cout << "Here";
+
     successor_states.front()  = exit_isr(successor_states.front());
     if(successor_states.size() == 2){
         successor_states.back() = exit_isr(successor_states.back());
-        std::cout << "Calling exit isr on exernal path" << std::endl;
     }
     return successor_states;
 }

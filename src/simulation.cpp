@@ -94,7 +94,8 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array, std::map<
             w = v;
 
             if(skip_simulation) skip_simulation = false;
-///*
+
+/* For debugging purposes
             symulation_variables_t var = {
                 skip_simulation, path_complete, w_abs, w, v,ss_length, RC, RU, I, RI
             };
@@ -103,9 +104,9 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array, std::map<
             std::cout << std::dec;
             std::cout << "First Loop iteration: " << first_loop << std::endl;
             std::cout << var << std::endl;
-            //if(first_loop == 140){
-             //   throw std::runtime_error("Inside loop over");
-           // }
+            if(first_loop == 30){
+                throw std::runtime_error("Inside loop over");
+            }
 //*/
                 
 
@@ -141,8 +142,8 @@ void symsimulation(armstate_t w0, std::vector<address32_t>& nas_array, std::map<
 
 bool refinement_map(armstate_t& armstate_w, armstate_t& armstate_v){
 
-    address32_t addr = 0x2009C034; //stepper motor
-    //address32_t addr = 0x10000000;   //external interrupt benchmark
+    //address32_t addr = 0x2009C034; //stepper motor
+    address32_t addr = 0x10000000;   //external interrupt benchmark
 
     uint32_t motor_state_w = armstate_w.memory.load_u32(addr);
     uint32_t motor_state_v = armstate_v.memory.load_u32(addr);

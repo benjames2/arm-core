@@ -2020,11 +2020,13 @@ armstate_t execute_t32(armstate_t& armstate, instruction_32b_t& inst) {
                     new_armstate.cpu.set_register_u32(inst.Rd, result.i32);
 
                     //update flags
-                    new_armstate.cpu.set_CPSR_N(result.get_x86_flag_Sign());
-                    new_armstate.cpu.set_CPSR_Z(result.get_x86_flag_Zero());
-                    new_armstate.cpu.set_CPSR_C(!result.get_x86_flag_Carry());//the carry flag behaves diferently in armV7. it is then inverted
-                    new_armstate.cpu.set_CPSR_V(result.get_x86_flag_Ov());
-
+                    auto S = inst.S;
+                    if(S){
+                        new_armstate.cpu.set_CPSR_N(result.get_x86_flag_Sign());
+                        new_armstate.cpu.set_CPSR_Z(result.get_x86_flag_Zero());
+                        new_armstate.cpu.set_CPSR_C(!result.get_x86_flag_Carry());//the carry flag behaves diferently in armV7. it is then inverted
+                        new_armstate.cpu.set_CPSR_V(result.get_x86_flag_Ov());
+                    }
                     //update PC and cycle count
                     new_armstate.cpu.cycle_count++;
                     if(inst.Rd != 15)

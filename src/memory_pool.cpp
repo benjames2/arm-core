@@ -398,7 +398,7 @@ void print_memory_diff(memory_t& memory_lhs, memory_t& memory_rhs, std::ostream&
 
         //std::cout << " >>\n";
     }
-    os << " >>\n\n";
+    os << " >>\n";
 
 }
 

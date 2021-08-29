@@ -376,6 +376,14 @@ void print_cpu_pair_diff(armv7_m3 const& cpu_lhs, armv7_m3 const& cpu_rhs, std::
     os << "Cycle  :" << std::dec << std::setw(3) << cpu_lhs.get_cycle_count() << std::setw(26) << "Cycle  :" << std::setw(3) << cpu_rhs.get_cycle_count() << std::endl;
 }
 
+void print_cpu_pair_execute_diff(armv7_m3 const& old_cpu, armv7_m3 const& new_cpu_1, armv7_m3 const& new_cpu_2, std::ostream& os){
+
+    os << "New Cpu 1" << std::endl;
+    print_cpu_diff(old_cpu, new_cpu_1, os);
+    os << "New Cpu 2" << std::endl;
+    print_cpu_diff(old_cpu, new_cpu_2, os);
+}
+
 
 bool operator==(armv7_m3 const& armcore_w, armv7_m3 const& armcore_v){
 
